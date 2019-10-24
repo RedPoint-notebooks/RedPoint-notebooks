@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <title>Hello!</title>
+    <script src="codemirror/lib/codemirror.js"/></script>
+    <link href="codemirror/lib/codemirror.css" rel="stylesheet" />
+    <script src="codemirror/mode/javascript/javascript.js"/></script>
+    <link href="codemirror/theme/darcula.css" rel="stylesheet"/>
+    <script src="codemirror/addon/hint/javascript-hint.js"></script>
+  </head>
+  <body>
+    <textarea id="editor">
+[1, 2, 3].map(num => {
+  return num + 1;
+});
+    </textarea>
+    <button id="execute">Run Code</button>
+    <p id="result"></p>
+
+    <script>
+      document.addEventListener('DOMContentLoaded', () => {
+        const js = CodeMirror.fromTextArea(
+            document.getElementById('editor'), {
+              mode: "javascript",
+              theme: "darcula",
+              lineNumbers: true,
+              showCursorWhenSelecting: true,              
+            }
+          );
+        const button = document.getElementById('execute');
+
+        button.addEventListener('click', () => {
+          // debugger;
+          let jsx = js.options.value;
+          result = document.getElementById('result');
+          result.innerText = eval(jsx)
+        })
+      })
+  
+    </script>
+  </body>
+</html>
+

@@ -1,0 +1,6 @@
+{
+  "dependencies": {
+    "codemirror": "^5.49.2",
+    "xterm": "^4.1.0"
+  }
+}
