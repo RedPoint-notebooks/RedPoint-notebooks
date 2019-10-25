@@ -7,36 +7,66 @@
     <script src="codemirror/mode/javascript/javascript.js"/></script>
     <link href="codemirror/theme/darcula.css" rel="stylesheet"/>
     <script src="codemirror/addon/hint/javascript-hint.js"></script>
+    <script src="codemirror/mode/markdown/markdown.js"></script>
+    <link href="codemirror/theme/monokai.css" rel="stylesheet">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/markdown-it/10.0.0/markdown-it.js"></script> 
   </head>
   <body>
     <textarea id="editor">
-[1, 2, 3].map(num => {
-  return num + 1;
-});
+[1, 2, 3].map(num => num + 100);
     </textarea>
-    <button id="execute">Run Code</button>
+    <button id="execute-codecell-1">Run Code</button>
     <p id="result"></p>
 
+    <textarea id="markdown-cell"># Write markdown in here
+stuff stuff
+regular things
+
+### a subheading
+    </textarea>
+    <button id="render-md">Render Markdown</button>
+
+    <p id="rendered-markdown"></p>
+      
     <script>
       document.addEventListener('DOMContentLoaded', () => {
-        const js = CodeMirror.fromTextArea(
-            document.getElementById('editor'), {
+        const codeArea = document.getElementById('editor');
+        const editor = CodeMirror.fromTextArea(
+           codeArea, {
               mode: "javascript",
               theme: "darcula",
               lineNumbers: true,
               showCursorWhenSelecting: true,              
             }
           );
-        const button = document.getElementById('execute');
+
+        const button = document.getElementById('execute-codecell-1');
 
         button.addEventListener('click', () => {
-          // debugger;
-          let jsx = js.options.value;
-          result = document.getElementById('result');
-          result.innerText = eval(jsx)
+          let userCode = editor.getValue();
+          let codeResult = document.getElementById('result');
+          codeResult.innerText = eval(userCode)
         })
+
+        const mdbutton = document.getElementById('render-md')
+        const mdCell = document.getElementById('markdown-cell');
+        const mdCode = CodeMirror.fromTextArea(
+          mdCell, {
+            mode: "markdown",
+            showCursorWhenSelecting: true,
+            theme: "monokai"
+          }
+        )
+        
+        const md = window.markdownit(); // load markdown-it parser into a variable
+
+        mdbutton.addEventListener('click', () => {
+          let mdContent = mdCode.getValue();
+          let mdOutput = document.getElementById('rendered-markdown');
+          mdOutput.innerHTML = md.render(mdContent);      // use markdown-it parser to render the markdown into html
+        });
+        
       })
-  
     </script>
   </body>
 </html>
