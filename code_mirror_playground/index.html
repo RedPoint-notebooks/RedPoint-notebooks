@@ -25,8 +25,13 @@ regular things
 ### a subheading
     </textarea>
     <button id="render-md">Render Markdown</button>
-
     <p id="rendered-markdown"></p>
+
+     <textarea id="editor-2">
+[1, 2, 3].map(num => num + 100);
+    </textarea>
+    <button id="execute-codecell-2">Run Code</button>
+    <p id="codecell-2-result"></p>
       
     <script>
       document.addEventListener('DOMContentLoaded', () => {
@@ -65,6 +70,24 @@ regular things
           let mdOutput = document.getElementById('rendered-markdown');
           mdOutput.innerHTML = md.render(mdContent);      // use markdown-it parser to render the markdown into html
         });
+
+        const codeArea2 = document.getElementById('editor-2');
+        const editor2 = CodeMirror.fromTextArea(
+           codeArea2, {
+              mode: "javascript",
+              theme: "darcula",
+              lineNumbers: true,
+              showCursorWhenSelecting: true,
+            }
+          );
+
+        const button2 = document.getElementById('execute-codecell-2');
+
+        button2.addEventListener('click', () => {
+          let userCode2 = editor2.getValue();
+          let codeResult2 = document.getElementById('codecell-2-result');
+          codeResult2.innerText = eval(userCode2)
+        })
         
       })
     </script>
