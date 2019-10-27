@@ -1,0 +1,18 @@
+* {
+  font-family: "Be Vietnam", sans-serif;
+}
+
+h1,
+p,
+button {
+  margin: 0 0 10px 0;
+}
+
+.code-result {
+  color: red;
+  font-size: 24px;
+}
+
+.hidden {
+  display: none;
+}
