@@ -1,5 +1,5 @@
 document.addEventListener("DOMContentLoaded", () => {
-  let codemirrors = setAllCodemirrorObjects();
+  const codemirrors = setAllCodemirrorObjects();
   const btnCC1 = document.getElementById("btn-codecell-1");
   const btnCC2 = document.getElementById("btn-codecell-2");
   const btnMD1 = document.getElementById("render-md-1");
@@ -25,6 +25,7 @@ document.addEventListener("DOMContentLoaded", () => {
     });
   });
 
+  // want to replace this hard-coded anti-DRY with named cb func for event listener
   btnCC2.addEventListener("click", () => {
     const cellNumber = 2;
     const codeToRender = allCodeUpToCell(cellNumber, codemirrors);
