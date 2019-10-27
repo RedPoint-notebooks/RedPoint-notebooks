@@ -3,7 +3,7 @@ const logger = require("morgan");
 const pty = require("node-pty");
 const app = express();
 const bodyParser = require("body-parser");
-const repl = pty.spawn("node");
+const repl = pty.spawn("irb");
 
 app.use(logger("dev"));
 app.use(express.static("."));
@@ -16,12 +16,10 @@ app.post("/", function(req, res) {
   repl.write(code); // repl.pipe(code) ?
 
   repl.onData(data => {
-    // console.log(data);
     result += data;
   });
 
   setTimeout(() => res.json({ result: result }), 200);
-  // repl.removeAllListeners("data");
 });
 
 app.listen(3000, () => {

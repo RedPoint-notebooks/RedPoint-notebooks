@@ -1,24 +1,32 @@
 document.addEventListener("DOMContentLoaded", () => {
-  const codeArea = document.getElementById("editor");
-  const editor = CodeMirror.fromTextArea(codeArea, {
-    mode: "javascript",
-    theme: "darcula",
-    lineNumbers: true,
-    showCursorWhenSelecting: true
+  const codeAreas = [...document.querySelectorAll(".code-cell")];
+
+  let codeMirrorObjs = codeAreas.map(textArea => {
+    let editor = CodeMirror.fromTextArea(textArea, {
+      mode: "javascript",
+      theme: "darcula",
+      lineNumbers: true,
+      showCursorWhenSelecting: true
+    });
+
+    return editor;
   });
 
-  const button = document.getElementById("execute-codecell-1");
+  const button = document.getElementById("execute-codecell-2");
 
   button.addEventListener("click", () => {
-    let userCode = editor
-      .getValue()
-      .trim()
-      .concat("\n");
-    let codeResult = document.getElementById("result");
+    let allCodeString = "";
 
-    // const userCode = "1+1\n".replace(/ +?/g, "");
+    codeMirrorObjs.forEach(editor => {
+      allCodeString += editor
+        .getValue()
+        .trim()
+        .concat("\n");
+    });
 
-    const json = JSON.stringify({ userCode });
+    let codeResult = document.getElementById("codecell-2-result");
+
+    const json = JSON.stringify({ userCode: allCodeString });
 
     const request = new XMLHttpRequest();
 
@@ -48,21 +56,5 @@ document.addEventListener("DOMContentLoaded", () => {
     let mdContent = mdCode.getValue();
     let mdOutput = document.getElementById("rendered-markdown");
     mdOutput.innerHTML = md.render(mdContent); // use markdown-it parser to render the markdown into html
-  });
-
-  const codeArea2 = document.getElementById("editor-2");
-  const editor2 = CodeMirror.fromTextArea(codeArea2, {
-    mode: "javascript",
-    theme: "darcula",
-    lineNumbers: true,
-    showCursorWhenSelecting: true
-  });
-
-  const button2 = document.getElementById("execute-codecell-2");
-
-  button2.addEventListener("click", () => {
-    let userCode2 = editor2.getValue();
-    let codeResult2 = document.getElementById("codecell-2-result");
-    codeResult2.innerText = eval(userCode2);
   });
 });
