@@ -1,14 +1,10 @@
 document.addEventListener("DOMContentLoaded", () => {
   const codemirrors = setAllCodemirrorObjects();
-
-  // const btnCC1 = document.getElementById("btn-codecell-1");
-  // const btnCC2 = document.getElementById("btn-codecell-2");
   const btnMD1 = document.getElementById("render-md-1");
   const mdC1 = document.getElementById("md-cell-1");
 
   const handleCodeSubmit = event => {
     let cellNum = +event.target.dataset.button;
-    // debugger;
     codeToRender = allCodeUpToCell(cellNum, codemirrors);
     codeResult = document.getElementById(`codecell-${cellNum}-result`);
     const json = JSON.stringify({ userCode: codeToRender });
@@ -31,68 +27,8 @@ document.addEventListener("DOMContentLoaded", () => {
   document.addEventListener("click", event => {
     if (event.target.className === "code-submit") {
       handleCodeSubmit(event);
-      // let cellNum = +event.target.dataset.button;
-      // // debugger;
-      // codeToRender = allCodeUpToCell(cellNum, codemirrors);
-      // codeResult = document.getElementById(`codecell-${cellNum}-result`);
-      // const json = JSON.stringify({ userCode: codeToRender });
-
-      // const request = new XMLHttpRequest();
-
-      // request.open("POST", "/");
-      // request.setRequestHeader("Content-Type", "application/json");
-      // request.responseType = "json";
-
-      // request.send(json);
-
-      // request.addEventListener("load", () => {
-      //   const resultString = request.response.result;
-
-      //   codeResult.textContent = parseRubyOutput(resultString);
-      // });
     }
   });
-
-  // btnCC1.addEventListener("click", () => {
-  //   const cellNumber = 1;
-  //   const codeToRender = allCodeUpToCell(cellNumber, codemirrors);
-  //   const codeResult = document.getElementById(`codecell-${cellNumber}-result`);
-  //   const json = JSON.stringify({ userCode: codeToRender });
-  //   const request = new XMLHttpRequest();
-
-  //   request.open("POST", "/");
-  //   request.setRequestHeader("Content-Type", "application/json");
-  //   request.responseType = "json";
-
-  //   request.send(json);
-
-  //   request.addEventListener("load", () => {
-  //     const resultString = request.response.result;
-
-  //     codeResult.textContent = parseRubyOutput(resultString);
-  //   });
-  // });
-
-  // // want to replace this hard-coded anti-DRY with named cb func for event listener
-  // btnCC2.addEventListener("click", () => {
-  //   const cellNumber = 2;
-  //   const codeToRender = allCodeUpToCell(cellNumber, codemirrors);
-  //   const codeResult = document.getElementById(`codecell-${cellNumber}-result`);
-  //   const json = JSON.stringify({ userCode: codeToRender });
-  //   const request = new XMLHttpRequest();
-
-  //   request.open("POST", "/");
-  //   request.setRequestHeader("Content-Type", "application/json");
-  //   request.responseType = "json";
-
-  //   request.send(json);
-
-  //   request.addEventListener("load", () => {
-  //     const resultString = request.response.result;
-
-  //     codeResult.textContent = parseRubyOutput(resultString);
-  //   });
-  // });
 
   // extract and render markdown
   const mdCode = CodeMirror.fromTextArea(mdC1, {
@@ -100,6 +36,7 @@ document.addEventListener("DOMContentLoaded", () => {
     showCursorWhenSelecting: true,
     theme: "monokai"
   });
+
   // load markdown-it parser into a variable
   const md = window.markdownit();
 
@@ -152,26 +89,3 @@ const allCodeUpToCell = (cellNum, allCodeCells) => {
 
   return allCodeString;
 };
-
-// I wanted to pass a named function as a callback on clicking a coderender button so we could supply
-// the code cell number dynamically and DRY code, but named callback functions with parameters get immediately
-// invoked if passed args. I know this shouldn't be hard but 2:30am brain isn't so good
-
-// const sendCodeToServer = (cellNumber, codemirrors) => {
-//   const codeToRender = allCodeUpToCell(cellNumber, codemirrors);
-//   const codeResult = document.getElementById(`codecell-${cellNumber}-result`);
-//   const json = JSON.stringify({ userCode: codeToRender });
-//   const request = new XMLHttpRequest();
-
-//   request.open("POST", "/");
-//   request.setRequestHeader("Content-Type", "application/json");
-//   request.responseType = "json";
-
-//   request.send(json);
-
-//   request.addEventListener("load", () => {
-//     const resultString = request.response.result;
-
-//     codeResult.textContent = parseRubyOutput(resultString);
-//   });
-// };
