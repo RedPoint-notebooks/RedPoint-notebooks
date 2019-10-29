@@ -19,7 +19,7 @@ document.addEventListener("DOMContentLoaded", () => {
     request.send(json);
 
     request.addEventListener("load", () => {
-      const returnString = request.response.result;
+      const returnString = request.response.resultObj.return;
       codeResult.textContent = returnString;
     });
   };
