@@ -19,9 +19,8 @@ document.addEventListener("DOMContentLoaded", () => {
     request.send(json);
 
     request.addEventListener("load", () => {
-      const resultString = request.response.result;
-
-      codeResult.textContent = parseRubyOutput(resultString);
+      const returnString = request.response.result;
+      codeResult.textContent = returnString;
     });
   };
 
@@ -48,27 +47,6 @@ document.addEventListener("DOMContentLoaded", () => {
     mdCode.getWrapperElement().classList.add("hidden");
   });
 });
-
-const parseRubyOutput = output => {
-  // split REPL output on newlines
-  const outputLines = output.split("\n");
-  if (output.match("Error")) {
-    // TODO => decide how to handle bad user code
-    console.log(outputLines);
-  }
-  // REPL return value is second last line in output
-  const replReturnValue = outputLines[outputLines.length - 2];
-
-  // tty instance of Ruby REPL never appends the ruby version or line number to first input line (?)
-  outputLines.shift();
-
-  // remove any repl output line that begins with ruby version num (input) or " =>" undesired output
-  const replLogs = outputLines.filter(line => {
-    return !line.match(/^(\d\.\d\.\d\s:\d\d\d)|(^ =>)/);
-  });
-  replLogs.push(replReturnValue);
-  return replLogs;
-};
 
 // maps all textareas designated as code cells to codemirror objects
 const setAllCodemirrorObjects = () => {
