@@ -7,6 +7,7 @@ document.addEventListener("DOMContentLoaded", () => {
     let cellNum = +event.target.dataset.button;
     codeToRender = allCodeUpToCell(cellNum, codemirrors);
     codeResult = document.getElementById(`codecell-${cellNum}-result`);
+    codeReturn = document.getElementById(`codecell-${cellNum}-return`);
     const json = JSON.stringify({ userCode: codeToRender });
 
     const request = new XMLHttpRequest();
@@ -56,7 +57,17 @@ const parseRubyOutput = output => {
     console.log(outputLines);
   }
   // REPL return value is second last line in output
-  return outputLines[outputLines.length - 2];
+  const replReturnValue = outputLines[outputLines.length - 2];
+
+  // tty instance of Ruby REPL never appends the ruby version or line number to first input line (?)
+  outputLines.shift();
+
+  // remove any repl output line that begins with ruby version num (input) or " =>" undesired output
+  const replLogs = outputLines.filter(line => {
+    return !line.match(/^(\d\.\d\.\d\s:\d\d\d)|(^ =>)/);
+  });
+  replLogs.push(replReturnValue);
+  return replLogs;
 };
 
 // maps all textareas designated as code cells to codemirror objects
@@ -88,4 +99,8 @@ const allCodeUpToCell = (cellNum, allCodeCells) => {
   }
 
   return allCodeString;
+};
+
+const extractRubyOutput = replOutput => {
+  return replOutput.filter(line => !line.match(/^[^\s=>|2.6.3\s:\d\d\d]/g));
 };

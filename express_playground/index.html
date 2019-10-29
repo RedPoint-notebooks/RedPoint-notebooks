@@ -17,10 +17,13 @@
   <body>
     <h1>Behold The Power of Ruby</h1>
     <textarea class="code-cell" id="editor-1">redpoint = [1, 2, 3, 4, 5]
+puts redpoint
 frankenstein = {so: "misunderstood", bad: "scientist", monster: "wanted love"}
+puts frankenstein
     </textarea>
     <button data-button="1" class="code-submit" id="btn-codecell-1">Run Code</button>
     <p id="codecell-1-result" class="code-result"></p>
+    <p id="codecell-1-return" class="code-return"></p>
     <textarea id="md-cell-1"># Does more things than MongoDB
 - Evaluates code
 - Saves cats
@@ -31,6 +34,7 @@ frankenstein = {so: "misunderstood", bad: "scientist", monster: "wanted love"}
     <textarea class="code-cell" id="editor-2">redpoint.map{ |level| level + 1 }</textarea>
     <button data-button="2" class="code-submit" id="btn-codecell-2">Run Code</button>
     <p id="codecell-2-result" class="code-result"></p>
+    <p id="codecell-2-return" class="code-return"></p>
   </body>
 </html>
 
