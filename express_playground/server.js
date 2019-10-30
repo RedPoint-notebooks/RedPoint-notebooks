@@ -58,7 +58,6 @@ app.post("/", function(req, res) {
     if (err) {
       console.log("there was an error");
     }
-    console.log("File Written");
   });
   // execute in bash, and collect output
 
