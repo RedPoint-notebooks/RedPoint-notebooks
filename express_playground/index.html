@@ -16,11 +16,7 @@
   </head>
   <body>
     <h1>Behold The Power of Ruby</h1>
-    <textarea class="code-cell" id="editor-1">redpoint = [1, 2, 3, 4, 5]
-puts redpoint
-frankenstein = {so: "misunderstood", bad: "scientist", monster: "wanted love"}
-puts frankenstein
-    </textarea>
+    <textarea class="code-cell" id="editor-1">puts "hi"</textarea>
     <button data-button="1" class="code-submit" id="btn-codecell-1">Run Code</button>
     <p id="codecell-1-result" class="code-result"></p>
     <p id="codecell-1-return" class="code-return"></p>
@@ -31,7 +27,9 @@ puts frankenstein
     </textarea>
     <div id="md-1-result"></div>
     <button id="render-md-1">Render Markdown</button>
-    <textarea class="code-cell" id="editor-2">redpoint.map{ |level| level + 1 }</textarea>
+    <textarea class="code-cell" id="editor-2">
+      redpoint = [1, 2, 3]
+      redpoint.map{ |level| level + 1 }</textarea>
     <button data-button="2" class="code-submit" id="btn-codecell-2">Run Code</button>
     <p id="codecell-2-result" class="code-result"></p>
     <p id="codecell-2-return" class="code-return"></p>
