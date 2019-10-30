@@ -5,6 +5,7 @@ const { exec } = require("child_process"); // exec uses system default shell
 const app = express();
 const bodyParser = require("body-parser");
 const repl = pty.spawn("irb");
+const fs = require("fs");
 
 app.use(logger("dev"));
 app.use(express.static("."));
@@ -22,23 +23,11 @@ const parseReplOutput = output => {
   return replReturnValue;
 };
 
-const createAndWriteToScript = command => {
-  // console.log(command);
-  exec(command, (err, stdout, stderr) => {
-    if (err) {
-      console.error(`error from create (a Node Error object): ${err}`);
-    } else {
-      console.log("script.rb created and written to!");
-      console.log(`stdout from create: ${stdout}`);
-      console.log(`stderr from create: ${stderr}`);
-    }
-  });
-};
-
-const executeScript = () => {
+const executeScript = resultObj => {
   const rubyScript = exec("ruby script.rb");
 
   rubyScript.stdout.on("data", data => {
+    resultObj.output = data;
     console.log(`stout from execute: ${data}`); // happy path. no error.
   });
   rubyScript.stderr.on("data", data => {
@@ -57,28 +46,40 @@ const deleteScript = () => {
 };
 
 app.post("/", function(req, res) {
-  const code = req.body.userCode;
+  const codeString = req.body.userCode;
+  const codeArray = codeString.split("\n");
+  codeArray.pop(); // get rid of "\n" array element. This newline is used in the codeString provided to the REPL
   let replResult = "";
   let resultObj = {};
 
-  const command = "echo \"puts 'hi from script!'\" >> script.rb";
+  // create the file
+  fs.writeFile("script.rb", codeString, err => {
+    if (err) {
+      console.log("there was an error");
+    }
+    console.log("File Written");
+  });
+  // execute in bash, and collect output
 
-  createAndWriteToScript(command);
-  executeScript();
+  executeScript(resultObj);
 
-  repl.write(code); // repl.pipe(code) ?
+  // erase file
+
+  repl.write(codeString);
 
   repl.onData(data => {
     replResult += data;
   });
 
+  // TODO : can we listen for `end` of stream data before sending response
+  // https://nodejs.org/api/stream.html#stream_event_end
   setTimeout(() => {
     const returnValue = parseReplOutput(replResult);
     resultObj.return = returnValue;
     res.json({ resultObj });
-  }, 200);
+  }, 2000);
 
-  setTimeout(deleteScript, 3000); // setTimeout, or script is deleted too early
+  // setTimeout(deleteScript, 2000); // setTimeout, or script is deleted too early
 });
 
 app.listen(3000, () => {

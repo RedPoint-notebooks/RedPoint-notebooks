@@ -19,8 +19,9 @@ document.addEventListener("DOMContentLoaded", () => {
     request.send(json);
 
     request.addEventListener("load", () => {
-      const returnString = request.response.resultObj.return;
-      codeResult.textContent = returnString;
+      const resultObj = request.response.resultObj;
+      const returnString = resultObj.return;
+      codeResult.textContent = `Return : ${resultObj.return} // Output : ${resultObj.output}`;
     });
   };
 
@@ -75,10 +76,5 @@ const allCodeUpToCell = (cellNum, allCodeCells) => {
       .trim()
       .concat("\n");
   }
-
   return allCodeString;
-};
-
-const extractRubyOutput = replOutput => {
-  return replOutput.filter(line => !line.match(/^[^\s=>|2.6.3\s:\d\d\d]/g));
 };
