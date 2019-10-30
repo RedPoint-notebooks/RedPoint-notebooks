@@ -20,8 +20,11 @@ document.addEventListener("DOMContentLoaded", () => {
 
     request.addEventListener("load", () => {
       const resultObj = request.response.resultObj;
-      const returnString = resultObj.return;
-      codeResult.textContent = `Return : ${resultObj.return} // Output : ${resultObj.output}`;
+      if (resultObj.error) {
+        codeResult.textContent = `Output : ${resultObj.output} // Error : ${resultObj.error}`;
+      } else {
+        codeResult.textContent = `Output : ${resultObj.output} // Return : ${resultObj.return}`;
+      }
     });
   };
 

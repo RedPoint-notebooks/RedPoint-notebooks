@@ -28,17 +28,18 @@ const executeScript = resultObj => {
 
   rubyScript.stdout.on("data", data => {
     resultObj.output = data;
-    console.log(`stout from execute: ${data}`); // happy path. no error.
+    // console.log(`stout from execute: ${data}`); // happy path. no error.
   });
   rubyScript.stderr.on("data", data => {
-    console.error(`sterr from execute: ${data}`);
+    resultObj.error = data;
+    // console.error(`sterr from execute: ${data}`);
   });
 };
 
 const deleteScript = () => {
   exec("rm script.rb", (err, stdout, stderr) => {
     if (err) {
-      console.error(`error from delete: ${err}`);
+      // console.error(`error from delete: ${err}`);
     } else {
       console.log("script deleted!");
     }
@@ -63,7 +64,11 @@ app.post("/", function(req, res) {
 
   executeScript(resultObj);
 
-  // erase file
+  if (!resultObj.error) {
+    // run REPL
+  }
+
+  // erase file ?
 
   repl.write(codeString);
 
