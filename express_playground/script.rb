@@ -1,2 +1,3 @@
 puts "hi"
-sev
+redpoint = [1, 2, 3]
+      redpoint.map{ |level| level + 1 }
