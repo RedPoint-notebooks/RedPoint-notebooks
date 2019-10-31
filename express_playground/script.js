@@ -1,2 +1,2 @@
-console.log('hello you guys this is live finally are we there yet?');
-5 * 5
+console.log("boo!");
+[(1, 2, 3, 4, 5)];
