@@ -12,17 +12,17 @@ app.use(bodyParser.json());
 
 app.post("/", function(req, res) {
   let codeString = req.body.userCode;
-  codeString += ".exit\r";
+  const replCodeString = codeString + ".exit\r";
   // const codeArray = codeString.split("\n");
   // codeArray.pop(); // get rid of "\n" array element. This newline is used in the codeString provided to the REPL
   let resultObj = {};
 
   // userScript.writeFile(codeString);
-  // userScript.execute(resultObj);
+  userScript.execute(resultObj);
 
   const node = repl.spawn();
   repl.setDataListener(node);
-  node.write(codeString);
+  node.write(replCodeString);
   node.on("end", () => {
     console.log("Node process has ended");
   });
@@ -43,7 +43,7 @@ app.post("/", function(req, res) {
     console.log(node.result);
     resultObj.return = returnValue;
     res.json({ resultObj });
-  }, 600);
+  }, 900);
 });
 
 app.listen(3000, () => {
