@@ -2,7 +2,8 @@ const express = require("express");
 const logger = require("morgan");
 const bodyParser = require("body-parser");
 const userScript = require("./libs/modules/userScript");
-const repl = require("./libs/modules/rubyRepl");
+// const repl = require("./libs/modules/rubyRepl");
+const repl = require("./libs/modules/nodeRepl");
 const app = express();
 
 app.use(logger("dev"));
@@ -10,20 +11,28 @@ app.use(express.static("."));
 app.use(bodyParser.json());
 
 app.post("/", function(req, res) {
-  const codeString = req.body.userCode;
-  const codeArray = codeString.split("\n");
-  codeArray.pop(); // get rid of "\n" array element. This newline is used in the codeString provided to the REPL
+  let codeString = req.body.userCode;
+  codeString += ".exit\r";
+  // const codeArray = codeString.split("\n");
+  // codeArray.pop(); // get rid of "\n" array element. This newline is used in the codeString provided to the REPL
   let resultObj = {};
 
-  userScript.writeFile(codeString);
-  userScript.execute(resultObj);
+  // userScript.writeFile(codeString);
+  // userScript.execute(resultObj);
 
-  const irb = repl.spawn();
-  repl.setDataListener(irb);
-  irb.write(codeString + "exit\r");
-  irb.on("end", () => {
-    // processesEnded.replEnded = true;
+  const node = repl.spawn();
+  repl.setDataListener(node);
+  node.write(codeString);
+  node.on("end", () => {
+    console.log("Node process has ended");
   });
+
+  // const irb = repl.spawn();
+  // repl.setDataListener(irb);
+  // irb.write(codeString + "exit\r");
+  // irb.on("end", () => {
+  //   // processesEnded.replEnded = true;
+  // });
 
   // processesEnded = {scriptEnded: false, replEnded: false}
 
@@ -31,9 +40,10 @@ app.post("/", function(req, res) {
   // https://nodejs.org/api/stream.html#stream_event_end
   setTimeout(() => {
     const returnValue = repl.parseOutput();
+    console.log(node.result);
     resultObj.return = returnValue;
     res.json({ resultObj });
-  }, 1000);
+  }, 600);
 });
 
 app.listen(3000, () => {
