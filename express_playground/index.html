@@ -16,8 +16,9 @@
   </head>
   <body>
     <h1>Javascript</h1>
-    <textarea class="code-cell" id="editor-1">console.log("boo!")
-[1, 2, 3, 4, 5];
+    <textarea class="code-cell" id="editor-1">console.log("boo!");
+const a = [1, 2, 3, 4, 5];
+a;
     </textarea>
     <button data-button="1" class="code-submit" id="btn-codecell-1">Run Code</button>
     <p id="codecell-1-result" class="code-result"></p>
@@ -30,8 +31,9 @@
     <div id="md-1-result"></div>
     <button id="render-md-1">Render Markdown</button>
     <textarea class="code-cell" id="editor-2">
-      redpoint = [5, 5, 5]
-      redpoint.map(level => level += 2)</textarea>
+console.log("In code cell 2");
+const redpoint = [5, 5, 5];
+redpoint.map(level => level += 2);</textarea>
     <button data-button="2" class="code-submit" id="btn-codecell-2">Run Code</button>
     <p id="codecell-2-result" class="code-result"></p>
     <p id="codecell-2-return" class="code-return"></p>

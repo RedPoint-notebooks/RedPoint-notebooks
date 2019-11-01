@@ -11,9 +11,13 @@ app.use(express.static("."));
 app.use(bodyParser.json());
 
 app.post("/", function(req, res) {
-  let codeString = req.body.userCode;
+  const codeString = req.body.userCode;
   const replCodeString = codeString + ".exit\r"; // repl req's this, but it will break the script exec
-  let resultObj = { result: "" };
+  let resultObj = {
+    result: "",
+    output: "",
+    error: ""
+  };
 
   const respondToServer = () => {
     console.log("INSIDE RESPOND TO SERVER");

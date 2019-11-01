@@ -1,6 +1,6 @@
 {
-  "name": "testworld",
-  "version": "0.0.0",
+  "name": "redpoint-testworld",
+  "version": "0.0.1",
   "private": true,
   "scripts": {
     "start": "nodemon ./server.js"
@@ -16,7 +16,6 @@
     "morgan": "^1.9.1",
     "node-pty": "^0.9.0",
     "nodemon": "^1.19.4",
-    "strip-ansi": "^5.2.0",
-    "xterm": "^4.1.0"
+    "strip-ansi": "^5.2.0"
   }
 }

@@ -21,8 +21,12 @@ const userScript = {
         } else {
           console.log(stdout);
           console.log("AFTER EXECUTING SCRIPT");
+          console.log(`stdout within exec: ${stdout}`);
           resultObj.output = stdout;
           resultObj.error = stderr;
+          console.log(
+            `resultObj.output after executing script: ${resultObj.output}`
+          );
           resolve();
         }
         // console.log([resultObj.output, resultObj.error]);

@@ -12,7 +12,6 @@ const repl = {
   },
   setDataListener: (repl, resultObj) => {
     repl.onData(chunk => (resultObj.result += chunk));
-    console.log(resultObj.result);
   },
   execute: (replCodeString, resultObj) => {
     return new Promise((resolve, reject) => {
@@ -20,9 +19,11 @@ const repl = {
       const node = repl.spawn();
       repl.setDataListener(node, resultObj);
       node.write(replCodeString);
+      console.log(`resultObj.result within repl: ${resultObj.result}`);
       node.on("end", () => {
         console.log("AFTER STOPPING REPL");
       });
+      console.log(`resultObj.result after repl: ${resultObj.result}`);
       resultObj.return = repl.parseOutput(resultObj);
       if (resultObj.return) {
         resolve();
