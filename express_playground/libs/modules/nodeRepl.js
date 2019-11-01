@@ -15,7 +15,9 @@ const repl = {
     repl.onData(chunk => {
       this.result += chunk;
     });
-  }
+  },
+
+  execute: () => {}
 };
 
 module.exports = repl;
