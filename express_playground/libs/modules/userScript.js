@@ -22,8 +22,10 @@ const userScript = {
           console.log("AFTER EXECUTING SCRIPT");
           resultObj.output = stdout;
           resultObj.error = stderr;
-          resolve(resultObj);
+          resolve();
         }
+        // console.log([resultObj.output, resultObj.error]);
+        // resultObj.output || resultObj.error ? resolve() : reject();
       });
     });
   },

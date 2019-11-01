@@ -5,6 +5,7 @@ const repl = {
   result: "",
   spawn: () => pty.spawn("node"),
   parseOutput: () => {
+    console.log(`result: ${this.result}`);
     const outputLines = this.result.split("\n");
     let replReturnValue = outputLines[outputLines.length - 3];
     replReturnValue = stripAnsi(replReturnValue);
