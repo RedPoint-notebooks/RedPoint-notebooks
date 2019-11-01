@@ -11,13 +11,31 @@ const repl = {
     replReturnValue = stripAnsi(replReturnValue);
     return replReturnValue;
   },
-  setDataListener: repl => {
+  setDataListener: (repl, resultObj) => {
     repl.onData(chunk => {
-      this.result += chunk;
+      resultObj.result += chunk;
     });
   },
-
-  execute: () => {}
+  execute: (replCodeString, resultObj) => {
+    return new Promise((resolve, reject) => {
+      console.log("BEFORE STARTING REPL");
+      const node = repl.spawn();
+      repl.setDataListener(node, resultObj);
+      console.log(repl.result);
+      node.write(replCodeString);
+      console.log(repl.result);
+      node.on("end", () => {
+        console.log("AFTER STOPPING REPL");
+      });
+      console.log(repl.result);
+      resultObj.return = repl.parseOutput();
+      if (resultObj.return) {
+        resolve();
+      } else {
+        reject();
+      }
+    });
+  }
 };
 
 module.exports = repl;

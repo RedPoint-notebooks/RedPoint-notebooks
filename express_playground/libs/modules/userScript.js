@@ -15,6 +15,7 @@ const userScript = {
       console.log("BEFORE EXECUTING SCRIPT");
       exec("node script.js", execOptions, (error, stdout, stderr) => {
         if (error) {
+          console.log("ERROR EXECUTING SCRIPT");
           console.log(error);
           reject(error);
         } else {
