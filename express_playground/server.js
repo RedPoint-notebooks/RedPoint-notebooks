@@ -13,7 +13,7 @@ app.use(bodyParser.json());
 app.post("/", function(req, res) {
   let codeString = req.body.userCode;
   const replCodeString = codeString + ".exit\r"; // repl req's this, but it will break the script exec
-  let resultObj = {};
+  let resultObj = { result: "" };
 
   const respondToServer = () => {
     console.log("INSIDE RESPOND TO SERVER");
@@ -24,7 +24,7 @@ app.post("/", function(req, res) {
   userScript
     .writeFile(codeString)
     .then(() => userScript.execute(resultObj))
-    .then(() => repl.execute(replCodeString))
+    .then(() => repl.execute(replCodeString, resultObj))
     .then(() => respondToServer())
     .catch(err => console.log(err));
 });
