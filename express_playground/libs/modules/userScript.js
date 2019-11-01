@@ -12,6 +12,7 @@ const execOptions = {
 const userScript = {
   execute: resultObj => {
     return new Promise((resolve, reject) => {
+      console.log("BEFORE EXECUTING SCRIPT");
       exec("node script.js", execOptions, (error, stdout, stderr) => {
         if (error) {
           console.log(error);
@@ -28,11 +29,13 @@ const userScript = {
   },
   writeFile: codeString => {
     return new Promise((resolve, reject) => {
+      console.log("BEFORE WRITING SCRIPT");
       fs.writeFile("script.js", codeString, error => {
         if (error) {
           console.log(error);
           reject(error);
         } else {
+          console.log("AFTER WRITING SCRIPT");
           resolve();
         }
       });

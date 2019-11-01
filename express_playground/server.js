@@ -17,21 +17,21 @@ app.post("/", function(req, res) {
 
   const executeRepl = () => {
     return new Promise((resolve, reject) => {
-      console.log("`resultObj: ${resultObj}`");
+      console.log("BEFORE STARTING REPL");
       const node = repl.spawn();
       repl.setDataListener(node);
       node.write(replCodeString);
-      node.on("end", () => console.log("Node process has ended"));
+      node.on("end", () => console.log("AFTER STOPPING REPL"));
       resolve();
     });
   };
 
   const respondToServer = () => {
     return new Promise((resolve, reject) => {
-      // const returnValue = repl.parseOutput();
+      const returnValue = repl.parseOutput();
       console.log("INSIDE RESPOND TO SERVER");
-      // resultObj.return = returnValue;
-      res.json(JSON.stringify(resultObj));
+      resultObj.return = returnValue;
+      res.json({ resultObj });
       resolve();
     });
   };
@@ -39,9 +39,9 @@ app.post("/", function(req, res) {
   userScript
     .writeFile(codeString)
     .then(userScript.execute(resultObj))
-    // .then(executeRepl)
+    .then(executeRepl())
     .then(respondToServer)
-    .catch(console.log("Whoopsie, something scary happened"));
+    .catch(err => console.log(err));
 });
 
 app.listen(3000, () => {
