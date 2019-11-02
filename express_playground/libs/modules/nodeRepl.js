@@ -5,31 +5,27 @@ const repl = {
   result: "",
   spawn: () => pty.spawn("node"),
   parseOutput: resultObj => {
-    const outputLines = resultObj.result.split("\n");
-    let replReturnValue = outputLines[outputLines.length - 3];
-    replReturnValue = stripAnsi(replReturnValue);
-    return replReturnValue;
+    return new Promise(resolve => {
+      let outputLines = resultObj.result.split("\n");
+      outputLines = stripAnsi(outputLines);
+      const returnValue = outputLines[outputLines.length - 3];
+      resolve(returnValue);
+    });
   },
-  setDataListener: (repl, resultObj) => {
-    repl.onData(chunk => (resultObj.result += chunk));
-  },
-  execute: (replCodeString, resultObj) => {
-    return new Promise((resolve, reject) => {
+  execute: (codeString, resultObj) => {
+    return new Promise(resolve => {
       console.log("BEFORE STARTING REPL");
       const node = repl.spawn();
-      repl.setDataListener(node, resultObj);
-      node.write(replCodeString);
-      console.log(`resultObj.result within repl: ${resultObj.result}`);
-      node.on("end", () => {
-        console.log("AFTER STOPPING REPL");
+      node.onData(data => {
+        resultObj.result += data;
       });
-      console.log(`resultObj.result after repl: ${resultObj.result}`);
-      resultObj.return = repl.parseOutput(resultObj);
-      if (resultObj.return) {
-        resolve();
-      } else {
-        reject();
-      }
+      node.write(codeString + ".exit\r");
+      node.on("exit", () => {
+        if (resultObj.result) {
+          console.log("AFTER FINISHING REPL");
+          resolve(repl);
+        }
+      });
     });
   }
 };

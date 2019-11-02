@@ -24,6 +24,7 @@ const userScript = {
           console.log(`stdout within exec: ${stdout}`);
           resultObj.output = stdout;
           resultObj.error = stderr;
+          fs.unlinkSync("script.js");
           console.log(
             `resultObj.output after executing script: ${resultObj.output}`
           );
@@ -34,6 +35,19 @@ const userScript = {
       });
     });
   },
+  // execute: resultObj => {
+  //   return new Promise((resolve, reject) => {
+  //     console.log("BEFORE EXECUTING SCRIPT");
+  //     let nodeScript = exec("node script.js", execOptions);
+
+  //     nodeScript.stdout.on("data", data => resultObj.output += data);
+  //     nodeScript.stderr.on("data", data => resultObj.error += data);
+  //     nodeScript.stdout.on("end", () => {
+  //       console.log("Script ended");
+  //       resolve();
+  //     });
+  // },
+
   writeFile: codeString => {
     return new Promise((resolve, reject) => {
       console.log("BEFORE WRITING SCRIPT");
