@@ -21,9 +21,9 @@ document.addEventListener("DOMContentLoaded", () => {
     request.addEventListener("load", () => {
       const resultObj = request.response.resultObj;
       if (resultObj.error) {
-        codeResult.textContent = `Output : ${resultObj.output} // Error : ${resultObj.error}`;
+        codeResult.textContent = resultObj.error;
       } else {
-        codeResult.textContent = `Output : ${resultObj.output} // Return : ${resultObj.return}`;
+        codeResult.textContent = `Output : ${resultObj.output} | Return : ${resultObj.return}`;
       }
     });
   };

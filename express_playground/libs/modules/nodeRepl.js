@@ -11,14 +11,12 @@ const repl = {
   },
   execute: (codeString, resultObj) => {
     return new Promise(resolve => {
-      console.log("BEFORE STARTING REPL");
       const node = pty.spawn("node");
       node.onData(data => (resultObj.result += stripAnsi(data)));
       node.write(codeString + ".exit\r");
       node.on("exit", () => {
         if (resultObj.result) {
-          console.log("AFTER FINISHING REPL");
-          resolve(repl);
+          resolve();
         }
       });
     });

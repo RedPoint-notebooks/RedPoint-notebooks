@@ -19,24 +19,30 @@ app.post("/", function(req, res) {
   };
 
   const respondToServer = returnValue => {
-    console.log("INSIDE RESPOND TO SERVER");
-    resultObj.return = returnValue;
-    delete resultObj.result;
-    console.log(`resultObj.return = ${resultObj.return}`);
+    if (resultObj.responseSent === true) {
+      return; // unnecessary? Want to avoid sending 2 responses to client
+    }
+    if (returnValue) {
+      resultObj.return = returnValue;
+      delete resultObj.result;
+      delete resultObj.responseSent;
+    }
     res.json({ resultObj });
+    resultObj.responseSent = true;
   };
 
   userScript
     .writeFile(codeString)
     .then(() => userScript.execute(resultObj))
+    .catch(() => respondToServer()) // send error to client instead of trying REPL
     .then(() => repl.execute(codeString, resultObj))
     .then(() => repl.parseOutput(resultObj))
     .then(returnValue => respondToServer(returnValue))
-    .catch(err => console.log(err));
+    .catch(err => {
+      console.log(err);
+    });
 });
 
 app.listen(3000, () => {
   console.log("App started");
 });
-
-// spawn('irb', [], { stdio: [process.stdout, process.stdin, process.stderr] });
