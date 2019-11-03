@@ -11,7 +11,7 @@ app.use(express.static("."));
 app.use(bodyParser.json());
 
 app.post("/", function(req, res) {
-  const codeString = req.body.userCode;
+  const codeString = req.body.userCode; // will be an array of code cells
   let resultObj = {
     result: "",
     output: "",
@@ -30,6 +30,10 @@ app.post("/", function(req, res) {
     res.json({ resultObj });
     resultObj.responseSent = true;
   };
+
+  // This ideally uses a separate promise for
+  // writefile to write a new file for each code cell
+  // then a new promise to execute each cell as a promise
 
   userScript
     .writeFile(codeString)
