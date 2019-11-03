@@ -1,19 +1,22 @@
 const fs = require("fs");
 const { exec } = require("child_process"); // exec uses system default shell
-const execOptions = {
-  encoding: "utf8",
-  timeout: 1000,
-  maxBuffer: 1024 * 1024,
-  killSignal: "SIGTERM",
-  cwd: null,
-  env: null
-};
 
 const userScript = {
+  script: "",
+  scriptExecCmd: "",
+  execOptions: (execOptions = {
+    encoding: "utf8",
+    timeout: 1000,
+    maxBuffer: 1024 * 1024, // this is 1mb, default is 204 kb
+    killSignal: "SIGTERM",
+    cwd: null,
+    env: null
+  }),
+
   execute: resultObj => {
     return new Promise((resolve, reject) => {
       console.log("BEFORE EXECUTING SCRIPT");
-      exec("node script.js", execOptions, (error, stdout, stderr) => {
+      exec(this.scriptExecCmd, this.execOptions, (error, stdout, stderr) => {
         if (error) {
           resultObj.error = String(error); // pretty print this?
           console.log("ERROR EXECUTING SCRIPT");
@@ -23,17 +26,29 @@ const userScript = {
           console.log("AFTER EXECUTING SCRIPT");
           resultObj.output = stdout;
           resultObj.error = stderr;
-          fs.unlinkSync("script.js");
+          fs.unlinkSync(this.script);
           resolve();
         }
       });
     });
   },
 
-  writeFile: codeString => {
+  writeFile: (codeString, lang) => {
     return new Promise((resolve, reject) => {
       console.log("BEFORE WRITING SCRIPT");
-      fs.writeFile("script.js", codeString, error => {
+
+      switch (lang) {
+        case "RUBY":
+          this.script = "script.rb";
+          this.scriptExecCmd = "ruby script.rb";
+          break;
+        case "JAVASCRIPT":
+          this.script = "script.js";
+          this.scriptExecCmd = "node script.js";
+          break;
+      }
+
+      fs.writeFile(this.script, codeString, error => {
         if (error) {
           console.log(error);
           reject(error);

@@ -2,8 +2,7 @@ const express = require("express");
 const logger = require("morgan");
 const bodyParser = require("body-parser");
 const userScript = require("./libs/modules/userScript");
-// const repl = require("./libs/modules/rubyRepl");
-const repl = require("./libs/modules/nodeRepl");
+const repl = require("./libs/modules/repl");
 const app = express();
 
 app.use(logger("dev"));
@@ -24,7 +23,7 @@ app.post("/", function(req, res) {
     }
     if (returnValue) {
       resultObj.return = returnValue;
-      delete resultObj.result;
+      // delete resultObj.result;
       delete resultObj.responseSent;
     }
     res.json({ resultObj });
@@ -36,10 +35,10 @@ app.post("/", function(req, res) {
   // then a new promise to execute each cell as a promise
 
   userScript
-    .writeFile(codeString)
+    .writeFile(codeString, "JAVASCRIPT")
     .then(() => userScript.execute(resultObj))
     .catch(() => respondToServer()) // send error to client instead of trying REPL
-    .then(() => repl.execute(codeString, resultObj))
+    .then(() => repl.execute(codeString, resultObj, "JAVASCRIPT"))
     .then(() => repl.parseOutput(resultObj))
     .then(returnValue => respondToServer(returnValue))
     .catch(err => {
