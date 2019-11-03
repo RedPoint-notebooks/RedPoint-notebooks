@@ -2,12 +2,9 @@ const pty = require("node-pty");
 const stripAnsi = require("strip-ansi");
 
 const repl = {
-  result: "",
-  spawn: () => pty.spawn("node"),
   parseOutput: resultObj => {
     return new Promise(resolve => {
-      let outputLines = resultObj.result.split("\n");
-      outputLines = stripAnsi(outputLines);
+      const outputLines = resultObj.result.split("\n");
       const returnValue = outputLines[outputLines.length - 3];
       resolve(returnValue);
     });
@@ -15,10 +12,8 @@ const repl = {
   execute: (codeString, resultObj) => {
     return new Promise(resolve => {
       console.log("BEFORE STARTING REPL");
-      const node = repl.spawn();
-      node.onData(data => {
-        resultObj.result += data;
-      });
+      const node = pty.spawn("node");
+      node.onData(data => (resultObj.result += stripAnsi(data)));
       node.write(codeString + ".exit\r");
       node.on("exit", () => {
         if (resultObj.result) {
