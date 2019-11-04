@@ -22,7 +22,7 @@ app.post("/", function(req, res) {
   let scriptPromises = codeStringArray.map((str, idx) => {
     str = prevCodeStr + str;
     prevCodeStr = str;
-    return userScript.writeFile(idx, str, "RUBY");
+    return userScript.writeFile(idx, str, "JAVASCRIPT");
   });
 
   const executeCells = async () => {
@@ -43,8 +43,8 @@ app.post("/", function(req, res) {
 
   Promise.all(scriptPromises).then(() => {
     executeCells()
-      .then(() => repl.execute(codeString, resultObj, "RUBY"))
-      .then(() => repl.parseOutput(resultObj, "RUBY"))
+      .then(() => repl.execute(codeString, resultObj, "JAVASCRIPT"))
+      .then(() => repl.parseOutput(resultObj, "JAVASCRIPT"))
       .then(returnValue => respondToServer(returnValue))
       .catch(err => {
         respondToServer();
