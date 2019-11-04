@@ -52,6 +52,7 @@ const repl = {
       const byOutput = resultObj.result.split(">");
       const dirtyReturnValue = byOutput[byOutput.length - 2];
       const indexCleanStarts = dirtyReturnValue.indexOf("\n");
+      // use lastIndexOf to find where cleanReturn ends
       const cleanReturnValue = dirtyReturnValue.slice(indexCleanStarts);
       resolve((resultObj.return = cleanReturnValue));
     });

@@ -17,11 +17,7 @@ app.post("/", function(req, res) {
     error: ""
   };
 
-  const respondToServer = returnValue => {
-    if (returnValue) {
-      resultObj.return = returnValue;
-      // delete resultObj.result;
-    }
+  const respondToServer = () => {
     res.json({ resultObj });
   };
 
