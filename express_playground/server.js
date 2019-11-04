@@ -18,16 +18,11 @@ app.post("/", function(req, res) {
   };
 
   const respondToServer = returnValue => {
-    if (resultObj.responseSent === true) {
-      return; // unnecessary? Want to avoid sending 2 responses to client
-    }
     if (returnValue) {
       resultObj.return = returnValue;
       // delete resultObj.result;
-      delete resultObj.responseSent;
     }
     res.json({ resultObj });
-    resultObj.responseSent = true;
   };
 
   // This ideally uses a separate promise for
@@ -35,13 +30,13 @@ app.post("/", function(req, res) {
   // then a new promise to execute each cell as a promise
 
   userScript
-    .writeFile(codeString, "RUBY")
+    .writeFile(codeString, "JAVASCRIPT")
     .then(() => userScript.execute(resultObj))
-    .catch(() => respondToServer()) // send error to client instead of trying REPL
-    .then(() => repl.execute(codeString, resultObj, "RUBY"))
-    .then(() => repl.parseOutput(resultObj, "RUBY"))
+    .then(() => repl.execute(codeString, resultObj, "JAVASCRIPT"))
+    .then(() => repl.parseOutput(resultObj, "JAVASCRIPT"))
     .then(returnValue => respondToServer(returnValue))
     .catch(err => {
+      respondToServer();
       console.log(err);
     });
 });

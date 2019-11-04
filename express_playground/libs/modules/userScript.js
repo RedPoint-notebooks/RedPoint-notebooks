@@ -7,7 +7,7 @@ const userScript = {
   execOptions: (execOptions = {
     encoding: "utf8",
     timeout: 1000,
-    maxBuffer: 1024 * 1024, // this is 1mb, default is 204 kb
+    maxBuffer: 200 * 1024, // this is 1mb, default is 204 kb
     killSignal: "SIGTERM",
     cwd: null,
     env: null
@@ -16,20 +16,25 @@ const userScript = {
   execute: resultObj => {
     return new Promise((resolve, reject) => {
       console.log("BEFORE EXECUTING SCRIPT");
-      exec(this.scriptExecCmd, this.execOptions, (error, stdout, stderr) => {
-        if (error) {
-          resultObj.error = String(error); // pretty print this?
-          console.log("ERROR EXECUTING SCRIPT");
-          reject(error);
-        } else {
-          console.log(stdout);
-          console.log("AFTER EXECUTING SCRIPT");
-          resultObj.output = stdout;
-          resultObj.error = stderr;
-          fs.unlinkSync(this.script);
-          resolve();
+      // console.log(userScript.execOptions);
+      exec(
+        this.scriptExecCmd,
+        userScript.execOptions,
+        (error, stdout, stderr) => {
+          if (error) {
+            resultObj.error = String(error); // pretty print this?
+            console.log("ERROR EXECUTING SCRIPT");
+            reject(error);
+          } else {
+            console.log(stdout);
+            console.log("AFTER EXECUTING SCRIPT");
+            resultObj.output = stdout;
+            resultObj.error = stderr;
+            fs.unlinkSync(this.script);
+            resolve();
+          }
         }
-      });
+      );
     });
   },
 
