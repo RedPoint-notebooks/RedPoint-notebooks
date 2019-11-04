@@ -17,17 +17,8 @@ app.post("/", function(req, res) {
     error: ""
   };
 
-  const respondToServer = returnValue => {
-    if (resultObj.responseSent === true) {
-      return; // unnecessary? Want to avoid sending 2 responses to client
-    }
-    if (returnValue) {
-      resultObj.return = returnValue;
-      // delete resultObj.result;
-      delete resultObj.responseSent;
-    }
+  const respondToServer = () => {
     res.json({ resultObj });
-    resultObj.responseSent = true;
   };
 
   // This ideally uses a separate promise for
@@ -37,11 +28,11 @@ app.post("/", function(req, res) {
   userScript
     .writeFile(codeString, "RUBY")
     .then(() => userScript.execute(resultObj))
-    .catch(() => respondToServer()) // send error to client instead of trying REPL
     .then(() => repl.execute(codeString, resultObj, "RUBY"))
     .then(() => repl.parseOutput(resultObj, "RUBY"))
     .then(returnValue => respondToServer(returnValue))
     .catch(err => {
+      respondToServer();
       console.log(err);
     });
 });
