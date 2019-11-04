@@ -2,39 +2,63 @@ const fs = require("fs");
 const { exec } = require("child_process"); // exec uses system default shell
 
 const userScript = {
+  script: "",
+  scriptExecCmd: "",
+  execOptions: (execOptions = {
+    encoding: "utf8",
+    timeout: 1000,
+    maxBuffer: 1024 * 1024, // this is 1mb, default is 204 kb
+    killSignal: "SIGTERM",
+    cwd: null,
+    env: null
+  }),
+
   execute: resultObj => {
-    const rubyScript = exec("ruby script.rb");
-
-    rubyScript.stdout.on("data", data => {
-      resultObj.output = data;
-    });
-
-    rubyScript.stdout.on("end", () => {
-      // processesEnded.scriptEnded = true; set flag to true
-    });
-
-    rubyScript.stderr.on("data", data => {
-      resultObj.error = data;
+    return new Promise((resolve, reject) => {
+      console.log("BEFORE EXECUTING SCRIPT");
+      exec(this.scriptExecCmd, this.execOptions, (error, stdout, stderr) => {
+        if (error) {
+          resultObj.error = String(error); // pretty print this?
+          console.log("ERROR EXECUTING SCRIPT");
+          reject(error);
+        } else {
+          console.log(stdout);
+          console.log("AFTER EXECUTING SCRIPT");
+          resultObj.output = stdout;
+          resultObj.error = stderr;
+          fs.unlinkSync(this.script);
+          resolve();
+        }
+      });
     });
   },
-  writeFile: codeString => {
-    // TODO hardcoded script name
-    fs.writeFile("script.rb", codeString, err => {
-      if (err) {
-        // file write error handling goes here
+
+  writeFile: (codeString, lang) => {
+    return new Promise((resolve, reject) => {
+      console.log("BEFORE WRITING SCRIPT");
+
+      switch (lang) {
+        case "RUBY":
+          this.script = "script.rb";
+          this.scriptExecCmd = "ruby script.rb";
+          break;
+        case "JAVASCRIPT":
+          this.script = "script.js";
+          this.scriptExecCmd = "node script.js";
+          break;
       }
+
+      fs.writeFile(this.script, codeString, error => {
+        if (error) {
+          console.log(error);
+          reject(error);
+        } else {
+          console.log("AFTER WRITING SCRIPT");
+          resolve();
+        }
+      });
     });
   }
 };
 
 module.exports = userScript;
-
-// const deleteScript = () => {
-//   exec("rm script.rb", (err, stdout, stderr) => {
-//     if (err) {
-//       // console.error(`error from delete: ${err}`);
-//     } else {
-//       console.log("script deleted!");
-//     }
-//   });
-// };

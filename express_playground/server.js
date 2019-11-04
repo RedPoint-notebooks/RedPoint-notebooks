@@ -2,7 +2,7 @@ const express = require("express");
 const logger = require("morgan");
 const bodyParser = require("body-parser");
 const userScript = require("./libs/modules/userScript");
-const repl = require("./libs/modules/rubyRepl");
+const repl = require("./libs/modules/repl");
 const app = express();
 
 app.use(logger("dev"));
@@ -10,30 +10,40 @@ app.use(express.static("."));
 app.use(bodyParser.json());
 
 app.post("/", function(req, res) {
-  const codeString = req.body.userCode;
-  const codeArray = codeString.split("\n");
-  codeArray.pop(); // get rid of "\n" array element. This newline is used in the codeString provided to the REPL
-  let resultObj = {};
+  const codeString = req.body.userCode; // will be an array of code cells
+  let resultObj = {
+    result: "",
+    output: "",
+    error: ""
+  };
 
-  userScript.writeFile(codeString);
-  userScript.execute(resultObj);
-
-  const irb = repl.spawn();
-  repl.setDataListener(irb);
-  irb.write(codeString + "exit\r");
-  irb.on("end", () => {
-    // processesEnded.replEnded = true;
-  });
-
-  // processesEnded = {scriptEnded: false, replEnded: false}
-
-  // TODO : can we listen for `end` of stream data before sending response
-  // https://nodejs.org/api/stream.html#stream_event_end
-  setTimeout(() => {
-    const returnValue = repl.parseOutput();
-    resultObj.return = returnValue;
+  const respondToServer = returnValue => {
+    if (resultObj.responseSent === true) {
+      return; // unnecessary? Want to avoid sending 2 responses to client
+    }
+    if (returnValue) {
+      resultObj.return = returnValue;
+      // delete resultObj.result;
+      delete resultObj.responseSent;
+    }
     res.json({ resultObj });
-  }, 1000);
+    resultObj.responseSent = true;
+  };
+
+  // This ideally uses a separate promise for
+  // writefile to write a new file for each code cell
+  // then a new promise to execute each cell as a promise
+
+  userScript
+    .writeFile(codeString, "JAVASCRIPT")
+    .then(() => userScript.execute(resultObj))
+    .catch(() => respondToServer()) // send error to client instead of trying REPL
+    .then(() => repl.execute(codeString, resultObj, "JAVASCRIPT"))
+    .then(() => repl.parseOutput(resultObj))
+    .then(returnValue => respondToServer(returnValue))
+    .catch(err => {
+      console.log(err);
+    });
 });
 
 app.listen(3000, () => {
