@@ -30,11 +30,18 @@ const repl = {
   },
   parseOutput: resultObj => {
     return new Promise(resolve => {
-      const outputLines = resultObj.result.split("\n");
-      const returnValue = outputLines[outputLines.length - 3];
+      const byOutput = resultObj.result.split(">");
+      const dirtyReturnValue = byOutput[byOutput.length - 2];
+      const indexCleanStarts = dirtyReturnValue.indexOf("\n");
+      const cleanReturnValue = dirtyReturnValue.slice(indexCleanStarts);
+      const returnValue = cleanReturnValue;
       resolve(returnValue);
     });
   }
+};
+
+const findFirstNewline = () => {
+  return;
 };
 
 module.exports = repl;
