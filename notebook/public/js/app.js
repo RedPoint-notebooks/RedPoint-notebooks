@@ -20,6 +20,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
     request.addEventListener("load", () => {
       const resultObj = request.response.resultObj;
+      debugger;
       if (resultObj.error) {
         codeResult.textContent = resultObj.error;
       } else {

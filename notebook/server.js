@@ -11,6 +11,7 @@ app.use(bodyParser.json());
 
 app.post("/", function(req, res) {
   const codeStringArray = req.body.userCode; // will be an array of code cells
+  const codeString = codeStringArray.join("");
   let resultObj = {};
   let prevCodeStr = "";
 
@@ -40,6 +41,17 @@ app.post("/", function(req, res) {
   // writefile to write a new file for each code cell
   // then a new promise to execute each cell as a promise
 
+  Promise.all(scriptPromises).then(() => {
+    executeCells()
+      .then(() => repl.execute(codeString, resultObj, "RUBY"))
+      .then(() => repl.parseOutput(resultObj, "RUBY"))
+      .then(returnValue => respondToServer(returnValue))
+      .catch(err => {
+        respondToServer();
+        console.log(err);
+      });
+  });
+
   // userScript
   //   .writeFile(codeString, "RUBY")
   //   .then(() => userScript.execute(resultObj))
@@ -51,13 +63,9 @@ app.post("/", function(req, res) {
   //     console.log(err);
   //   });
 
-  Promise.all(scriptPromises).then(() => {
-    console.log("PROMISE ALLLLLLLL");
-  });
-
-  setTimeout(() => {
-    res.json({});
-  }, 1000);
+  // setTimeout(() => {
+  //   res.json({ resultObj });
+  // }, 1500);
 });
 
 app.listen(3000, () => {
