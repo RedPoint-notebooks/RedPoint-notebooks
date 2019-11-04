@@ -26,10 +26,10 @@ app.post("/", function(req, res) {
   // then a new promise to execute each cell as a promise
 
   userScript
-    .writeFile(codeString, "JAVASCRIPT")
+    .writeFile(codeString, "RUBY")
     .then(() => userScript.execute(resultObj))
-    .then(() => repl.execute(codeString, resultObj, "JAVASCRIPT"))
-    .then(() => repl.parseOutput(resultObj, "JAVASCRIPT"))
+    .then(() => repl.execute(codeString, resultObj, "RUBY"))
+    .then(() => repl.parseOutput(resultObj, "RUBY"))
     .then(returnValue => respondToServer(returnValue))
     .catch(err => {
       respondToServer();
