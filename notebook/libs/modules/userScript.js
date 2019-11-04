@@ -13,24 +13,27 @@ const userScript = {
     env: null
   }),
 
-  execute: resultObj => {
+  execute: (cellIdx, resultObj) => {
     return new Promise((resolve, reject) => {
       console.log("BEFORE EXECUTING SCRIPT");
       // console.log(userScript.execOptions);
+
       exec(
-        this.scriptExecCmd,
+        `${this.command} ./codeCellScripts/cell_${cellIdx}${this.fileType}`,
         userScript.execOptions,
         (error, stdout, stderr) => {
-          if (error) {
-            resultObj.error = String(error); // pretty print this?
+          resultObj[cellIdx] = { error, stderr, stdout };
+
+          if (error || stderr) {
+            // resultObj.error = String(error); // pretty print this?
             console.log("ERROR EXECUTING SCRIPT");
-            reject(error);
+            reject();
           } else {
-            console.log(stdout);
+            // console.log(stdout);
             console.log("AFTER EXECUTING SCRIPT");
-            resultObj.output = stdout;
-            resultObj.error = stderr;
-            fs.unlinkSync(this.script);
+            // resultObj.output = stdout;
+            // resultObj.error = stderr;
+            // fs.unlinkSync(this.script);
             resolve();
           }
         }
@@ -38,30 +41,34 @@ const userScript = {
     });
   },
 
-  writeFile: (codeString, lang) => {
+  writeFile: (cellIdx, codeString, lang) => {
     return new Promise((resolve, reject) => {
       console.log("BEFORE WRITING SCRIPT");
 
       switch (lang) {
         case "RUBY":
-          this.script = "script.rb";
-          this.scriptExecCmd = "ruby script.rb";
+          this.fileType = `.rb`;
+          this.command = "ruby";
           break;
         case "JAVASCRIPT":
-          this.script = "script.js";
-          this.scriptExecCmd = "node script.js";
+          this.fileType = `.js`;
+          this.command = "node";
           break;
       }
 
-      fs.writeFile(this.script, codeString, error => {
-        if (error) {
-          console.log(error);
-          reject(error);
-        } else {
-          console.log("AFTER WRITING SCRIPT");
-          resolve();
+      fs.writeFile(
+        `./codeCellScripts/cell_${cellIdx}${this.fileType}`,
+        codeString,
+        error => {
+          if (error) {
+            // console.log(error);
+            reject(error);
+          } else {
+            console.log("AFTER WRITING SCRIPT");
+            resolve();
+          }
         }
-      });
+      );
     });
   }
 };
