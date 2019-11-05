@@ -1,2 +1,2 @@
-console.log("boo!");
-console.log("In code cell 2");
+1 + 1
+2 + 2
