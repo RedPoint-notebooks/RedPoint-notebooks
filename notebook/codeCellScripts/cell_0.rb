@@ -1,3 +1,1 @@
-puts 'booty collins'
-while true do 
-  end
+puts 'hi'
