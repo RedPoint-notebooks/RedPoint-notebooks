@@ -66,13 +66,12 @@ const parseJSOutput = resultObj => {
 const extractCleanJSReturnValue = string => {
   const newlines = [...string.matchAll(/\n/g)];
 
+  // if there was only one line of output from the last line of code executed
   if (newlines.length == 2) {
     return string.slice(newlines[0].index + 1);
+    // if multiple lines of output were produced by the final line
   } else {
-    console.log(newlines);
-    const start = newlines[1].index + 1;
-    const stop = newlines[2].index;
-    return string.slice(start, stop);
+    return string.slice(newlines[newlines.length - 2].index + 1);
   }
 };
 
