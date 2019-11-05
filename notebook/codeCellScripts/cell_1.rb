@@ -1,4 +1,4 @@
 puts 'hi'
-while true do 
-puts 'there'
-end
+
+1 + 1
+

@@ -54,6 +54,12 @@ document.addEventListener("DOMContentLoaded", () => {
       });
   };
 
+  const removeChildElements = parent => {
+    while (parent.firstChild) {
+      parent.removeChild(parent.firstChild);
+    }
+  };
+
   const appendCellStderror = resultObj => {
     Object.keys(resultObj)
       .slice(0, -2) // need to slice off return and result here
@@ -82,16 +88,13 @@ document.addEventListener("DOMContentLoaded", () => {
         if (resultObj[cellNumber].error) {
           const error = resultObj[cellNumber].error;
 
-          // clear current errors from all cells
-          while (errorUl.firstChild) {
-            errorUl.removeChild(errorUl.firstChild);
-          }
-
           if (error.signal && error.signal.match("SIGTERM")) {
+            removeChildElements(errorUl);
             const newLi = document.createElement("li");
             newLi.textContent = "Infinite Loop Error";
             errorUl.appendChild(newLi);
-          } else if (error.code && error.code.match("MAXBUFFER")) {
+          } else if (error.code && String(error.code).match("MAXBUFFER")) {
+            removeChildElements(errorUl);
             let stdout = resultObj[cellNumber].stdout;
             truncatedStdout = stdout.slice(0, 10);
             resultObj[cellNumber].stdout = truncatedStdout; // mutate resultObj to truncate stdout
