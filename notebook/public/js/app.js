@@ -5,9 +5,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
   const handleCodeSubmit = event => {
     let cellNum = +event.target.dataset.button;
-    codeStrArray = allCodeUpToCell(cellNum, codemirrors);
-    codeResult = document.getElementById(`codecell-${cellNum}-result`);
-    codeReturn = document.getElementById(`codecell-${cellNum}-return`);
+    const codeStrArray = allCodeUpToCell(cellNum, codemirrors);
     const json = JSON.stringify({ userCode: codeStrArray });
 
     const request = new XMLHttpRequest();
@@ -21,11 +19,10 @@ document.addEventListener("DOMContentLoaded", () => {
     request.addEventListener("load", () => {
       const resultObj = request.response.resultObj;
       debugger;
-      if (resultObj.error) {
-        codeResult.textContent = resultObj.error;
-      } else {
-        codeResult.textContent = `Output : ${resultObj.output} | Return : ${resultObj.return}`;
-      }
+      mapStdoutToCell(resultObj);
+      appendCellOutput(resultObj);
+      appendCellReturn(cellNum, resultObj);
+      appendCellError(resultObj);
     });
   };
 
@@ -34,6 +31,74 @@ document.addEventListener("DOMContentLoaded", () => {
       handleCodeSubmit(event);
     }
   });
+
+  const appendCellOutput = resultObj => {
+    Object.keys(resultObj)
+      .slice(0, -2) // need to slice off return and result here
+      .forEach(cellNumber => {
+        const outputUl = document.getElementById(
+          `codecell-${cellNumber}-output`
+        );
+
+        // clear current output from all cells
+        while (outputUl.firstChild) {
+          outputUl.removeChild(outputUl.firstChild);
+        }
+
+        resultObj[cellNumber].stdout.forEach(output => {
+          const newLi = document.createElement("li");
+          newLi.textContent = output;
+          outputUl.appendChild(newLi);
+        });
+      });
+  };
+
+  const appendCellError = resultObj => {
+    Object.keys(resultObj)
+      .slice(0, -2) // need to slice off return and result here
+      .forEach(cellNumber => {
+        const errorUl = document.getElementById(`codecell-${cellNumber}-error`);
+
+        // clear current error from all cells
+        while (errorUl.firstChild) {
+          errorUl.removeChild(errorUl.firstChild);
+        }
+
+        if (resultObj[cellNumber].stderr) {
+          const newLi = document.createElement("li");
+          newLi.textContent = resultObj[cellNumber].stderr;
+          errorUl.appendChild(newLi);
+        }
+      });
+  };
+  const appendCellReturn = (cellNum, resultObj) => {
+    const codeReturn = document.getElementById(`codecell-${cellNum}-return`);
+
+    // clear current return from all cells
+    document.querySelectorAll(".code-return").forEach(codeReturn => {
+      while (codeReturn.firstChild) {
+        codeReturn.removeChild(codeReturn.firstChild);
+      }
+    });
+
+    const newLi = document.createElement("li");
+    newLi.textContent = resultObj.return;
+    codeReturn.appendChild(newLi);
+  };
+
+  // mutates resultObj, converts stdout to an array with output mapped to correct cell
+  const mapStdoutToCell = resultObj => {
+    let prevOutLength = 0;
+    Object.keys(resultObj)
+      .slice(0, -2) // need to slice off return and result here
+      .forEach(cellNum => {
+        const stdoutArr = resultObj[cellNum].stdout.split("\n").slice(0, -1);
+        const newStdoutArr = stdoutArr.slice(prevOutLength);
+        resultObj[cellNum].stdout = newStdoutArr;
+        prevOutLength += stdoutArr.length;
+      });
+    return resultObj;
+  };
 
   // extract and render markdown
   const mdCode = CodeMirror.fromTextArea(mdC1, {

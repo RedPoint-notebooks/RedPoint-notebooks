@@ -1,0 +1,58 @@
+Arguments: 
+  /usr/local/bin/node /Users/benharvey/.yarn/bin/yarn.js global bin
+
+PATH: 
+  /Users/benharvey/.yarn/bin:/Users/benharvey/.config/yarn/global/node_modules/.bin:/usr/local/bin:/usr/bin:/bin:/usr/sbin:/sbin:/Users/benharvey/.rvm/gems/ruby-2.4.1/bin:/Users/benharvey/.rvm/gems/ruby-2.4.1@global/bin:/Users/benharvey/.rvm/rubies/ruby-2.4.1/bin:/Users/benharvey/.yarn/bin:/Users/benharvey/.config/yarn/global/node_modules/.bin:/Users/benharvey/.rvm/bin:/Users/benharvey/.rvm/bin:/Users/benharvey/.rvm/bin:/Users/benharvey/.yarn/bin
+
+Yarn version: 
+  1.17.3
+
+Node version: 
+  12.13.0
+
+Platform: 
+  darwin x64
+
+Trace: 
+  TypeError [ERR_INVALID_ARG_TYPE]: The "path" argument must be of type string. Received type object
+      at validateString (internal/validators.js:112:11)
+      at Object.isAbsolute (path.js:1030:5)
+      at module.exports.exports.default (/Users/benharvey/.yarn/lib/cli.js:100745:16)
+      at /Users/benharvey/.yarn/lib/cli.js:51488:63
+      at Generator.next (<anonymous>)
+      at step (/Users/benharvey/.yarn/lib/cli.js:304:30)
+      at /Users/benharvey/.yarn/lib/cli.js:315:13
+
+npm manifest: 
+  {
+    "name": "redpoint-testworld",
+    "version": "0.0.1",
+    "private": true,
+    "scripts": {
+      "start": "nodemon ./server.js --ignore codeCellScripts/"
+    },
+    "dependencies": {
+      "nodemon": "^1.19.4",
+      "body-parser": "^1.19.0",
+      "codemirror": "^5.49.2",
+      "cookie-parser": "~1.4.4",
+      "debug": "~2.6.9",
+      "express": "~4.16.1",
+      "http-errors": "~1.6.3",
+      "markdown-it": "^10.0.0",
+      "morgan": "^1.9.1",
+      "node-pty": "^0.9.0",
+      "nodemonConfig": {
+        "ignore": [
+          "codeCellScripts/"
+        ]
+      },
+      "strip-ansi": "^5.2.0"
+    }
+  }
+
+yarn manifest: 
+  No manifest
+
+Lockfile: 
+  No lockfile

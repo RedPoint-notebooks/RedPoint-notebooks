@@ -12,7 +12,7 @@ app.use(bodyParser.json());
 app.post("/", function(req, res) {
   const codeStringArray = req.body.userCode;
   const codeString = codeStringArray.join("");
-  const resultObj = {};
+  const resultObj = { result: "", return: "" };
   let prevCodeStr = "";
 
   const respondToServer = () => {
@@ -22,7 +22,7 @@ app.post("/", function(req, res) {
   const scriptPromises = codeStringArray.map((str, idx) => {
     str = prevCodeStr + str;
     prevCodeStr = str;
-    return userScript.writeFile(idx, str, "JAVASCRIPT");
+    return userScript.writeFile(idx, str, "RUBY");
   });
 
   // find out if fs allows unlink on every file in a dir
@@ -44,8 +44,8 @@ app.post("/", function(req, res) {
 
   Promise.all(scriptPromises).then(() => {
     executeCells()
-      .then(() => repl.execute(codeString, resultObj, "JAVASCRIPT"))
-      .then(() => repl.parseOutput(resultObj, "JAVASCRIPT"))
+      .then(() => repl.execute(codeString, resultObj, "RUBY"))
+      .then(() => repl.parseOutput(resultObj, "RUBY"))
       .then(() => respondToServer())
       .catch(err => {
         respondToServer();
