@@ -34,36 +34,39 @@ const repl = {
   parseOutput: (resultObj, lang) => {
     switch (lang) {
       case "RUBY":
-        repl.parseRubyOutput(resultObj);
+        parseRubyOutput(resultObj);
         break;
       case "JAVASCRIPT":
-        repl.parseJSOutput(resultObj);
+        parseJSOutput(resultObj);
         break;
     }
-  },
-  parseRubyOutput: resultObj => {
-    return new Promise(resolve => {
-      const byOutput = resultObj.result.split("=>");
-      const dirtyReturnValue = byOutput[byOutput.length - 1];
-      const indexCleanStops = dirtyReturnValue.indexOf("2.4.1"); // fix hard-coding?
-      const cleanReturnValue = dirtyReturnValue.slice(0, indexCleanStops);
-      resolve((resultObj.return = cleanReturnValue));
-    });
-  },
-  parseJSOutput: resultObj => {
-    return new Promise(resolve => {
-      const byOutput = resultObj.result.split(">");
-      const dirtyReturnValue = byOutput[byOutput.length - 2];
-      const indexCleanStarts = dirtyReturnValue.indexOf("\n");
-      // use lastIndexOf to find where cleanReturn ends
-      const cleanReturnValue = dirtyReturnValue.slice(indexCleanStarts);
-      resolve((resultObj.return = cleanReturnValue));
-    });
   }
 };
 
-const findFirstNewline = () => {
-  return;
+const parseRubyOutput = resultObj => {
+  return new Promise(resolve => {
+    const byOutput = resultObj.result.split("=>");
+    const dirtyReturnValue = byOutput[byOutput.length - 1];
+    const indexCleanStops = dirtyReturnValue.indexOf("2.4.1"); // fix hard-coding?
+    const cleanReturnValue = dirtyReturnValue.slice(0, indexCleanStops);
+    resolve((resultObj.return = cleanReturnValue));
+  });
+};
+
+const parseJSOutput = resultObj => {
+  return new Promise(resolve => {
+    const byOutput = resultObj.result.split(">");
+    const dirtyReturnValue = byOutput[byOutput.length - 2];
+    const cleanReturnValue = extractCleanJSReturnValue(dirtyReturnValue);
+    resolve((resultObj.return = cleanReturnValue));
+  });
+};
+
+const extractCleanJSReturnValue = string => {
+  const newlines = [...string.matchAll(/\n/g)];
+  const start = newlines[1].index + 1;
+  const stop = newlines[2].index;
+  return string.slice(start, stop);
 };
 
 module.exports = repl;
