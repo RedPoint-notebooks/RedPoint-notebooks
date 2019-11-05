@@ -5,10 +5,10 @@ document.addEventListener("DOMContentLoaded", () => {
 
   const handleCodeSubmit = event => {
     let cellNum = +event.target.dataset.button;
-    codeToRender = allCodeUpToCell(cellNum, codemirrors);
+    codeStrArray = allCodeUpToCell(cellNum, codemirrors);
     codeResult = document.getElementById(`codecell-${cellNum}-result`);
     codeReturn = document.getElementById(`codecell-${cellNum}-return`);
-    const json = JSON.stringify({ userCode: codeToRender });
+    const json = JSON.stringify({ userCode: codeStrArray });
 
     const request = new XMLHttpRequest();
 
@@ -20,6 +20,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
     request.addEventListener("load", () => {
       const resultObj = request.response.resultObj;
+      debugger;
       if (resultObj.error) {
         codeResult.textContent = resultObj.error;
       } else {
@@ -70,14 +71,16 @@ const setAllCodemirrorObjects = () => {
 
 // extracts and concatenates all code up to specified cell number
 const allCodeUpToCell = (cellNum, allCodeCells) => {
-  let allCodeString = "";
+  let codeStrArray = [];
 
   for (let i = 0; i < cellNum; i += 1) {
     let cell = allCodeCells[i];
-    allCodeString += cell
-      .getValue()
-      .trim()
-      .concat("\n");
+    codeStrArray.push(
+      cell
+        .getValue()
+        .trim()
+        .concat("\n")
+    );
   }
-  return allCodeString;
+  return codeStrArray;
 };

@@ -10,31 +10,48 @@ app.use(express.static("."));
 app.use(bodyParser.json());
 
 app.post("/", function(req, res) {
-  const codeString = req.body.userCode; // will be an array of code cells
-  let resultObj = {
-    result: "",
-    output: "",
-    error: ""
-  };
+  const codeStringArray = req.body.userCode;
+  const codeString = codeStringArray.join("");
+  const resultObj = {};
+  let prevCodeStr = "";
 
   const respondToServer = () => {
     res.json({ resultObj });
   };
 
-  // This ideally uses a separate promise for
-  // writefile to write a new file for each code cell
-  // then a new promise to execute each cell as a promise
+  const scriptPromises = codeStringArray.map((str, idx) => {
+    str = prevCodeStr + str;
+    prevCodeStr = str;
+    return userScript.writeFile(idx, str, "JAVASCRIPT");
+  });
 
-  userScript
-    .writeFile(codeString, "RUBY")
-    .then(() => userScript.execute(resultObj))
-    .then(() => repl.execute(codeString, resultObj, "RUBY"))
-    .then(() => repl.parseOutput(resultObj, "RUBY"))
-    .then(returnValue => respondToServer(returnValue))
-    .catch(err => {
-      respondToServer();
-      console.log(err);
+  // find out if fs allows unlink on every file in a dir
+  const deleteScripts = () => {
+    codeStringArray.forEach((_, idx) => {
+      fs.unlinkSync(`./codeCellScripts/cell_${idx}${".js"}`); // hard-coded .rb value
     });
+  };
+
+  const executeCells = async () => {
+    for (let i = 0; i < codeStringArray.length; i++) {
+      try {
+        await userScript.execute(i, resultObj);
+      } catch (err) {
+        throw new Error("Error executing cell.");
+      }
+    }
+  };
+
+  Promise.all(scriptPromises).then(() => {
+    executeCells()
+      .then(() => repl.execute(codeString, resultObj, "JAVASCRIPT"))
+      .then(() => repl.parseOutput(resultObj, "JAVASCRIPT"))
+      .then(() => respondToServer())
+      .catch(err => {
+        respondToServer();
+        console.log(err);
+      });
+  });
 });
 
 app.listen(3000, () => {
