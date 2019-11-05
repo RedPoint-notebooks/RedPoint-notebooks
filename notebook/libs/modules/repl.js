@@ -3,6 +3,8 @@ const stripAnsi = require("strip-ansi");
 
 const repl = {
   execute: (codeString, resultObj, lang) => {
+    console.log("BEFORE REPL EXECUTE");
+
     let replExitMessage;
     let replType;
 
@@ -23,6 +25,7 @@ const repl = {
       node.write(codeString + replExitMessage);
       node.on("exit", () => {
         if (resultObj.result) {
+          console.log("AFTER REPL EXECUTE");
           resolve();
         }
       });

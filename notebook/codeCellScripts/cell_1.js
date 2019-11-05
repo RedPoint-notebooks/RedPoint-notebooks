@@ -1,10 +1,9 @@
 console.log("boo!");
 const a = [1, 2, 3, 4, 5];
 a;
-function sayHello(arr) {
-	  arr.forEach((el) => {
-      		console.log("HIHIHI")
-      })
-}
+let i = 0;
 
-sayHello(a)
+while (i < 10) {
+   console.log("HI")
+    i++;
+}

@@ -25,15 +25,10 @@ const userScript = {
           resultObj[cellIdx] = { error, stderr, stdout };
 
           if (error || stderr) {
-            // resultObj.error = String(error); // pretty print this?
             console.log("ERROR EXECUTING SCRIPT");
             reject();
           } else {
-            // console.log(stdout);
             console.log("AFTER EXECUTING SCRIPT");
-            // resultObj.output = stdout;
-            // resultObj.error = stderr;
-            // fs.unlinkSync(this.script);
             resolve();
           }
         }
