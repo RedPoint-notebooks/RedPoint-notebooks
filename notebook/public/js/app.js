@@ -18,15 +18,14 @@ document.addEventListener("DOMContentLoaded", () => {
 
     request.addEventListener("load", () => {
       const resultObj = request.response.resultObj;
+
       mapStdoutToCell(resultObj); // mutates each stdout in resultObj to an array
       appendCellStderror(resultObj);
-      appendCellError(resultObj);
+      appendCellError(resultObj); // mutates stdout in resultObj for cell with MAXBUFFER error
       appendCellOutput(resultObj);
       appendCellReturn(cellNum, resultObj);
     });
   };
-
-  // ***** event listeners ******
 
   document.addEventListener("click", event => {
     if (event.target.className === "code-submit") {
@@ -83,7 +82,7 @@ document.addEventListener("DOMContentLoaded", () => {
         if (resultObj[cellNumber].error) {
           const error = resultObj[cellNumber].error;
 
-          // clear current error from all cells
+          // clear current errors from all cells
           while (errorUl.firstChild) {
             errorUl.removeChild(errorUl.firstChild);
           }
