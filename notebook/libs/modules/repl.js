@@ -54,19 +54,26 @@ const parseRubyOutput = resultObj => {
 };
 
 const parseJSOutput = resultObj => {
-  return new Promise(resolve => {
+  return new Promise((resolve, reject) => {
     const byOutput = resultObj.result.split(">");
     const dirtyReturnValue = byOutput[byOutput.length - 2];
     const cleanReturnValue = extractCleanJSReturnValue(dirtyReturnValue);
+
     resolve((resultObj.return = cleanReturnValue));
   });
 };
 
 const extractCleanJSReturnValue = string => {
   const newlines = [...string.matchAll(/\n/g)];
-  const start = newlines[1].index + 1;
-  const stop = newlines[2].index;
-  return string.slice(start, stop);
+
+  if (newlines.length == 2) {
+    return string.slice(newlines[0].index + 1);
+  } else {
+    console.log(newlines);
+    const start = newlines[1].index + 1;
+    const stop = newlines[2].index;
+    return string.slice(start, stop);
+  }
 };
 
 module.exports = repl;
