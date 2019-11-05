@@ -1,4 +1,4 @@
-puts 'booty collins'
+puts 'hi'
 while true do 
-  end
-1 + 1
+puts 'there'
+end
