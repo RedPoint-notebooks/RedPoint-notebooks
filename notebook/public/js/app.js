@@ -18,13 +18,14 @@ document.addEventListener("DOMContentLoaded", () => {
 
     request.addEventListener("load", () => {
       const resultObj = request.response.resultObj;
-      debugger;
       mapStdoutToCell(resultObj);
       appendCellOutput(resultObj);
       appendCellReturn(cellNum, resultObj);
       appendCellError(resultObj);
     });
   };
+
+  // ***** event listeners ******
 
   document.addEventListener("click", event => {
     if (event.target.className === "code-submit") {
@@ -81,9 +82,11 @@ document.addEventListener("DOMContentLoaded", () => {
       }
     });
 
-    const newLi = document.createElement("li");
-    newLi.textContent = resultObj.return;
-    codeReturn.appendChild(newLi);
+    if (resultObj.return) {
+      const newLi = document.createElement("li");
+      newLi.textContent = resultObj.return;
+      codeReturn.appendChild(newLi);
+    }
   };
 
   // mutates resultObj, converts stdout to an array with output mapped to correct cell
@@ -138,7 +141,7 @@ const setAllCodemirrorObjects = () => {
 const allCodeUpToCell = (cellNum, allCodeCells) => {
   let codeStrArray = [];
 
-  for (let i = 0; i < cellNum; i += 1) {
+  for (let i = 0; i <= cellNum; i += 1) {
     let cell = allCodeCells[i];
     codeStrArray.push(
       cell
