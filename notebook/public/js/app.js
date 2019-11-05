@@ -39,6 +39,12 @@ document.addEventListener("DOMContentLoaded", () => {
     }
   };
 
+  const appendLi = (parent, content) => {
+    const newLi = document.createElement("li");
+    newLi.textContent = content;
+    parent.appendChild(newLi);
+  };
+
   const appendCellOutput = resultObj => {
     Object.keys(resultObj)
       .slice(0, -2) // need to slice off return and result here
@@ -50,9 +56,7 @@ document.addEventListener("DOMContentLoaded", () => {
         removeChildElements(outputUl);
 
         resultObj[cellNumber].stdout.forEach(output => {
-          const newLi = document.createElement("li");
-          newLi.textContent = output;
-          outputUl.appendChild(newLi);
+          appendLi(outputUl, output);
         });
       });
   };
@@ -62,13 +66,11 @@ document.addEventListener("DOMContentLoaded", () => {
       .slice(0, -2) // need to slice off return and result here
       .forEach(cellNumber => {
         const errorUl = document.getElementById(`codecell-${cellNumber}-error`);
-
+        const stderr = resultObj[cellNumber].stderr;
         removeChildElements(errorUl);
 
-        if (resultObj[cellNumber].stderr) {
-          const newLi = document.createElement("li");
-          newLi.textContent = resultObj[cellNumber].stderr;
-          errorUl.appendChild(newLi);
+        if (stderr) {
+          appendLi(errorUl, stderr);
         }
       });
   };
@@ -84,10 +86,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
           if (error.signal && error.signal.match("SIGTERM")) {
             removeChildElements(errorUl);
-
-            const newLi = document.createElement("li");
-            newLi.textContent = "Infinite Loop Error";
-            errorUl.appendChild(newLi);
+            appendLi(errorUl, "Infinite Loop Error");
           } else if (error.code && String(error.code).match("MAXBUFFER")) {
             removeChildElements(errorUl);
 
@@ -95,9 +94,7 @@ document.addEventListener("DOMContentLoaded", () => {
             truncatedStdout = stdout.slice(0, 10);
             resultObj[cellNumber].stdout = truncatedStdout; // mutate resultObj to truncate stdout
 
-            const newLi = document.createElement("li");
-            newLi.textContent = "Maximum Buffer Error";
-            errorUl.appendChild(newLi);
+            appendLi(errorUl, "Maximum Buffer Error");
           }
         }
       });
@@ -105,15 +102,14 @@ document.addEventListener("DOMContentLoaded", () => {
 
   const appendCellReturn = (cellNum, resultObj) => {
     const codeReturn = document.getElementById(`codecell-${cellNum}-return`);
+    const returnText = resultObj.return;
 
     document.querySelectorAll(".code-return").forEach(codeReturn => {
       removeChildElements(codeReturn);
     });
 
-    if (resultObj.return) {
-      const newLi = document.createElement("li");
-      newLi.textContent = resultObj.return;
-      codeReturn.appendChild(newLi);
+    if (returnText) {
+      appendLi(codeReturn, returnText);
     }
   };
 
