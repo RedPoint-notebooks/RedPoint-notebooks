@@ -3,7 +3,7 @@
   "version": "0.0.1",
   "private": true,
   "scripts": {
-    "start": "nodemon ./server.js --ignore codeCellScripts/"
+    "start": "nodemon --inspect ./server.js --ignore codeCellScripts/"
   },
   "dependencies": {
     "nodemon": "^1.19.4",
