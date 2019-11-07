@@ -1,3 +1,5 @@
-
+console.log("serv")
 console.log('DELIMIT')
-aerservwer
+console.log("ERTER");
+            
+[1, 2, 3];

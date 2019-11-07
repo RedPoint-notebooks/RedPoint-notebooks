@@ -13,7 +13,7 @@ const userScript = {
     env: null
   }),
 
-  execute: resultObj => {
+  execute: () => {
     return new Promise((resolve, reject) => {
       console.log("BEFORE EXECUTING SCRIPT");
       // console.log(userScript.execOptions);
@@ -21,14 +21,14 @@ const userScript = {
         `${this.command} ./codeCellScripts/user_script${this.fileType}`,
         userScript.execOptions,
         (error, stdout, stderr) => {
-          resultObj.script = { error, stderr, stdout };
+          const responseObj = userScript.parseOutput(error, stdout, stderr);
 
           if (error || stderr) {
             console.log("ERROR EXECUTING SCRIPT");
-            reject();
+            reject(responseObj);
           } else {
             console.log("AFTER EXECUTING SCRIPT");
-            resolve();
+            resolve(responseObj);
           }
         }
       );
@@ -64,17 +64,25 @@ const userScript = {
       );
     });
   },
-  parseOutput: resultObj => {
-    const stdout = resultObj.script.stdout;
+  parseOutput: (err, stdout, stderr) => {
     const splitOutput = stdout.split("DELIMIT\n");
-    // ['sergwe\nservrew\nerge\n', 'ewt\nwevrr\n', 'erbrbrtb\n']
     const outputByCell = splitOutput.reduce((outputObj, currentCell, idx) => {
-      outputObj[idx] = currentCell.split("\n");
-      outputObj[idx].pop();
+      outputObj[idx] = { output: currentCell.split("\n") };
+      outputObj[idx].output.pop();
       return outputObj;
     }, {});
 
-    resultObj.cellsOutput = outputByCell;
+    if (err || stderr) {
+      const lastCellIdx = Object.keys(outputByCell).length - 1;
+      outputByCell[lastCellIdx].error = [err, stderr];
+    }
+
+    // { 0: ['ser', 'er'], 1: ['er', 'wrgerg'] }
+
+    // { 0: { output: ['ser', 'er']},
+    //   1: { output: ['er', 'wrgerg']}
+    // }
+    return outputByCell;
   }
 };
 
