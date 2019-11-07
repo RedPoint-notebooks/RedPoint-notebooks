@@ -18,7 +18,6 @@ document.addEventListener("DOMContentLoaded", () => {
 
     request.addEventListener("load", () => {
       const responseObj = request.response.responseObj;
-      debugger;
       clearPreviousResponse();
       appendResponse(responseObj);
     });
@@ -65,14 +64,15 @@ document.addEventListener("DOMContentLoaded", () => {
       // order dependent since currentOutput is mutated in case of MAXBUFFER
       if (currentErrors) {
         const errorUl = document.getElementById(`codecell-${cellNum}-error`);
+        const errorObj = currentErrors.err;
+        const stderr = currentErrors.stderr;
 
-        if (currentErrors.err) {
-          const errorObj = currentErrors.err;
+        if (errorObj) {
           appendSpecialErrors(errorObj, errorUl, responseObj, cellNum);
         }
 
-        if (currentErrors.stderr) {
-          appendLi(errorUl, error);
+        if (stderr) {
+          appendLi(errorUl, stderr);
         }
       }
 
