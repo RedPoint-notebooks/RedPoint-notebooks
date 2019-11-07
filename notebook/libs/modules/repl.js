@@ -17,13 +17,18 @@ const repl = {
         replExitMessage = ".exit\r";
         replType = "node";
         break;
+      case "PYTHON":
+        replExitMessage = "exit()\r";
+        replType = "python";
+        break;
     }
 
     return new Promise(resolve => {
-      const node = pty.spawn(replType);
-      node.onData(data => (resultObj.result += stripAnsi(data)));
-      node.write(codeString + replExitMessage);
-      node.on("exit", () => {
+      const repl = pty.spawn(replType);
+      repl.onData(data => (resultObj.result += stripAnsi(data)));
+      console.log(resultObj.result);
+      repl.write(codeString + replExitMessage);
+      repl.on("exit", () => {
         if (resultObj.result) {
           console.log("AFTER REPL EXECUTE");
           resolve();
@@ -38,6 +43,9 @@ const repl = {
         break;
       case "JAVASCRIPT":
         parseJSOutput(resultObj);
+        break;
+      case "PYTHON":
+        repl.parsePythonOutput(resultObj);
         break;
     }
   }
@@ -74,5 +82,15 @@ const extractCleanJSReturnValue = string => {
     return string.slice(newlines[newlines.length - 2].index + 1);
   }
 };
+
+const parsePythonOutput = resultObj => {
+  return new Promise(resolve => {
+    const byOutput = resultObj.result.split(">>>");
+    const dirtyReturnValue = byOutput[byOutput.length - 2];
+    const indexCleanStarts = dirtyReturnValue.indexOf("\n");
+    const cleanReturnValue = dirtyReturnValue.slice(indexCleanStarts);
+    resolve((resultObj.return = cleanReturnValue));
+  });
+}
 
 module.exports = repl;

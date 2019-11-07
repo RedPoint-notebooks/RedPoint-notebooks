@@ -22,15 +22,15 @@ app.post("/", function(req, res) {
   const scriptPromises = codeStringArray.map((str, idx) => {
     str = prevCodeStr + str;
     prevCodeStr = str;
-    return userScript.writeFile(idx, str, "JAVASCRIPT");
+    return userScript.writeFile(idx, str, "PYTHON");
   });
 
   // find out if fs allows unlink on every file in a dir
-  const deleteScripts = () => {
-    codeStringArray.forEach((_, idx) => {
-      fs.unlinkSync(`./codeCellScripts/cell_${idx}${".js"}`); // hard-coded .rb value
-    });
-  };
+  // const deleteScripts = () => {
+  //   codeStringArray.forEach((_, idx) => {
+  //     fs.unlinkSync(`./codeCellScripts/cell_${idx}${".js"}`); // hard-coded .rb value
+  //   });
+  // };
 
   const executeCells = async () => {
     for (let i = 0; i < codeStringArray.length; i++) {
@@ -44,8 +44,8 @@ app.post("/", function(req, res) {
 
   Promise.all(scriptPromises).then(() => {
     executeCells()
-      .then(() => repl.execute(codeString, resultObj, "JAVASCRIPT"))
-      .then(() => repl.parseOutput(resultObj, "JAVASCRIPT"))
+      .then(() => repl.execute(codeString, resultObj, "PYTHON"))
+      .then(() => repl.parseOutput(resultObj, "PYTHON"))
       .then(() => respondToServer())
       .catch(err => {
         respondToServer();
