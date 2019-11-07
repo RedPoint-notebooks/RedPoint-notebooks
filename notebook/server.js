@@ -22,7 +22,7 @@ app.post("/", function(req, res) {
   const scriptPromises = codeStringArray.map((str, idx) => {
     str = prevCodeStr + str;
     prevCodeStr = str;
-    return userScript.writeFile(idx, str, "PYTHON");
+    return userScript.writeFile(idx, str, "JAVASCRIPT");
   });
 
   // find out if fs allows unlink on every file in a dir
@@ -44,8 +44,8 @@ app.post("/", function(req, res) {
 
   Promise.all(scriptPromises).then(() => {
     executeCells()
-      .then(() => repl.execute(codeString, resultObj, "PYTHON"))
-      .then(() => repl.parseOutput(resultObj, "PYTHON"))
+      .then(() => repl.execute(codeString, resultObj, "JAVASCRIPT"))
+      .then(() => repl.parseOutput(resultObj, "JAVASCRIPT"))
       .then(() => respondToServer())
       .catch(err => {
         respondToServer();
