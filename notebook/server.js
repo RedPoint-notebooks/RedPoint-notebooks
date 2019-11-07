@@ -19,11 +19,15 @@ app.post("/", function(req, res) {
     res.json({ resultObj });
   };
 
-  const scriptPromises = codeStringArray.map((str, idx) => {
-    str = prevCodeStr + str;
-    prevCodeStr = str;
-    return userScript.writeFile(idx, str, "JAVASCRIPT");
-  });
+  const writeScript = () => {
+    const script = codeStringArray.join("console.log('DELIMIT')\n"); // cell delimiter must be language-specific
+    debugger;
+    // str = prevCodeStr + str;
+    // prevCodeStr = str;
+    // return userScript.writeFile(idx, str, "JAVASCRIPT");
+  };
+
+  writeScript();
 
   // find out if fs allows unlink on every file in a dir
   // const deleteScripts = () => {
@@ -42,16 +46,16 @@ app.post("/", function(req, res) {
     }
   };
 
-  Promise.all(scriptPromises).then(() => {
-    executeCells()
-      .then(() => repl.execute(codeString, resultObj, "JAVASCRIPT"))
-      .then(() => repl.parseOutput(resultObj, "JAVASCRIPT"))
-      .then(() => respondToServer())
-      .catch(err => {
-        respondToServer();
-        console.log(err);
-      });
-  });
+  // Promise.all(scriptPromises).then(() => {
+  //   executeCells()
+  //     .then(() => repl.execute(codeString, resultObj, "JAVASCRIPT"))
+  //     .then(() => repl.parseOutput(resultObj, "JAVASCRIPT"))
+  //     .then(() => respondToServer())
+  //     .catch(err => {
+  //       respondToServer();
+  //       console.log(err);
+  //     });
+  // });
 });
 
 app.listen(3000, () => {
