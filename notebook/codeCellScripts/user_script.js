@@ -1,4 +1,2 @@
-console.log('hi')
-console.log('DELIMIT')
-console.log('there')
-ohsnoes
+while (true) {
+}

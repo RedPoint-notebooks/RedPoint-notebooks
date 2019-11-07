@@ -90,36 +90,6 @@ document.addEventListener("DOMContentLoaded", () => {
     });
   };
 
-  const appendCellOutput = resultObj => {
-    Object.keys(resultObj)
-      .slice(0, -2) // need to slice off return and result here
-      .forEach(cellNumber => {
-        const outputUl = document.getElementById(
-          `codecell-${cellNumber}-output`
-        );
-
-        removeChildElements(outputUl);
-
-        resultObj[cellNumber].stdout.forEach(output => {
-          appendLi(outputUl, output);
-        });
-      });
-  };
-
-  const appendCellStderror = resultObj => {
-    Object.keys(resultObj)
-      .slice(0, -2) // need to slice off return and result here
-      .forEach(cellNumber => {
-        const errorUl = document.getElementById(`codecell-${cellNumber}-error`);
-        const stderr = resultObj[cellNumber].stderr;
-        removeChildElements(errorUl);
-
-        if (stderr) {
-          appendLi(errorUl, stderr);
-        }
-      });
-  };
-
   const appendCellError = resultObj => {
     Object.keys(resultObj)
       .slice(0, -2) // need to slice off return and result here
