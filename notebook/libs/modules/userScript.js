@@ -6,36 +6,35 @@ const userScript = {
   scriptExecCmd: "",
   execOptions: (execOptions = {
     encoding: "utf8",
-    timeout: 10000,
+    timeout: 5000,
     maxBuffer: 200 * 1024, // this is 1mb, default is 204 kb
     killSignal: "SIGTERM",
     cwd: null,
     env: null
   }),
 
-  execute: (cellIdx, resultObj) => {
+  execute: () => {
     return new Promise((resolve, reject) => {
       console.log("BEFORE EXECUTING SCRIPT");
       // console.log(userScript.execOptions);
       exec(
-        `${this.command} ./codeCellScripts/cell_${cellIdx}${this.fileType}`,
+        `${this.command} ./codeCellScripts/user_script${this.fileType}`,
         userScript.execOptions,
         (error, stdout, stderr) => {
-          resultObj[cellIdx] = { error, stderr, stdout };
+          const responseObj = userScript.parseOutput(error, stdout, stderr);
 
           if (error || stderr) {
             console.log("ERROR EXECUTING SCRIPT");
-            reject();
+            reject(responseObj);
           } else {
             console.log("AFTER EXECUTING SCRIPT");
-            resolve();
+            resolve(responseObj);
           }
         }
       );
     });
   },
-
-  writeFile: (cellIdx, codeString, lang) => {
+  writeFile: (codeString, lang) => {
     return new Promise((resolve, reject) => {
       console.log("BEFORE WRITING SCRIPT");
 
@@ -51,11 +50,11 @@ const userScript = {
       }
 
       fs.writeFile(
-        `./codeCellScripts/cell_${cellIdx}${this.fileType}`,
+        `./codeCellScripts/user_script${this.fileType}`,
         codeString,
         error => {
           if (error) {
-            // console.log(error);
+            console.log("ERROR WRITING SCRIPT");
             reject(error);
           } else {
             console.log("AFTER WRITING SCRIPT");
@@ -64,6 +63,26 @@ const userScript = {
         }
       );
     });
+  },
+  parseOutput: (err, stdout, stderr) => {
+    const splitOutput = stdout.split("DELIMIT\n");
+    const outputByCell = splitOutput.reduce((outputObj, currentCell, idx) => {
+      outputObj[idx] = { output: currentCell.split("\n") };
+      outputObj[idx].output.pop();
+      return outputObj;
+    }, {});
+
+    if (err || stderr) {
+      const lastCellIdx = Object.keys(outputByCell).length - 1;
+      outputByCell[lastCellIdx].error = [err, stderr];
+    }
+
+    // { 0: ['ser', 'er'], 1: ['er', 'wrgerg'] }
+
+    // { 0: { output: ['ser', 'er']},
+    //   1: { output: ['er', 'wrgerg']}
+    // }
+    return outputByCell;
   }
 };
 

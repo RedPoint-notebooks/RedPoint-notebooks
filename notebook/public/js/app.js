@@ -18,7 +18,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
     request.addEventListener("load", () => {
       const resultObj = request.response.resultObj;
-
+      debugger;
       mapStdoutToCell(resultObj); // mutates each stdout in resultObj to an array
       appendCellStderror(resultObj);
       appendCellError(resultObj); // mutates stdout in resultObj for cell with MAXBUFFER error
