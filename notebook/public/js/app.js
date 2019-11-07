@@ -91,7 +91,6 @@ document.addEventListener("DOMContentLoaded", () => {
     });
   };
 
-  // mutates responseObj
   const appendSpecialErrors = (errorObj, errorUl, responseObj, cellNum) => {
     if (errorObj.signal && errorObj.signal.match("SIGTERM")) {
       appendLi(errorUl, "Infinite Loop Error");
