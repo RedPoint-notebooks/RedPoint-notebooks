@@ -17,7 +17,7 @@ document.addEventListener("DOMContentLoaded", () => {
     request.send(json);
 
     request.addEventListener("load", () => {
-      const resultObj = request.response.resultObj;
+      const resultObj = request.response.responseObj;
       debugger;
       mapStdoutToCell(resultObj); // mutates each stdout in resultObj to an array
       appendCellStderror(resultObj);
