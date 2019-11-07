@@ -6,7 +6,7 @@ const userScript = {
   scriptExecCmd: "",
   execOptions: (execOptions = {
     encoding: "utf8",
-    timeout: 1000,
+    timeout: 10000,
     maxBuffer: 200 * 1024, // this is 1mb, default is 204 kb
     killSignal: "SIGTERM",
     cwd: null,
@@ -16,6 +16,7 @@ const userScript = {
   execute: (cellIdx, resultObj) => {
     return new Promise((resolve, reject) => {
       console.log("BEFORE EXECUTING SCRIPT");
+      // console.log(userScript.execOptions);
       exec(
         `${this.command} ./codeCellScripts/cell_${cellIdx}${this.fileType}`,
         userScript.execOptions,
@@ -46,10 +47,6 @@ const userScript = {
         case "JAVASCRIPT":
           this.fileType = `.js`;
           this.command = "node";
-          break;
-        case "PYTHON":
-          this.fileType = ".py";
-          this.command = "python";
           break;
       }
 

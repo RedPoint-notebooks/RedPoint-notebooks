@@ -5,9 +5,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
   const handleCodeSubmit = event => {
     let cellNum = +event.target.dataset.button;
-    codeStrArray = allCodeUpToCell(cellNum, codemirrors);
-    codeResult = document.getElementById(`codecell-${cellNum}-result`);
-    codeReturn = document.getElementById(`codecell-${cellNum}-return`);
+    const codeStrArray = allCodeUpToCell(cellNum, codemirrors);
     const json = JSON.stringify({ userCode: codeStrArray });
 
     const request = new XMLHttpRequest();
@@ -20,12 +18,12 @@ document.addEventListener("DOMContentLoaded", () => {
 
     request.addEventListener("load", () => {
       const resultObj = request.response.resultObj;
-      debugger;
-      if (resultObj.error) {
-        codeResult.textContent = resultObj.error;
-      } else {
-        codeResult.textContent = `Output : ${resultObj.output} | Return : ${resultObj.return}`;
-      }
+
+      mapStdoutToCell(resultObj); // mutates each stdout in resultObj to an array
+      appendCellStderror(resultObj);
+      appendCellError(resultObj); // mutates stdout in resultObj for cell with MAXBUFFER error
+      appendCellOutput(resultObj);
+      appendCellReturn(cellNum, resultObj);
     });
   };
 
@@ -34,6 +32,100 @@ document.addEventListener("DOMContentLoaded", () => {
       handleCodeSubmit(event);
     }
   });
+
+  const removeChildElements = parent => {
+    while (parent.firstChild) {
+      parent.removeChild(parent.firstChild);
+    }
+  };
+
+  const appendLi = (parent, content) => {
+    const newLi = document.createElement("li");
+    newLi.textContent = content;
+    parent.appendChild(newLi);
+  };
+
+  const appendCellOutput = resultObj => {
+    Object.keys(resultObj)
+      .slice(0, -2) // need to slice off return and result here
+      .forEach(cellNumber => {
+        const outputUl = document.getElementById(
+          `codecell-${cellNumber}-output`
+        );
+
+        removeChildElements(outputUl);
+
+        resultObj[cellNumber].stdout.forEach(output => {
+          appendLi(outputUl, output);
+        });
+      });
+  };
+
+  const appendCellStderror = resultObj => {
+    Object.keys(resultObj)
+      .slice(0, -2) // need to slice off return and result here
+      .forEach(cellNumber => {
+        const errorUl = document.getElementById(`codecell-${cellNumber}-error`);
+        const stderr = resultObj[cellNumber].stderr;
+        removeChildElements(errorUl);
+
+        if (stderr) {
+          appendLi(errorUl, stderr);
+        }
+      });
+  };
+
+  const appendCellError = resultObj => {
+    Object.keys(resultObj)
+      .slice(0, -2) // need to slice off return and result here
+      .forEach(cellNumber => {
+        const errorUl = document.getElementById(`codecell-${cellNumber}-error`);
+
+        if (resultObj[cellNumber].error) {
+          const error = resultObj[cellNumber].error;
+
+          if (error.signal && error.signal.match("SIGTERM")) {
+            removeChildElements(errorUl);
+            appendLi(errorUl, "Infinite Loop Error");
+          } else if (error.code && String(error.code).match("MAXBUFFER")) {
+            removeChildElements(errorUl);
+
+            let stdout = resultObj[cellNumber].stdout;
+            truncatedStdout = stdout.slice(0, 10);
+            resultObj[cellNumber].stdout = truncatedStdout; // mutate resultObj to truncate stdout
+
+            appendLi(errorUl, "Maximum Buffer Error");
+          }
+        }
+      });
+  };
+
+  const appendCellReturn = (cellNum, resultObj) => {
+    const codeReturn = document.getElementById(`codecell-${cellNum}-return`);
+    const returnText = resultObj.return;
+
+    document.querySelectorAll(".code-return").forEach(codeReturn => {
+      removeChildElements(codeReturn);
+    });
+
+    if (returnText) {
+      appendLi(codeReturn, returnText);
+    }
+  };
+
+  // mutates resultObj, converts stdout to an array with output mapped to correct cell
+  const mapStdoutToCell = resultObj => {
+    let prevOutLength = 0;
+    Object.keys(resultObj)
+      .slice(0, -2) // need to slice off return and result here
+      .forEach(cellNum => {
+        const stdoutArr = resultObj[cellNum].stdout.split("\n").slice(0, -1);
+        const newStdoutArr = stdoutArr.slice(prevOutLength);
+        resultObj[cellNum].stdout = newStdoutArr;
+        prevOutLength += stdoutArr.length;
+      });
+    return resultObj;
+  };
 
   // extract and render markdown
   const mdCode = CodeMirror.fromTextArea(mdC1, {
@@ -73,7 +165,7 @@ const setAllCodemirrorObjects = () => {
 const allCodeUpToCell = (cellNum, allCodeCells) => {
   let codeStrArray = [];
 
-  for (let i = 0; i < cellNum; i += 1) {
+  for (let i = 0; i <= cellNum; i += 1) {
     let cell = allCodeCells[i];
     codeStrArray.push(
       cell
