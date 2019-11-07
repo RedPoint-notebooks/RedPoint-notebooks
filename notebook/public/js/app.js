@@ -103,6 +103,16 @@ document.addEventListener("DOMContentLoaded", () => {
     }
   };
 
+  const buildLineNumberObject = () => {
+    let totalLines = 0;
+    return codemirrors.reduce((obj, mirror, idx) => {
+      const currentLines = mirror.lineCount();
+      obj[idx] = { start: totalLines + 1, end: totalLines + currentLines };
+      totalLines += currentLines;
+      return obj;
+    }, {});
+  };
+
   // extract and render markdown
   const mdCode = CodeMirror.fromTextArea(mdC1, {
     mode: "markdown",

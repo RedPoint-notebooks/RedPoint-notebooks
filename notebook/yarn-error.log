@@ -2,7 +2,7 @@ Arguments:
   /usr/local/bin/node /Users/benharvey/.yarn/bin/yarn.js global bin
 
 PATH: 
-  /Users/benharvey/.yarn/bin:/Users/benharvey/.config/yarn/global/node_modules/.bin:/usr/local/bin:/usr/bin:/bin:/usr/sbin:/sbin:/Users/benharvey/.rvm/bin:/Users/benharvey/.rvm/bin:/Users/benharvey/.yarn/bin
+  /Users/benharvey/.yarn/bin:/Users/benharvey/.config/yarn/global/node_modules/.bin:/usr/local/bin:/usr/bin:/bin:/usr/sbin:/sbin:/Users/benharvey/.rvm/gems/ruby-2.4.1/bin:/Users/benharvey/.rvm/gems/ruby-2.4.1@global/bin:/Users/benharvey/.rvm/rubies/ruby-2.4.1/bin:/Users/benharvey/.yarn/bin:/Users/benharvey/.config/yarn/global/node_modules/.bin:/Users/benharvey/.rvm/bin:/Users/benharvey/.rvm/bin:/Users/benharvey/.rvm/bin:/Users/benharvey/.yarn/bin
 
 Yarn version: 
   1.17.3
