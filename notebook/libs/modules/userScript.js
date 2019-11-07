@@ -6,22 +6,22 @@ const userScript = {
   scriptExecCmd: "",
   execOptions: (execOptions = {
     encoding: "utf8",
-    timeout: 10000,
+    timeout: 5000,
     maxBuffer: 200 * 1024, // this is 1mb, default is 204 kb
     killSignal: "SIGTERM",
     cwd: null,
     env: null
   }),
 
-  execute: (cellIdx, resultObj) => {
+  execute: resultObj => {
     return new Promise((resolve, reject) => {
       console.log("BEFORE EXECUTING SCRIPT");
       // console.log(userScript.execOptions);
       exec(
-        `${this.command} ./codeCellScripts/cell_${cellIdx}${this.fileType}`,
+        `${this.command} ./codeCellScripts/user_script${this.fileType}`,
         userScript.execOptions,
         (error, stdout, stderr) => {
-          resultObj[cellIdx] = { error, stderr, stdout };
+          resultObj.script = { error, stderr, stdout };
 
           if (error || stderr) {
             console.log("ERROR EXECUTING SCRIPT");
@@ -34,7 +34,6 @@ const userScript = {
       );
     });
   },
-
   writeFile: (codeString, lang) => {
     return new Promise((resolve, reject) => {
       console.log("BEFORE WRITING SCRIPT");
@@ -55,8 +54,6 @@ const userScript = {
         codeString,
         error => {
           if (error) {
-            debugger;
-
             console.log("ERROR WRITING SCRIPT");
             reject(error);
           } else {
@@ -66,6 +63,18 @@ const userScript = {
         }
       );
     });
+  },
+  parseOutput: resultObj => {
+    const stdout = resultObj.script.stdout;
+    const splitOutput = stdout.split("DELIMIT\n");
+    // ['sergwe\nservrew\nerge\n', 'ewt\nwevrr\n', 'erbrbrtb\n']
+    const outputByCell = splitOutput.reduce((outputObj, currentCell, idx) => {
+      outputObj[idx] = currentCell.split("\n");
+      outputObj[idx].pop();
+      return outputObj;
+    }, {});
+
+    resultObj.cellsOutput = outputByCell;
   }
 };
 
