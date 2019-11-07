@@ -17,13 +17,16 @@ document.addEventListener("DOMContentLoaded", () => {
     request.send(json);
 
     request.addEventListener("load", () => {
-      const resultObj = request.response.resultObj;
+      const responseObj = request.response.responseObj;
       debugger;
-      mapStdoutToCell(resultObj); // mutates each stdout in resultObj to an array
-      appendCellStderror(resultObj);
-      appendCellError(resultObj); // mutates stdout in resultObj for cell with MAXBUFFER error
-      appendCellOutput(resultObj);
-      appendCellReturn(cellNum, resultObj);
+      clearPreviousResponse();
+      appendResponse(responseObj);
+
+      // mapStdoutToCell(resultObj); // mutates each stdout in resultObj to an array
+      // appendCellStderror(resultObj);
+      // appendCellError(resultObj); // mutates stdout in resultObj for cell with MAXBUFFER error
+      // appendCellOutput(resultObj);
+      // appendCellReturn(cellNum, resultObj);
     });
   };
 
@@ -43,6 +46,48 @@ document.addEventListener("DOMContentLoaded", () => {
     const newLi = document.createElement("li");
     newLi.textContent = content;
     parent.appendChild(newLi);
+  };
+
+  const clearPreviousResponse = () => {
+    document.querySelectorAll(".code-return").forEach(codeReturn => {
+      removeChildElements(codeReturn);
+    });
+
+    document.querySelectorAll(".code-output").forEach(codeOutput => {
+      removeChildElements(codeOutput);
+    });
+
+    document.querySelectorAll(".code-error").forEach(codeError => {
+      removeChildElements(codeError);
+    });
+  };
+
+  const appendResponse = response => {
+    Object.keys(response).forEach(cellNum => {
+      const current = response[cellNum];
+      const currentOutput = current.output;
+      const currentReturn = current.return;
+      const currentError = current.error;
+
+      if (currentOutput) {
+        const outputUl = document.getElementById(`codecell-${cellNum}-output`);
+        currentOutput.forEach(output => {
+          appendLi(outputUl, output);
+        });
+      }
+
+      if (currentError) {
+        const errorUl = document.getElementById(`codecell-${cellNum}-error`);
+        currentError.forEach(error => {
+          appendLi(errorUl, error);
+        });
+      }
+
+      if (currentReturn) {
+        const returnUl = document.getElementById(`codecell-${cellNum}-return`);
+        appendLi(returnUl, currentReturn);
+      }
+    });
   };
 
   const appendCellOutput = resultObj => {
@@ -111,20 +156,6 @@ document.addEventListener("DOMContentLoaded", () => {
     if (returnText) {
       appendLi(codeReturn, returnText);
     }
-  };
-
-  // mutates resultObj, converts stdout to an array with output mapped to correct cell
-  const mapStdoutToCell = resultObj => {
-    let prevOutLength = 0;
-    Object.keys(resultObj)
-      .slice(0, -2) // need to slice off return and result here
-      .forEach(cellNum => {
-        const stdoutArr = resultObj[cellNum].stdout.split("\n").slice(0, -1);
-        const newStdoutArr = stdoutArr.slice(prevOutLength);
-        resultObj[cellNum].stdout = newStdoutArr;
-        prevOutLength += stdoutArr.length;
-      });
-    return resultObj;
   };
 
   // extract and render markdown
