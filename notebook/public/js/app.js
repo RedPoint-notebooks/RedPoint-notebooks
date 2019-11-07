@@ -21,12 +21,6 @@ document.addEventListener("DOMContentLoaded", () => {
       debugger;
       clearPreviousResponse();
       appendResponse(responseObj);
-
-      // mapStdoutToCell(resultObj); // mutates each stdout in resultObj to an array
-      // appendCellStderror(resultObj);
-      // appendCellError(resultObj); // mutates stdout in resultObj for cell with MAXBUFFER error
-      // appendCellOutput(resultObj);
-      // appendCellReturn(cellNum, resultObj);
     });
   };
 
@@ -62,24 +56,31 @@ document.addEventListener("DOMContentLoaded", () => {
     });
   };
 
-  const appendResponse = response => {
-    Object.keys(response).forEach(cellNum => {
-      const current = response[cellNum];
-      const currentOutput = current.output;
+  const appendResponse = responseObj => {
+    Object.keys(responseObj).forEach(cellNum => {
+      const current = responseObj[cellNum];
       const currentReturn = current.return;
-      const currentError = current.error;
+      const currentErrors = current.errors;
 
-      if (currentOutput) {
-        const outputUl = document.getElementById(`codecell-${cellNum}-output`);
-        currentOutput.forEach(output => {
-          appendLi(outputUl, output);
-        });
+      // order dependent since currentOutput is mutated in case of MAXBUFFER
+      if (currentErrors) {
+        const errorUl = document.getElementById(`codecell-${cellNum}-error`);
+
+        if (currentErrors.err) {
+          const errorObj = currentErrors.err;
+          appendSpecialErrors(errorObj, errorUl, responseObj, cellNum);
+        }
+
+        if (currentErrors.stderr) {
+          appendLi(errorUl, error);
+        }
       }
 
-      if (currentError) {
-        const errorUl = document.getElementById(`codecell-${cellNum}-error`);
-        currentError.forEach(error => {
-          appendLi(errorUl, error);
+      if (current.output) {
+        // have to reference original object here since it is mutated
+        const outputUl = document.getElementById(`codecell-${cellNum}-output`);
+        current.output.forEach(output => {
+          appendLi(outputUl, output);
         });
       }
 
@@ -90,41 +91,16 @@ document.addEventListener("DOMContentLoaded", () => {
     });
   };
 
-  const appendCellError = resultObj => {
-    Object.keys(resultObj)
-      .slice(0, -2) // need to slice off return and result here
-      .forEach(cellNumber => {
-        const errorUl = document.getElementById(`codecell-${cellNumber}-error`);
+  // mutates responseObj
+  const appendSpecialErrors = (errorObj, errorUl, responseObj, cellNum) => {
+    if (errorObj.signal && errorObj.signal.match("SIGTERM")) {
+      appendLi(errorUl, "Infinite Loop Error");
+    } else if (errorObj.code && String(errorObj.code).match("MAXBUFFER")) {
+      const currentOutput = responseObj[cellNum].output;
+      truncatedStdout = currentOutput.slice(0, 10);
+      responseObj[cellNum].output = truncatedStdout; // mutate responseObj to truncate stdout
 
-        if (resultObj[cellNumber].error) {
-          const error = resultObj[cellNumber].error;
-
-          if (error.signal && error.signal.match("SIGTERM")) {
-            removeChildElements(errorUl);
-            appendLi(errorUl, "Infinite Loop Error");
-          } else if (error.code && String(error.code).match("MAXBUFFER")) {
-            removeChildElements(errorUl);
-
-            let stdout = resultObj[cellNumber].stdout;
-            truncatedStdout = stdout.slice(0, 10);
-            resultObj[cellNumber].stdout = truncatedStdout; // mutate resultObj to truncate stdout
-
-            appendLi(errorUl, "Maximum Buffer Error");
-          }
-        }
-      });
-  };
-
-  const appendCellReturn = (cellNum, resultObj) => {
-    const codeReturn = document.getElementById(`codecell-${cellNum}-return`);
-    const returnText = resultObj.return;
-
-    document.querySelectorAll(".code-return").forEach(codeReturn => {
-      removeChildElements(codeReturn);
-    });
-
-    if (returnText) {
-      appendLi(codeReturn, returnText);
+      appendLi(errorUl, "Maximum Buffer Error");
     }
   };
 
