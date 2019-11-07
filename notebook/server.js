@@ -21,13 +21,8 @@ app.post("/", function(req, res) {
 
   const writeScript = () => {
     const script = codeStringArray.join("console.log('DELIMIT')\n"); // cell delimiter must be language-specific
-    debugger;
-    // str = prevCodeStr + str;
-    // prevCodeStr = str;
-    // return userScript.writeFile(idx, str, "JAVASCRIPT");
+    return userScript.writeFile(script, "JAVASCRIPT");
   };
-
-  writeScript();
 
   // find out if fs allows unlink on every file in a dir
   // const deleteScripts = () => {
@@ -46,16 +41,18 @@ app.post("/", function(req, res) {
     }
   };
 
-  // Promise.all(scriptPromises).then(() => {
-  //   executeCells()
-  //     .then(() => repl.execute(codeString, resultObj, "JAVASCRIPT"))
-  //     .then(() => repl.parseOutput(resultObj, "JAVASCRIPT"))
-  //     .then(() => respondToServer())
-  //     .catch(err => {
-  //       respondToServer();
-  //       console.log(err);
-  //     });
-  // });
+  writeScript()
+    .then(() => {
+      // executeCells()
+      //   .then(() => repl.execute(codeString, resultObj, "JAVASCRIPT"))
+      //   .then(() => repl.parseOutput(resultObj, "JAVASCRIPT"))
+      //   .then(() => respondToServer())
+      //   .catch(err => {
+      //     respondToServer();
+      //     console.log(err);
+      //   });
+    })
+    .catch(() => {});
 });
 
 app.listen(3000, () => {

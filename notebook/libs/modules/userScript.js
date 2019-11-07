@@ -35,7 +35,7 @@ const userScript = {
     });
   },
 
-  writeFile: (cellIdx, codeString, lang) => {
+  writeFile: (codeString, lang) => {
     return new Promise((resolve, reject) => {
       console.log("BEFORE WRITING SCRIPT");
 
@@ -51,11 +51,13 @@ const userScript = {
       }
 
       fs.writeFile(
-        `./codeCellScripts/cell_${cellIdx}${this.fileType}`,
+        `./codeCellScripts/user_script${this.fileType}`,
         codeString,
         error => {
           if (error) {
-            // console.log(error);
+            debugger;
+
+            console.log("ERROR WRITING SCRIPT");
             reject(error);
           } else {
             console.log("AFTER WRITING SCRIPT");
