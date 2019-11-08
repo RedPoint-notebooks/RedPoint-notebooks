@@ -74,14 +74,9 @@ const userScript = {
 
     if (err || stderr) {
       const lastCellIdx = Object.keys(outputByCell).length - 1;
-      outputByCell[lastCellIdx].error = [err, stderr];
+      outputByCell[lastCellIdx].errors = { err, stderr };
     }
 
-    // { 0: ['ser', 'er'], 1: ['er', 'wrgerg'] }
-
-    // { 0: { output: ['ser', 'er']},
-    //   1: { output: ['er', 'wrgerg']}
-    // }
     return outputByCell;
   }
 };

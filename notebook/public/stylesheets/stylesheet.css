@@ -8,16 +8,6 @@ button {
   margin: 0 0 10px 0;
 }
 
-.code-result {
-  color: red;
-  font-size: 24px;
-}
-
-.code-return {
-  color: green;
-  font-size: 24px;
-}
-
 .hidden {
   display: none;
 }

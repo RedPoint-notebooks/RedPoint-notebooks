@@ -19,7 +19,7 @@ app.post("/", function(req, res) {
   };
 
   const writeScript = () => {
-    const script = codeStringArray.join("console.log('DELIMIT')\n"); // cell delimiter must be language-specific
+    const script = codeStringArray.join("console.log('DELIMIT')\n"); // log statement must be language-specific
     return userScript.writeFile(script, "JAVASCRIPT");
   };
 
