@@ -20,6 +20,7 @@ document.addEventListener("DOMContentLoaded", () => {
       const responseObj = request.response.responseObj;
       clearPreviousResponse();
       appendResponse(responseObj);
+
     });
   };
 
