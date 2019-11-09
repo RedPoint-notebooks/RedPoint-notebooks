@@ -16,14 +16,15 @@ app.use(logger("dev"));
 wss.on("connection", ws => {
   // listen for specific message????
   ws.on("message", msg => {
-    const codeStringArray = JSON.parse(msg).userCode;
-    const codeString = codeStringArray.join("");
-    const scriptString = codeStringArray.join("console.log('DELIMITER')\n");
+    const codeStrArr = JSON.parse(msg);
+    const codeString = codeStrArr.join("");
+    const scriptString = codeStrArr.join("console.log('DELIMITER')\n\n");
+    debugger;
 
     userScript.writeFile(scriptString, "JAVASCRIPT").then(() => {
       userScript.execute(ws).catch(data => {
-        ws.send(JSON.stringify({ stderr: data }));
-        ws.send("There was an error in the thenable chain.");
+        ws.send(data);
+        // ws.send("There was an error in the thenable chain.");
       });
 
       // .then(responseObj =>

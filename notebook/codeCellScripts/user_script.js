@@ -1,4 +1,5 @@
+setTimeout(() =>{console.log("there")}, 1000);
 console.log("hi");
+console.log('DELIMITER')
 
-
-ser
+console.log("cell 2");

@@ -1,5 +1,6 @@
 const fs = require("fs");
 const { exec } = require("child_process"); // exec uses system default shell
+var spawn = require("child_process").spawn;
 
 const userScript = {
   script: "",
@@ -12,7 +13,6 @@ const userScript = {
     cwd: null,
     env: null
   }),
-
   execute: ws => {
     return new Promise((resolve, reject) => {
       console.log("BEFORE EXECUTING SCRIPT");
@@ -23,17 +23,17 @@ const userScript = {
       );
 
       scriptProcess.stdout.on("data", data => {
-        ws.send(JSON.stringify({ stdout: data }));
+        ws.send(JSON.stringify({ type: "stdout", data: data }));
       });
 
       scriptProcess.stdout.on("end", () => {
-        ws.send("Script completed");
+        ws.send(JSON.stringify({ type: "message", data: "Script completed" }));
         resolve();
       });
 
       scriptProcess.stderr.on("data", data => {
-        // ws.send(data);
-        reject(data);
+        ws.send(data);
+        reject(JSON.stringify({ type: "stderr", data: data }));
       });
     });
   },
@@ -45,10 +45,12 @@ const userScript = {
         case "RUBY":
           this.fileType = `.rb`;
           this.command = "ruby";
+          // this.delimiter = "puts 'DELIMITER'\n";
           break;
         case "JAVASCRIPT":
           this.fileType = `.js`;
           this.command = "node";
+          // this.delimiter = "console.log('DELIMITER')\n";
           break;
       }
 

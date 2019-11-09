@@ -6,7 +6,34 @@ document.addEventListener("DOMContentLoaded", () => {
 
     // receiving the message from server
     ws.onmessage = message => {
-      console.log(message);
+      message = JSON.parse(message.data);
+      const currentCell = 0;
+      switch (message.type) {
+        case "stdout":
+          if (message.data === "DELIMITER") {
+            currentCell += 1;
+          } else {
+            const outputUl = document.getElementById(
+              `codecell-${currentCell}-output`
+            );
+            // removeChildElements(outputUl);
+
+            appendLi(outputUl, message.data);
+          }
+          break;
+        case "stderr":
+          const outputUl = document.getElementById(
+            `codecell-${currentCell}-error`
+          );
+          // removeChildElements(outputUl);
+
+          appendLi(outputUl, message.data);
+          break;
+        case "message":
+          console.log(message.data);
+          break;
+      }
+
       // WRITE TO PAGE
       // listen for stdout / stderr / delimiters as they come across
       // slot appropriately & increment cellNum if DELIMITER
@@ -29,7 +56,7 @@ document.addEventListener("DOMContentLoaded", () => {
   const handleCodeSubmit = event => {
     let cellNum = +event.target.dataset.button;
     const codeStrArray = allCodeUpToCell(cellNum, codemirrors);
-    const json = JSON.stringify({ userCode: codeStrArray });
+    const json = JSON.stringify(codeStrArray); ///
     ws.send(json);
   };
 
@@ -180,5 +207,6 @@ const allCodeUpToCell = (cellNum, allCodeCells) => {
         .concat("\n")
     );
   }
+
   return codeStrArray;
 };
