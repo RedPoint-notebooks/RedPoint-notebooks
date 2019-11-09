@@ -1,9 +1,6 @@
 document.addEventListener("DOMContentLoaded", () => {
   const ws = new WebSocket("ws://localhost:3000");
   ws.onopen = event => {
-    // sending a message when connection opens
-    // ws.send("This is a message from the client.");
-
     // receiving the message from server
     ws.onmessage = message => {
       message = JSON.parse(message.data);
@@ -16,8 +13,6 @@ document.addEventListener("DOMContentLoaded", () => {
             const outputUl = document.getElementById(
               `codecell-${currentCell}-output`
             );
-            // removeChildElements(outputUl);
-
             appendLi(outputUl, message.data);
           }
           break;
@@ -25,7 +20,6 @@ document.addEventListener("DOMContentLoaded", () => {
           const outputUl = document.getElementById(
             `codecell-${currentCell}-error`
           );
-          // removeChildElements(outputUl);
 
           appendLi(outputUl, message.data);
           break;
