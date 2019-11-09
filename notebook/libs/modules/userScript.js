@@ -23,7 +23,7 @@ const userScript = {
       );
 
       scriptProcess.stdout.on("data", data => {
-        ws.send(data);
+        ws.send(JSON.stringify({ stdout: data }));
       });
 
       scriptProcess.stdout.on("end", () => {
