@@ -1,4 +1,27 @@
 document.addEventListener("DOMContentLoaded", () => {
+  const ws = new WebSocket("ws://localhost:3000");
+  ws.onopen = event => {
+    // sending a message when connection opens
+    // ws.send("This is a message from the client.");
+
+    // receiving the message from server
+    ws.onmessage = message => {
+      console.log(message);
+      // WRITE TO PAGE
+      // listen for stdout / stderr / delimiters as they come across
+      // slot appropriately & increment cellNum if DELIMITER
+      // request.addEventListener("load", () => {
+      //   const resultObj = request.response.responseObj;
+      //   debugger;
+      //   mapStdoutToCell(resultObj); // mutates each stdout in resultObj to an array
+      //   appendCellStderror(resultObj);
+      //   appendCellError(resultObj); // mutates stdout in resultObj for cell with MAXBUFFER error
+      //   appendCellOutput(resultObj);
+      //   appendCellReturn(cellNum, resultObj);
+      // });
+    };
+  };
+
   const codemirrors = setAllCodemirrorObjects();
   const btnMD1 = document.getElementById("render-md-1");
   const mdC1 = document.getElementById("md-cell-1");
@@ -7,24 +30,7 @@ document.addEventListener("DOMContentLoaded", () => {
     let cellNum = +event.target.dataset.button;
     const codeStrArray = allCodeUpToCell(cellNum, codemirrors);
     const json = JSON.stringify({ userCode: codeStrArray });
-
-    const request = new XMLHttpRequest();
-
-    request.open("POST", "/");
-    request.setRequestHeader("Content-Type", "application/json");
-    request.responseType = "json";
-
-    request.send(json);
-
-    request.addEventListener("load", () => {
-      const resultObj = request.response.responseObj;
-      debugger;
-      mapStdoutToCell(resultObj); // mutates each stdout in resultObj to an array
-      appendCellStderror(resultObj);
-      appendCellError(resultObj); // mutates stdout in resultObj for cell with MAXBUFFER error
-      appendCellOutput(resultObj);
-      appendCellReturn(cellNum, resultObj);
-    });
+    ws.send(json);
   };
 
   document.addEventListener("click", event => {

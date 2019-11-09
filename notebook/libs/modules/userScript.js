@@ -6,32 +6,35 @@ const userScript = {
   scriptExecCmd: "",
   execOptions: (execOptions = {
     encoding: "utf8",
-    timeout: 5000,
+    timeout: 10000,
     maxBuffer: 200 * 1024, // this is 1mb, default is 204 kb
     killSignal: "SIGTERM",
     cwd: null,
     env: null
   }),
 
-  execute: () => {
+  execute: ws => {
     return new Promise((resolve, reject) => {
       console.log("BEFORE EXECUTING SCRIPT");
       // console.log(userScript.execOptions);
-      exec(
+      const scriptProcess = exec(
         `${this.command} ./codeCellScripts/user_script${this.fileType}`,
-        userScript.execOptions,
-        (error, stdout, stderr) => {
-          const responseObj = userScript.parseOutput(error, stdout, stderr);
-
-          if (error || stderr) {
-            console.log("ERROR EXECUTING SCRIPT");
-            reject(responseObj);
-          } else {
-            console.log("AFTER EXECUTING SCRIPT");
-            resolve(responseObj);
-          }
-        }
+        userScript.execOptions
       );
+
+      scriptProcess.stdout.on("data", data => {
+        ws.send(data);
+      });
+
+      scriptProcess.stdout.on("end", () => {
+        ws.send("Script completed");
+        resolve();
+      });
+
+      scriptProcess.stderr.on("data", data => {
+        // ws.send(data);
+        reject(data);
+      });
     });
   },
   writeFile: (codeString, lang) => {
