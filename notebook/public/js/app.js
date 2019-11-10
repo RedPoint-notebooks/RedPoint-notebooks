@@ -66,6 +66,7 @@ document.addEventListener("DOMContentLoaded", () => {
       removeChildElements(codeOutput);
     });
 
+
     document.querySelectorAll(".code-error").forEach(codeError => {
       removeChildElements(codeError);
     });
@@ -88,6 +89,79 @@ document.addEventListener("DOMContentLoaded", () => {
     newLi.textContent = content;
     parent.appendChild(newLi);
   };
+
+  const clearPreviousResponse = () => {
+    document.querySelectorAll(".code-return").forEach(codeReturn => {
+      removeChildElements(codeReturn);
+    });
+
+    document.querySelectorAll(".code-output").forEach(codeOutput => {
+      removeChildElements(codeOutput);
+    });
+
+    document.querySelectorAll(".code-error").forEach(codeError => {
+      removeChildElements(codeError);
+    });
+  };
+
+  const appendResponse = responseObj => {
+    Object.keys(responseObj).forEach(cellNum => {
+      const current = responseObj[cellNum];
+      const currentReturn = current.return;
+      const currentErrors = current.errors;
+
+      // order dependent since currentOutput is mutated in case of MAXBUFFER
+      if (currentErrors) {
+        const errorUl = document.getElementById(`codecell-${cellNum}-error`);
+        const errorObj = currentErrors.err;
+        const stderr = currentErrors.stderr;
+
+        if (errorObj) {
+          appendSpecialErrors(errorObj, errorUl, responseObj, cellNum);
+        }
+
+        if (stderr) {
+          appendLi(errorUl, stderr);
+        }
+      }
+
+      if (current.output) {
+        // have to reference original object here since it is mutated
+        const outputUl = document.getElementById(`codecell-${cellNum}-output`);
+        current.output.forEach(output => {
+          appendLi(outputUl, output);
+        });
+      }
+
+      if (currentReturn) {
+        const returnUl = document.getElementById(`codecell-${cellNum}-return`);
+        appendLi(returnUl, currentReturn);
+      }
+    });
+  };
+
+  const appendSpecialErrors = (errorObj, errorUl, responseObj, cellNum) => {
+    if (errorObj.signal && errorObj.signal.match("SIGTERM")) {
+      appendLi(errorUl, "Infinite Loop Error");
+    } else if (errorObj.code && String(errorObj.code).match("MAXBUFFER")) {
+      const currentOutput = responseObj[cellNum].output;
+      truncatedStdout = currentOutput.slice(0, 10);
+      responseObj[cellNum].output = truncatedStdout; // mutate responseObj to truncate stdout
+
+      appendLi(errorUl, "Maximum Buffer Error");
+    }
+  };
+
+  const buildLineNumberObject = () => {
+    let totalLines = 0;
+    return codemirrors.reduce((obj, mirror, idx) => {
+      const currentLines = mirror.lineCount();
+      obj[idx] = { start: totalLines + 1, end: totalLines + currentLines };
+      totalLines += currentLines;
+      return obj;
+    }, {});
+  };
+
 
   // extract and render markdown
   const mdCode = CodeMirror.fromTextArea(mdC1, {
