@@ -27,7 +27,7 @@ const userScript = {
       });
 
       scriptProcess.stdout.on("end", () => {
-        ws.send(JSON.stringify({ type: "message", data: "Script completed" }));
+        ws.send(JSON.stringify({ type: "end", data: "Script completed" }));
         resolve();
       });
 

@@ -19,7 +19,7 @@ wss.on("connection", ws => {
     const codeStrArr = JSON.parse(msg);
     const codeString = codeStrArr.join("");
     const scriptString = codeStrArr.join("console.log('DELIMITER')\n\n");
-    debugger;
+    // debugger;
 
     userScript.writeFile(scriptString, "JAVASCRIPT").then(() => {
       userScript.execute(ws).catch(data => {

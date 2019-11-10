@@ -1,4 +1,4 @@
-setTimeout(() =>{console.log("there")}, 1000);
+setTimeout(() =>{console.log("there")}, 2000);
 console.log("hi");
 console.log('DELIMITER')
 

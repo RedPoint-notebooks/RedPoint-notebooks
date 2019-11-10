@@ -2,19 +2,23 @@ document.addEventListener("DOMContentLoaded", () => {
   const ws = new WebSocket("ws://localhost:3000");
   ws.onopen = event => {
     // receiving the message from server
+    let currentCell = 0;
     ws.onmessage = message => {
       message = JSON.parse(message.data);
-      const currentCell = 0;
+
       switch (message.type) {
         case "stdout":
-          if (message.data === "DELIMITER") {
-            currentCell += 1;
-          } else {
-            const outputUl = document.getElementById(
-              `codecell-${currentCell}-output`
-            );
-            appendLi(outputUl, message.data);
-          }
+          const stdoutArr = message.data.split("\n").slice(0, -1); // slice off empty string when split on newline
+          stdoutArr.forEach(message => {
+            if (message === "DELIMITER") {
+              currentCell += 1;
+            } else {
+              const outputUl = document.getElementById(
+                `codecell-${currentCell}-output`
+              );
+              appendLi(outputUl, message);
+            }
+          });
           break;
         case "stderr":
           const outputUl = document.getElementById(
@@ -23,8 +27,9 @@ document.addEventListener("DOMContentLoaded", () => {
 
           appendLi(outputUl, message.data);
           break;
-        case "message":
+        case "end":
           console.log(message.data);
+          currentCell = 0;
           break;
       }
 
