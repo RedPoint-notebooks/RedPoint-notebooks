@@ -1,5 +1,9 @@
 document.addEventListener("DOMContentLoaded", () => {
+  const codemirrors = setAllCodemirrorObjects();
+  const btnMD1 = document.getElementById("render-md-1");
+  const mdC1 = document.getElementById("md-cell-1");
   const ws = new WebSocket("ws://localhost:3000");
+
   ws.onopen = event => {
     // receiving the message from server
     let currentCell = 0;
@@ -48,15 +52,28 @@ document.addEventListener("DOMContentLoaded", () => {
     };
   };
 
-  const codemirrors = setAllCodemirrorObjects();
-  const btnMD1 = document.getElementById("render-md-1");
-  const mdC1 = document.getElementById("md-cell-1");
-
   const handleCodeSubmit = event => {
+    clearPreviousResponse();
+
     let cellNum = +event.target.dataset.button;
     const codeStrArray = allCodeUpToCell(cellNum, codemirrors);
-    const json = JSON.stringify(codeStrArray); ///
+    const json = JSON.stringify(codeStrArray);
+
     ws.send(json);
+  };
+
+  const clearPreviousResponse = () => {
+    document.querySelectorAll(".code-return").forEach(codeReturn => {
+      removeChildElements(codeReturn);
+    });
+
+    document.querySelectorAll(".code-output").forEach(codeOutput => {
+      removeChildElements(codeOutput);
+    });
+
+    document.querySelectorAll(".code-error").forEach(codeError => {
+      removeChildElements(codeError);
+    });
   };
 
   document.addEventListener("click", event => {
