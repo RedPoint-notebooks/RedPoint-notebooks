@@ -31,9 +31,16 @@ document.addEventListener("DOMContentLoaded", () => {
 
           appendLi(outputUl, message.data);
           break;
+        case "return":
+          const returnUl = document.getElementById(
+            `codecell-${currentCell}-return`
+          );
+
+          appendLi(returnUl, message.data);
+          currentCell = 0;
+          break;
         case "end":
           console.log(message.data);
-          currentCell = 0;
           break;
       }
 

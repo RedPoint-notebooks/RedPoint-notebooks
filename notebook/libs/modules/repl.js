@@ -18,7 +18,6 @@ const repl = {
         replType = "node";
         break;
     }
-    // const lastCellIdx = Object.keys(resultObj).length - 1;
 
     return new Promise(resolve => {
       const node = pty.spawn(replType);
