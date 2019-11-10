@@ -18,19 +18,23 @@ wss.on("connection", ws => {
   ws.on("message", msg => {
     const codeStrArr = JSON.parse(msg);
     const codeString = codeStrArr.join("");
-    const scriptString = codeStrArr.join("console.log('DELIMITER')\n\n");
+    const scriptString = codeStrArr.join("console.log('DELIMITER')\n");
     // debugger;
 
     userScript.writeFile(scriptString, "JAVASCRIPT").then(() => {
-      userScript.execute(ws).catch(data => {
-        ws.send(data);
-        // ws.send("There was an error in the thenable chain.");
-      });
+      userScript
+        .execute(ws)
+        .then(responseObj => repl.execute(codeString, "JAVASCRIPT"))
+        .then(returnData => repl.parseOutput(returnData, "JAVASCRIPT"))
+        .then(returnValue => {
+          debugger;
+          ws.send(JSON.stringify({ type: "return", data: returnValue }));
+        })
+        .catch(data => {
+          ws.send(data);
+        });
 
-      // .then(responseObj =>
-      //   repl.execute(codeString, responseObj, "JAVASCRIPT")
       // )
-      // .then(responseObj => repl.parseOutput(responseObj, "JAVASCRIPT"))
       // .then(responseObj => respondToClient(responseObj))
       // .catch(data => {
       //   ws.send(data);

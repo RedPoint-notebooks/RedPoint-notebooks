@@ -2,7 +2,7 @@ const pty = require("node-pty");
 const stripAnsi = require("strip-ansi");
 
 const repl = {
-  execute: (codeString, resultObj, lang) => {
+  execute: (codeString, lang) => {
     console.log("BEFORE REPL EXECUTE");
 
     let replExitMessage;
@@ -18,7 +18,7 @@ const repl = {
         replType = "node";
         break;
     }
-    const lastCellIdx = Object.keys(resultObj).length - 1;
+    // const lastCellIdx = Object.keys(resultObj).length - 1;
 
     return new Promise(resolve => {
       const node = pty.spawn(replType);
@@ -27,24 +27,20 @@ const repl = {
       node.write(codeString + replExitMessage);
       node.on("exit", () => {
         // assumes REPL is finished, and data is captured, and written to returnData
-        resultObj[lastCellIdx].replOutput = returnData;
         console.log("AFTER REPL EXECUTE");
-        resolve(resultObj);
+        resolve(returnData);
       });
     });
   },
-  parseOutput: (resultObj, lang) => {
-    const lastCellIdx = Object.keys(resultObj).length - 1;
+  parseOutput: (returnData, lang) => {
+    // const lastCellIdx = Object.keys(returnData).length - 1;
     switch (lang) {
       case "RUBY":
-        return parseRubyOutput(resultObj, lastCellIdx);
-        break;
+        return parseRubyOutput(returnData, lastCellIdx);
       case "JAVASCRIPT":
-        return parseJSOutput(resultObj, lastCellIdx);
-        break;
+        return parseJSOutput(returnData);
       case "PYTHON":
-        return parsePythonOutput(resultObj, lastCellIdx);
-        break;
+        return parsePythonOutput(returnData, lastCellIdx);
     }
   }
 };
@@ -60,14 +56,13 @@ const parseRubyOutput = (resultObj, lastIdx) => {
   });
 };
 
-const parseJSOutput = (resultObj, lastIdx) => {
-  return new Promise((resolve, reject) => {
-    const byOutput = resultObj[lastIdx].replOutput.split(">");
+const parseJSOutput = returnData => {
+  return new Promise(resolve => {
+    const byOutput = returnData.split(">");
     const dirtyReturnValue = byOutput[byOutput.length - 2];
     const cleanReturnValue = extractCleanJSReturnValue(dirtyReturnValue);
-    // debugger;
-    resultObj[lastIdx].return = cleanReturnValue;
-    resolve(resultObj);
+    debugger;
+    resolve(cleanReturnValue);
   });
 };
 
