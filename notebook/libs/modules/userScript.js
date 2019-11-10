@@ -1,37 +1,40 @@
 const fs = require("fs");
 const { exec } = require("child_process"); // exec uses system default shell
+// var spawn = require("child_process").spawn;
 
 const userScript = {
   script: "",
   scriptExecCmd: "",
   execOptions: (execOptions = {
     encoding: "utf8",
-    timeout: 5000,
-    maxBuffer: 200 * 1024, // this is 1mb, default is 204 kb
+    timeout: 10000,
+    maxBuffer: 200 * 1024, // this is default (204 kb)
     killSignal: "SIGTERM",
     cwd: null,
     env: null
   }),
-
-  execute: () => {
+  execute: ws => {
     return new Promise((resolve, reject) => {
       console.log("BEFORE EXECUTING SCRIPT");
       // console.log(userScript.execOptions);
-      exec(
+      const scriptProcess = exec(
         `${this.command} ./codeCellScripts/user_script${this.fileType}`,
-        userScript.execOptions,
-        (error, stdout, stderr) => {
-          const responseObj = userScript.parseOutput(error, stdout, stderr);
-
-          if (error || stderr) {
-            console.log("ERROR EXECUTING SCRIPT");
-            reject(responseObj);
-          } else {
-            console.log("AFTER EXECUTING SCRIPT");
-            resolve(responseObj);
-          }
-        }
+        userScript.execOptions
       );
+
+      scriptProcess.stdout.on("data", data => {
+        ws.send(JSON.stringify({ type: "stdout", data: data }));
+      });
+
+      scriptProcess.stdout.on("end", () => {
+        ws.send(JSON.stringify({ type: "end", data: "Script completed" }));
+        resolve();
+      });
+
+      scriptProcess.stderr.on("data", data => {
+        ws.send(data);
+        reject(JSON.stringify({ type: "stderr", data: data }));
+      });
     });
   },
   writeFile: (codeString, lang) => {
@@ -42,11 +45,17 @@ const userScript = {
         case "RUBY":
           this.fileType = `.rb`;
           this.command = "ruby";
+          // this.delimiter = "puts 'DELIMITER'\n";
           break;
         case "JAVASCRIPT":
           this.fileType = `.js`;
           this.command = "node";
+          // this.delimiter = "console.log('DELIMITER')\n";
           break;
+        case "PYTHON":
+          this.fileType = ".py";
+          this.command = "python";
+        // this.delimiter = "print('DELIMITER\n')";
       }
 
       fs.writeFile(

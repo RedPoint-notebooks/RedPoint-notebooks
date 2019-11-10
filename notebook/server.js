@@ -1,40 +1,41 @@
 const express = require("express");
+const http = require("http");
+const Websocket = require("ws");
+
+const app = express();
+const server = http.createServer(app);
+const wss = new Websocket.Server({ server });
+
 const logger = require("morgan");
-const bodyParser = require("body-parser");
 const userScript = require("./libs/modules/userScript");
 const repl = require("./libs/modules/repl");
-const app = express();
 
-app.use(logger("dev"));
 app.use(express.static("."));
-app.use(bodyParser.json());
+app.use(logger("dev"));
 
-app.post("/", function(req, res) {
-  const codeStringArray = req.body.userCode;
-  const codeString = codeStringArray.join("");
 
-  const respondToClient = responseObj => {
-    debugger;
-    res.json({ responseObj });
-  };
+wss.on("connection", ws => {
+  ws.on("message", msg => {
+    const codeStrArr = JSON.parse(msg);
+    const codeString = codeStrArr.join("");
+    const scriptString = codeStrArr.join("console.log('DELIMITER')\n");
 
-  const writeScript = () => {
-    const script = codeStringArray.join("console.log('DELIMIT')\n"); // log statement must be language-specific
-    return userScript.writeFile(script, "JAVASCRIPT");
-  };
 
-  writeScript().then(() => {
-    userScript
-      .execute()
-      .then(responseObj => repl.execute(codeString, responseObj, "JAVASCRIPT"))
-      .then(responseObj => repl.parseOutput(responseObj, "JAVASCRIPT"))
-      .then(responseObj => respondToClient(responseObj))
-      .catch(responseObj => {
-        respondToClient(responseObj);
-      });
+    userScript.writeFile(scriptString, "JAVASCRIPT").then(() => {
+      userScript
+        .execute(ws)
+        .then(() => repl.execute(codeString, "JAVASCRIPT"))
+        .then(returnData => repl.parseOutput(returnData, "JAVASCRIPT"))
+        .then(returnValue => {
+          ws.send(JSON.stringify({ type: "return", data: returnValue }));
+        })
+        .catch(data => {
+          ws.send(data);
+        });
+    });
   });
 });
 
-app.listen(3000, () => {
+server.listen(3000, () => {
   console.log("App started");
 });

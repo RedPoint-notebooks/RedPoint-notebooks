@@ -1,0 +1,7 @@
+
+#ignore node_modules folder
+node_modules
+
+#ignore codeCellScripts folder
+codeCellScripts
+
