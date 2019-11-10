@@ -33,26 +33,24 @@ const repl = {
     });
   },
   parseOutput: (returnData, lang) => {
-    // const lastCellIdx = Object.keys(returnData).length - 1;
     switch (lang) {
       case "RUBY":
-        return parseRubyOutput(returnData, lastCellIdx);
+        return parseRubyOutput(returnData);
       case "JAVASCRIPT":
         return parseJSOutput(returnData);
       case "PYTHON":
-        return parsePythonOutput(returnData, lastCellIdx);
+        return parsePythonOutput(returnData);
     }
   }
 };
 
-const parseRubyOutput = (resultObj, lastIdx) => {
+const parseRubyOutput = returnData => {
   return new Promise(resolve => {
-    const byOutput = resultObj[lastIdx].replOutput.split("=>");
+    const byOutput = returnData.split("=>");
     const dirtyReturnValue = byOutput[byOutput.length - 1];
     const indexCleanStops = dirtyReturnValue.indexOf("2.4.1"); // fix hard-coding?
     const cleanReturnValue = dirtyReturnValue.slice(0, indexCleanStops);
-    resultObj[lastIdx].return = cleanReturnValue;
-    resolve(resultObj);
+    resolve(cleanReturnValue);
   });
 };
 
@@ -61,19 +59,17 @@ const parseJSOutput = returnData => {
     const byOutput = returnData.split(">");
     const dirtyReturnValue = byOutput[byOutput.length - 2];
     const cleanReturnValue = extractCleanJSReturnValue(dirtyReturnValue);
-    debugger;
     resolve(cleanReturnValue);
   });
 };
 
-const parsePythonOutput = (resultObj, lastIdx) => {
+const parsePythonOutput = returnData => {
   return new Promise(resolve => {
-    const byOutput = resultObj[lastIdx].result.split(">>>");
+    const byOutput = returnData.split(">>>");
     const dirtyReturnValue = byOutput[byOutput.length - 2];
     const indexCleanStarts = dirtyReturnValue.indexOf("\n");
     const cleanReturnValue = dirtyReturnValue.slice(indexCleanStarts);
-    resultObj[lastIdx].return = cleanReturnValue;
-    resolve(resultObj);
+    resolve(cleanReturnValue);
   });
 };
 
