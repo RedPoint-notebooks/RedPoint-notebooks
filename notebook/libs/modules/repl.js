@@ -17,6 +17,10 @@ const repl = {
         replExitMessage = ".exit\r";
         replType = "node";
         break;
+      case "PYTHON":
+        replExitMessage = "exit()\r";
+        replType = "python";
+        break;
     }
 
     return new Promise(resolve => {
@@ -75,13 +79,7 @@ const parsePythonOutput = returnData => {
 const extractCleanJSReturnValue = string => {
   const newlines = [...string.matchAll(/\n/g)];
 
-  // if there was only one line of output from the last line of code executed
-  if (newlines.length == 2) {
-    return string.slice(newlines[0].index + 1);
-    // if multiple lines of output were produced by the final line
-  } else {
-    return string.slice(newlines[newlines.length - 2].index + 1);
-  }
+  return string.slice(newlines[newlines.length - 2].index + 1);
 };
 
 module.exports = repl;

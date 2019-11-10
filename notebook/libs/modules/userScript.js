@@ -1,6 +1,6 @@
 const fs = require("fs");
 const { exec } = require("child_process"); // exec uses system default shell
-var spawn = require("child_process").spawn;
+// var spawn = require("child_process").spawn;
 
 const userScript = {
   script: "",
@@ -8,7 +8,7 @@ const userScript = {
   execOptions: (execOptions = {
     encoding: "utf8",
     timeout: 10000,
-    maxBuffer: 200 * 1024, // this is 1mb, default is 204 kb
+    maxBuffer: 200 * 1024, // this is default (204 kb)
     killSignal: "SIGTERM",
     cwd: null,
     env: null
@@ -52,6 +52,10 @@ const userScript = {
           this.command = "node";
           // this.delimiter = "console.log('DELIMITER')\n";
           break;
+        case "PYTHON":
+          this.fileType = ".py";
+          this.command = "python";
+        // this.delimiter = "print('DELIMITER\n')";
       }
 
       fs.writeFile(
