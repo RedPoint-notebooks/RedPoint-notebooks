@@ -11,3 +11,10 @@ button {
 .hidden {
   display: none;
 }
+
+ul.code-output {
+  border: 1px solid black;
+  height: 50px;
+  overflow: hidden;
+  overflow-y: scroll;
+}
