@@ -15,7 +15,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
     const codeStrArray = allCodeUpToCell(cellNum, codemirrors[language]);
     language = language.toUpperCase();
-    const json = JSON.stringify({ code: { language, codeStrArray } });
+    const json = JSON.stringify({ language, codeStrArray });
 
     ws.send(json);
   };

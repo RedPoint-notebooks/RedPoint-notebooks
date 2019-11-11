@@ -26,9 +26,10 @@ const generateDelimiter = (lang, delimiter) => {
 
 wss.on("connection", ws => {
   ws.on("message", msg => {
-    const codeStrArr = JSON.parse(msg);
-    const codeString = codeStrArr.join("");
-    const scriptString = codeStrArr.join("console.log('DELIMITER')\n");
+    const { language, codeStrArray } = JSON.parse(msg);
+    debugger;
+    const codeString = codeStrArray.join("");
+    const scriptString = codeStrArray.join("console.log('DELIMITER')\n");
 
     userScript.writeFile(scriptString, "JAVASCRIPT").then(() => {
       userScript
