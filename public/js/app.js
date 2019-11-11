@@ -17,7 +17,6 @@ document.addEventListener("DOMContentLoaded", () => {
           delimiter = message.data;
           break;
         case "stdout":
-          console.log(delimiter);
           // slice off empty string when split on newline
           const stdoutArr = message.data.split("\n").slice(0, -1);
           stdoutArr.forEach(message => {
