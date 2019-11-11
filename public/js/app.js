@@ -1,5 +1,8 @@
 document.addEventListener("DOMContentLoaded", () => {
-  const codemirrors = setAllCodemirrorObjects();
+  const codemirrors = {
+    ruby: setMirrors("ruby"),
+    javascript: setMirrors("javascript")
+  };
   const btnMD1 = document.getElementById("render-md-1");
   const mdC1 = document.getElementById("md-cell-1");
   const ws = new WebSocket("ws://localhost:3000");
@@ -61,7 +64,9 @@ document.addEventListener("DOMContentLoaded", () => {
     clearPreviousResponse();
 
     let cellNum = +event.target.dataset.button;
-    const codeStrArray = allCodeUpToCell(cellNum, codemirrors);
+    let language = event.target.dataset.language;
+
+    const codeStrArray = allCodeUpToCell(cellNum, codemirrors[language]);
     const json = JSON.stringify(codeStrArray);
 
     ws.send(json);
@@ -117,13 +122,12 @@ document.addEventListener("DOMContentLoaded", () => {
   });
 });
 
-// maps all textareas designated as code cells to codemirror objects
-const setAllCodemirrorObjects = () => {
-  const codeCells = [...document.querySelectorAll(".code-cell")];
+const setMirrors = language => {
+  const codeCells = [...document.querySelectorAll(`.code-cell-${language}`)];
 
   return codeCells.map(codeCell => {
     let editor = CodeMirror.fromTextArea(codeCell, {
-      mode: "javascript",
+      mode: language,
       theme: "darcula",
       lineNumbers: true,
       showCursorWhenSelecting: true
@@ -134,21 +138,56 @@ const setAllCodemirrorObjects = () => {
 };
 
 // extracts and concatenates all code up to specified cell number
-const allCodeUpToCell = (cellNum, allCodeCells) => {
+
+const allCodeUpToCell = (cellNum, cells) => {
   let codeStrArray = [];
 
   for (let i = 0; i <= cellNum; i += 1) {
-    let cell = allCodeCells[i];
-    codeStrArray.push(
-      cell
-        .getValue()
-        .trim()
-        .concat("\n")
-    );
+    if (cells[i]) {
+      let cell = cells[i];
+      codeStrArray.push(
+        cell
+          .getValue()
+          .trim()
+          .concat("\n")
+      );
+    }
   }
-
   return codeStrArray;
 };
+
+// // maps all textareas designated as code cells to codemirror objects
+// const setAllCodemirrorObjects = () => {
+//   const codeCells = [...document.querySelectorAll(".code-cell")];
+
+//   return codeCells.map(codeCell => {
+//     let editor = CodeMirror.fromTextArea(codeCell, {
+//       mode: "javascript",
+//       theme: "darcula",
+//       lineNumbers: true,
+//       showCursorWhenSelecting: true
+//     });
+
+//     return editor;
+//   });
+// };
+
+// // extracts and concatenates all code up to specified cell number
+// const allCodeUpToCell = (cellNum, allCodeCells) => {
+//   let codeStrArray = [];
+
+//   for (let i = 0; i <= cellNum; i += 1) {
+//     let cell = allCodeCells[i];
+//     codeStrArray.push(
+//       cell
+//         .getValue()
+//         .trim()
+//         .concat("\n")
+//     );
+//   }
+
+//   return codeStrArray;
+// };
 
 // const appendCellOutput = resultObj => {
 //   Object.keys(resultObj)
