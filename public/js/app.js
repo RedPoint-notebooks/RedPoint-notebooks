@@ -23,15 +23,17 @@ document.addEventListener("DOMContentLoaded", () => {
   ws.onopen = event => {
     // receiving the message from server
     let currentCell = 0;
+    let languageCells;
     ws.onmessage = message => {
       message = JSON.parse(message.data);
-      let languageCells;
 
       switch (message.type) {
         case "language":
           const language = message.data.toLowerCase();
           languageCells = document.querySelectorAll(`.code-cell-${language}`);
-
+          languageCells = [...languageCells].map(cell => {
+            return cell.id.split("-")[languageCells.length - 1];
+          });
           break;
         case "stdout":
           // slice off empty string when split on newline
