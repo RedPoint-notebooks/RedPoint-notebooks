@@ -5,3 +5,6 @@ node_modules
 #ignore codeCellScripts folder
 codeCellScripts
 
+#ignore log files
+*.log
+
