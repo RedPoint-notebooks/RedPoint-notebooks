@@ -7,6 +7,19 @@ document.addEventListener("DOMContentLoaded", () => {
   const mdC1 = document.getElementById("md-cell-1");
   const ws = new WebSocket("ws://localhost:3000");
 
+  const handleCodeSubmit = event => {
+    clearPreviousResponse();
+
+    let cellNum = +event.target.dataset.button;
+    let language = event.target.dataset.language;
+
+    const codeStrArray = allCodeUpToCell(cellNum, codemirrors[language]);
+    language = language.toUpperCase();
+    const json = JSON.stringify({ code: { language, codeStrArray } });
+
+    ws.send(json);
+  };
+
   ws.onopen = event => {
     // receiving the message from server
     let currentCell = 0;
@@ -58,18 +71,6 @@ document.addEventListener("DOMContentLoaded", () => {
           break;
       }
     };
-  };
-
-  const handleCodeSubmit = event => {
-    clearPreviousResponse();
-
-    let cellNum = +event.target.dataset.button;
-    let language = event.target.dataset.language;
-
-    const codeStrArray = allCodeUpToCell(cellNum, codemirrors[language]);
-    const json = JSON.stringify(codeStrArray);
-
-    ws.send(json);
   };
 
   const clearPreviousResponse = () => {

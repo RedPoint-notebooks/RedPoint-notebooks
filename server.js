@@ -13,6 +13,17 @@ const repl = require("./libs/modules/repl");
 app.use(express.static("."));
 app.use(logger("dev"));
 
+const generateDelimiter = (lang, delimiter) => {
+  switch (lang) {
+    case "RUBY":
+      return `puts "${delimiter}"\n`;
+    case "JAVASCRIPT":
+      return `console.log(${delimiter})\n`;
+    case "PYTHON":
+      return `print(${delimiter})\n`;
+  }
+};
+
 wss.on("connection", ws => {
   ws.on("message", msg => {
     const codeStrArr = JSON.parse(msg);
