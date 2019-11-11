@@ -27,15 +27,15 @@ const generateDelimiter = (lang, delimiter) => {
 wss.on("connection", ws => {
   ws.on("message", msg => {
     const { language, codeStrArray } = JSON.parse(msg);
-    debugger;
     const codeString = codeStrArray.join("");
-    const scriptString = codeStrArray.join("console.log('DELIMITER')\n");
+    const delimiterStatement = generateDelimiter(language, "DELIMITER");
+    const scriptString = codeStrArray.join(delimiterStatement);
 
-    userScript.writeFile(scriptString, "JAVASCRIPT").then(() => {
+    userScript.writeFile(scriptString, language).then(() => {
       userScript
         .execute(ws)
-        .then(() => repl.execute(codeString, "JAVASCRIPT"))
-        .then(returnData => repl.parseOutput(returnData, "JAVASCRIPT"))
+        .then(() => repl.execute(codeString, language))
+        .then(returnData => repl.parseOutput(returnData, language))
         .then(returnValue => {
           ws.send(JSON.stringify({ type: "return", data: returnValue }));
         })
