@@ -7,15 +7,20 @@ document.addEventListener("DOMContentLoaded", () => {
   ws.onopen = event => {
     // receiving the message from server
     let currentCell = 0;
+    let delimiter;
+
     ws.onmessage = message => {
       message = JSON.parse(message.data);
 
       switch (message.type) {
+        case "delimiter":
+          delimiter = message.data;
+          break;
         case "stdout":
           // slice off empty string when split on newline
           const stdoutArr = message.data.split("\n").slice(0, -1);
           stdoutArr.forEach(message => {
-            if (message === "DELIMITER") {
+            if (message === delimiter) {
               currentCell += 1;
             } else {
               const outputUl = document.getElementById(
@@ -29,7 +34,7 @@ document.addEventListener("DOMContentLoaded", () => {
           const stderrUl = document.getElementById(
             `codecell-${currentCell}-error`
           );
-
+          debugger;
           appendLi(stderrUl, message.data);
           break;
         case "error":
