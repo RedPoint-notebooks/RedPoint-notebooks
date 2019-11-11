@@ -19,11 +19,12 @@ const sendDelimiterToClient = (ws, uuid) => {
 };
 
 wss.on("connection", ws => {
+  const delimiter = uuidv4();
+  sendDelimiterToClient(ws, delimiter);
+
   ws.on("message", msg => {
     const codeStrArr = JSON.parse(msg);
     const codeString = codeStrArr.join("");
-    const delimiter = uuidv4();
-    sendDelimiterToClient(ws, delimiter);
 
     const scriptString = codeStrArr.join(`console.log("${delimiter}")\n`);
     userScript.writeFile(scriptString, "JAVASCRIPT").then(() => {
