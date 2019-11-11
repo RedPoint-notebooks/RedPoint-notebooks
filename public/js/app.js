@@ -25,8 +25,14 @@ document.addEventListener("DOMContentLoaded", () => {
     let currentCell = 0;
     ws.onmessage = message => {
       message = JSON.parse(message.data);
+      let languageCells;
 
       switch (message.type) {
+        case "language":
+          const language = message.data.toLowerCase();
+          languageCells = document.querySelectorAll(`.code-cell-${language}`);
+
+          break;
         case "stdout":
           // slice off empty string when split on newline
           const stdoutArr = message.data.split("\n").slice(0, -1);

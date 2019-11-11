@@ -31,6 +31,9 @@ wss.on("connection", ws => {
     const delimiterStatement = generateDelimiter(language, "DELIMITER");
     const scriptString = codeStrArray.join(delimiterStatement);
 
+    // is this the best place to set language for upcoming data?
+    ws.send(JSON.stringify({ type: "language", data: language }));
+
     userScript.writeFile(scriptString, language).then(() => {
       userScript
         .execute(ws)
