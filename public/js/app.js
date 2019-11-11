@@ -26,11 +26,21 @@ document.addEventListener("DOMContentLoaded", () => {
           });
           break;
         case "stderr":
-          const outputUl = document.getElementById(
+          const stderrUl = document.getElementById(
             `codecell-${currentCell}-error`
           );
 
-          appendLi(outputUl, message.data);
+          appendLi(stderrUl, message.data);
+          break;
+        case "error":
+          const errorUl = document.getElementById(
+            `codecell-${currentCell}-error`
+          );
+
+          const signal = message.data.signal;
+          if (signal && signal.match("SIGTERM")) {
+            appendLi(errorUl, "Infinite Loop Error");
+          }
           break;
         case "return":
           const returnUl = document.getElementById(

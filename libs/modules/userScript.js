@@ -7,7 +7,7 @@ const userScript = {
   scriptExecCmd: "",
   execOptions: (execOptions = {
     encoding: "utf8",
-    timeout: 10000,
+    timeout: 5000,
     maxBuffer: 200 * 1024, // this is default (204 kb)
     killSignal: "SIGTERM",
     cwd: null,
@@ -16,13 +16,19 @@ const userScript = {
   execute: ws => {
     return new Promise((resolve, reject) => {
       console.log("BEFORE EXECUTING SCRIPT");
-      // console.log(userScript.execOptions);
       const scriptProcess = exec(
         `${this.command} ./codeCellScripts/user_script${this.fileType}`,
-        userScript.execOptions
+        userScript.execOptions,
+        (error, stdout, stderr) => {
+          if (error) {
+            // debugger;
+            ws.send(JSON.stringify({ type: "error", data: error }));
+          }
+        }
       );
 
       scriptProcess.stdout.on("data", data => {
+        // debugger;
         ws.send(JSON.stringify({ type: "stdout", data: data }));
       });
 
@@ -32,7 +38,7 @@ const userScript = {
       });
 
       scriptProcess.stderr.on("data", data => {
-        ws.send(data);
+        debugger;
         reject(JSON.stringify({ type: "stderr", data: data }));
       });
     });
