@@ -21,13 +21,15 @@ class Notebook extends Component {
           case "stdout":
             this.setState({ response: message.data });
             break;
+          default:
+            console.log("No stdout received");
         }
       };
     };
 
     const test = () => {
       if (this.state.sent === false) {
-        let fakeCode = ["const a = 50\nconst b = 100\n console.log(a + b)"];
+        let fakeCode = ["const a = 150\nconst b = 100\n console.log(a + b)"];
         const json = JSON.stringify(fakeCode);
         ws.send(json);
       }
