@@ -13,7 +13,6 @@ class Notebook extends Component {
   handleAddCodeCellClick = index => {
     this.setState(prevState => {
       const newCells = [...prevState.cells];
-      console.log("New Cells: ", newCells);
       newCells.splice(index, 0, {
         type: this.state.defaultLanguage,
         code: ""

@@ -1,6 +1,7 @@
 import React, { Component } from "react";
 import CodeCell from "./CodeCell";
 import ToggleableMarkdownContainer from "./ToggleableMarkdownContainer";
+import AddCodeCellButton from "../Shared/AddCodeCellButton";
 
 class CellsList extends Component {
   state = {};
@@ -21,6 +22,13 @@ class CellsList extends Component {
         return <ToggleableMarkdownContainer />;
       }
     });
+
+    codemirrorCells.push(
+      <AddCodeCellButton
+        cellIndex={codemirrorCells.length}
+        onClick={this.props.onAddCodeCellClick}
+      />
+    );
     return codemirrorCells;
   }
 }

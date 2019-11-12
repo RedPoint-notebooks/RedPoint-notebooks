@@ -43,10 +43,10 @@ class CodeCell extends Component {
             console.log("inside onChange");
           }}
         />
-        <AddCodeCellButton
+        {/* <AddCodeCellButton
           cellIndex={this.props.cellIndex + 1}
           onClick={this.props.onAddCodeCellClick}
-        />
+        /> */}
       </div>
     );
   }
