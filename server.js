@@ -16,13 +16,14 @@ app.use(logger("dev"));
 
 const generateDelimiter = (lang, delimiter) => {
   switch (lang) {
-    case "RUBY":
+    case "ruby":
       return `puts "${delimiter}"\n`;
-    case "JAVASCRIPT":
+    case "javascript":
       return `console.log(${delimiter})\n`;
-    case "PYTHON":
+    case "python":
       return `print(${delimiter})\n`;
   }
+};
 
 const sendDelimiterToClient = (ws, uuid) => {
   ws.send(JSON.stringify({ type: "delimiter", data: uuid }));
@@ -42,7 +43,6 @@ wss.on("connection", ws => {
     ws.send(JSON.stringify({ type: "language", data: language }));
 
     userScript.writeFile(scriptString, language).then(() => {
-
       userScript
         .execute(ws)
         .then(() => repl.execute(codeString, language))

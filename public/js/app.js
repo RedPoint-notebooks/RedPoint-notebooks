@@ -14,14 +14,12 @@ document.addEventListener("DOMContentLoaded", () => {
     let language = event.target.dataset.language;
 
     const codeStrArray = allCodeUpToCell(cellNum, codemirrors[language]);
-    language = language.toUpperCase();
     const json = JSON.stringify({ language, codeStrArray });
 
     ws.send(json);
   };
 
   ws.onopen = event => {
-
     let currentCellIdx = 0;
     let editorNumbers;
     let currentCell;
@@ -39,7 +37,7 @@ document.addEventListener("DOMContentLoaded", () => {
           currentCell = null;
           languageCells = null;
 
-          const language = message.data.toLowerCase();
+          const language = message.data;
           languageCells = document.querySelectorAll(`.code-cell-${language}`);
           editorNumbers = [...languageCells].map(cell => {
             return cell.id.split("-")[1]; // id is 'editor-{num}', we want to extract num
@@ -49,7 +47,7 @@ document.addEventListener("DOMContentLoaded", () => {
           delimiter = message.data;
           break;
         case "stdout":
-          // slice off empty string when split on newline
+          // slice off empty string
           const stdoutArr = message.data.split("\n").slice(0, -1);
           stdoutArr.forEach(message => {
             if (message === delimiter) {
@@ -164,7 +162,6 @@ const setMirrors = language => {
 };
 
 // extracts and concatenates all code up to specified cell number
-
 const allCodeUpToCell = (cellNum, cells) => {
   let codeStrArray = [];
 
