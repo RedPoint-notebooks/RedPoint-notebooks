@@ -21,9 +21,11 @@ document.addEventListener("DOMContentLoaded", () => {
   };
 
   ws.onopen = event => {
-    // receiving the message from server
-    let currentCell = 0;
+    let currentCellIdx = 0;
+    let editorNumbers;
+    let currentCell;
     let languageCells;
+
     ws.onmessage = message => {
       message = JSON.parse(message.data);
 
@@ -31,8 +33,8 @@ document.addEventListener("DOMContentLoaded", () => {
         case "language":
           const language = message.data.toLowerCase();
           languageCells = document.querySelectorAll(`.code-cell-${language}`);
-          languageCells = [...languageCells].map(cell => {
-            return cell.id.split("-")[languageCells.length - 1];
+          editorNumbers = [...languageCells].map(cell => {
+            return cell.id.split("-")[1]; // id is 'editor-{num}', we want to extract num
           });
           break;
         case "stdout":
@@ -40,8 +42,9 @@ document.addEventListener("DOMContentLoaded", () => {
           const stdoutArr = message.data.split("\n").slice(0, -1);
           stdoutArr.forEach(message => {
             if (message === "DELIMITER") {
-              currentCell += 1;
+              currentCellIdx += 1;
             } else {
+              currentCell = editorNumbers[currentCellIdx];
               const outputUl = document.getElementById(
                 `codecell-${currentCell}-output`
               );
@@ -50,6 +53,7 @@ document.addEventListener("DOMContentLoaded", () => {
           });
           break;
         case "stderr":
+          currentCell = editorNumbers[currentCellIdx];
           const stderrUl = document.getElementById(
             `codecell-${currentCell}-error`
           );
@@ -57,6 +61,7 @@ document.addEventListener("DOMContentLoaded", () => {
           appendLi(stderrUl, message.data);
           break;
         case "error":
+          currentCell = editorNumbers[currentCellIdx];
           const errorUl = document.getElementById(
             `codecell-${currentCell}-error`
           );
@@ -67,12 +72,13 @@ document.addEventListener("DOMContentLoaded", () => {
           }
           break;
         case "return":
+          currentCell = editorNumbers[currentCellIdx];
           const returnUl = document.getElementById(
             `codecell-${currentCell}-return`
           );
 
           appendLi(returnUl, message.data);
-          currentCell = 0;
+          currentCellIdx = 0;
           break;
         case "end":
           console.log(message.data);

@@ -38,7 +38,7 @@ const userScript = {
       });
 
       scriptProcess.stderr.on("data", data => {
-        debugger;
+        // debugger;
         reject(JSON.stringify({ type: "stderr", data: data }));
       });
     });

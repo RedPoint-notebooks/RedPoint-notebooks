@@ -43,7 +43,6 @@ wss.on("connection", ws => {
           ws.send(JSON.stringify({ type: "return", data: returnValue }));
         })
         .catch(data => {
-          debugger;
           ws.send(data);
         });
     });
