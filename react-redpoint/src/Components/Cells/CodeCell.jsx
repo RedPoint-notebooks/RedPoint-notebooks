@@ -3,11 +3,10 @@ import { Controlled as CodeMirror } from "react-codemirror2";
 import "codemirror/lib/codemirror.css";
 import "codemirror/theme/darcula.css";
 import "codemirror/mode/javascript/javascript.js";
+import AddCodeCellButton from "../Shared/AddCodeCellButton";
 
 class CodeCell extends Component {
-  state = {
-    code: "console.log('hello world');"
-  };
+  state = {};
 
   handleChange = value => {
     this.setState({ code: value });
@@ -22,23 +21,33 @@ class CodeCell extends Component {
 
   render() {
     return (
-      <CodeMirror
-        value={this.state.code}
-        options={this.cellOptions}
-        onBeforeChange={(editor, data, value) => {
-          console.log("Editor:", editor);
-          console.log("Data:", data);
-          console.log("Value:", value);
-          console.log("inside onBeforeChange");
-          this.handleChange(value);
-        }}
-        onChange={(editor, data, value) => {
-          console.log(editor);
-          console.log(data);
-          console.log(value);
-          console.log("inside onChange");
-        }}
-      />
+      <div>
+        <AddCodeCellButton
+          onClick={this.props.onAddCodeCellClick}
+          cellIndex={this.props.cellIndex}
+        />
+        <CodeMirror
+          value={this.props.code}
+          options={this.cellOptions}
+          onBeforeChange={(editor, data, value) => {
+            console.log("Editor:", editor);
+            console.log("Data:", data);
+            console.log("Value:", value);
+            console.log("inside onBeforeChange");
+            this.handleChange(value);
+          }}
+          onChange={(editor, data, value) => {
+            console.log(editor);
+            console.log(data);
+            console.log(value);
+            console.log("inside onChange");
+          }}
+        />
+        <AddCodeCellButton
+          cellIndex={this.props.cellIndex + 1}
+          onClick={this.props.onAddCodeCellClick}
+        />
+      </div>
     );
   }
 }
