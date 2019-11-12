@@ -5,7 +5,7 @@ document.addEventListener("DOMContentLoaded", () => {
   };
   const btnMD1 = document.getElementById("render-md-1");
   const mdC1 = document.getElementById("md-cell-1");
-  const ws = new WebSocket("ws://localhost:3000");
+  const ws = new WebSocket("ws://localhost:8000");
 
   const handleCodeSubmit = event => {
     clearPreviousResponse();

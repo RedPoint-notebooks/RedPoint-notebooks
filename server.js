@@ -57,6 +57,10 @@ wss.on("connection", ws => {
   });
 });
 
-server.listen(3000, () => {
+app.get("/reacttest", (req, res) => {
+  res.send("Served here");
+});
+
+server.listen(8000, () => {
   console.log("App started");
 });
