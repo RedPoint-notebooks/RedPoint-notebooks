@@ -10,7 +10,6 @@ function App() {
       <header className="App-header">
         <img src={logo} className="App-logo" alt="logo" />
         <h1>RedPoint</h1>
-        <p>{`This is some ${50 + 50}% good code`}</p>
         {/* <CodeCell /> */}
         <Notebook />
       </header>

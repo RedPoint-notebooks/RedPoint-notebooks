@@ -15,12 +15,19 @@ class Notebook extends Component {
       ws.onmessage = message => {
         message = JSON.parse(message.data);
         console.log(message.data);
+        console.log(message.type);
+
+        switch (message.type) {
+          case "stdout":
+            this.setState({ response: message.data });
+            break;
+        }
       };
     };
 
     const test = () => {
       if (this.state.sent === false) {
-        let fakeCode = ["console.log(90210)"];
+        let fakeCode = ["const a = 50\nconst b = 100\n console.log(a + b)"];
         const json = JSON.stringify(fakeCode);
         ws.send(json);
       }
@@ -33,7 +40,7 @@ class Notebook extends Component {
     return (
       <div>
         <ul>
-          <li>{this.state.response}</li>
+          <h4>Websocket Response: {this.state.response}</h4>
         </ul>
       </div>
     );
