@@ -31,6 +31,12 @@ document.addEventListener("DOMContentLoaded", () => {
 
       switch (message.type) {
         case "language":
+          // clean up variables in ws.onopen scope
+          currentCellIdx = 0;
+          editorNumbers = null;
+          currentCell = null;
+          languageCells = null;
+
           const language = message.data.toLowerCase();
           languageCells = document.querySelectorAll(`.code-cell-${language}`);
           editorNumbers = [...languageCells].map(cell => {
@@ -78,7 +84,7 @@ document.addEventListener("DOMContentLoaded", () => {
           );
 
           appendLi(returnUl, message.data);
-          currentCellIdx = 0;
+
           break;
         case "end":
           console.log(message.data);
