@@ -1,23 +1,59 @@
 document.addEventListener("DOMContentLoaded", () => {
-  const codemirrors = setAllCodemirrorObjects();
+  const codemirrors = {
+    ruby: setMirrors("ruby"),
+    javascript: setMirrors("javascript")
+  };
   const btnMD1 = document.getElementById("render-md-1");
   const mdC1 = document.getElementById("md-cell-1");
   const ws = new WebSocket("ws://localhost:8000");
 
+  const handleCodeSubmit = event => {
+    clearPreviousResponse();
+
+    let cellNum = +event.target.dataset.button;
+    let language = event.target.dataset.language;
+
+    const codeStrArray = allCodeUpToCell(cellNum, codemirrors[language]);
+    const json = JSON.stringify({ language, codeStrArray });
+
+    ws.send(json);
+  };
+
   ws.onopen = event => {
-    // receiving the message from server
-    let currentCell = 0;
+    let currentCellIdx = 0;
+    let editorNumbers;
+    let currentCell;
+    let languageCells;
+    let delimiter;
+
     ws.onmessage = message => {
       message = JSON.parse(message.data);
 
       switch (message.type) {
+        case "language":
+          // clean up variables in ws.onopen scope
+          currentCellIdx = 0;
+          editorNumbers = null;
+          currentCell = null;
+          languageCells = null;
+
+          const language = message.data;
+          languageCells = document.querySelectorAll(`.code-cell-${language}`);
+          editorNumbers = [...languageCells].map(cell => {
+            return cell.id.split("-")[1]; // id is 'editor-{num}', we want to extract num
+          });
+          break;
+        case "delimiter":
+          delimiter = message.data;
+          break;
         case "stdout":
-          // slice off empty string when split on newline
+          // slice off empty string
           const stdoutArr = message.data.split("\n").slice(0, -1);
           stdoutArr.forEach(message => {
-            if (message === "DELIMITER") {
-              currentCell += 1;
+            if (message === delimiter) {
+              currentCellIdx += 1;
             } else {
+              currentCell = editorNumbers[currentCellIdx];
               const outputUl = document.getElementById(
                 `codecell-${currentCell}-output`
               );
@@ -26,13 +62,15 @@ document.addEventListener("DOMContentLoaded", () => {
           });
           break;
         case "stderr":
+          currentCell = editorNumbers[currentCellIdx];
           const stderrUl = document.getElementById(
             `codecell-${currentCell}-error`
           );
-
+          debugger;
           appendLi(stderrUl, message.data);
           break;
         case "error":
+          currentCell = editorNumbers[currentCellIdx];
           const errorUl = document.getElementById(
             `codecell-${currentCell}-error`
           );
@@ -43,28 +81,19 @@ document.addEventListener("DOMContentLoaded", () => {
           }
           break;
         case "return":
+          currentCell = editorNumbers[currentCellIdx];
           const returnUl = document.getElementById(
             `codecell-${currentCell}-return`
           );
 
           appendLi(returnUl, message.data);
-          currentCell = 0;
+
           break;
         case "end":
           console.log(message.data);
           break;
       }
     };
-  };
-
-  const handleCodeSubmit = event => {
-    clearPreviousResponse();
-
-    let cellNum = +event.target.dataset.button;
-    const codeStrArray = allCodeUpToCell(cellNum, codemirrors);
-    const json = JSON.stringify(codeStrArray);
-
-    ws.send(json);
   };
 
   const clearPreviousResponse = () => {
@@ -117,13 +146,12 @@ document.addEventListener("DOMContentLoaded", () => {
   });
 });
 
-// maps all textareas designated as code cells to codemirror objects
-const setAllCodemirrorObjects = () => {
-  const codeCells = [...document.querySelectorAll(".code-cell")];
+const setMirrors = language => {
+  const codeCells = [...document.querySelectorAll(`.code-cell-${language}`)];
 
   return codeCells.map(codeCell => {
     let editor = CodeMirror.fromTextArea(codeCell, {
-      mode: "javascript",
+      mode: language,
       theme: "darcula",
       lineNumbers: true,
       showCursorWhenSelecting: true
@@ -134,18 +162,19 @@ const setAllCodemirrorObjects = () => {
 };
 
 // extracts and concatenates all code up to specified cell number
-const allCodeUpToCell = (cellNum, allCodeCells) => {
+const allCodeUpToCell = (cellNum, cells) => {
   let codeStrArray = [];
 
   for (let i = 0; i <= cellNum; i += 1) {
-    let cell = allCodeCells[i];
-    codeStrArray.push(
-      cell
-        .getValue()
-        .trim()
-        .concat("\n")
-    );
+    if (cells[i]) {
+      let cell = cells[i];
+      codeStrArray.push(
+        cell
+          .getValue()
+          .trim()
+          .concat("\n")
+      );
+    }
   }
-
   return codeStrArray;
 };
