@@ -1,3 +1,4 @@
+const uuidv4 = require("uuid/v4");
 const express = require("express");
 const http = require("http");
 const Websocket = require("ws");
@@ -13,12 +14,19 @@ const repl = require("./libs/modules/repl");
 app.use(express.static("."));
 app.use(logger("dev"));
 
+const sendDelimiterToClient = (ws, uuid) => {
+  ws.send(JSON.stringify({ type: "delimiter", data: uuid }));
+};
+
 wss.on("connection", ws => {
+  const delimiter = uuidv4();
+  sendDelimiterToClient(ws, delimiter);
+
   ws.on("message", msg => {
     const codeStrArr = JSON.parse(msg);
     const codeString = codeStrArr.join("");
-    const scriptString = codeStrArr.join("console.log('DELIMITER')\n");
 
+    const scriptString = codeStrArr.join(`console.log("${delimiter}")\n`);
     userScript.writeFile(scriptString, "JAVASCRIPT").then(() => {
       userScript
         .execute(ws)
