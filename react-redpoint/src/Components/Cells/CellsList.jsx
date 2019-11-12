@@ -2,6 +2,7 @@ import React, { Component } from "react";
 import CodeCell from "./CodeCell";
 import ToggleableMarkdownContainer from "./ToggleableMarkdownContainer";
 import AddCodeCellButton from "../Shared/AddCodeCellButton";
+import CodeCellContainer from "./CodeCellContainer";
 
 class CellsList extends Component {
   state = {};
