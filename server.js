@@ -1,3 +1,4 @@
+const uuidv4 = require("uuid/v4");
 const express = require("express");
 const http = require("http");
 const Websocket = require("ws");
@@ -22,19 +23,26 @@ const generateDelimiter = (lang, delimiter) => {
     case "PYTHON":
       return `print(${delimiter})\n`;
   }
+
+const sendDelimiterToClient = (ws, uuid) => {
+  ws.send(JSON.stringify({ type: "delimiter", data: uuid }));
 };
 
 wss.on("connection", ws => {
+  const delimiter = uuidv4();
+  sendDelimiterToClient(ws, delimiter);
+
   ws.on("message", msg => {
     const { language, codeStrArray } = JSON.parse(msg);
     const codeString = codeStrArray.join("");
-    const delimiterStatement = generateDelimiter(language, "DELIMITER");
+    const delimiterStatement = generateDelimiter(language, delimiter);
     const scriptString = codeStrArray.join(delimiterStatement);
 
     // is this the best place to set language for upcoming data?
     ws.send(JSON.stringify({ type: "language", data: language }));
 
     userScript.writeFile(scriptString, language).then(() => {
+
       userScript
         .execute(ws)
         .then(() => repl.execute(codeString, language))

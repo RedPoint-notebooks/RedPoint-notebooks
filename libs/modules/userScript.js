@@ -21,7 +21,7 @@ const userScript = {
         userScript.execOptions,
         (error, stdout, stderr) => {
           if (error) {
-            // debugger;
+            debugger;
             ws.send(JSON.stringify({ type: "error", data: error }));
           }
         }
