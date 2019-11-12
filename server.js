@@ -14,6 +14,17 @@ const repl = require("./libs/modules/repl");
 app.use(express.static("."));
 app.use(logger("dev"));
 
+const generateDelimiter = (lang, delimiter) => {
+  switch (lang) {
+    case "ruby":
+      return `puts "${delimiter}"\n`;
+    case "javascript":
+      return `console.log(${delimiter})\n`;
+    case "python":
+      return `print(${delimiter})\n`;
+  }
+};
+
 const sendDelimiterToClient = (ws, uuid) => {
   ws.send(JSON.stringify({ type: "delimiter", data: uuid }));
 };
@@ -23,20 +34,23 @@ wss.on("connection", ws => {
   sendDelimiterToClient(ws, delimiter);
 
   ws.on("message", msg => {
-    const codeStrArr = JSON.parse(msg);
-    const codeString = codeStrArr.join("");
+    const { language, codeStrArray } = JSON.parse(msg);
+    const codeString = codeStrArray.join("");
+    const delimiterStatement = generateDelimiter(language, delimiter);
+    const scriptString = codeStrArray.join(delimiterStatement);
 
-    const scriptString = codeStrArr.join(`console.log("${delimiter}")\n`);
-    userScript.writeFile(scriptString, "JAVASCRIPT").then(() => {
+    // is this the best place to set language for upcoming data?
+    ws.send(JSON.stringify({ type: "language", data: language }));
+
+    userScript.writeFile(scriptString, language).then(() => {
       userScript
         .execute(ws)
-        .then(() => repl.execute(codeString, "JAVASCRIPT"))
-        .then(returnData => repl.parseOutput(returnData, "JAVASCRIPT"))
+        .then(() => repl.execute(codeString, language))
+        .then(returnData => repl.parseOutput(returnData, language))
         .then(returnValue => {
           ws.send(JSON.stringify({ type: "return", data: returnValue }));
         })
         .catch(data => {
-          debugger;
           ws.send(data);
         });
     });

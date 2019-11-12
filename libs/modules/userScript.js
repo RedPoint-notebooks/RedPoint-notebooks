@@ -1,6 +1,5 @@
 const fs = require("fs");
 const { exec } = require("child_process"); // exec uses system default shell
-// var spawn = require("child_process").spawn;
 
 const userScript = {
   script: "",
@@ -28,7 +27,6 @@ const userScript = {
       );
 
       scriptProcess.stdout.on("data", data => {
-        // debugger;
         ws.send(JSON.stringify({ type: "stdout", data: data }));
       });
 
@@ -38,7 +36,6 @@ const userScript = {
       });
 
       scriptProcess.stderr.on("data", data => {
-        debugger;
         reject(JSON.stringify({ type: "stderr", data: data }));
       });
     });
@@ -48,20 +45,17 @@ const userScript = {
       console.log("BEFORE WRITING SCRIPT");
 
       switch (lang) {
-        case "RUBY":
+        case "ruby":
           this.fileType = `.rb`;
           this.command = "ruby";
-          // this.delimiter = "puts 'DELIMITER'\n";
           break;
-        case "JAVASCRIPT":
+        case "javascript":
           this.fileType = `.js`;
           this.command = "node";
-          // this.delimiter = "console.log('DELIMITER')\n";
           break;
-        case "PYTHON":
+        case "python":
           this.fileType = ".py";
           this.command = "python";
-        // this.delimiter = "print('DELIMITER\n')";
       }
 
       fs.writeFile(
@@ -92,11 +86,6 @@ const userScript = {
       outputByCell[lastCellIdx].error = [err, stderr];
     }
 
-    // { 0: ['ser', 'er'], 1: ['er', 'wrgerg'] }
-
-    // { 0: { output: ['ser', 'er']},
-    //   1: { output: ['er', 'wrgerg']}
-    // }
     return outputByCell;
   }
 };

@@ -2,24 +2,33 @@
 <html lang="en">
   <head>
     <title>Redpoint on Point</title>
-    <script src="../codemirror/lib/codemirror.js"/></script>
+    <script src="../codemirror/lib/codemirror.js"></script>
     <link href="../codemirror/lib/codemirror.css" rel="stylesheet" />
-    <script src="../codemirror/mode/javascript/javascript.js"/></script>
-    <link href="../codemirror/theme/darcula.css" rel="stylesheet"/>
+    <script src="../codemirror/mode/javascript/javascript.js"></script>
+    <script src="../codemirror/mode/ruby/ruby.js"></script>
+    <link href="../codemirror/theme/darcula.css" rel="stylesheet" />
     <script src="../codemirror/addon/hint/javascript-hint.js"></script>
     <script src="../codemirror/mode/markdown/markdown.js"></script>
-    <link href="../codemirror/theme/monokai.css" rel="stylesheet">
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/markdown-it/10.0.0/markdown-it.js"></script> 
+    <link href="../codemirror/theme/monokai.css" rel="stylesheet" />
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/markdown-it/10.0.0/markdown-it.js"></script>
     <script src="/public/js/app.js"></script>
-    <link href="https://fonts.googleapis.com/css?family=Be+Vietnam&display=swap" rel="stylesheet">
-    <link href="public/stylesheets/stylesheet.css" rel="stylesheet">
+    <link
+      href="https://fonts.googleapis.com/css?family=Be+Vietnam&display=swap"
+      rel="stylesheet"
+    />
+    <link href="public/stylesheets/stylesheet.css" rel="stylesheet" />
   </head>
   <body>
     <h1>Javascript</h1>
-    <textarea class="code-cell" id="editor-1">while (true) {
-      console.log("hi");
-    };</textarea>
-    <button data-button="0" class="code-submit" id="btn-codecell-1">Run Code</button>
+    <textarea class="code-cell-ruby" id="editor-0">puts 'hi'</textarea>
+    <button
+      data-button="0"
+      data-language="ruby"
+      class="code-submit"
+      id="btn-codecell-0"
+    >
+      Run Ruby code from here
+    </button>
     <h3>Output:</h3>
     <ul id="codecell-0-output" class="code-output"></ul>
     <h3>Return:</h3>
@@ -27,17 +36,45 @@
     <h3>Error:</h3>
     <ul id="codecell-0-error" class="code-error"></ul>
 
-    <textarea id="md-cell-1"># Websocket enabled
+    <textarea id="md-cell-1">
+# Not Even Super Janky
+- Would benefit from pretty print
+- Halloween is over
     </textarea>
     <div id="md-1-result"></div>
     <button id="render-md-1">Render Markdown</button>
-    <textarea class="code-cell" id="editor-2">console.log("cell 2");</textarea>
-    <button data-button="1" class="code-submit" id="btn-codecell-2">Run Code</button>
+    <textarea class="code-cell-javascript" id="editor-1">
+console.log('there')</textarea
+    >
+    <button
+      data-button="1"
+      data-language="javascript"
+      class="code-submit"
+      id="btn-codecell-2"
+    >
+      Run Javascript code from here
+    </button>
     <h3>Output:</h3>
     <ul id="codecell-1-output" class="code-output"></ul>
     <h3>Return:</h3>
     <ul id="codecell-1-return" class="code-return"></ul>
     <h3>Error:</h3>
     <ul id="codecell-1-error" class="code-error"></ul>
+
+    <textarea class="code-cell-ruby" id="editor-2">puts 'guys'</textarea>
+    <button
+      data-button="2"
+      data-language="ruby"
+      class="code-submit"
+      id="btn-codecell-2"
+    >
+      Run Ruby code from here
+    </button>
+    <h3>Output:</h3>
+    <ul id="codecell-2-output" class="code-output"></ul>
+    <h3>Return:</h3>
+    <ul id="codecell-2-return" class="code-return"></ul>
+    <h3>Error:</h3>
+    <ul id="codecell-2-error" class="code-error"></ul>
   </body>
 </html>

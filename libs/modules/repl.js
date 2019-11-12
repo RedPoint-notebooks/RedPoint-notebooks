@@ -9,15 +9,15 @@ const repl = {
     let replType;
 
     switch (lang) {
-      case "RUBY":
+      case "ruby":
         replExitMessage = "exit\r";
         replType = "irb";
         break;
-      case "JAVASCRIPT":
+      case "javascript":
         replExitMessage = ".exit\r";
         replType = "node";
         break;
-      case "PYTHON":
+      case "python":
         replExitMessage = "exit()\r";
         replType = "python";
         break;
@@ -37,11 +37,11 @@ const repl = {
   },
   parseOutput: (returnData, lang) => {
     switch (lang) {
-      case "RUBY":
+      case "ruby":
         return parseRubyOutput(returnData);
-      case "JAVASCRIPT":
+      case "javascript":
         return parseJSOutput(returnData);
-      case "PYTHON":
+      case "python":
         return parsePythonOutput(returnData);
     }
   }
