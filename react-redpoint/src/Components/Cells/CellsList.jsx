@@ -1,5 +1,4 @@
 import React, { Component } from "react";
-import ToggleableMarkdownContainer from "./ToggleableMarkdownContainer";
 import AddCodeCellButton from "../Shared/AddCodeCellButton";
 import CodeCellContainer from "./CodeCellContainer";
 import uuidv4 from "uuid/v4";
