@@ -9,32 +9,17 @@ class CellsList extends Component {
 
   render() {
     const cellContainers = this.props.cells.map((cell, index) => {
-      if (cell.type === ("javascript" || "ruby" || "python")) {
-        return (
-          <CodeCellContainer
-            language={cell.type}
-            key={uuidv4()}
-            code={cell.code}
-            onDeleteCellClick={this.props.onDeleteCellClick}
-            onAddCellClick={this.props.onAddCellClick}
-            cellIndex={index}
-            defaultLanguage={this.props.defaultLanguage}
-          />
-        );
-      } else if (cell.type === "markdown") {
-        return (
-          <ToggleableMarkdownContainer
-            language={cell.type}
-            key={index}
-            code={cell.code}
-            onDeleteCellClick={this.props.onDeleteCellClick}
-            onAddCellClick={this.props.onAddCellClick}
-            cellIndex={index}
-            defaultLanguage={this.props.defaultLanguage}
-          />
-        );
-      }
-      return null; // to appease React warning
+      return (
+        <CodeCellContainer
+          language={cell.type}
+          key={uuidv4()}
+          code={cell.code}
+          onDeleteCellClick={this.props.onDeleteCellClick}
+          onAddCellClick={this.props.onAddCellClick}
+          cellIndex={index}
+          defaultLanguage={this.props.defaultLanguage}
+        />
+      );
     });
 
     cellContainers.push(
