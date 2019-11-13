@@ -1,5 +1,9 @@
 import React, { Component } from "react";
 import CellsList from "./Cells/CellsList";
+import Navbar from "react-bootstrap/Navbar";
+import logo from "../placeholder_logo.svg";
+import Container from "react-bootstrap/Container";
+import Row from "react-bootstrap/Row";
 
 class Notebook extends Component {
   state = {
@@ -34,11 +38,25 @@ class Notebook extends Component {
   render() {
     return (
       <div>
-        <CellsList
-          onDeleteCellClick={this.handleDeleteCellClick}
-          onAddCellClick={this.handleAddCellClick}
-          cells={this.state.cells}
-        />
+        <Navbar bg="dark" variant="dark">
+          <Navbar.Brand href="#home">
+            <img
+              alt=""
+              src={logo}
+              width="30"
+              height="30"
+              className="d-inline-block align-top"
+            />{" "}
+            RedPoint
+          </Navbar.Brand>
+        </Navbar>
+        <Container className="App-header">
+          <CellsList
+            onDeleteCellClick={this.handleDeleteCellClick}
+            onAddCellClick={this.handleAddCellClick}
+            cells={this.state.cells}
+          />
+        </Container>
       </div>
     );
   }
