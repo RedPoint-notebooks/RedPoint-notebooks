@@ -1,4 +1,5 @@
 import React from "react";
+import Button from "react-bootstrap/Button";
 
 const DeleteCellButton = props => {
   const handleDeleteCellClick = () => {
@@ -6,9 +7,9 @@ const DeleteCellButton = props => {
   };
 
   return (
-    <button onClick={handleDeleteCellClick} type="button">
+    <Button onClick={handleDeleteCellClick} variant="secondary" size="sm">
       <span>&times; Delete</span>
-    </button>
+    </Button>
   );
 };
 

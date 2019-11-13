@@ -7,6 +7,8 @@ import "codemirror/mode/ruby/ruby.js";
 import "codemirror/mode/python/python.js";
 import AddCodeCellButton from "../Shared/AddCodeCellButton";
 import DeleteCellButton from "../Shared/DeleteCellButton";
+import DropdownButton from "react-bootstrap/DropdownButton";
+import Dropdown from "react-bootstrap/Dropdown";
 
 class CodeCell extends Component {
   state = {};
@@ -30,9 +32,21 @@ class CodeCell extends Component {
           cellIndex={this.props.cellIndex}
         />
         <div className="code-cell-toolbar">
-          <select>
+          <DropdownButton
+            variant="secondary"
+            id="dropdown-basic-button"
+            title="Javascript"
+            size="sm"
+          >
+            <Dropdown.Item href="#/action-1" active>
+              Javascript
+            </Dropdown.Item>
+            <Dropdown.Item href="#/action-2">Ruby</Dropdown.Item>
+            <Dropdown.Item href="#/action-3">Python</Dropdown.Item>
+          </DropdownButton>
+          {/* <select>
             <option>Javascript</option>
-          </select>
+          </select> */}
           <DeleteCellButton
             onClick={this.props.onDeleteCellClick}
             cellIndex={this.props.cellIndex}
