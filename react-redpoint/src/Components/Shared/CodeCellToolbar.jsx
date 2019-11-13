@@ -17,15 +17,30 @@ const CodeCellToolbar = props => {
         title={props.language}
         size="sm"
       >
-        <Dropdown.Item href="#/action-1">Markdown</Dropdown.Item>
+        <Dropdown.Item
+          href="#/action-1"
+          active={props.language === "markdown" ? true : false}
+        >
+          Markdown
+        </Dropdown.Item>
         <Dropdown.Item
           href="#/action-2"
-          active // TODO: fix hard-coding of active language
+          active={props.language === "javascript" ? true : false}
         >
           Javascript
         </Dropdown.Item>
-        <Dropdown.Item href="#/action-3">Ruby</Dropdown.Item>
-        <Dropdown.Item href="#/action-4">Python</Dropdown.Item>
+        <Dropdown.Item
+          href="#/action-3"
+          active={props.language === "ruby" ? true : false}
+        >
+          Ruby
+        </Dropdown.Item>
+        <Dropdown.Item
+          href="#/action-4"
+          active={props.language === "python" ? true : false}
+        >
+          Python
+        </Dropdown.Item>
       </DropdownButton>
       <AddCodeCellButton
         onClick={props.onAddClick}

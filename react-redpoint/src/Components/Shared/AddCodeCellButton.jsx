@@ -35,20 +35,32 @@ class AddCodeCellButton extends Component {
         size="sm"
         onClick={this.handleAddCellClick}
       >
-        <Dropdown.Item as="button" onClick={this.handleSetMarkdown}>
+        <Dropdown.Item
+          as="button"
+          onClick={this.handleSetMarkdown}
+          active={this.state.type === "markdown" ? true : false}
+        >
           Markdown
         </Dropdown.Item>
         <Dropdown.Item
           as="button"
           onClick={this.handleSetJavascript}
-          active // TODO: fix hard-coding of active language
+          active={this.state.type === "javascript" ? true : false}
         >
           Javascript
         </Dropdown.Item>
-        <Dropdown.Item as="button" onClick={this.handleSetRuby}>
+        <Dropdown.Item
+          as="button"
+          onClick={this.handleSetRuby}
+          active={this.state.type === "ruby" ? true : false}
+        >
           Ruby
         </Dropdown.Item>
-        <Dropdown.Item as="button" onClick={this.handleSetPython}>
+        <Dropdown.Item
+          as="button"
+          onClick={this.handleSetPython}
+          active={this.state.type === "python" ? true : false}
+        >
           Python
         </Dropdown.Item>
       </SplitButton>
