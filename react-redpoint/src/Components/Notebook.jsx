@@ -17,7 +17,7 @@ class Notebook extends Component {
       {
         type: "markdown",
         code: "### Hi, here is some markdown text.",
-        editable: false
+        rendered: false
       }
     ]
   };

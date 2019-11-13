@@ -17,7 +17,7 @@ class CellsList extends Component {
           onAddCellClick={this.props.onAddCellClick}
           cellIndex={index}
           defaultLanguage={this.props.defaultLanguage}
-          editable={cell.editable}
+          rendered={cell.rendered}
         />
       );
     });

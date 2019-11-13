@@ -5,7 +5,7 @@ import RenderedMarkdown from "./RenderedMarkdown";
 class CodeCellContainer extends Component {
   render() {
     const isRenderedMarkdown =
-      this.props.language === "markdown" && !this.props.editable;
+      this.props.language === "markdown" && this.props.rendered;
 
     return isRenderedMarkdown ? (
       <RenderedMarkdown
