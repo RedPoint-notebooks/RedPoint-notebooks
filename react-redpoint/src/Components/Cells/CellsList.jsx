@@ -28,7 +28,7 @@ class CellsList extends Component {
         // className="solo-add-code-cell-btn" // TODO: not being applied
         cellIndex={cellContainers.length}
         onClick={this.props.onAddCellClick}
-        key={cellContainers.length}
+        key={uuidv4()}
         defaultLanguage={this.props.defaultLanguage}
       />
     );
