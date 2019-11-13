@@ -16,19 +16,28 @@ class CellsList extends Component {
             key={index}
             code={cell.code}
             onDeleteCellClick={this.props.onDeleteCellClick}
-            onAddCodeCellClick={this.props.onAddCodeCellClick}
+            onAddCellClick={this.props.onAddCellClick}
             cellIndex={index}
           />
         );
-      } else {
-        return <ToggleableMarkdownContainer />;
+      } else if (cell.type === "markdown") {
+        return (
+          <ToggleableMarkdownContainer
+            language={cell.type}
+            key={index}
+            code={cell.code}
+            onDeleteCellClick={this.props.onDeleteCellClick}
+            onAddCellClick={this.props.onAddCellClick}
+            cellIndex={index}
+          />
+        );
       }
     });
 
     cellContainers.push(
       <AddCodeCellButton
         cellIndex={cellContainers.length}
-        onClick={this.props.onAddCodeCellClick}
+        onClick={this.props.onAddCellClick}
       />
     );
     return cellContainers;

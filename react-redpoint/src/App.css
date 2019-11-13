@@ -21,7 +21,8 @@
   color: #09d3ac;
 }
 
-.react-codemirror2 {
+.react-codemirror2,
+.rendered-markdown {
   width: 900px;
   text-align: left;
 }
