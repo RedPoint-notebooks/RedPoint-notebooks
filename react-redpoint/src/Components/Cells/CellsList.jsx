@@ -1,26 +1,37 @@
 import React, { Component } from "react";
 import CodeCell from "./CodeCell";
+import ToggleableMarkdownContainer from "./ToggleableMarkdownContainer";
+import AddCodeCellButton from "../Shared/AddCodeCellButton";
+import CodeCellContainer from "./CodeCellContainer";
 
 class CellsList extends Component {
   state = {};
 
   render() {
-    const codemirrorCells = this.props.cells.map((cell, index) => {
-      switch (cell.type) {
-        case "javascript":
-          return (
-            <CodeCell
-              key={index}
-              code={cell.code}
-              onAddCodeCellClick={this.props.onAddCodeCellClick}
-              cellIndex={index}
-            />
-          );
-        default:
-          throw new Error("Bad cell type provided");
+    const cellContainers = this.props.cells.map((cell, index) => {
+      if (cell.type === ("javascript" || "ruby" || "python")) {
+        return (
+          <CodeCellContainer
+            language={cell.type}
+            key={index}
+            code={cell.code}
+            onDeleteCellClick={this.props.onDeleteCellClick}
+            onAddCodeCellClick={this.props.onAddCodeCellClick}
+            cellIndex={index}
+          />
+        );
+      } else {
+        return <ToggleableMarkdownContainer />;
       }
     });
-    return codemirrorCells;
+
+    cellContainers.push(
+      <AddCodeCellButton
+        cellIndex={cellContainers.length}
+        onClick={this.props.onAddCodeCellClick}
+      />
+    );
+    return cellContainers;
   }
 }
 

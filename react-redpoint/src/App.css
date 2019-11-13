@@ -25,3 +25,9 @@
   width: 900px;
   text-align: left;
 }
+
+.code-cell-toolbar {
+  width: 900px;
+  display: flex;
+  justify-content: space-between;
+}

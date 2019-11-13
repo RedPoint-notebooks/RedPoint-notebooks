@@ -4,6 +4,7 @@ import "codemirror/lib/codemirror.css";
 import "codemirror/theme/darcula.css";
 import "codemirror/mode/javascript/javascript.js";
 import AddCodeCellButton from "../Shared/AddCodeCellButton";
+import DeleteCellButton from "../Shared/DeleteCellButton";
 
 class CodeCell extends Component {
   state = {};
@@ -26,6 +27,16 @@ class CodeCell extends Component {
           onClick={this.props.onAddCodeCellClick}
           cellIndex={this.props.cellIndex}
         />
+        <div className="code-cell-toolbar">
+          <select>
+            <option>Javascript</option>
+          </select>
+          <DeleteCellButton
+            onClick={this.props.onDeleteCellClick}
+            cellIndex={this.props.cellIndex}
+          />
+        </div>
+        <br />
         <CodeMirror
           value={this.props.code}
           options={this.cellOptions}
@@ -42,10 +53,6 @@ class CodeCell extends Component {
             console.log(value);
             console.log("inside onChange");
           }}
-        />
-        <AddCodeCellButton
-          cellIndex={this.props.cellIndex + 1}
-          onClick={this.props.onAddCodeCellClick}
         />
       </div>
     );
