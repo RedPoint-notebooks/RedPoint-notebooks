@@ -8,13 +8,14 @@ class CellsList extends Component {
   state = {};
 
   render() {
-    const codemirrorCells = this.props.cells.map((cell, index) => {
+    const cellContainers = this.props.cells.map((cell, index) => {
       if (cell.type === ("javascript" || "ruby" || "python")) {
         return (
-          <CodeCell
+          <CodeCellContainer
             language={cell.type}
             key={index}
             code={cell.code}
+            onDeleteCellClick={this.props.onDeleteCellClick}
             onAddCodeCellClick={this.props.onAddCodeCellClick}
             cellIndex={index}
           />
@@ -24,13 +25,13 @@ class CellsList extends Component {
       }
     });
 
-    codemirrorCells.push(
+    cellContainers.push(
       <AddCodeCellButton
-        cellIndex={codemirrorCells.length}
+        cellIndex={cellContainers.length}
         onClick={this.props.onAddCodeCellClick}
       />
     );
-    return codemirrorCells;
+    return cellContainers;
   }
 }
 

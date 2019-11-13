@@ -10,6 +10,14 @@ class Notebook extends Component {
     ]
   };
 
+  handleDeleteCellClick = index => {
+    this.setState(prevState => {
+      const newCells = [...prevState.cells];
+      newCells.splice(index, 1);
+      return { cells: newCells };
+    });
+  };
+
   handleAddCodeCellClick = index => {
     this.setState(prevState => {
       const newCells = [...prevState.cells];
@@ -25,6 +33,7 @@ class Notebook extends Component {
     return (
       <div>
         <CellsList
+          onDeleteCellClick={this.handleDeleteCellClick}
           onAddCodeCellClick={this.handleAddCodeCellClick}
           cells={this.state.cells}
         />
