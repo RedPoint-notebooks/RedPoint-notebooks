@@ -1,12 +1,11 @@
 import React, { Component } from "react";
 import CellsList from "./Cells/CellsList";
-
 import logo from "../placeholder_logo.svg";
-
 import Container from "react-bootstrap/Container";
 import Navbar from "react-bootstrap/Navbar";
 import NavDropdown from "react-bootstrap/NavDropdown";
 import Nav from "react-bootstrap/Nav";
+import NavigationBar from "./Shared/NavigationBar";
 
 class Notebook extends Component {
   state = {
@@ -41,33 +40,7 @@ class Notebook extends Component {
   render() {
     return (
       <div>
-        <Navbar bg="dark" variant="dark">
-          <Navbar.Brand href="#home">
-            <img
-              alt=""
-              src={logo}
-              width="30"
-              height="30"
-              className="d-inline-block align-top"
-            />{" "}
-            RedPoint
-          </Navbar.Brand>
-          <Navbar.Toggle aria-controls="basic-navbar-nav" />
-          <Navbar.Collapse id="basic-navbar-nav">
-            <Nav className="mr-auto">
-              <Nav.Link href="#home">Share</Nav.Link>
-              <Nav.Link href="#foo">Clone</Nav.Link>
-              <Nav.Link href="#link">Delete</Nav.Link>
-              <NavDropdown title="Default Language" id="basic-nav-dropdown">
-                <NavDropdown.Item href="#action/3.1">
-                  Javascript
-                </NavDropdown.Item>
-                <NavDropdown.Item href="#action/3.2">Ruby</NavDropdown.Item>
-                <NavDropdown.Item href="#action/3.3">Python</NavDropdown.Item>
-              </NavDropdown>
-            </Nav>
-          </Navbar.Collapse>
-        </Navbar>
+        <NavigationBar />
         <Container className="App-header">
           <CellsList
             onDeleteCellClick={this.handleDeleteCellClick}
