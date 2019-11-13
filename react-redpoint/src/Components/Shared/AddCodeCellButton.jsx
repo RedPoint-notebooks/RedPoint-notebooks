@@ -12,17 +12,8 @@ class AddCodeCellButton extends Component {
     this.props.onClick(this.props.cellIndex, this.state.type);
   };
 
-  handleSetMarkdown = () => {
-    this.setState({ type: "markdown" });
-  };
-  handleSetJavascript = () => {
-    this.setState({ type: "javascript" });
-  };
-  handleSetRuby = () => {
-    this.setState({ type: "ruby" });
-  };
-  handleSetPython = () => {
-    this.setState({ type: "python" });
+  handleSetCellType = e => {
+    this.setState({ type: e.target.value });
   };
 
   render() {
@@ -35,20 +26,33 @@ class AddCodeCellButton extends Component {
         size="sm"
         onClick={this.handleAddCellClick}
       >
-        <Dropdown.Item as="button" onClick={this.handleSetMarkdown}>
+        <Dropdown.Item
+          as="button"
+          value="Markdown"
+          onClick={this.handleSetCellType}
+        >
           Markdown
         </Dropdown.Item>
         <Dropdown.Item
           as="button"
-          onClick={this.handleSetJavascript}
+          value="Javascript"
+          onClick={this.handleSetCellType}
           active // TODO: fix hard-coding of active language
         >
           Javascript
         </Dropdown.Item>
-        <Dropdown.Item as="button" onClick={this.handleSetRuby}>
+        <Dropdown.Item
+          as="button"
+          value="Ruby"
+          onClick={this.handleSetCellType}
+        >
           Ruby
         </Dropdown.Item>
-        <Dropdown.Item as="button" onClick={this.handleSetPython}>
+        <Dropdown.Item
+          as="button"
+          value="Python"
+          onClick={this.handleSetCellType}
+        >
           Python
         </Dropdown.Item>
       </SplitButton>
