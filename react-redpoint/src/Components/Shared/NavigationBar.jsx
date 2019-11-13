@@ -24,7 +24,7 @@ class NavigationBar extends React.Component {
             value={language}
             onClick={this.handleSetDefaultLanguage}
             active={
-              this.props.state.defaultLanguage === { language } ? true : false
+              this.props.state.defaultLanguage === language ? true : false
             }
             key={uuidv4()}
           >

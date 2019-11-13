@@ -17,18 +17,22 @@ class AddCodeCellButton extends Component {
     this.setState({ type: e.target.value });
   };
 
+  capitalize = string => {
+    return string.charAt(0).toUpperCase() + string.slice(1);
+  };
+
   render() {
-    const dropDownItems = ["Markdown", "Javascript", "Ruby", "Python"].map(
-      lang => {
+    const dropDownItems = ["markdown", "javascript", "ruby", "python"].map(
+      language => {
         return (
           <Dropdown.Item
             as="button"
-            value={lang}
+            value={language}
             onClick={this.handleSetCellType}
-            active={this.state.type === lang ? true : false}
+            active={this.state.type === language ? true : false}
             key={uuidv4()}
           >
-            {lang}
+            {this.capitalize(language)}
           </Dropdown.Item>
         );
       }
