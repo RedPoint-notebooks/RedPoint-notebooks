@@ -11,6 +11,7 @@ class CodeCellContainer extends Component {
         onAddCellClick={this.props.onAddCellClick}
         onDeleteCellClick={this.props.onDeleteCellClick}
         cellIndex={this.props.cellIndex}
+        defaultLanguage={this.props.defaultLanguage}
       />
     );
   }

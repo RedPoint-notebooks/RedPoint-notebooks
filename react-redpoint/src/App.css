@@ -32,4 +32,10 @@
   width: 900px;
   display: flex;
   justify-content: space-between;
+  margin: 25px 0 25px 0;
+}
+
+/* To set margin on bottom add new cell button */
+.solo-add-cell-btn {
+  margin: 25px auto 25px;
 }

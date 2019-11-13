@@ -1,17 +1,16 @@
 import React, { Component } from "react";
 import { Controlled as CodeMirror } from "react-codemirror2";
+import CodeCellToolbar from "../Shared/CodeCellToolbar";
 import "codemirror/lib/codemirror.css";
 import "codemirror/theme/darcula.css";
 import "codemirror/mode/javascript/javascript.js";
 import "codemirror/mode/ruby/ruby.js";
 import "codemirror/mode/python/python.js";
-import AddCodeCellButton from "../Shared/AddCodeCellButton";
-import DeleteCellButton from "../Shared/DeleteCellButton";
-import DropdownButton from "react-bootstrap/DropdownButton";
-import Dropdown from "react-bootstrap/Dropdown";
 
 class CodeCell extends Component {
-  state = {};
+  state = {
+    code: this.props.code
+  };
 
   handleChange = value => {
     this.setState({ code: value });
@@ -27,34 +26,15 @@ class CodeCell extends Component {
   render() {
     return (
       <div>
-        <AddCodeCellButton
-          onClick={this.props.onAddCellClick}
+        <CodeCellToolbar
+          onAddClick={this.props.onAddCellClick}
           cellIndex={this.props.cellIndex}
+          onDeleteClick={this.props.onDeleteCellClick}
+          language={this.props.language}
+          defaultLanguage={this.props.defaultLanguage}
         />
-        <div className="code-cell-toolbar">
-          <DropdownButton
-            variant="secondary"
-            id="dropdown-basic-button"
-            title="Javascript"
-            size="sm"
-          >
-            <Dropdown.Item href="#/action-1" active>
-              Javascript
-            </Dropdown.Item>
-            <Dropdown.Item href="#/action-2">Ruby</Dropdown.Item>
-            <Dropdown.Item href="#/action-3">Python</Dropdown.Item>
-          </DropdownButton>
-          {/* <select>
-            <option>Javascript</option>
-          </select> */}
-          <DeleteCellButton
-            onClick={this.props.onDeleteCellClick}
-            cellIndex={this.props.cellIndex}
-          />
-        </div>
-        <br />
         <CodeMirror
-          value={this.props.code}
+          value={this.state.code}
           options={this.cellOptions}
           onBeforeChange={(editor, data, value) => {
             console.log("Editor:", editor);

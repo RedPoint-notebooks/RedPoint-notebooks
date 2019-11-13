@@ -1,8 +1,8 @@
 import React, { Component } from "react";
-import CodeCell from "./CodeCell";
 import ToggleableMarkdownContainer from "./ToggleableMarkdownContainer";
 import AddCodeCellButton from "../Shared/AddCodeCellButton";
 import CodeCellContainer from "./CodeCellContainer";
+import uuidv4 from "uuid/v4";
 
 class CellsList extends Component {
   state = {};
@@ -13,11 +13,12 @@ class CellsList extends Component {
         return (
           <CodeCellContainer
             language={cell.type}
-            key={index}
+            key={uuidv4()}
             code={cell.code}
             onDeleteCellClick={this.props.onDeleteCellClick}
             onAddCellClick={this.props.onAddCellClick}
             cellIndex={index}
+            defaultLanguage={this.props.defaultLanguage}
           />
         );
       } else if (cell.type === "markdown") {
@@ -29,15 +30,21 @@ class CellsList extends Component {
             onDeleteCellClick={this.props.onDeleteCellClick}
             onAddCellClick={this.props.onAddCellClick}
             cellIndex={index}
+            defaultLanguage={this.props.defaultLanguage}
           />
         );
       }
+      return null; // to appease React warning
     });
 
     cellContainers.push(
       <AddCodeCellButton
+        soloButton="true"
+        // className="solo-add-code-cell-btn" // TODO: not being applied
         cellIndex={cellContainers.length}
         onClick={this.props.onAddCellClick}
+        key={cellContainers.length}
+        defaultLanguage={this.props.defaultLanguage}
       />
     );
     return cellContainers;
