@@ -17,6 +17,19 @@ class AddCodeCellButton extends Component {
   };
 
   render() {
+    const dropDownItems = ["Markdown", "Javascript", "Ruby", "Python"].map(
+      lang => {
+        return (
+          <Dropdown.Item
+            as="button"
+            value={lang}
+            onClick={this.handleSetCellType}
+          >
+            {lang}
+          </Dropdown.Item>
+        );
+      }
+    );
     return (
       <SplitButton
         className={this.props.soloButton ? "solo-add-cell-btn" : null}
@@ -26,35 +39,7 @@ class AddCodeCellButton extends Component {
         size="sm"
         onClick={this.handleAddCellClick}
       >
-        <Dropdown.Item
-          as="button"
-          value="Markdown"
-          onClick={this.handleSetCellType}
-        >
-          Markdown
-        </Dropdown.Item>
-        <Dropdown.Item
-          as="button"
-          value="Javascript"
-          onClick={this.handleSetCellType}
-          active // TODO: fix hard-coding of active language
-        >
-          Javascript
-        </Dropdown.Item>
-        <Dropdown.Item
-          as="button"
-          value="Ruby"
-          onClick={this.handleSetCellType}
-        >
-          Ruby
-        </Dropdown.Item>
-        <Dropdown.Item
-          as="button"
-          value="Python"
-          onClick={this.handleSetCellType}
-        >
-          Python
-        </Dropdown.Item>
+        {dropDownItems}
       </SplitButton>
     );
   }
