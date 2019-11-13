@@ -31,6 +31,7 @@ class CodeCell extends Component {
           cellIndex={this.props.cellIndex}
           onDeleteClick={this.props.onDeleteCellClick}
           language={this.props.language}
+          defaultLanguage={this.props.defaultLanguage}
         />
         <CodeMirror
           value={this.state.code}

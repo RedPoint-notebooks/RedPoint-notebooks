@@ -17,6 +17,7 @@ class CellsList extends Component {
             onDeleteCellClick={this.props.onDeleteCellClick}
             onAddCellClick={this.props.onAddCellClick}
             cellIndex={index}
+            defaultLanguage={this.props.defaultLanguage}
           />
         );
       } else if (cell.type === "markdown") {
@@ -28,6 +29,7 @@ class CellsList extends Component {
             onDeleteCellClick={this.props.onDeleteCellClick}
             onAddCellClick={this.props.onAddCellClick}
             cellIndex={index}
+            defaultLanguage={this.props.defaultLanguage}
           />
         );
       }

@@ -30,6 +30,7 @@ const CodeCellToolbar = props => {
       <AddCodeCellButton
         onClick={handleAddCellClick}
         cellIndex={props.cellIndex}
+        defaultLanguage={props.defaultLanguage}
       />
       <DeleteCellButton
         onClick={props.onDeleteClick}

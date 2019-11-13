@@ -46,6 +46,7 @@ class Notebook extends Component {
             onDeleteCellClick={this.handleDeleteCellClick}
             onAddCellClick={this.handleAddCellClick}
             cells={this.state.cells}
+            defaultLanguage={this.state.defaultLanguage}
           />
         </Container>
       </div>
