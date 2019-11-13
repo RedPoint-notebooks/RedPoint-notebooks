@@ -2,6 +2,7 @@ import React, { Component } from "react";
 // import DropdownButton from "react-bootstrap/DropdownButton";
 import SplitButton from "react-bootstrap/SplitButton";
 import Dropdown from "react-bootstrap/Dropdown";
+import uuidv4 from "uuid";
 
 class AddCodeCellButton extends Component {
   state = {
@@ -24,6 +25,8 @@ class AddCodeCellButton extends Component {
             as="button"
             value={lang}
             onClick={this.handleSetCellType}
+            active={this.state.type === lang ? true : false}
+            key={uuidv4()}
           >
             {lang}
           </Dropdown.Item>
