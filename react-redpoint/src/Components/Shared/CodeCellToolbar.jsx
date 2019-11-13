@@ -5,9 +5,9 @@ import DropdownButton from "react-bootstrap/DropdownButton";
 import Dropdown from "react-bootstrap/Dropdown";
 
 const CodeCellToolbar = props => {
-  const handleAddCellClick = () => {
-    props.onAddClick(props.cellIndex);
-  };
+  // const handleAddCellClick = () => {
+  //   props.onAddClick(props.cellIndex);
+  // };
 
   return (
     <div className="code-cell-toolbar">
@@ -28,7 +28,7 @@ const CodeCellToolbar = props => {
         <Dropdown.Item href="#/action-4">Python</Dropdown.Item>
       </DropdownButton>
       <AddCodeCellButton
-        onClick={handleAddCellClick}
+        onClick={props.onAddClick}
         cellIndex={props.cellIndex}
         defaultLanguage={props.defaultLanguage}
       />

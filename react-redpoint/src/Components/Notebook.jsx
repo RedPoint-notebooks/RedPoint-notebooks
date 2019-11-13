@@ -10,7 +10,7 @@ class Notebook extends Component {
       {
         type: "markdown",
         code:
-          "# Welcome to RedPoint Notebook\n- A virtual sandbox for sharing code "
+          "# Welcome to RedPoint Notebook\n- A virtual sandbox for sharing runnable code "
       },
       { type: "javascript", code: "console.log('hello');" },
       { type: "javascript", code: "console.log('hello from cell 2');" }
@@ -25,12 +25,12 @@ class Notebook extends Component {
     });
   };
 
-  handleAddCellClick = (index, language = this.state.defaultLanguage) => {
+  handleAddCellClick = (index, type) => {
     this.setState(prevState => {
       const newCells = [...prevState.cells];
       console.log("New Cells: ", newCells);
       newCells.splice(index, 0, {
-        type: language,
+        type: type,
         code: ""
       });
       return { cells: newCells };

@@ -10,6 +10,7 @@ const RenderedMarkdown = props => {
         onAddClick={props.onAddCellClick}
         onDeleteClick={props.onDeleteCellClick}
         cellIndex={props.cellIndex}
+        defaultLanguage={props.defaultLanguage}
       />
       <ReactMarkdown
         className="rendered-markdown"

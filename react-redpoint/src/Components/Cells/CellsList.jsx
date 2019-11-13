@@ -43,6 +43,7 @@ class CellsList extends Component {
         cellIndex={cellContainers.length}
         onClick={this.props.onAddCellClick}
         key={cellContainers.length}
+        defaultLanguage={this.props.defaultLanguage}
       />
     );
     return cellContainers;
