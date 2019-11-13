@@ -24,7 +24,9 @@ const NavigationBar = () => {
           <Nav.Link href="#foo">Clone</Nav.Link>
           <Nav.Link href="#link">Delete</Nav.Link>
           <NavDropdown title="Default Language" id="basic-nav-dropdown">
-            <NavDropdown.Item href="#action/3.1">Javascript</NavDropdown.Item>
+            <NavDropdown.Item href="#action/3.1" active>
+              Javascript
+            </NavDropdown.Item>
             <NavDropdown.Item href="#action/3.2">Ruby</NavDropdown.Item>
             <NavDropdown.Item href="#action/3.3">Python</NavDropdown.Item>
           </NavDropdown>

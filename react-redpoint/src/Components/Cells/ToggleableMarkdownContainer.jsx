@@ -11,7 +11,6 @@ class ToggleableMarkdownContainer extends Component {
     return this.state.editable ? (
       <CodeCellContainer
         language={this.props.language}
-        key={this.props.index}
         code={this.props.code}
         onDeleteCellClick={this.props.onDeleteCellClick}
         onAddCellClick={this.props.onAddCellClick}

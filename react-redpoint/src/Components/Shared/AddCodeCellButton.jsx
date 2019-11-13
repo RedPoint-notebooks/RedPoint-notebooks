@@ -7,7 +7,12 @@ const AddCodeCellButton = props => {
   };
 
   return (
-    <Button onClick={handleAddCodeCellClick} variant="secondary" size="sm">
+    <Button
+      className={props.soloButton ? "solo-add-code-cell-btn" : null}
+      onClick={handleAddCodeCellClick}
+      variant="secondary"
+      size="sm"
+    >
       Add Code Cell
     </Button>
   );

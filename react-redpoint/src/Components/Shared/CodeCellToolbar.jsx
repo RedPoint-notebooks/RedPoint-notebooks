@@ -5,6 +5,10 @@ import DropdownButton from "react-bootstrap/DropdownButton";
 import Dropdown from "react-bootstrap/Dropdown";
 
 const CodeCellToolbar = props => {
+  const handleAddCellClick = () => {
+    props.onAddClick(props.cellIndex);
+  };
+
   return (
     <div className="code-cell-toolbar">
       <DropdownButton
@@ -14,14 +18,17 @@ const CodeCellToolbar = props => {
         size="sm"
       >
         <Dropdown.Item href="#/action-1">Markdown</Dropdown.Item>
-        <Dropdown.Item href="#/action-2" active>
+        <Dropdown.Item
+          href="#/action-2"
+          active // TODO: fix hard-coding of active language
+        >
           Javascript
         </Dropdown.Item>
         <Dropdown.Item href="#/action-3">Ruby</Dropdown.Item>
         <Dropdown.Item href="#/action-4">Python</Dropdown.Item>
       </DropdownButton>
       <AddCodeCellButton
-        onClick={props.onAddClick}
+        onClick={handleAddCellClick}
         cellIndex={props.cellIndex}
       />
       <DeleteCellButton
