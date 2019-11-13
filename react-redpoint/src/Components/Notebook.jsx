@@ -56,7 +56,7 @@ class Notebook extends Component {
           <Navbar.Collapse id="basic-navbar-nav">
             <Nav className="mr-auto">
               <Nav.Link href="#home">Share</Nav.Link>
-              <Nav.Link href="#link">Clone</Nav.Link>
+              <Nav.Link href="#foo">Clone</Nav.Link>
               <Nav.Link href="#link">Delete</Nav.Link>
               <NavDropdown title="Default Language" id="basic-nav-dropdown">
                 <NavDropdown.Item href="#action/3.1">
