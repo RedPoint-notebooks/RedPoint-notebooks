@@ -23,6 +23,10 @@ class Notebook extends Component {
     ]
   };
 
+  handleSetDefaultLanguage = language => {
+    this.setState({ defaultLanguage: language });
+  };
+
   handleDeleteCellClick = index => {
     this.setState(prevState => {
       const newCells = [...prevState.cells];
@@ -46,7 +50,10 @@ class Notebook extends Component {
   render() {
     return (
       <div>
-        <NavigationBar />
+        <NavigationBar
+          state={this.state}
+          setDefaultLanguage={this.handleSetDefaultLanguage}
+        />
         <Container className="App-header">
           <CellsList
             onDeleteCellClick={this.handleDeleteCellClick}
