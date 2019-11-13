@@ -6,6 +6,7 @@ const RenderedMarkdown = props => {
   return (
     <React.Fragment>
       <CodeCellToolbar
+        language={props.language}
         onAddClick={props.onAddCellClick}
         onDeleteClick={props.onDeleteCellClick}
         cellIndex={props.cellIndex}

@@ -7,9 +7,13 @@ class Notebook extends Component {
   state = {
     defaultLanguage: "javascript",
     cells: [
+      {
+        type: "markdown",
+        code:
+          "# Welcome to RedPoint Notebook\n- A virtual sandbox for sharing code "
+      },
       { type: "javascript", code: "console.log('hello');" },
-      { type: "javascript", code: "console.log('hello from cell 2');" },
-      { type: "markdown", code: "# I'm markdown!!\n- indent " }
+      { type: "javascript", code: "console.log('hello from cell 2');" }
     ]
   };
 

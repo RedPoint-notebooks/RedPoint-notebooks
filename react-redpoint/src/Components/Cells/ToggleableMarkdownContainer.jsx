@@ -19,6 +19,7 @@ class ToggleableMarkdownContainer extends Component {
       />
     ) : (
       <RenderedMarkdown
+        language={this.props.language}
         code={this.props.code}
         cellIndex={this.props.cellIndex}
         onDeleteCellClick={this.props.onDeleteCellClick}

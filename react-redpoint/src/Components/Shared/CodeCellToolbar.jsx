@@ -10,7 +10,7 @@ const CodeCellToolbar = props => {
       <DropdownButton
         variant="secondary"
         id="dropdown-basic-button"
-        title="Javascript"
+        title={props.language}
         size="sm"
       >
         <Dropdown.Item href="#/action-1">Markdown</Dropdown.Item>
