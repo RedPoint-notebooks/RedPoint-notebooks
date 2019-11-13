@@ -1,11 +1,11 @@
 import React, { Component } from "react";
 import { Controlled as CodeMirror } from "react-codemirror2";
+import CodeCellToolbar from "../Shared/CodeCellToolbar";
 import "codemirror/lib/codemirror.css";
 import "codemirror/theme/darcula.css";
 import "codemirror/mode/javascript/javascript.js";
 import "codemirror/mode/ruby/ruby.js";
 import "codemirror/mode/python/python.js";
-import CodeCellToolbar from "../Shared/CodeCellToolbar";
 
 class CodeCell extends Component {
   state = {};
@@ -29,8 +29,6 @@ class CodeCell extends Component {
           cellIndex={this.props.cellIndex}
           onDeleteClick={this.props.onDeleteCellClick}
         />
-
-        <br />
         <CodeMirror
           value={this.props.code}
           options={this.cellOptions}

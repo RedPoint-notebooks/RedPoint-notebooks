@@ -1,4 +1,4 @@
-import React, { Component } from "react";
+import React from "react";
 import AddCodeCellButton from "../Shared/AddCodeCellButton";
 import DeleteCellButton from "./DeleteCellButton";
 import DropdownButton from "react-bootstrap/DropdownButton";

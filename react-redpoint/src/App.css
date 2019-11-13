@@ -32,4 +32,9 @@
   width: 900px;
   display: flex;
   justify-content: space-between;
+  margin: 25px 0 25px 0;
+}
+
+.solo-add-code-cell-btn {
+  margin: 0 auto;
 }

@@ -88,11 +88,9 @@ export default Notebook;
 // { type: "javascript", code: "console.log('hello');" }
 // ]
 
-{
-  /* <ul>
+/* <ul>
           <h4>Websocket Response: {this.state.response}</h4>
         </ul> */
-}
 
 // componentDidMount() {
 //   ws = new WebSocket("ws://localhost:8000");
