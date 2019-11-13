@@ -1,10 +1,6 @@
 import React, { Component } from "react";
 import CellsList from "./Cells/CellsList";
-import logo from "../placeholder_logo.svg";
 import Container from "react-bootstrap/Container";
-import Navbar from "react-bootstrap/Navbar";
-import NavDropdown from "react-bootstrap/NavDropdown";
-import Nav from "react-bootstrap/Nav";
 import NavigationBar from "./Shared/NavigationBar";
 
 class Notebook extends Component {

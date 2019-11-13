@@ -31,12 +31,14 @@ class CellsList extends Component {
           />
         );
       }
+      return null; // to appease React warning
     });
 
     cellContainers.push(
       <AddCodeCellButton
         cellIndex={cellContainers.length}
         onClick={this.props.onAddCellClick}
+        key={cellContainers.length}
       />
     );
     return cellContainers;
