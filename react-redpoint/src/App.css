@@ -35,6 +35,7 @@
   margin: 25px 0 25px 0;
 }
 
+/* To set margin on bottom add new cell button */
 .solo-add-code-cell-btn {
-  margin: 0 auto;
+  margin: 25px auto 25px;
 }

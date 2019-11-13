@@ -36,6 +36,7 @@ class CellsList extends Component {
 
     cellContainers.push(
       <AddCodeCellButton
+        className="solo-add-code-cell-btn" // TODO: not being applied
         cellIndex={cellContainers.length}
         onClick={this.props.onAddCellClick}
         key={cellContainers.length}

@@ -8,7 +8,9 @@ import "codemirror/mode/ruby/ruby.js";
 import "codemirror/mode/python/python.js";
 
 class CodeCell extends Component {
-  state = {};
+  state = {
+    code: this.props.code
+  };
 
   handleChange = value => {
     this.setState({ code: value });
@@ -30,7 +32,7 @@ class CodeCell extends Component {
           onDeleteClick={this.props.onDeleteCellClick}
         />
         <CodeMirror
-          value={this.props.code}
+          value={this.state.code}
           options={this.cellOptions}
           onBeforeChange={(editor, data, value) => {
             console.log("Editor:", editor);
