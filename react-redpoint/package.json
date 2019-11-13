@@ -4,8 +4,10 @@
   "private": true,
   "dependencies": {
     "axios": "0.19.0",
+    "bootstrap": "^4.3.1",
     "codemirror": "^5.49.2",
     "react": "^16.11.0",
+    "react-bootstrap": "^1.0.0-beta.14",
     "react-codemirror2": "^6.0.0",
     "react-dom": "^16.11.0",
     "react-markdown": "^4.2.2",
