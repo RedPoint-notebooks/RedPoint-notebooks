@@ -2,6 +2,7 @@ import React from "react";
 import logo from "./placeholder_logo.svg";
 import "./App.css";
 import Notebook from "./Components/Notebook";
+// import "bootstrap/dist/css/bootstrap.min.css";
 
 function App() {
   return (

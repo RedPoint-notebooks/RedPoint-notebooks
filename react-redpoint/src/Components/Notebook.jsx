@@ -6,7 +6,8 @@ class Notebook extends Component {
     defaultLanguage: "javascript",
     cells: [
       { type: "javascript", code: "console.log('hello');" },
-      { type: "javascript", code: "console.log('hello from cell 2');" }
+      { type: "javascript", code: "console.log('hello from cell 2');" },
+      { type: "markdown", code: "# I'm markdown!!\n- indent " }
     ]
   };
 
@@ -18,11 +19,12 @@ class Notebook extends Component {
     });
   };
 
-  handleAddCodeCellClick = index => {
+  handleAddCellClick = (index, language = this.state.defaultLanguage) => {
     this.setState(prevState => {
       const newCells = [...prevState.cells];
+      console.log("New Cells: ", newCells);
       newCells.splice(index, 0, {
-        type: this.state.defaultLanguage,
+        type: language,
         code: ""
       });
       return { cells: newCells };
@@ -34,7 +36,7 @@ class Notebook extends Component {
       <div>
         <CellsList
           onDeleteCellClick={this.handleDeleteCellClick}
-          onAddCodeCellClick={this.handleAddCodeCellClick}
+          onAddCellClick={this.handleAddCellClick}
           cells={this.state.cells}
         />
       </div>

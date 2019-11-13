@@ -3,6 +3,8 @@ import { Controlled as CodeMirror } from "react-codemirror2";
 import "codemirror/lib/codemirror.css";
 import "codemirror/theme/darcula.css";
 import "codemirror/mode/javascript/javascript.js";
+import "codemirror/mode/ruby/ruby.js";
+import "codemirror/mode/python/python.js";
 import AddCodeCellButton from "../Shared/AddCodeCellButton";
 import DeleteCellButton from "../Shared/DeleteCellButton";
 
@@ -14,7 +16,7 @@ class CodeCell extends Component {
   };
 
   cellOptions = {
-    mode: "javascript",
+    mode: this.props.language,
     theme: "darcula",
     lineNumbers: true,
     showCursorWhenSelecting: true
@@ -24,7 +26,7 @@ class CodeCell extends Component {
     return (
       <div>
         <AddCodeCellButton
-          onClick={this.props.onAddCodeCellClick}
+          onClick={this.props.onAddCellClick}
           cellIndex={this.props.cellIndex}
         />
         <div className="code-cell-toolbar">
