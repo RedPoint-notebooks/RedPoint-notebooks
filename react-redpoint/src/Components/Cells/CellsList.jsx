@@ -2,6 +2,7 @@ import React, { Component } from "react";
 import ToggleableMarkdownContainer from "./ToggleableMarkdownContainer";
 import AddCodeCellButton from "../Shared/AddCodeCellButton";
 import CodeCellContainer from "./CodeCellContainer";
+import uuidv4 from "uuid/v4";
 
 class CellsList extends Component {
   state = {};
@@ -12,7 +13,7 @@ class CellsList extends Component {
         return (
           <CodeCellContainer
             language={cell.type}
-            key={index}
+            key={uuidv4()}
             code={cell.code}
             onDeleteCellClick={this.props.onDeleteCellClick}
             onAddCellClick={this.props.onAddCellClick}

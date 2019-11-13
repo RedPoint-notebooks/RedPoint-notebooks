@@ -4,7 +4,7 @@ import RenderedMarkdown from "./RenderedMarkdown";
 
 class ToggleableMarkdownContainer extends Component {
   state = {
-    editable: false
+    editable: true
   };
 
   render() {
