@@ -16,9 +16,10 @@ class CodeCell extends Component {
     this.setState({ code: value });
   };
 
-  handleToggleVisibility = () => {
+  handleBlur = () => {
+    this.props.onUpdateCodeState(this.state.code, this.props.cellIndex);
+
     if (this.props.language === "markdown") {
-      this.props.onUpdateCodeState(this.state.code, this.props.cellIndex);
       this.props.toggleRender(this.props.cellIndex);
     }
   };
@@ -48,7 +49,7 @@ class CodeCell extends Component {
             this.handleChange(value);
           }}
           onChange={(editor, data, value) => {}}
-          onBlur={this.handleToggleVisibility}
+          onBlur={this.handleBlur}
         />
       </div>
     );
