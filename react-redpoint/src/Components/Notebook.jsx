@@ -92,17 +92,21 @@ class Notebook extends Component {
     });
   };
 
-  handleRunClick = indexRun => {
+  buildCodeArray = maxIndex => {
     const codeCellArray = [];
     const allCells = this.state.cells;
-    const cellLanguage = allCells[indexRun].type;
-    for (let i = 0; i <= indexRun; i += 1) {
+    const cellLanguage = allCells[maxIndex].type;
+    for (let i = 0; i <= maxIndex; i += 1) {
       const cell = allCells[i];
-      if (i <= indexRun && cell.type === cellLanguage) {
+      if (i <= maxIndex && cell.type === cellLanguage) {
         codeCellArray.push(cell.code);
       }
     }
     return codeCellArray;
+  };
+
+  handleRunClick = maxIndex => {
+    const codeArray = this.buildCodeArray(maxIndex);
   };
 
   handleLanguageChange = (type, cellIndex) => {
