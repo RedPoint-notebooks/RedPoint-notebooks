@@ -6,7 +6,6 @@ import logo from "../../placeholder_logo.svg";
 import * as constants from "../../Constants/constants";
 import uuidv4 from "uuid";
 
-
 class NavigationBar extends React.Component {
   handleSetDefaultLanguage = e => {
     const language = e.target.value;
@@ -18,9 +17,9 @@ class NavigationBar extends React.Component {
       return (
         <NavDropdown.Item
           as="button"
-           key={uuidv4()}
+          key={uuidv4()}
           value={language}
-          onClick={this.setDefaultLanguage}
+          onClick={this.handleSetDefaultLanguage}
           active={
             this.props.state.defaultLanguage === { language } ? true : false
           }

@@ -54,8 +54,12 @@ class Notebook extends Component {
       if (type === "markdown") {
         changedCell.rendered = false;
       }
+      return { cells: newCells };
+    });
+  };
 
   handleToggleRender = index => {
+    debugger;
     this.setState(prevState => {
       const newCells = [...prevState.cells];
       const cellToToggle = newCells[index];
