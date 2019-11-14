@@ -9,6 +9,7 @@ class CellResults extends Component {
     const resultsObj = this.props.results;
     const formattedResults = Object.keys(resultsObj).map(resultType => {
       const data = resultsObj[resultType];
+
       switch (resultType) {
         case "output":
           return <Output output={data} />;
@@ -16,6 +17,8 @@ class CellResults extends Component {
           return <Return returnVal={data} />;
         case "error":
           return <Error error={data} />;
+        default:
+          return;
       }
     });
     return <ListGroup>{formattedResults}</ListGroup>;

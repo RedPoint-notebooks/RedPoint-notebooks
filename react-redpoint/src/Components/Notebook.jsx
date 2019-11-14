@@ -14,17 +14,17 @@ class Notebook extends Component {
         rendered: true
       },
       {
-        type: "javascript",
+        type: "Javascript",
         code: "[1, 2, 3]",
         results: { return: "[1, 2, 3]" }
       },
       {
-        type: "javascript",
+        type: "Javascript",
         code: "console.log('hello from cell 2');",
         results: { output: "hello from cell 2", return: "undefined" }
       },
       {
-        type: "javascript",
+        type: "Javascript",
         code: "console.log('Hello, nice to meet you.');\nname",
         results: {
           output: "Hello, nice to meet you.",

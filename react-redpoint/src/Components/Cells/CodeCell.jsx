@@ -1,6 +1,5 @@
 import React, { Component } from "react";
 import { Controlled as CodeMirror } from "react-codemirror2";
-import CodeCellToolbar from "../Shared/CodeCellToolbar";
 import CellResults from "./CellResults";
 import CellToolbar from "../Shared/CellToolbar";
 import AddCellButton from "../Shared/AddCellButton";
@@ -59,7 +58,7 @@ class CodeCell extends Component {
           }}
           onBlur={this.handleBlur}
         />
-        {this.props.language !== "markdown" ? (
+        {this.props.language !== "Markdown" ? (
           <CellResults
             language={this.props.language}
             results={this.props.results}
