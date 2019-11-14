@@ -1,7 +1,7 @@
 import React, { Component } from "react";
 import { Controlled as CodeMirror } from "react-codemirror2";
 import CellToolbar from "../Shared/CellToolbar";
-import AddCodeCellButton from "../Shared/AddCodeCellButton";
+import AddCellButton from "../Shared/AddCellButton";
 import "codemirror/lib/codemirror.css";
 import "codemirror/theme/darcula.css";
 import "codemirror/mode/javascript/javascript.js";
@@ -35,7 +35,7 @@ class CodeCell extends Component {
   render() {
     return (
       <div>
-        <AddCodeCellButton
+        <AddCellButton
           className="add-cell-btn"
           onClick={this.props.onAddClick}
           cellIndex={this.props.cellIndex}

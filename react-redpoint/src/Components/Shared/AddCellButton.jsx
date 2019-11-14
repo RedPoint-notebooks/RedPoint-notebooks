@@ -3,7 +3,7 @@ import SplitButton from "react-bootstrap/SplitButton";
 import Dropdown from "react-bootstrap/Dropdown";
 import * as constants from "../../Constants/constants";
 
-class AddCodeCellButton extends Component {
+class AddCellButton extends Component {
   state = {
     type: this.props.defaultLanguage
   };
@@ -39,7 +39,7 @@ class AddCodeCellButton extends Component {
 
     return (
       <SplitButton
-        className="solo-add-cell-btn"
+        className="add-cell-btn"
         variant="secondary"
         id="dropdown-basic-button"
         title={`Add ${capitalizedLanguage} Cell`}
@@ -52,4 +52,4 @@ class AddCodeCellButton extends Component {
   }
 }
 
-export default AddCodeCellButton;
+export default AddCellButton;
