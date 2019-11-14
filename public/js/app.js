@@ -12,7 +12,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
     let cellNum = +event.target.dataset.button;
     let language = event.target.dataset.language;
-
+    debugger;
     const codeStrArray = allCodeUpToCell(cellNum, codemirrors[language]);
     const json = JSON.stringify({ language, codeStrArray });
 
