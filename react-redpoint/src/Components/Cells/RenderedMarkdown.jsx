@@ -15,6 +15,7 @@ const RenderedMarkdown = props => {
         onDeleteClick={props.onDeleteCellClick}
         cellIndex={props.cellIndex}
         defaultLanguage={props.defaultLanguage}
+        onLanguageChange={props.onLanguageChange}
       />
       <div onClick={handleRenderedMarkdownClick}>
         <ReactMarkdown className="rendered-markdown" source={props.code} />
