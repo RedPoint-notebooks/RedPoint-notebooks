@@ -18,7 +18,7 @@ const generateDelimiter = (language, delimiter) => {
   switch (language) {
     case "Ruby":
       return `puts "${delimiter}"\n`;
-    case "Ravascript":
+    case "Javascript":
       return `console.log(${delimiter})\n`;
     case "Python":
       return `print(${delimiter})\n`;
@@ -38,7 +38,6 @@ wss.on("connection", ws => {
     const codeString = codeStrArray.join("");
     const delimiterStatement = generateDelimiter(language, delimiter);
     const scriptString = codeStrArray.join(delimiterStatement);
-
     // is this the best place to set language for upcoming data?
     ws.send(JSON.stringify({ type: "language", data: language }));
 
