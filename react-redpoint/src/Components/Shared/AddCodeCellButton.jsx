@@ -1,7 +1,7 @@
 import React, { Component } from "react";
-// import DropdownButton from "react-bootstrap/DropdownButton";
 import SplitButton from "react-bootstrap/SplitButton";
 import Dropdown from "react-bootstrap/Dropdown";
+import * as constants from "../../Constants/constants";
 import uuidv4 from "uuid";
 
 class AddCodeCellButton extends Component {
@@ -14,7 +14,7 @@ class AddCodeCellButton extends Component {
   };
 
   handleSetCellType = e => {
-    this.setState({ type: e.target.value });
+    this.setState({ type: e.target.value.toLowerCase() });
   };
 
   capitalize = string => {
@@ -22,23 +22,23 @@ class AddCodeCellButton extends Component {
   };
 
   render() {
-    const dropDownItems = ["markdown", "javascript", "ruby", "python"].map(
-      language => {
-        return (
-          <Dropdown.Item
-            as="button"
-            value={language}
-            onClick={this.handleSetCellType}
-            active={this.state.type === language ? true : false}
-            key={uuidv4()}
-          >
-            {this.capitalize(language)}
-          </Dropdown.Item>
-        );
-      }
-    );
-    const capitalizedLanguage =
-      this.state.type.charAt(0).toUpperCase() + this.state.type.slice(1);
+    const dropDownItems = constants.LANGUAGES.map(language => {
+      return (
+        <Dropdown.Item
+          as="button"
+          value={language}
+          key={language}
+          onClick={this.handleSetCellType}
+          active={this.state.type === language.toLowerCase() ? true : false}
+          key={uuidv4()}
+        >
+          {language}
+        </Dropdown.Item>
+      );
+    });
+
+    const capitalizedLanguage = constants.capitalizeLanguage(this.state.type);
+
     return (
       <SplitButton
         className={this.props.soloButton ? "solo-add-cell-btn" : null}

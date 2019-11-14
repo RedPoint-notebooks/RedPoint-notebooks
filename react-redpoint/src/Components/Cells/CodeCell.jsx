@@ -40,15 +40,14 @@ class CodeCell extends Component {
           onDeleteClick={this.props.onDeleteCellClick}
           language={this.props.language}
           defaultLanguage={this.props.defaultLanguage}
+          onLanguageChange={this.props.onLanguageChange}
         />
         <CodeMirror
           value={this.state.code}
           options={this.cellOptions}
           onBeforeChange={(editor, data, value) => {
-            // console.log("Editor:", editor);
             this.handleChange(value);
           }}
-          onChange={(editor, data, value) => {}}
           onBlur={this.handleBlur}
         />
       </div>

@@ -1,47 +1,16 @@
 import React from "react";
 import AddCodeCellButton from "../Shared/AddCodeCellButton";
 import DeleteCellButton from "./DeleteCellButton";
-import DropdownButton from "react-bootstrap/DropdownButton";
-import Dropdown from "react-bootstrap/Dropdown";
+import ChangeLanguageDropdown from "./ChangeLanguageDropdown";
 
 const CodeCellToolbar = props => {
-  // const handleAddCellClick = () => {
-  //   props.onAddClick(props.cellIndex);
-  // };
-
   return (
     <div className="code-cell-toolbar">
-      <DropdownButton
-        variant="secondary"
-        id="dropdown-basic-button"
-        title={props.language}
-        size="sm"
-      >
-        <Dropdown.Item
-          href="#/action-1"
-          active={props.language === "markdown" ? true : false}
-        >
-          Markdown
-        </Dropdown.Item>
-        <Dropdown.Item
-          href="#/action-2"
-          active={props.language === "javascript" ? true : false}
-        >
-          Javascript
-        </Dropdown.Item>
-        <Dropdown.Item
-          href="#/action-3"
-          active={props.language === "ruby" ? true : false}
-        >
-          Ruby
-        </Dropdown.Item>
-        <Dropdown.Item
-          href="#/action-4"
-          active={props.language === "python" ? true : false}
-        >
-          Python
-        </Dropdown.Item>
-      </DropdownButton>
+      <ChangeLanguageDropdown
+        language={props.language}
+        onLanguageChange={props.onLanguageChange}
+        cellIndex={props.cellIndex}
+      ></ChangeLanguageDropdown>
       <AddCodeCellButton
         onClick={props.onAddClick}
         cellIndex={props.cellIndex}
