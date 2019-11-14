@@ -45,15 +45,15 @@ const userScript = {
       console.log("BEFORE WRITING SCRIPT");
 
       switch (lang) {
-        case "ruby":
+        case "Ruby":
           this.fileType = `.rb`;
           this.command = "ruby";
           break;
-        case "javascript":
+        case "Javascript":
           this.fileType = `.js`;
           this.command = "node";
           break;
-        case "python":
+        case "Python":
           this.fileType = ".py";
           this.command = "python";
       }
