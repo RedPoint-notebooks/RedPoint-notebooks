@@ -15,30 +15,31 @@ class Notebook extends Component {
       },
       {
         type: "Javascript",
-        code: "[1, 2, 3];",
-        results: { return: "[1, 2, 3]" }
-      },
-      {
-        type: "Javascript",
-        code: "console.log('hello from cell 2');",
-        results: { output: "hello from cell 2", return: "undefined" }
-      },
-      {
-        type: "Javascript",
-        code: "console.log('Hello, nice to meet you.');\nname",
-        results: {
-          output: "Hello, nice to meet you.",
-          error: "ReferenceError: name is not defined"
-        }
-      },
-      {
-        type: "Markdown",
-        code: "### Hi, here is some markdown text.",
-        rendered: false
+        code: "",
+        results: { output: "", error: "", return: "" }
       }
+      // {
+      //   type: "Javascript",
+      //   code: "console.log('hello from cell 2');",
+      //   results: { output: "hello from cell 2", return: "undefined" }
+      // },
+      // {
+      //   type: "Javascript",
+      //   code: "console.log('Hello, nice to meet you.');\nname",
+      //   results: {
+      //     output: "Hello, nice to meet you.",
+      //     error: "ReferenceError: name is not defined"
+      //   }
+      // },
+      // {
+      //   type: "Markdown",
+      //   code: "### Hi, here is some markdown text.",
+      //   rendered: false
+      // }
     ],
     // pendingCellExecution: true,
-    pendingCellIndexes: []
+    pendingCellIndexes: [],
+    writeToPendingCellIndex: 0
   };
 
   ws = new WebSocket("ws://localhost:8000");
@@ -61,7 +62,36 @@ class Notebook extends Component {
     };
 
     this.ws.onmessage = message => {
+      message = JSON.parse(message.data);
       console.log(message.data);
+      switch (message.type) {
+        case "delimiter":
+          this.setState(prevState => {
+            return {
+              writeToPendingCellIndex: prevState.writeToPendingCellIndex + 1
+            };
+          });
+          break;
+        case "stdout":
+          const cellIndex = this.state.pendingCellIndexes[
+            this.state.writeToPendingCellIndex
+          ];
+          this.setState(prevState => {
+            const newCells = [...prevState.cells].map((cell, index) => {
+              if (index === cellIndex) {
+                cell.results.output += message.data;
+                return cell;
+              } else {
+                return cell;
+              }
+            });
+
+            return { cells: newCells };
+          });
+
+        default:
+          console.log("Error, unknown message received from server");
+      }
       // const message = JSON.parse(message.data);
       // this.receiveResponse(message);
     };
@@ -85,7 +115,7 @@ class Notebook extends Component {
       newCells.splice(index, 0, {
         type: type,
         code: "",
-        results: {}
+        results: { output: "", error: "", return: "" }
       });
       return { cells: newCells };
     });

@@ -25,9 +25,9 @@ const generateDelimiter = (language, delimiter) => {
   }
 };
 
-const sendDelimiterToClient = (ws, uuid) => {
-  ws.send(JSON.stringify({ type: "delimiter", data: uuid }));
-};
+// const sendDelimiterToClient = (ws, uuid) => {
+//   ws.send(JSON.stringify({ type: "delimiter", data: uuid }));
+// };
 
 wss.on("connection", ws => {
   const delimiter = uuidv4();
@@ -44,7 +44,7 @@ wss.on("connection", ws => {
 
     userScript.writeFile(scriptString, language).then(() => {
       userScript
-        .execute(ws)
+        .execute(ws, delimiter)
         .then(() => repl.execute(codeString, language))
         .then(returnData => repl.parseOutput(returnData, language))
         .then(returnValue => {

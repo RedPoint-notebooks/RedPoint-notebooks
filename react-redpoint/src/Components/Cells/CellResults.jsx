@@ -16,7 +16,7 @@ class CellResults extends Component {
         case "return":
           return <Return key={"return"} returnVal={data} />;
         case "error":
-          return <Error key={"error"} error={data} />;
+          return <Error key={"error"} cerror={data} />;
         default:
           return;
       }
