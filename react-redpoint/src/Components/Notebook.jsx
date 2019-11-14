@@ -56,7 +56,8 @@ class Notebook extends Component {
       const newCells = [...prevState.cells];
       newCells.splice(index, 0, {
         type: type,
-        code: ""
+        code: "",
+        results: {}
       });
       return { cells: newCells };
     });
