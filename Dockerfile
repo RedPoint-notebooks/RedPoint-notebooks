@@ -17,7 +17,8 @@ RUN install_clean \
   python \
   && npm install \
   && cd react-redpoint \
-  && npm install
+  && npm install \
+  && cd ..
 
 EXPOSE 3000
 
