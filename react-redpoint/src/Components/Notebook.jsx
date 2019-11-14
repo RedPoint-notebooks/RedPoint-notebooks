@@ -39,34 +39,31 @@ class Notebook extends Component {
     ]
   };
 
-  // componentDidMount() {
-  //   const ws = new WebSocket("ws://localhost:8000");
-  //   ws.onopen = event => {
-  //     // receiving the message from server
-  //     let currentCell = 0;
-  //     ws.onmessage = message => {
-  //       message = JSON.parse(message.data);
-  //       console.log(message.data);
-  //       console.log(message.type);
+  ws = new WebSocket("ws://localhost:8000");
 
-  //       switch (message.type) {
-  //         case "stdout":
-  //           this.setState({ response: message.data });
-  //           break;
-  //         default:
-  //           console.log("No stdout received");
-  //       }
-  //     };
-  //   };
+  componentDidMount() {
+    this.ws.onopen = event => {
+      // receiving the message from server
+      // let currentCell = 0;
+      // ws.onmessage = message => {
+      //   message = JSON.parse(message.data);
+      //   console.log(message.data);
+      //   console.log(message.type);
+      //   switch (message.type) {
+      //     case "stdout":
+      //       this.setState({ response: message.data });
+      //       break;
+      //     default:
+      //       console.log("No stdout received");
+      //   }
+    };
 
-  //   const test = () => {
-  //     let codeStrArray = ["const a = 150\nconst b = 100\n console.log(a + b)"];
-  //     const json = JSON.stringify({ language: "Javascript", codeStrArray });
-  //     ws.send(json);
-  //   };
-
-  //   setTimeout(test, 1000);
-  // }
+    this.ws.onmessage = message => {
+      console.log(message.data);
+      // const message = JSON.parse(message.data);
+      // this.receiveResponse(message);
+    };
+  }
 
   handleSetDefaultLanguage = language => {
     this.setState({ defaultLanguage: language });
@@ -92,17 +89,22 @@ class Notebook extends Component {
     });
   };
 
-  handleRunClick = indexRun => {
-    const codeCellArray = [];
+  buildRequestObject = indexOfCellRun => {
+    const codeStrArray = [];
     const allCells = this.state.cells;
-    const cellLanguage = allCells[indexRun].type;
-    for (let i = 0; i <= indexRun; i += 1) {
+    const language = allCells[indexOfCellRun].type;
+    for (let i = 0; i <= indexOfCellRun; i += 1) {
       const cell = allCells[i];
-      if (i <= indexRun && cell.type === cellLanguage) {
-        codeCellArray.push(cell.code);
+      if (i <= indexOfCellRun && cell.type === language) {
+        codeStrArray.push(cell.code + "\n");
       }
     }
-    return codeCellArray;
+    return { language, codeStrArray };
+  };
+
+  handleRunClick = indexOfCellRun => {
+    const requestObject = this.buildRequestObject(indexOfCellRun);
+    this.ws.send(JSON.stringify(requestObject));
   };
 
   handleLanguageChange = (type, cellIndex) => {
