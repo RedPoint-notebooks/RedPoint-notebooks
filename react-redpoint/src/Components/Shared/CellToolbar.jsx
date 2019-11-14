@@ -6,7 +6,7 @@ const CellToolbar = props => {
   return (
     <div
       className={
-        props.language === "markdown" && props.rendered === true
+        props.language === "Markdown" && props.rendered === true
           ? "cell-toolbar-markdown"
           : "cell-toolbar"
       }
