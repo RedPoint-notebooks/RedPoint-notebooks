@@ -3,6 +3,10 @@ import ReactMarkdown from "react-markdown";
 import CodeCellToolbar from "../Shared/CodeCellToolbar";
 
 const RenderedMarkdown = props => {
+  const handleRenderedMarkdownClick = () => {
+    props.onRenderedMarkdownClick(props.cellIndex);
+  };
+
   return (
     <React.Fragment>
       <CodeCellToolbar
@@ -12,11 +16,9 @@ const RenderedMarkdown = props => {
         cellIndex={props.cellIndex}
         defaultLanguage={props.defaultLanguage}
       />
-      <ReactMarkdown
-        className="rendered-markdown"
-        source={props.code}
-        escapeHtml={true}
-      />
+      <div onClick={handleRenderedMarkdownClick}>
+        <ReactMarkdown className="rendered-markdown" source={props.code} />
+      </div>
     </React.Fragment>
   );
 };

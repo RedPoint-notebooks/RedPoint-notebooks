@@ -16,6 +16,14 @@ class CodeCell extends Component {
     this.setState({ code: value });
   };
 
+  handleBlur = () => {
+    this.props.onUpdateCodeState(this.state.code, this.props.cellIndex);
+
+    if (this.props.language === "markdown") {
+      this.props.toggleRender(this.props.cellIndex);
+    }
+  };
+
   cellOptions = {
     mode: this.props.language,
     theme: "darcula",
@@ -37,18 +45,11 @@ class CodeCell extends Component {
           value={this.state.code}
           options={this.cellOptions}
           onBeforeChange={(editor, data, value) => {
-            console.log("Editor:", editor);
-            console.log("Data:", data);
-            console.log("Value:", value);
-            console.log("inside onBeforeChange");
+            // console.log("Editor:", editor);
             this.handleChange(value);
           }}
-          onChange={(editor, data, value) => {
-            console.log(editor);
-            console.log(data);
-            console.log(value);
-            console.log("inside onChange");
-          }}
+          onChange={(editor, data, value) => {}}
+          onBlur={this.handleBlur}
         />
       </div>
     );
@@ -56,32 +57,3 @@ class CodeCell extends Component {
 }
 
 export default CodeCell;
-
-// class MyComponent extends Component {
-//   handleValueChange = value => this.props.onUpdateValue({ value });
-//   render() {
-//     const { shade } = this.props;
-//     const myOptions = {
-//       mode: "xml",
-//       theme: shade === "dark" ? "material" : "default",
-//       lineNumbers: true
-//     };
-//     return (
-//       <CodeMirror
-//         id="editor"
-//         value={this.props.value}
-//         options={myOptions}
-//         onBeforeChange={(editor, data, value) => {
-//           this.handleValueChange(value);
-//         }}
-//         onChange={(editor, data, value) => {}}
-//       />
-//     );
-//   }
-// }
-
-// function mapStateToProps(state) {
-//   return {
-//     shade: state.muiTheme.shade
-//   };
-// }

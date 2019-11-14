@@ -2,6 +2,7 @@ import React, { Component } from "react";
 // import DropdownButton from "react-bootstrap/DropdownButton";
 import SplitButton from "react-bootstrap/SplitButton";
 import Dropdown from "react-bootstrap/Dropdown";
+import uuidv4 from "uuid";
 
 class AddCodeCellButton extends Component {
   state = {
@@ -16,16 +17,22 @@ class AddCodeCellButton extends Component {
     this.setState({ type: e.target.value });
   };
 
+  capitalize = string => {
+    return string.charAt(0).toUpperCase() + string.slice(1);
+  };
+
   render() {
-    const dropDownItems = ["Markdown", "Javascript", "Ruby", "Python"].map(
-      lang => {
+    const dropDownItems = ["markdown", "javascript", "ruby", "python"].map(
+      language => {
         return (
           <Dropdown.Item
             as="button"
-            value={lang}
+            value={language}
             onClick={this.handleSetCellType}
+            active={this.state.type === language ? true : false}
+            key={uuidv4()}
           >
-            {lang}
+            {this.capitalize(language)}
           </Dropdown.Item>
         );
       }
