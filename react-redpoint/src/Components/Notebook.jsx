@@ -59,7 +59,6 @@ class Notebook extends Component {
   };
 
   handleToggleRender = index => {
-    debugger;
     this.setState(prevState => {
       const newCells = [...prevState.cells];
       const cellToToggle = newCells[index];

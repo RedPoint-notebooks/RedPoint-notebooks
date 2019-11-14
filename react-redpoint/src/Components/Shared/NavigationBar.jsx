@@ -20,9 +20,7 @@ class NavigationBar extends React.Component {
           key={uuidv4()}
           value={language}
           onClick={this.handleSetDefaultLanguage}
-          active={
-            this.props.state.defaultLanguage === { language } ? true : false
-          }
+          active={this.props.state.defaultLanguage === language ? true : false}
         >
           {constants.capitalizeLanguage(language)}
         </NavDropdown.Item>
