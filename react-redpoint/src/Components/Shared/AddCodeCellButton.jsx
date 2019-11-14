@@ -2,6 +2,8 @@ import React, { Component } from "react";
 import SplitButton from "react-bootstrap/SplitButton";
 import Dropdown from "react-bootstrap/Dropdown";
 import * as constants from "../../Constants/constants";
+import uuidv4 from "uuid";
+
 
 class AddCodeCellButton extends Component {
   state = {
@@ -16,6 +18,10 @@ class AddCodeCellButton extends Component {
     this.setState({ type: e.target.value });
   };
 
+  capitalize = string => {
+    return string.charAt(0).toUpperCase() + string.slice(1);
+  };
+
   render() {
     const dropDownItems = constants.LANGUAGES.map(language => {
       return (
@@ -24,6 +30,8 @@ class AddCodeCellButton extends Component {
           value={language}
           key={language}
           onClick={this.handleSetCellType}
+          active={this.state.type === language ? true : false}
+            key={uuidv4()}
         >
           {language}
         </Dropdown.Item>
@@ -31,7 +39,7 @@ class AddCodeCellButton extends Component {
     });
 
     const capitalizedLanguage = constants.capitalizeLanguage(this.state.type);
-
+    
     return (
       <SplitButton
         className={this.props.soloButton ? "solo-add-cell-btn" : null}

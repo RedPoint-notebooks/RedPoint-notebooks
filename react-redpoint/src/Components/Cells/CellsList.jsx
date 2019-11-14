@@ -19,6 +19,8 @@ class CellsList extends Component {
           defaultLanguage={this.props.defaultLanguage}
           rendered={cell.rendered}
           onLanguageChange={this.props.onLanguageChange}
+          toggleRender={this.props.toggleRender}
+          onUpdateCodeState={this.props.onUpdateCodeState}
         />
       );
     });

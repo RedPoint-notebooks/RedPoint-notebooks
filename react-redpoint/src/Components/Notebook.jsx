@@ -38,7 +38,6 @@ class Notebook extends Component {
   handleAddCellClick = (index, type) => {
     this.setState(prevState => {
       const newCells = [...prevState.cells];
-      console.log("New Cells: ", newCells);
       newCells.splice(index, 0, {
         type: type,
         code: ""
@@ -55,6 +54,22 @@ class Notebook extends Component {
       if (type === "markdown") {
         changedCell.rendered = false;
       }
+
+  handleToggleRender = index => {
+    this.setState(prevState => {
+      const newCells = [...prevState.cells];
+      const cellToToggle = newCells[index];
+      cellToToggle.rendered = !cellToToggle.rendered;
+      return { cells: newCells };
+    });
+  };
+
+  handleUpdateCodeState = (code, index) => {
+    this.setState(prevState => {
+      console.log("Code:", code, "Index:", index);
+      const newCells = [...prevState.cells];
+      const cellToUpdate = newCells[index];
+      cellToUpdate.code = code;
       return { cells: newCells };
     });
   };
@@ -73,6 +88,8 @@ class Notebook extends Component {
             cells={this.state.cells}
             defaultLanguage={this.state.defaultLanguage}
             onLanguageChange={this.handleLanguageChange}
+            toggleRender={this.handleToggleRender}
+            onUpdateCodeState={this.handleUpdateCodeState}
           />
         </Container>
       </div>
