@@ -39,3 +39,7 @@
 .solo-add-cell-btn {
   margin: 25px auto 25px;
 }
+
+.output {
+  text-align: left;
+}
