@@ -102,7 +102,6 @@ class Notebook extends Component {
         codeCellArray.push(cell.code);
       }
     }
-
     return codeCellArray;
   };
 
