@@ -69,7 +69,6 @@ class Notebook extends Component {
 
   handleUpdateCodeState = (code, index) => {
     this.setState(prevState => {
-      console.log("Code:", code, "Index:", index);
       const newCells = [...prevState.cells];
       const cellToUpdate = newCells[index];
       cellToUpdate.code = code;
