@@ -4,7 +4,6 @@ import Dropdown from "react-bootstrap/Dropdown";
 import * as constants from "../../Constants/constants";
 import uuidv4 from "uuid";
 
-
 class AddCodeCellButton extends Component {
   state = {
     type: this.props.defaultLanguage
@@ -30,8 +29,8 @@ class AddCodeCellButton extends Component {
           value={language}
           key={language}
           onClick={this.handleSetCellType}
-          active={this.state.type === language ? true : false}
-            key={uuidv4()}
+          active={this.state.type === language.toLowerCase() ? true : false}
+          key={uuidv4()}
         >
           {language}
         </Dropdown.Item>
@@ -39,7 +38,7 @@ class AddCodeCellButton extends Component {
     });
 
     const capitalizedLanguage = constants.capitalizeLanguage(this.state.type);
-    
+
     return (
       <SplitButton
         className={this.props.soloButton ? "solo-add-cell-btn" : null}
