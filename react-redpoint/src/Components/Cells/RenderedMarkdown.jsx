@@ -16,6 +16,7 @@ const RenderedMarkdown = props => {
         className="rendered-markdown"
         source={props.code}
         escapeHtml={true}
+        onClick={props.onRenderedMarkdownClick}
       />
     </React.Fragment>
   );

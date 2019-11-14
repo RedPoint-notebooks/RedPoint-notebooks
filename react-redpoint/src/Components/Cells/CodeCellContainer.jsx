@@ -15,6 +15,7 @@ class CodeCellContainer extends Component {
         onDeleteCellClick={this.props.onDeleteCellClick}
         onAddCellClick={this.props.onAddCellClick}
         defaultLanguage={this.props.defaultLanguage}
+        onRenderedMarkdownClick={this.props.toggleRender}
       />
     ) : (
       <CodeCell
@@ -25,6 +26,8 @@ class CodeCellContainer extends Component {
         onDeleteCellClick={this.props.onDeleteCellClick}
         cellIndex={this.props.cellIndex}
         defaultLanguage={this.props.defaultLanguage}
+        toggleRender={this.props.toggleRender}
+        onUpdateCodeState={this.props.onUpdateCodeState}
       />
     );
   }

@@ -47,6 +47,25 @@ class Notebook extends Component {
     });
   };
 
+  handleToggleRender = index => {
+    this.setState(prevState => {
+      const newCells = [...prevState.cells];
+      const cellToToggle = newCells[index];
+      cellToToggle.rendered = !cellToToggle.rendered;
+      return { cells: newCells };
+    });
+  };
+
+  handleUpdateCodeState = (code, index) => {
+    this.setState(prevState => {
+      console.log("Code:", code, "Index:", index);
+      const newCells = [...prevState.cells];
+      const cellToUpdate = newCells[index];
+      cellToUpdate.code = code;
+      return { cells: newCells };
+    });
+  };
+
   render() {
     return (
       <div>
@@ -60,6 +79,8 @@ class Notebook extends Component {
             onAddCellClick={this.handleAddCellClick}
             cells={this.state.cells}
             defaultLanguage={this.state.defaultLanguage}
+            toggleRender={this.handleToggleRender}
+            onUpdateCodeState={this.handleUpdateCodeState}
           />
         </Container>
       </div>

@@ -18,6 +18,8 @@ class CellsList extends Component {
           cellIndex={index}
           defaultLanguage={this.props.defaultLanguage}
           rendered={cell.rendered}
+          toggleRender={this.props.toggleRender}
+          onUpdateCodeState={this.props.onUpdateCodeState}
         />
       );
     });

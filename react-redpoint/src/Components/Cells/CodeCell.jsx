@@ -16,6 +16,13 @@ class CodeCell extends Component {
     this.setState({ code: value });
   };
 
+  handleToggleVisibility = () => {
+    if (this.props.language === "markdown") {
+      this.props.onUpdateCodeState(this.state.code, this.props.cellIndex);
+      this.props.toggleRender(this.props.cellIndex);
+    }
+  };
+
   cellOptions = {
     mode: this.props.language,
     theme: "darcula",
@@ -37,18 +44,11 @@ class CodeCell extends Component {
           value={this.state.code}
           options={this.cellOptions}
           onBeforeChange={(editor, data, value) => {
-            console.log("Editor:", editor);
-            console.log("Data:", data);
-            console.log("Value:", value);
-            console.log("inside onBeforeChange");
+            // console.log("Editor:", editor);
             this.handleChange(value);
           }}
-          onChange={(editor, data, value) => {
-            console.log(editor);
-            console.log(data);
-            console.log(value);
-            console.log("inside onChange");
-          }}
+          onChange={(editor, data, value) => {}}
+          onBlur={this.handleToggleVisibility}
         />
       </div>
     );
