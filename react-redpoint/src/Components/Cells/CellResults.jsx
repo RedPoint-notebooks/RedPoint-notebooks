@@ -2,11 +2,8 @@ import React, { Component } from "react";
 import ListGroup from "react-bootstrap/ListGroup";
 
 class CellResults extends Component {
-  constructor(props) {
-    super(props);
-    this.state = {};
-  }
   render() {
+    console.log(this.props.results);
     return (
       <ListGroup variant="flush">
         <ListGroup.Item className="output" variant="success">

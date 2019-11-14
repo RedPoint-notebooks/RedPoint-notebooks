@@ -52,7 +52,10 @@ class CodeCell extends Component {
           onBlur={this.handleBlur}
         />
         {this.props.language !== "markdown" ? (
-          <CellResults language={this.props.language} />
+          <CellResults
+            language={this.props.language}
+            results={this.props.results}
+          />
         ) : null}
       </div>
     );

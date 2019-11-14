@@ -13,8 +13,12 @@ class Notebook extends Component {
           "# Welcome to RedPoint Notebook\n- A virtual sandbox for sharing runnable code ",
         rendered: true
       },
-      { type: "javascript", code: "console.log('hello');" },
-      { type: "javascript", code: "console.log('hello from cell 2');" },
+      { type: "javascript", code: "console.log('hello');", results: {} },
+      {
+        type: "javascript",
+        code: "console.log('hello from cell 2');",
+        results: { output: "hello from cell 2", return: undefined }
+      },
       {
         type: "markdown",
         code: "### Hi, here is some markdown text.",
