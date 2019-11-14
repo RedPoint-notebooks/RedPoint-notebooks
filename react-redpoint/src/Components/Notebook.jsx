@@ -13,12 +13,23 @@ class Notebook extends Component {
           "# Welcome to RedPoint Notebook\n- A virtual sandbox for sharing runnable code ",
         rendered: true
       },
-      { type: "javascript", code: "console.log('hello');" },
-      { type: "javascript", code: "console.log('hello from cell 2');" },
+      {
+        type: "javascript",
+        code: "console.log('hello');",
+        results: { output: "hello", return: "undefined" }
+      },
+      {
+        type: "javascript",
+        code: "console.log('hello from cell 2');\nname",
+        results: {
+          output: "hello from cell 2",
+          error: "Reference Error: name is not defined"
+        }
+      },
       {
         type: "markdown",
         code: "### Hi, here is some markdown text.",
-        rendered: false
+        rendered: true
       }
     ]
   };

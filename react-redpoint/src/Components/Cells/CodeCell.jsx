@@ -6,6 +6,7 @@ import "codemirror/theme/darcula.css";
 import "codemirror/mode/javascript/javascript.js";
 import "codemirror/mode/ruby/ruby.js";
 import "codemirror/mode/python/python.js";
+import CellResults from "./CellResults";
 
 class CodeCell extends Component {
   state = {
@@ -50,6 +51,9 @@ class CodeCell extends Component {
           }}
           onBlur={this.handleBlur}
         />
+        {this.props.language !== "markdown" ? (
+          <CellResults results={this.props.results} />
+        ) : null}
       </div>
     );
   }

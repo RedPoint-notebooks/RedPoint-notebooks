@@ -13,6 +13,7 @@ class CellsList extends Component {
           language={cell.type}
           key={uuidv4()}
           code={cell.code}
+          results={cell.results}
           onDeleteCellClick={this.props.onDeleteCellClick}
           onAddCellClick={this.props.onAddCellClick}
           cellIndex={index}
