@@ -56,32 +56,3 @@ class CodeCell extends Component {
 }
 
 export default CodeCell;
-
-// class MyComponent extends Component {
-//   handleValueChange = value => this.props.onUpdateValue({ value });
-//   render() {
-//     const { shade } = this.props;
-//     const myOptions = {
-//       mode: "xml",
-//       theme: shade === "dark" ? "material" : "default",
-//       lineNumbers: true
-//     };
-//     return (
-//       <CodeMirror
-//         id="editor"
-//         value={this.props.value}
-//         options={myOptions}
-//         onBeforeChange={(editor, data, value) => {
-//           this.handleValueChange(value);
-//         }}
-//         onChange={(editor, data, value) => {}}
-//       />
-//     );
-//   }
-// }
-
-// function mapStateToProps(state) {
-//   return {
-//     shade: state.muiTheme.shade
-//   };
-// }

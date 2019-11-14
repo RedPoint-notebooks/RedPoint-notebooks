@@ -38,7 +38,6 @@ class Notebook extends Component {
   handleAddCellClick = (index, type) => {
     this.setState(prevState => {
       const newCells = [...prevState.cells];
-      console.log("New Cells: ", newCells);
       newCells.splice(index, 0, {
         type: type,
         code: ""
