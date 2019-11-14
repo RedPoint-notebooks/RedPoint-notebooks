@@ -39,36 +39,34 @@ class Notebook extends Component {
     ]
   };
 
-  submitCode = () => {};
+  // componentDidMount() {
+  //   const ws = new WebSocket("ws://localhost:8000");
+  //   ws.onopen = event => {
+  //     // receiving the message from server
+  //     let currentCell = 0;
+  //     ws.onmessage = message => {
+  //       message = JSON.parse(message.data);
+  //       console.log(message.data);
+  //       console.log(message.type);
 
-  componentDidMount() {
-    const ws = new WebSocket("ws://localhost:8000");
-    ws.onopen = event => {
-      // receiving the message from server
-      let currentCell = 0;
-      ws.onmessage = message => {
-        message = JSON.parse(message.data);
-        console.log(message.data);
-        console.log(message.type);
+  //       switch (message.type) {
+  //         case "stdout":
+  //           this.setState({ response: message.data });
+  //           break;
+  //         default:
+  //           console.log("No stdout received");
+  //       }
+  //     };
+  //   };
 
-        switch (message.type) {
-          case "stdout":
-            this.setState({ response: message.data });
-            break;
-          default:
-            console.log("No stdout received");
-        }
-      };
-    };
+  //   const test = () => {
+  //     let codeStrArray = ["const a = 150\nconst b = 100\n console.log(a + b)"];
+  //     const json = JSON.stringify({ language: "Javascript", codeStrArray });
+  //     ws.send(json);
+  //   };
 
-    const test = () => {
-      let codeStrArray = ["const a = 150\nconst b = 100\n console.log(a + b)"];
-      const json = JSON.stringify({ language: "Javascript", codeStrArray });
-      ws.send(json);
-    };
-
-    setTimeout(test, 1000);
-  }
+  //   setTimeout(test, 1000);
+  // }
 
   handleSetDefaultLanguage = language => {
     this.setState({ defaultLanguage: language });
@@ -94,8 +92,18 @@ class Notebook extends Component {
     });
   };
 
-  handleRunClick = index => {
-    console.log(`Inside handleRunClick in Notebook.jsx: index:${index}`);
+  handleRunClick = indexRun => {
+    const codeCellArray = [];
+    const allCells = this.state.cells;
+    const cellLanguage = allCells[indexRun].type;
+    for (let i = 0; i <= indexRun; i += 1) {
+      const cell = allCells[i];
+      if (i <= indexRun && cell.type === cellLanguage) {
+        codeCellArray.push(cell.code);
+      }
+    }
+
+    return codeCellArray;
   };
 
   handleLanguageChange = (type, cellIndex) => {
