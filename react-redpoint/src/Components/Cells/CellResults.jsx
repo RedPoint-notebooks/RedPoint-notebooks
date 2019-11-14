@@ -1,22 +1,24 @@
 import React, { Component } from "react";
 import ListGroup from "react-bootstrap/ListGroup";
+import Output from "./Output";
+import Return from "./Return";
+import Error from "./Error";
 
 class CellResults extends Component {
   render() {
-    console.log(this.props.results);
-    return (
-      <ListGroup variant="flush">
-        <ListGroup.Item className="output" variant="success">
-          OUTPUT
-        </ListGroup.Item>
-        <ListGroup.Item className="output" variant="danger">
-          ERROR
-        </ListGroup.Item>
-        <ListGroup.Item className="output" variant="light">
-          RETURN VALUE
-        </ListGroup.Item>
-      </ListGroup>
-    );
+    const resultsObj = this.props.results;
+    const formattedResults = Object.keys(resultsObj).map(resultType => {
+      const data = resultsObj[resultType];
+      switch (resultType) {
+        case "output":
+          return <Output output={data} />;
+        case "return":
+          return <Return returnVal={data} />;
+        case "error":
+          return <Error error={data} />;
+      }
+    });
+    return <ListGroup>{formattedResults}</ListGroup>;
   }
 }
 
