@@ -14,7 +14,7 @@ class AddCodeCellButton extends Component {
   };
 
   handleSetCellType = e => {
-    this.setState({ type: e.target.value });
+    this.setState({ type: e.target.value.toLowerCase() });
   };
 
   capitalize = string => {
