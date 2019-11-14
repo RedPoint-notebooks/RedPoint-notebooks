@@ -2,6 +2,8 @@ import React, { Component } from "react";
 import { Controlled as CodeMirror } from "react-codemirror2";
 import CodeCellToolbar from "../Shared/CodeCellToolbar";
 import CellResults from "./CellResults";
+import CellToolbar from "../Shared/CellToolbar";
+import AddCellButton from "../Shared/AddCellButton";
 import "codemirror/lib/codemirror.css";
 import "codemirror/theme/darcula.css";
 import "codemirror/mode/javascript/javascript.js";
@@ -20,13 +22,13 @@ class CodeCell extends Component {
   handleBlur = () => {
     this.props.onUpdateCodeState(this.state.code, this.props.cellIndex);
 
-    if (this.props.language === "markdown") {
+    if (this.props.language === "Markdown") {
       this.props.toggleRender(this.props.cellIndex);
     }
   };
 
   cellOptions = {
-    mode: this.props.language,
+    mode: this.props.language.toLowerCase(),
     theme: "darcula",
     lineNumbers: true,
     showCursorWhenSelecting: true
@@ -35,13 +37,19 @@ class CodeCell extends Component {
   render() {
     return (
       <div>
-        <CodeCellToolbar
-          onAddClick={this.props.onAddCellClick}
+        <AddCellButton
+          className="add-cell-btn"
+          onClick={this.props.onAddClick}
           cellIndex={this.props.cellIndex}
-          onDeleteClick={this.props.onDeleteCellClick}
+          defaultLanguage={this.props.defaultLanguage}
+        />
+        <CellToolbar
+          cellIndex={this.props.cellIndex}
+          onDeleteClick={this.props.onDeleteClick}
           language={this.props.language}
           defaultLanguage={this.props.defaultLanguage}
           onLanguageChange={this.props.onLanguageChange}
+          rendered={this.props.rendered}
         />
         <CodeMirror
           value={this.state.code}

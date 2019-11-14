@@ -7,9 +7,9 @@ const ChangeLanguageDropdown = props => {
   const dropdownItems = constants.LANGUAGES.map(language => {
     return (
       <Dropdown.Item
-        eventKey={language.toLowerCase()}
+        eventKey={language}
         key={language}
-        active={props.language === language.toLowerCase() ? true : false}
+        active={props.language === language ? true : false}
       >
         {language}
       </Dropdown.Item>
@@ -20,13 +20,11 @@ const ChangeLanguageDropdown = props => {
     props.onLanguageChange(eventKey, props.cellIndex);
   };
 
-  const capitalizedLanguage = constants.capitalizeLanguage(props.language);
-
   return (
     <DropdownButton
       variant="secondary"
       id="dropdown-basic-button"
-      title={capitalizedLanguage}
+      title={props.language}
       size="sm"
       onSelect={handleLanguageChange}
     >

@@ -14,13 +14,13 @@ const repl = require("./libs/modules/repl");
 app.use(express.static("."));
 app.use(logger("dev"));
 
-const generateDelimiter = (lang, delimiter) => {
-  switch (lang) {
-    case "ruby":
+const generateDelimiter = (language, delimiter) => {
+  switch (language) {
+    case "Ruby":
       return `puts "${delimiter}"\n`;
-    case "javascript":
+    case "Ravascript":
       return `console.log(${delimiter})\n`;
-    case "python":
+    case "Python":
       return `print(${delimiter})\n`;
   }
 };

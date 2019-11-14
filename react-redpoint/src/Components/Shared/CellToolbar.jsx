@@ -1,21 +1,21 @@
 import React from "react";
-import AddCodeCellButton from "../Shared/AddCodeCellButton";
 import DeleteCellButton from "./DeleteCellButton";
 import ChangeLanguageDropdown from "./ChangeLanguageDropdown";
 
-const CodeCellToolbar = props => {
+const CellToolbar = props => {
   return (
-    <div className="code-cell-toolbar">
+    <div
+      className={
+        props.language === "Markdown" && props.rendered === true
+          ? "cell-toolbar-markdown"
+          : "cell-toolbar"
+      }
+    >
       <ChangeLanguageDropdown
-        language={props.language}
+        language={`${props.language} Cell`}
         onLanguageChange={props.onLanguageChange}
         cellIndex={props.cellIndex}
       ></ChangeLanguageDropdown>
-      <AddCodeCellButton
-        onClick={props.onAddClick}
-        cellIndex={props.cellIndex}
-        defaultLanguage={props.defaultLanguage}
-      />
       <DeleteCellButton
         onClick={props.onDeleteClick}
         cellIndex={props.cellIndex}
@@ -24,4 +24,4 @@ const CodeCellToolbar = props => {
   );
 };
 
-export default CodeCellToolbar;
+export default CellToolbar;

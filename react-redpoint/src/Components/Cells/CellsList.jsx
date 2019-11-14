@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import AddCodeCellButton from "../Shared/AddCodeCellButton";
+import AddCellButton from "../Shared/AddCellButton";
 import CodeCellContainer from "./CodeCellContainer";
 import uuidv4 from "uuid/v4";
 
@@ -27,9 +27,8 @@ class CellsList extends Component {
     });
 
     cellContainers.push(
-      <AddCodeCellButton
+      <AddCellButton
         soloButton="true"
-        // className="solo-add-code-cell-btn" // TODO: not being applied
         cellIndex={cellContainers.length}
         onClick={this.props.onAddCellClick}
         key={uuidv4()}

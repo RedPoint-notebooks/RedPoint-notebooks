@@ -8,7 +8,7 @@ const DeleteCellButton = props => {
 
   return (
     <Button onClick={handleDeleteCellClick} variant="secondary" size="sm">
-      <span>&times; Delete</span>
+      <span className="delete-cell">&times;</span>
     </Button>
   );
 };

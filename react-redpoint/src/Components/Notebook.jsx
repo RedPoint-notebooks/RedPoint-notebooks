@@ -5,10 +5,10 @@ import NavigationBar from "./Shared/NavigationBar";
 
 class Notebook extends Component {
   state = {
-    defaultLanguage: "javascript",
+    defaultLanguage: "Javascript",
     cells: [
       {
-        type: "markdown",
+        type: "Markdown",
         code:
           "# Welcome to RedPoint Notebook\n- A virtual sandbox for sharing runnable code ",
         rendered: true
@@ -32,7 +32,7 @@ class Notebook extends Component {
         }
       },
       {
-        type: "markdown",
+        type: "Markdown",
         code: "### Hi, here is some markdown text.",
         rendered: false
       }
@@ -67,7 +67,7 @@ class Notebook extends Component {
       const newCells = [...prevState.cells];
       const changedCell = newCells[cellIndex];
       changedCell.type = type;
-      if (type === "markdown") {
+      if (type === "Markdown") {
         changedCell.rendered = false;
       }
       return { cells: newCells };
@@ -85,7 +85,6 @@ class Notebook extends Component {
 
   handleUpdateCodeState = (code, index) => {
     this.setState(prevState => {
-      console.log("Code:", code, "Index:", index);
       const newCells = [...prevState.cells];
       const cellToUpdate = newCells[index];
       cellToUpdate.code = code;
