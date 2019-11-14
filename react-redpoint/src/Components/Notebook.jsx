@@ -47,6 +47,18 @@ class Notebook extends Component {
     });
   };
 
+  handleLanguageChange = (type, cellIndex) => {
+    this.setState(prevState => {
+      const newCells = [...prevState.cells];
+      const changedCell = newCells[cellIndex];
+      changedCell.type = type;
+      if (type === "markdown") {
+        changedCell.rendered = false;
+      }
+      return { cells: newCells };
+    });
+  };
+
   render() {
     return (
       <div>
@@ -60,6 +72,7 @@ class Notebook extends Component {
             onAddCellClick={this.handleAddCellClick}
             cells={this.state.cells}
             defaultLanguage={this.state.defaultLanguage}
+            onLanguageChange={this.handleLanguageChange}
           />
         </Container>
       </div>

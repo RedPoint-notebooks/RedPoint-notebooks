@@ -8,6 +8,8 @@ const CodeCellToolbar = props => {
     <div className="code-cell-toolbar">
       <ChangeLanguageDropdown
         language={props.language}
+        onLanguageChange={props.onLanguageChange}
+        cellIndex={props.cellIndex}
       ></ChangeLanguageDropdown>
       <AddCodeCellButton
         onClick={props.onAddClick}
