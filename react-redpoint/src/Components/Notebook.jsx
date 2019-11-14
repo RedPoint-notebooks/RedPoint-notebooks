@@ -15,7 +15,7 @@ class Notebook extends Component {
       },
       {
         type: "Javascript",
-        code: "[1, 2, 3]",
+        code: "[1, 2, 3];",
         results: { return: "[1, 2, 3]" }
       },
       {
@@ -28,7 +28,7 @@ class Notebook extends Component {
         code: "console.log('Hello, nice to meet you.');\nname",
         results: {
           output: "Hello, nice to meet you.",
-          error: "ReferenceError: ve is not defined"
+          error: "ReferenceError: name is not defined"
         }
       },
       {
@@ -36,7 +36,9 @@ class Notebook extends Component {
         code: "### Hi, here is some markdown text.",
         rendered: false
       }
-    ]
+    ],
+    // pendingCellExecution: true,
+    pendingCellIndexes: []
   };
 
   ws = new WebSocket("ws://localhost:8000");
@@ -89,21 +91,24 @@ class Notebook extends Component {
     });
   };
 
-  buildRequestObject = indexOfCellRun => {
+  buildRequest = indexOfCellRun => {
     const codeStrArray = [];
     const allCells = this.state.cells;
     const language = allCells[indexOfCellRun].type;
+    const pendingCellIndexes = [];
     for (let i = 0; i <= indexOfCellRun; i += 1) {
       const cell = allCells[i];
       if (i <= indexOfCellRun && cell.type === language) {
         codeStrArray.push(cell.code + "\n");
+        pendingCellIndexes.push(i);
       }
     }
+    this.setState({ pendingCellIndexes });
     return { language, codeStrArray };
   };
 
   handleRunClick = indexOfCellRun => {
-    const requestObject = this.buildRequestObject(indexOfCellRun);
+    const requestObject = this.buildRequest(indexOfCellRun);
     this.ws.send(JSON.stringify(requestObject));
   };
 
