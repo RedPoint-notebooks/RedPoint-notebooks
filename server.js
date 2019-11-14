@@ -19,7 +19,7 @@ const generateDelimiter = (language, delimiter) => {
     case "Ruby":
       return `puts "${delimiter}"\n`;
     case "Javascript":
-      return `console.log(${delimiter})\n`;
+      return `console.log('${delimiter}');\n`;
     case "Python":
       return `print(${delimiter})\n`;
   }
@@ -31,15 +31,16 @@ const sendDelimiterToClient = (ws, uuid) => {
 
 wss.on("connection", ws => {
   const delimiter = uuidv4();
-  sendDelimiterToClient(ws, delimiter);
+  // sendDelimiterToClient(ws, delimiter);
 
   ws.on("message", msg => {
     const { language, codeStrArray } = JSON.parse(msg);
     const codeString = codeStrArray.join("");
     const delimiterStatement = generateDelimiter(language, delimiter);
     const scriptString = codeStrArray.join(delimiterStatement);
+
     // is this the best place to set language for upcoming data?
-    ws.send(JSON.stringify({ type: "language", data: language }));
+    // ws.send(JSON.stringify({ type: "language", data: language }));
 
     userScript.writeFile(scriptString, language).then(() => {
       userScript

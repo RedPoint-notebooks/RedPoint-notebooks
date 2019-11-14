@@ -39,33 +39,30 @@ class Notebook extends Component {
     ]
   };
 
+  ws = new WebSocket("ws://localhost:8000");
+
   componentDidMount() {
-    ws = new WebSocket("ws://localhost:8000");
-    ws.onopen = event => {
+    this.ws.onopen = event => {
       // receiving the message from server
-      let currentCell = 0;
-      ws.onmessage = message => {
-        message = JSON.parse(message.data);
-        console.log(message.data);
-        console.log(message.type);
-
-        switch (message.type) {
-          case "stdout":
-            this.setState({ response: message.data });
-            break;
-          default:
-            console.log("No stdout received");
-        }
-      };
+      // let currentCell = 0;
+      // ws.onmessage = message => {
+      //   message = JSON.parse(message.data);
+      //   console.log(message.data);
+      //   console.log(message.type);
+      //   switch (message.type) {
+      //     case "stdout":
+      //       this.setState({ response: message.data });
+      //       break;
+      //     default:
+      //       console.log("No stdout received");
+      //   }
     };
 
-    const test = () => {
-      let codeStrArray = ["const a = 150\nconst b = 100\n console.log(a + b)"];
-      const json = JSON.stringify({ language: "Javascript", codeStrArray });
-      ws.send(json);
+    this.ws.onmessage = message => {
+      console.log(message.data);
+      // const message = JSON.parse(message.data);
+      // this.receiveResponse(message);
     };
-
-    setTimeout(test, 1000);
   }
 
   handleSetDefaultLanguage = language => {
@@ -99,7 +96,7 @@ class Notebook extends Component {
     for (let i = 0; i <= indexOfCellRun; i += 1) {
       const cell = allCells[i];
       if (i <= indexOfCellRun && cell.type === language) {
-        codeStrArray.push(cell.code);
+        codeStrArray.push(cell.code + "\n");
       }
     }
     return { language, codeStrArray };
@@ -107,6 +104,7 @@ class Notebook extends Component {
 
   handleRunClick = indexOfCellRun => {
     const requestObject = this.buildRequestObject(indexOfCellRun);
+    this.ws.send(JSON.stringify(requestObject));
   };
 
   handleLanguageChange = (type, cellIndex) => {
