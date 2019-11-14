@@ -6,13 +6,13 @@ const CellToolbar = props => {
   return (
     <div
       className={
-        props.language === "markdown" && props.rendered === true
+        props.language === "Markdown" && props.rendered === true
           ? "cell-toolbar-markdown"
           : "cell-toolbar"
       }
     >
       <ChangeLanguageDropdown
-        language={props.language}
+        language={`${props.language} Cell`}
         onLanguageChange={props.onLanguageChange}
         cellIndex={props.cellIndex}
       ></ChangeLanguageDropdown>
