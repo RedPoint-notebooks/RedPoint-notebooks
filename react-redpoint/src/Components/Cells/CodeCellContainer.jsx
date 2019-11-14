@@ -30,6 +30,7 @@ class CodeCellContainer extends Component {
         onLanguageChange={this.props.onLanguageChange}
         toggleRender={this.props.toggleRender}
         onUpdateCodeState={this.props.onUpdateCodeState}
+        onRunClick={this.props.onRunClick}
       />
     );
   }

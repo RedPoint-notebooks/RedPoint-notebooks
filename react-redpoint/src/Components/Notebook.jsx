@@ -46,6 +46,10 @@ class Notebook extends Component {
     });
   };
 
+  handleRunCellClick = index => {
+    debugger;
+  };
+
   handleLanguageChange = (type, cellIndex) => {
     this.setState(prevState => {
       const newCells = [...prevState.cells];
@@ -93,6 +97,7 @@ class Notebook extends Component {
             onLanguageChange={this.handleLanguageChange}
             toggleRender={this.handleToggleRender}
             onUpdateCodeState={this.handleUpdateCodeState}
+            onRunClick={this.handleRunCellClick}
           />
         </Container>
       </div>

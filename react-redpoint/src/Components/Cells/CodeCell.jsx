@@ -38,6 +38,7 @@ class CodeCell extends Component {
           onAddClick={this.props.onAddCellClick}
           cellIndex={this.props.cellIndex}
           onDeleteClick={this.props.onDeleteCellClick}
+          onRunClick={this.props.onRunClick}
           language={this.props.language}
           defaultLanguage={this.props.defaultLanguage}
           onLanguageChange={this.props.onLanguageChange}
