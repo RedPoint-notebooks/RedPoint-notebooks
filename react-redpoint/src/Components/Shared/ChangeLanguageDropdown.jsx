@@ -1,42 +1,34 @@
 import React from "react";
 import DropdownButton from "react-bootstrap/DropdownButton";
 import Dropdown from "react-bootstrap/Dropdown";
+import * as constants from "../../Constants/constants";
 
 const ChangeLanguageDropdown = props => {
+  const dropdownItems = constants.LANGUAGES.map(language => {
+    return (
+      <Dropdown.Item
+        eventKey="markdown"
+        key={language}
+        active={props.language === language.toLowerCase() ? true : false}
+      >
+        {language}
+      </Dropdown.Item>
+    );
+  });
+
+  const capitalizedLanguage = constants.capitalizeLanguage(props.language);
+
   return (
     <DropdownButton
       variant="secondary"
       id="dropdown-basic-button"
-      title={props.language}
+      title={capitalizedLanguage}
       size="sm"
       onSelect={(eventKey, event) => {
         debugger;
       }}
     >
-      <Dropdown.Item
-        eventKey="markdown"
-        active={props.language === "markdown" ? true : false}
-      >
-        Markdown
-      </Dropdown.Item>
-      <Dropdown.Item
-        eventKey="javascript"
-        active={props.language === "javascript" ? true : false}
-      >
-        Javascript
-      </Dropdown.Item>
-      <Dropdown.Item
-        eventKey="ruby"
-        active={props.language === "ruby" ? true : false}
-      >
-        Ruby
-      </Dropdown.Item>
-      <Dropdown.Item
-        eventKey="python"
-        active={props.language === "python" ? true : false}
-      >
-        Python
-      </Dropdown.Item>
+      {dropdownItems}
     </DropdownButton>
   );
 };
