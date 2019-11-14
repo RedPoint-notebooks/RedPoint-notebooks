@@ -1,6 +1,7 @@
 import React, { Component } from "react";
 import { Controlled as CodeMirror } from "react-codemirror2";
-import CodeCellToolbar from "../Shared/CodeCellToolbar";
+import CellToolbar from "../Shared/CellToolbar";
+import AddCodeCellButton from "../Shared/AddCodeCellButton";
 import "codemirror/lib/codemirror.css";
 import "codemirror/theme/darcula.css";
 import "codemirror/mode/javascript/javascript.js";
@@ -34,13 +35,20 @@ class CodeCell extends Component {
   render() {
     return (
       <div>
-        <CodeCellToolbar
+        <AddCodeCellButton
+          className="add-cell-btn"
+          onClick={this.props.onAddClick}
+          cellIndex={this.props.cellIndex}
+          defaultLanguage={this.props.defaultLanguage}
+        />
+        <CellToolbar
           onAddClick={this.props.onAddCellClick}
           cellIndex={this.props.cellIndex}
           onDeleteClick={this.props.onDeleteCellClick}
           language={this.props.language}
           defaultLanguage={this.props.defaultLanguage}
           onLanguageChange={this.props.onLanguageChange}
+          rendered={this.props.rendered}
         />
         <CodeMirror
           value={this.state.code}

@@ -28,14 +28,34 @@
   text-align: left;
 }
 
-.code-cell-toolbar {
+.cell-toolbar,
+.cell-toolbar-markdown {
   width: 900px;
   display: flex;
   justify-content: space-between;
-  margin: 25px 0 25px 0;
+  margin: 25px 0 0 0;
+  background: #2b2b29;
+  /* border-bottom: 1px solid #6c757e; */
+}
+
+.cell-toolbar-markdown {
+  background: #474b56;
+  margin-bottom: 20px;
+}
+
+.btn-secondary {
+  font-size: 25px;
+  /* margin: -10px; */
+  /* font-weight: 600; */
 }
 
 /* To set margin on bottom add new cell button */
 .solo-add-cell-btn {
   margin: 25px auto 25px;
+}
+
+div .rendered-markdown {
+  border-top: 1px solid #6b757e;
+  border-bottom: 1px solid #6b757e;
+  padding: 10px 0;
 }
