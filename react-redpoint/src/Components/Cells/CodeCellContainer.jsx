@@ -33,6 +33,8 @@ class CodeCellContainer extends Component {
         toggleRender={this.props.toggleRender}
         onUpdateCodeState={this.props.onUpdateCodeState}
         rendered={this.props.rendered}
+        onRunClick={this.props.onRunClick}
+        s
       />
     );
   }

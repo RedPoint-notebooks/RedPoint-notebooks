@@ -63,6 +63,10 @@ class Notebook extends Component {
     });
   };
 
+  handleRunClick = index => {
+    console.log(`Inside handleRunClick in Notebook.jsx: index:${index}`);
+  };
+
   handleLanguageChange = (type, cellIndex) => {
     this.setState(prevState => {
       const newCells = [...prevState.cells];
@@ -109,6 +113,7 @@ class Notebook extends Component {
             onLanguageChange={this.handleLanguageChange}
             toggleRender={this.handleToggleRender}
             onUpdateCodeState={this.handleUpdateCodeState}
+            onRunClick={this.handleRunClick}
           />
         </Container>
       </div>
