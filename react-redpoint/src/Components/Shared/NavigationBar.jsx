@@ -3,6 +3,7 @@ import Navbar from "react-bootstrap/Navbar";
 import NavDropdown from "react-bootstrap/NavDropdown";
 import Nav from "react-bootstrap/Nav";
 import logo from "../../placeholder_logo.svg";
+import * as constants from "../../Constants/constants";
 
 class NavigationBar extends React.Component {
   setDefaultLanguage = e => {
@@ -11,26 +12,21 @@ class NavigationBar extends React.Component {
   };
 
   render() {
-    const capitalized = string => {
-      return string.charAt(0).toUpperCase() + string.slice(1);
-    };
-    // TODO: pull language options from a config file
-    const navDropDownItems = ["markdown", "javascript", "ruby", "python"].map(
-      language => {
-        return (
-          <NavDropdown.Item
-            as="button"
-            value={language}
-            onClick={this.setDefaultLanguage}
-            active={
-              this.props.state.defaultLanguage === { language } ? true : false
-            }
-          >
-            {capitalized(language)}
-          </NavDropdown.Item>
-        );
-      }
-    );
+    const navDropDownItems = constants.LOWERCASE_LANGUAGES.map(language => {
+      return (
+        <NavDropdown.Item
+          as="button"
+          key={language}
+          value={language}
+          onClick={this.setDefaultLanguage}
+          active={
+            this.props.state.defaultLanguage === { language } ? true : false
+          }
+        >
+          {constants.capitalizeLanguage(language)}
+        </NavDropdown.Item>
+      );
+    });
 
     return (
       <Navbar bg="dark" variant="dark">

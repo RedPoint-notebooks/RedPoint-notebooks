@@ -37,17 +37,7 @@ class CodeCell extends Component {
           value={this.state.code}
           options={this.cellOptions}
           onBeforeChange={(editor, data, value) => {
-            console.log("Editor:", editor);
-            console.log("Data:", data);
-            console.log("Value:", value);
-            console.log("inside onBeforeChange");
             this.handleChange(value);
-          }}
-          onChange={(editor, data, value) => {
-            console.log(editor);
-            console.log(data);
-            console.log(value);
-            console.log("inside onChange");
           }}
         />
       </div>

@@ -17,14 +17,15 @@ class AddCodeCellButton extends Component {
   };
 
   render() {
-    const dropDownItems = constants.LANGUAGES.map(lang => {
+    const dropDownItems = constants.LANGUAGES.map(language => {
       return (
         <Dropdown.Item
           as="button"
-          value={lang}
+          value={language}
+          key={language}
           onClick={this.handleSetCellType}
         >
-          {lang}
+          {language}
         </Dropdown.Item>
       );
     });
