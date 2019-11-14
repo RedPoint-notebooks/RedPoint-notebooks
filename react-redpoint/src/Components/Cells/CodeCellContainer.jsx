@@ -24,6 +24,7 @@ class CodeCellContainer extends Component {
         language={this.props.language}
         key={this.props.index}
         code={this.props.code}
+        results={this.props.results}
         onAddClick={this.props.onAddCellClick}
         onDeleteClick={this.props.onDeleteCellClick}
         cellIndex={this.props.cellIndex}

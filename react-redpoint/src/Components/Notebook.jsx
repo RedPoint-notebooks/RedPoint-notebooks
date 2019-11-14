@@ -13,8 +13,24 @@ class Notebook extends Component {
           "# Welcome to RedPoint Notebook\n- A virtual sandbox for sharing runnable code ",
         rendered: true
       },
-      { type: "Javascript", code: "console.log('hello');" },
-      { type: "Javascript", code: "console.log('hello from cell 2');" },
+      {
+        type: "javascript",
+        code: "[1, 2, 3]",
+        results: { return: "[1, 2, 3]" }
+      },
+      {
+        type: "javascript",
+        code: "console.log('hello from cell 2');",
+        results: { output: "hello from cell 2", return: "undefined" }
+      },
+      {
+        type: "javascript",
+        code: "console.log('Hello, nice to meet you.');\nname",
+        results: {
+          output: "Hello, nice to meet you.",
+          error: "ReferenceError: ve is not defined"
+        }
+      },
       {
         type: "Markdown",
         code: "### Hi, here is some markdown text.",

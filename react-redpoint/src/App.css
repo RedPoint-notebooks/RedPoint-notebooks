@@ -52,6 +52,10 @@
   margin: 25px auto 25px;
 }
 
+.output {
+  text-align: left;
+}
+
 div .rendered-markdown {
   border-top: 1px solid #6b757e;
   border-bottom: 1px solid #6b757e;
