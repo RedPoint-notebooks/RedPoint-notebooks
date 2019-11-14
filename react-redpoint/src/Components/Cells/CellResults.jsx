@@ -12,11 +12,11 @@ class CellResults extends Component {
 
       switch (resultType) {
         case "output":
-          return <Output output={data} />;
+          return <Output key={"output"} output={data} />;
         case "return":
-          return <Return returnVal={data} />;
+          return <Return key={"return"} returnVal={data} />;
         case "error":
-          return <Error error={data} />;
+          return <Error key={"error"} error={data} />;
         default:
           return;
       }
