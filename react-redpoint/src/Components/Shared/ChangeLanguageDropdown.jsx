@@ -9,30 +9,30 @@ const ChangeLanguageDropdown = props => {
       id="dropdown-basic-button"
       title={props.language}
       size="sm"
-      onSelect={e => {
+      onSelect={(eventKey, event) => {
         debugger;
       }}
     >
       <Dropdown.Item
-        href="#/action-1"
+        eventKey="markdown"
         active={props.language === "markdown" ? true : false}
       >
         Markdown
       </Dropdown.Item>
       <Dropdown.Item
-        href="#/action-2"
+        eventKey="javascript"
         active={props.language === "javascript" ? true : false}
       >
         Javascript
       </Dropdown.Item>
       <Dropdown.Item
-        href="#/action-3"
+        eventKey="ruby"
         active={props.language === "ruby" ? true : false}
       >
         Ruby
       </Dropdown.Item>
       <Dropdown.Item
-        href="#/action-4"
+        eventKey="python"
         active={props.language === "python" ? true : false}
       >
         Python

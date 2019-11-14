@@ -2,6 +2,7 @@ import React, { Component } from "react";
 // import DropdownButton from "react-bootstrap/DropdownButton";
 import SplitButton from "react-bootstrap/SplitButton";
 import Dropdown from "react-bootstrap/Dropdown";
+import * as constants from "../../Constants/constants";
 
 class AddCodeCellButton extends Component {
   state = {
@@ -17,19 +18,18 @@ class AddCodeCellButton extends Component {
   };
 
   render() {
-    const dropDownItems = ["Markdown", "Javascript", "Ruby", "Python"].map(
-      lang => {
-        return (
-          <Dropdown.Item
-            as="button"
-            value={lang}
-            onClick={this.handleSetCellType}
-          >
-            {lang}
-          </Dropdown.Item>
-        );
-      }
-    );
+    // const dropDownItems = ["Markdown", "Javascript", "Ruby", "Python"].map(
+    const dropDownItems = constants.LANGUAGES.map(lang => {
+      return (
+        <Dropdown.Item
+          as="button"
+          value={lang}
+          onClick={this.handleSetCellType}
+        >
+          {lang}
+        </Dropdown.Item>
+      );
+    });
     const capitalizedLanguage =
       this.state.type.charAt(0).toUpperCase() + this.state.type.slice(1);
     return (
