@@ -12,8 +12,8 @@ class CodeCellContainer extends Component {
         language={this.props.language}
         code={this.props.code}
         cellIndex={this.props.cellIndex}
-        onDeleteCellClick={this.props.onDeleteCellClick}
-        onAddCellClick={this.props.onAddCellClick}
+        onDeleteClick={this.props.onDeleteCellClick}
+        onAddClick={this.props.onAddCellClick}
         defaultLanguage={this.props.defaultLanguage}
         onRenderedMarkdownClick={this.props.toggleRender}
         onLanguageChange={this.props.onLanguageChange}
@@ -24,8 +24,8 @@ class CodeCellContainer extends Component {
         language={this.props.language}
         key={this.props.index}
         code={this.props.code}
-        onAddCellClick={this.props.onAddCellClick}
-        onDeleteCellClick={this.props.onDeleteCellClick}
+        onAddClick={this.props.onAddCellClick}
+        onDeleteClick={this.props.onDeleteCellClick}
         cellIndex={this.props.cellIndex}
         defaultLanguage={this.props.defaultLanguage}
         onLanguageChange={this.props.onLanguageChange}

@@ -42,9 +42,8 @@ class CodeCell extends Component {
           defaultLanguage={this.props.defaultLanguage}
         />
         <CellToolbar
-          onAddClick={this.props.onAddCellClick}
           cellIndex={this.props.cellIndex}
-          onDeleteClick={this.props.onDeleteCellClick}
+          onDeleteClick={this.props.onDeleteClick}
           language={this.props.language}
           defaultLanguage={this.props.defaultLanguage}
           onLanguageChange={this.props.onLanguageChange}
