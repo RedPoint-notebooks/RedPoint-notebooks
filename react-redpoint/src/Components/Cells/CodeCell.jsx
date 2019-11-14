@@ -19,13 +19,13 @@ class CodeCell extends Component {
   handleBlur = () => {
     this.props.onUpdateCodeState(this.state.code, this.props.cellIndex);
 
-    if (this.props.language === "markdown") {
+    if (this.props.language === "Markdown") {
       this.props.toggleRender(this.props.cellIndex);
     }
   };
 
   cellOptions = {
-    mode: this.props.language,
+    mode: this.props.language.toLowerCase(),
     theme: "darcula",
     lineNumbers: true,
     showCursorWhenSelecting: true

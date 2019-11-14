@@ -13,7 +13,7 @@ class NavigationBar extends React.Component {
   };
 
   render() {
-    const navDropDownItems = constants.LOWERCASE_LANGUAGES.map(language => {
+    const navDropDownItems = constants.LANGUAGES.map(language => {
       return (
         <NavDropdown.Item
           as="button"
@@ -22,7 +22,7 @@ class NavigationBar extends React.Component {
           onClick={this.handleSetDefaultLanguage}
           active={this.props.state.defaultLanguage === language ? true : false}
         >
-          {constants.capitalizeLanguage(language)}
+          {language}
         </NavDropdown.Item>
       );
     });

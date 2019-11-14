@@ -14,11 +14,7 @@ class AddCodeCellButton extends Component {
   };
 
   handleSetCellType = e => {
-    this.setState({ type: e.target.value.toLowerCase() });
-  };
-
-  capitalize = string => {
-    return string.charAt(0).toUpperCase() + string.slice(1);
+    this.setState({ type: e.target.value });
   };
 
   render() {
@@ -29,7 +25,7 @@ class AddCodeCellButton extends Component {
           value={language}
           key={language}
           onClick={this.handleSetCellType}
-          active={this.state.type === language.toLowerCase() ? true : false}
+          active={this.state.type === language ? true : false}
           key={uuidv4()}
         >
           {language}
@@ -37,14 +33,12 @@ class AddCodeCellButton extends Component {
       );
     });
 
-    const capitalizedLanguage = constants.capitalizeLanguage(this.state.type);
-
     return (
       <SplitButton
         className={this.props.soloButton ? "solo-add-cell-btn" : null}
         variant="secondary"
         id="dropdown-basic-button"
-        title={`Add ${capitalizedLanguage} Cell`}
+        title={`Add ${this.state.type} Cell`}
         size="sm"
         onClick={this.handleAddCellClick}
       >
