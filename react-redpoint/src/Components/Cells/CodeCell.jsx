@@ -11,7 +11,7 @@ import "codemirror/mode/python/python.js";
 
 class CodeCell extends Component {
   state = {
-    code: this.props.code
+    code: this.props.cell.code
   };
 
   handleChange = value => {
@@ -61,7 +61,7 @@ class CodeCell extends Component {
           }}
           onBlur={this.handleBlur}
         />
-        {this.props.language !== "Markdown" ? (
+        {cell.type !== "Markdown" ? (
           <CellResults language={cell.type} results={cell.results} />
         ) : null}
       </div>

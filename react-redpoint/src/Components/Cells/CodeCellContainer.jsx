@@ -21,8 +21,8 @@ const CodeCellContainer = props => {
       cell={cell}
       language={cell.type}
       key={props.index}
-      code={cell.code}
-      results={cell.results}
+      // code={cell.code}
+      // results={cell.results}
       onAddClick={props.onAddCellClick}
       onDeleteClick={props.onDeleteCellClick}
       cellIndex={props.cellIndex}
@@ -30,7 +30,7 @@ const CodeCellContainer = props => {
       onLanguageChange={props.onLanguageChange}
       toggleRender={props.toggleRender}
       onUpdateCodeState={props.onUpdateCodeState}
-      rendered={cell.rendered}
+      // rendered={cell.rendered}
       onRunClick={props.onRunClick}
     />
   );
