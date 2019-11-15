@@ -7,8 +7,13 @@ const RunCellButton = props => {
   };
 
   return (
-    <Button onClick={handleRunClick} variant="secondary" size="sm">
-      <span>&#9658; Run</span>
+    <Button
+      className="run-button"
+      onClick={handleRunClick}
+      variant="secondary"
+      size="sm"
+    >
+      <span>&#9658;</span>
     </Button>
   );
 };
