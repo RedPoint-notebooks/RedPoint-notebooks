@@ -1,7 +1,8 @@
 import React, { Component } from "react";
 import SplitButton from "react-bootstrap/SplitButton";
-import Dropdown from "react-bootstrap/Dropdown";
 import * as constants from "../../Constants/constants";
+import DropdownButton from "react-bootstrap/DropdownButton";
+import Dropdown from "react-bootstrap/Dropdown";
 
 class AddCellButton extends Component {
   state = {
@@ -32,16 +33,16 @@ class AddCellButton extends Component {
     });
 
     return (
-      <SplitButton
+      <DropdownButton
         className="add-cell-btn"
         variant="secondary"
         id="dropdown-basic-button"
-        title={`Add ${this.state.type} Cell`}
+        title={<span>&#43;</span>}
         size="sm"
-        onClick={this.handleAddCellClick}
+        onSelect={this.handleAddCellClick}
       >
         {dropDownItems}
-      </SplitButton>
+      </DropdownButton>
     );
   }
 }

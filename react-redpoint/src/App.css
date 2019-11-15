@@ -29,6 +29,10 @@
   color: #09d3ac;
 }
 
+.alert-danger {
+  text-align: center;
+}
+
 .cell-toolbar,
 .cell-toolbar-markdown {
   width: 900px;
@@ -50,7 +54,8 @@
 }
 
 .add-cell-btn {
-  margin: 25px auto 25px;
+  margin: 5px;
+  display: inline-block;
 }
 
 .output {
@@ -71,4 +76,8 @@ div .rendered-markdown {
 .nav-buttons {
   display: flex;
   justify-content: center;
+}
+
+.dropdown-toggle:after {
+  content: none;
 }
