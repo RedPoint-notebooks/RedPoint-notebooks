@@ -11,7 +11,7 @@ const ChangeLanguageDropdown = props => {
         key={language}
         active={props.language === language ? true : false}
       >
-        {language}
+        {`${props.language} Cell`}
       </Dropdown.Item>
     );
   });
