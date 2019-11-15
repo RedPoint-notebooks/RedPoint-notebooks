@@ -34,7 +34,7 @@ class Notebook extends Component {
     // pendingCellExecution: true,
     pendingCellIndexes: [],
     writeToPendingCellIndex: 0,
-    id: "defaultNotebook"
+    id: uuidv4()
   };
 
   ws = new WebSocket("ws://localhost:8000");
@@ -71,7 +71,6 @@ class Notebook extends Component {
           break;
         case "loadNotebook":
           console.log("Received notebook data from server!");
-          console.dir(message.data);
           break;
         case "saveResult":
           break;
@@ -111,7 +110,6 @@ class Notebook extends Component {
 
   handleDeleteAllCells = () => {
     this.setState({
-      defaultLanguage: "Javascript",
       cells: [],
       // pendingCellExecution: true,
       pendingCellIndexes: [],
@@ -125,8 +123,7 @@ class Notebook extends Component {
       newCells.splice(index, 0, {
         type: type,
         code: "",
-        results: { output: [], error: "", return: "" },
-        notebookId: uuidv4()
+        results: { output: [], error: "", return: "" }
       });
       return { cells: newCells };
     });

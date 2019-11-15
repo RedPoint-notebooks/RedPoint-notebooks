@@ -79,7 +79,7 @@ class NavigationBar extends React.Component {
         {this.state.deleteWarningVisible ? (
           <ConfirmAction
             warningMessage={"Are you sure you want to delete all cells?"}
-            onYesClick={this.onDeleteAllClick}
+            onYesClick={this.handleDeleteAllClick}
             onNoClick={this.toggleDeleteWarning}
           />
         ) : null}
