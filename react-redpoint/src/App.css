@@ -54,6 +54,7 @@
 
 .output {
   text-align: left;
+  width: 900px;
 }
 
 div .rendered-markdown {
@@ -64,4 +65,8 @@ div .rendered-markdown {
 
 .delete-all-btn {
   margin: 10px;
+}
+
+.change-language-dropdown {
+  margin-top: -2px;
 }
