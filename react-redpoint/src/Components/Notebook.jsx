@@ -75,12 +75,13 @@ class Notebook extends Component {
           this.setState({
             defaultLanguage: newState.defaultLanguage,
             cells: newState.cells,
-            pendingCellIndexes: [],
-            writeToPendingCellIndex: 0,
             id: newState.id
           });
           break;
         case "saveResult":
+          break;
+        case "error":
+          console.log(message.data);
           break;
         default:
           console.log("Error: Unknown message received from server");
