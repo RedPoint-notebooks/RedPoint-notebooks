@@ -88,6 +88,7 @@ class Notebook extends Component {
 
             return { cells: newCells };
           });
+          break;
 
         default:
           console.log("Error, unknown message received from server");
