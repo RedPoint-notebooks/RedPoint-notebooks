@@ -1,4 +1,4 @@
-import React, { Component } from "react";
+import React from "react";
 import CodeCell from "./CodeCell";
 import RenderedMarkdown from "./RenderedMarkdown";
 
