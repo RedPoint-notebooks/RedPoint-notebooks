@@ -70,3 +70,8 @@ div .rendered-markdown {
 .change-language-dropdown {
   margin-top: -2px;
 }
+
+.nav-buttons {
+  display: flex;
+  justify-content: center;
+}
