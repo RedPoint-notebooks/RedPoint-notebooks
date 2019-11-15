@@ -61,3 +61,7 @@ div .rendered-markdown {
   border-bottom: 1px solid #6b757e;
   padding-top: 10px;
 }
+
+.delete-all-btn {
+  margin: 10px;
+}
