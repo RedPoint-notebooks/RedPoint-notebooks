@@ -16,17 +16,17 @@ class Notebook extends Component {
       {
         type: "Javascript",
         code: "console.log('hi');\nconsole.log('there');",
-        results: { output: "", error: "", return: "" }
+        results: { output: [], error: "", return: "" }
       },
       {
         type: "Ruby",
         code: "puts 'hi guys!'",
-        results: { output: "", error: "", return: "" }
+        results: { output: [], error: "", return: "" }
       },
       {
         type: "Javascript",
         code: "console.log('Hello, nice to meet you.');\nname",
-        results: { output: "", error: "", return: "" }
+        results: { output: [], error: "", return: "" }
       }
     ],
     // pendingCellExecution: true,
@@ -43,7 +43,6 @@ class Notebook extends Component {
 
     this.ws.onmessage = message => {
       message = JSON.parse(message.data);
-      // debugger;
       const cellIndex = this.state.pendingCellIndexes[
         this.state.writeToPendingCellIndex
       ];
@@ -70,8 +69,6 @@ class Notebook extends Component {
         default:
           console.log("Error, unknown message received from server");
       }
-      // const message = JSON.parse(message.data);
-      // this.receiveResponse(message);
     };
   }
 
@@ -79,11 +76,13 @@ class Notebook extends Component {
     this.setState(prevState => {
       const newCells = [...prevState.cells].map((cell, index) => {
         if (index === cellIndex) {
-          cell.results[resultType] += message.data;
-          return cell;
-        } else {
-          return cell;
+          if (resultType === "output") {
+            cell.results[resultType].push(message.data);
+          } else {
+            cell.results[resultType] += message.data;
+          }
         }
+        return cell;
       });
       return { cells: newCells };
     });
@@ -107,7 +106,7 @@ class Notebook extends Component {
       newCells.splice(index, 0, {
         type: type,
         code: "",
-        results: { output: "", error: "", return: "" }
+        results: { output: [], error: "", return: "" }
       });
       return { cells: newCells };
     });
@@ -132,7 +131,7 @@ class Notebook extends Component {
     const newCells = this.state.cells.map(cell => {
       if (cell.type === language) {
         return Object.assign({}, cell, {
-          results: { output: "", error: "", return: "" }
+          results: { output: [], error: "", return: "" }
         });
       } else {
         return cell;
