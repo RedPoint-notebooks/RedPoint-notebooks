@@ -43,7 +43,7 @@ class Notebook extends Component {
 
     this.ws.onmessage = message => {
       message = JSON.parse(message.data);
-
+      // debugger;
       const cellIndex = this.state.pendingCellIndexes[
         this.state.writeToPendingCellIndex
       ];
@@ -124,7 +124,7 @@ class Notebook extends Component {
         pendingCellIndexes.push(i);
       }
     }
-    this.setState({ pendingCellIndexes });
+    this.setState({ pendingCellIndexes, writeToPendingCellIndex: 0 });
     return { language, codeStrArray };
   };
 
