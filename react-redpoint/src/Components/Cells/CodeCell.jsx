@@ -16,6 +16,7 @@ class CodeCell extends Component {
 
   handleChange = value => {
     this.setState({ code: value });
+    // this.props.onUpdateCodeState(value, this.props.cellIndex);
   };
 
   handleBlur = () => {

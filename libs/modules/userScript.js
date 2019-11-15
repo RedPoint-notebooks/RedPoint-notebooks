@@ -26,7 +26,6 @@ const userScript = {
       );
 
       scriptProcess.stdout.on("data", data => {
-        debugger;
         if (data === delimiter) {
           ws.send(JSON.stringify({ type: "delimiter" }));
         }

@@ -3,7 +3,7 @@
 node_modules
 
 #ignore codeCellScripts folder
-codeCellScripts
+codeCellScripts/*
 
 #ignore log files
 *.log

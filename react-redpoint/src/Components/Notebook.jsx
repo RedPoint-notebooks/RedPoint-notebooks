@@ -15,7 +15,7 @@ class Notebook extends Component {
       },
       {
         type: "Javascript",
-        code: "",
+        code: "console.log('hi');\nconsole.log('there');\n",
         results: { output: "", error: "", return: "" }
       }
       // {
@@ -79,7 +79,7 @@ class Notebook extends Component {
           this.setState(prevState => {
             const newCells = [...prevState.cells].map((cell, index) => {
               if (index === cellIndex) {
-                cell.results.output += message.data;
+                cell.results.output += message.data + "\n";
                 return cell;
               } else {
                 return cell;
@@ -122,15 +122,14 @@ class Notebook extends Component {
     });
   };
 
-  buildRequest = indexOfCellRun => {
+  buildRequest = (indexOfCellRun, language) => {
     const codeStrArray = [];
     const allCells = this.state.cells;
-    const language = allCells[indexOfCellRun].type;
     const pendingCellIndexes = [];
     for (let i = 0; i <= indexOfCellRun; i += 1) {
       const cell = allCells[i];
       if (i <= indexOfCellRun && cell.type === language) {
-        codeStrArray.push(cell.code + "\n");
+        codeStrArray.push(cell.code);
         pendingCellIndexes.push(i);
       }
     }
@@ -138,8 +137,25 @@ class Notebook extends Component {
     return { language, codeStrArray };
   };
 
+  removeSameLanguageResults = language => {
+    const newCells = this.state.cells.map(cell => {
+      if (cell.type === language) {
+        return Object.assign({}, cell, {
+          results: { output: "", error: "", return: "" }
+        });
+      } else {
+        return cell;
+      }
+    });
+
+    this.setState({ cells: newCells });
+  };
+
   handleRunClick = indexOfCellRun => {
-    const requestObject = this.buildRequest(indexOfCellRun);
+    const allCells = this.state.cells;
+    const language = allCells[indexOfCellRun].type;
+    this.removeSameLanguageResults(language);
+    const requestObject = this.buildRequest(indexOfCellRun, language);
     this.ws.send(JSON.stringify(requestObject));
   };
 
@@ -165,6 +181,7 @@ class Notebook extends Component {
   };
 
   handleUpdateCodeState = (code, index) => {
+    console.log(code);
     this.setState(prevState => {
       const newCells = [...prevState.cells];
       const cellToUpdate = newCells[index];
