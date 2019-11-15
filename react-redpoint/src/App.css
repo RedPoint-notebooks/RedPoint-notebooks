@@ -4,6 +4,8 @@
 
 .CodeMirror {
   height: auto !important;
+  border-bottom-right-radius: 0.2rem;
+  border-bottom-left-radius: 0.2rem;
 }
 
 .react-codemirror2,
@@ -33,6 +35,8 @@
   display: flex;
   justify-content: space-between;
   background: #2b2b29;
+  border-top-right-radius: 0.2rem;
+  border-top-left-radius: 0.2rem;
 }
 
 .run-button {
@@ -62,10 +66,6 @@ div .rendered-markdown {
 
 .delete-all-btn {
   margin: 10px;
-}
-
-.change-language-dropdown {
-  margin-top: -2px;
 }
 
 .nav-buttons {
