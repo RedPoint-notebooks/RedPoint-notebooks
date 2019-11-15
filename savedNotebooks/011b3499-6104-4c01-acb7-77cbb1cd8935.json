@@ -1,0 +1,1 @@
+{"defaultLanguage":"Javascript","cells":[{"type":"Javascript","code":"console.log('hi');\nconsole.log('there');","results":{"output":[],"error":"","return":""}},{"type":"Ruby","code":"puts 'hi guys!'","results":{"output":[],"error":"","return":""}}],"pendingCellIndexes":[],"writeToPendingCellIndex":0,"id":"011b3499-6104-4c01-acb7-77cbb1cd8935"}

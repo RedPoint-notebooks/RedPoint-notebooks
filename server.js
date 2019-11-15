@@ -53,6 +53,15 @@ wss.on("connection", ws => {
           console.log(error);
         });
       // } else if (message.type === "executeCode") {
+    } else if (message.type === "loadNotebook") {
+      loadNotebook(message.id)
+        .then(notebook => {
+          ws.send(JSON.stringify({ type: "loadNotebook", data: notebook }));
+        })
+        .catch(error => {
+          ws.send(JSON.stringify({ type: "loadNotebook", data: error }));
+          console.log(error);
+        });
     } else {
       const { language, codeStrArray } = message;
       const codeString = codeStrArray.join("") + "\n";
@@ -78,10 +87,6 @@ wss.on("connection", ws => {
   });
 });
 
-app.get("/reacttest", (req, res) => {
-  res.send("Served here");
-});
-
 server.listen(8000, () => {
   console.log("App started");
 });
@@ -104,5 +109,21 @@ const saveNotebook = notebook => {
         }
       }
     );
+  });
+};
+
+const loadNotebook = id => {
+  return new Promise((resolve, reject) => {
+    console.log("BEFORE LOADING NOTEBOOK");
+
+    fs.readFile(`./savedNotebooks/${id}.json`, (error, data) => {
+      if (error) {
+        console.log("ERROR LOADING NOTEBOOK");
+        reject(error);
+      } else {
+        console.log("AFTER LOADING NOTEBOOK");
+        resolve(JSON.parse(data));
+      }
+    });
   });
 };

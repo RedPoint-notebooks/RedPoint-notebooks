@@ -70,7 +70,15 @@ class Notebook extends Component {
           this.updateCellResults("error", cellIndex, message);
           break;
         case "loadNotebook":
-          console.log("Received notebook data from server!");
+          // const newState = JSON.parse(message.data);
+          const newState = message.data;
+          this.setState({
+            defaultLanguage: newState.defaultLanguage,
+            cells: newState.cells,
+            pendingCellIndexes: [],
+            writeToPendingCellIndex: 0,
+            id: newState.id
+          });
           break;
         case "saveResult":
           break;
@@ -179,6 +187,11 @@ class Notebook extends Component {
     this.ws.send(request);
   };
 
+  handleLoadClick = () => {
+    const request = JSON.stringify({ type: "loadNotebook", id: this.state.id });
+    this.ws.send(request);
+  };
+
   handleLanguageChange = (type, cellIndex) => {
     this.setState(prevState => {
       const newCells = [...prevState.cells];
@@ -217,6 +230,7 @@ class Notebook extends Component {
           deleteAllCells={this.handleDeleteAllCells}
           setDefaultLanguage={this.handleSetDefaultLanguage}
           onSaveClick={this.handleSaveClick}
+          onLoadClick={this.handleLoadClick}
         />
         {/* {this.state.deleteWarningVisible ? (
           <ConfirmAction

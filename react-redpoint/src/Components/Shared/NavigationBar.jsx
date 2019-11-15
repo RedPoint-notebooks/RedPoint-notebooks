@@ -31,6 +31,11 @@ class NavigationBar extends React.Component {
     this.toggleDeleteWarning();
   };
 
+  handleLoadClick = e => {
+    e.preventDefault();
+    this.props.onLoadClick();
+  };
+
   render() {
     const navDropDownItems = constants.LANGUAGES.map(language => {
       return (
@@ -66,6 +71,9 @@ class NavigationBar extends React.Component {
               <Nav.Link href="#foo">Clone</Nav.Link>
               <Nav.Link href="#save" onClick={this.props.onSaveClick}>
                 Save
+              </Nav.Link>
+              <Nav.Link href="#load" onClick={this.handleLoadClick}>
+                Load
               </Nav.Link>
               <Nav.Link href="#link" onClick={this.toggleDeleteWarning}>
                 Delete
