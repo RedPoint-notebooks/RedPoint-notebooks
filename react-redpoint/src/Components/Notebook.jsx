@@ -7,35 +7,27 @@ class Notebook extends Component {
   state = {
     defaultLanguage: "Javascript",
     cells: [
+      // {
+      //   type: "Markdown",
+      //   code:
+      //     "# Welcome to RedPoint Notebook\n- A virtual sandbox for sharing runnable code ",
+      //   rendered: true
+      // },
       {
-        type: "Markdown",
-        code:
-          "# Welcome to RedPoint Notebook\n- A virtual sandbox for sharing runnable code ",
-        rendered: true
+        type: "Javascript",
+        code: "console.log('hi');\nconsole.log('there');",
+        results: { output: "", error: "", return: "" }
+      },
+      {
+        type: "Ruby",
+        code: "puts 'hi guys!'",
+        results: { output: "", error: "", return: "" }
       },
       {
         type: "Javascript",
-        code: "console.log('hi');\nconsole.log('there');\n",
+        code: "console.log('Hello, nice to meet you.');\nname",
         results: { output: "", error: "", return: "" }
       }
-      // {
-      //   type: "Javascript",
-      //   code: "console.log('hello from cell 2');",
-      //   results: { output: "hello from cell 2", return: "undefined" }
-      // },
-      // {
-      //   type: "Javascript",
-      //   code: "console.log('Hello, nice to meet you.');\nname",
-      //   results: {
-      //     output: "Hello, nice to meet you.",
-      //     error: "ReferenceError: name is not defined"
-      //   }
-      // },
-      // {
-      //   type: "Markdown",
-      //   code: "### Hi, here is some markdown text.",
-      //   rendered: false
-      // }
     ],
     // pendingCellExecution: true,
     pendingCellIndexes: [],
@@ -46,19 +38,7 @@ class Notebook extends Component {
 
   componentDidMount() {
     this.ws.onopen = event => {
-      // receiving the message from server
-      // let currentCell = 0;
-      // ws.onmessage = message => {
-      //   message = JSON.parse(message.data);
-      //   console.log(message.data);
-      //   console.log(message.type);
-      //   switch (message.type) {
-      //     case "stdout":
-      //       this.setState({ response: message.data });
-      //       break;
-      //     default:
-      //       console.log("No stdout received");
-      //   }
+      console.log("Websockets open!");
     };
 
     this.ws.onmessage = message => {
@@ -192,7 +172,6 @@ class Notebook extends Component {
   };
 
   handleUpdateCodeState = (code, index) => {
-    console.log(code);
     this.setState(prevState => {
       const newCells = [...prevState.cells];
       const cellToUpdate = newCells[index];

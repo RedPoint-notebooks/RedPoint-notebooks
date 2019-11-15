@@ -24,6 +24,7 @@ const repl = {
     }
 
     return new Promise(resolve => {
+      console.log(`Repl Command: ${codeString + replExitMessage}`);
       const node = pty.spawn(replType);
       let returnData = "";
       node.onData(data => (returnData += stripAnsi(data)));
