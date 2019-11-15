@@ -78,31 +78,10 @@ class Notebook extends Component {
           });
           break;
         case "stdout":
-          this.setState(prevState => {
-            const newCells = [...prevState.cells].map((cell, index) => {
-              if (index === cellIndex) {
-                cell.results.output += message.data;
-                return cell;
-              } else {
-                return cell;
-              }
-            });
-
-            return { cells: newCells };
-          });
+          this.updateCellResults("output", cellIndex, message);
           break;
         case "return":
-          this.setState(prevState => {
-            const newCells = [...prevState.cells].map((cell, index) => {
-              if (index === cellIndex) {
-                cell.results.return += message.data;
-                return cell;
-              } else {
-                return cell;
-              }
-            });
-            return { cells: newCells };
-          });
+          this.updateCellResults("return", cellIndex, message);
           break;
         default:
           console.log("Error, unknown message received from server");
@@ -111,6 +90,20 @@ class Notebook extends Component {
       // this.receiveResponse(message);
     };
   }
+
+  updateCellResults = (resultType, cellIndex, message) => {
+    this.setState(prevState => {
+      const newCells = [...prevState.cells].map((cell, index) => {
+        if (index === cellIndex) {
+          cell.results[resultType] += message.data;
+          return cell;
+        } else {
+          return cell;
+        }
+      });
+      return { cells: newCells };
+    });
+  };
 
   handleSetDefaultLanguage = language => {
     this.setState({ defaultLanguage: language });
