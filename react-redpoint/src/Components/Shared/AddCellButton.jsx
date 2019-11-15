@@ -33,16 +33,16 @@ class AddCellButton extends Component {
     });
 
     return (
-      <DropdownButton
+      <SplitButton
         className="add-cell-btn"
         variant="secondary"
         id="dropdown-basic-button"
         title={<span>&#43;</span>}
         size="sm"
-        onSelect={this.handleAddCellClick}
+        onClick={this.handleAddCellClick}
       >
         {dropDownItems}
-      </DropdownButton>
+      </SplitButton>
     );
   }
 }

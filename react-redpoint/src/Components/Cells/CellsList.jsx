@@ -24,7 +24,7 @@ const CellsList = props => {
   cellContainers.push(
     <AddCellButton
       soloButton="true"
-      lassName="add-cell-btn"
+      id="solo-button"
       cellIndex={cellContainers.length}
       onClick={props.onAddCellClick}
       key={uuidv4()}

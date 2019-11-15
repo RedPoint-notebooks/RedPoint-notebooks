@@ -2,6 +2,7 @@ import React, { Component } from "react";
 import CellsList from "./Cells/CellsList";
 import Container from "react-bootstrap/Container";
 import NavigationBar from "./Shared/NavigationBar";
+import AddCellButton from "./Shared/AddCellButton";
 // import ConfirmAction from "./Shared/ConfirmAction";
 import uuidv4 from "uuid";
 

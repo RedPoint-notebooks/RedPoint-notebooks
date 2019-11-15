@@ -54,8 +54,7 @@
 }
 
 .add-cell-btn {
-  margin: 5px;
-  display: inline-block;
+  margin: 15px 10px 15px 0;
 }
 
 .output {
@@ -76,8 +75,4 @@ div .rendered-markdown {
 .nav-buttons {
   display: flex;
   justify-content: center;
-}
-
-.dropdown-toggle:after {
-  content: none;
 }
