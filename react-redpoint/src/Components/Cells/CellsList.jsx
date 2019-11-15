@@ -1,4 +1,4 @@
-import React, { Component } from "react";
+import React from "react";
 import AddCellButton from "../Shared/AddCellButton";
 import CodeCellContainer from "./CodeCellContainer";
 import uuidv4 from "uuid/v4";

@@ -26,6 +26,7 @@ class NavigationBar extends React.Component {
   };
 
   handleDeleteAllClick = e => {
+    e.preventDefault();
     this.props.deleteAllCells();
     this.toggleDeleteWarning();
   };
@@ -63,6 +64,9 @@ class NavigationBar extends React.Component {
             <Nav className="mr-auto">
               <Nav.Link href="#home">Share</Nav.Link>
               <Nav.Link href="#foo">Clone</Nav.Link>
+              <Nav.Link href="#save" onClick={this.props.onSaveClick}>
+                Save
+              </Nav.Link>
               <Nav.Link href="#link" onClick={this.toggleDeleteWarning}>
                 Delete
               </Nav.Link>
@@ -75,7 +79,7 @@ class NavigationBar extends React.Component {
         {this.state.deleteWarningVisible ? (
           <ConfirmAction
             warningMessage={"Are you sure you want to delete all cells?"}
-            onYesClick={this.handleDeleteAllClick}
+            onYesClick={this.onDeleteAllClick}
             onNoClick={this.toggleDeleteWarning}
           />
         ) : null}
