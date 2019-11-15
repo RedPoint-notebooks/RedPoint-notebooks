@@ -13,7 +13,7 @@ const CellToolbar = props => {
       }
     >
       <ChangeLanguageDropdown
-        language={`${props.language} Cell`}
+        language={props.language}
         onLanguageChange={props.onLanguageChange}
         cellIndex={props.cellIndex}
       ></ChangeLanguageDropdown>

@@ -24,7 +24,7 @@ const ChangeLanguageDropdown = props => {
     <DropdownButton
       variant="secondary"
       id="dropdown-basic-button"
-      title={props.language}
+      title={`${props.language} Cell`}
       size="sm"
       onSelect={handleLanguageChange}
     >
