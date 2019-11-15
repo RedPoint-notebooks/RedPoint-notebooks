@@ -63,6 +63,11 @@ class Notebook extends Component {
 
     this.ws.onmessage = message => {
       message = JSON.parse(message.data);
+
+      const cellIndex = this.state.pendingCellIndexes[
+        this.state.writeToPendingCellIndex
+      ];
+
       console.log(message.data);
       switch (message.type) {
         case "delimiter":
@@ -73,13 +78,10 @@ class Notebook extends Component {
           });
           break;
         case "stdout":
-          const cellIndex = this.state.pendingCellIndexes[
-            this.state.writeToPendingCellIndex
-          ];
           this.setState(prevState => {
             const newCells = [...prevState.cells].map((cell, index) => {
               if (index === cellIndex) {
-                cell.results.output += message.data + "\n";
+                cell.results.output += message.data;
                 return cell;
               } else {
                 return cell;
@@ -89,7 +91,19 @@ class Notebook extends Component {
             return { cells: newCells };
           });
           break;
-
+        case "return":
+          this.setState(prevState => {
+            const newCells = [...prevState.cells].map((cell, index) => {
+              if (index === cellIndex) {
+                cell.results.return += message.data;
+                return cell;
+              } else {
+                return cell;
+              }
+            });
+            return { cells: newCells };
+          });
+          break;
         default:
           console.log("Error, unknown message received from server");
       }
