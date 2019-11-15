@@ -1,31 +1,30 @@
 .App {
-  text-align: center;
   background-color: #484c55;
 }
 
-.App-logo {
-  height: 40vmin;
-}
-
-.App-header {
-  text-align: center;
-  min-height: 100vh;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  font-size: calc(10px + 1vmin);
-  color: white;
-}
-
-.App-link {
-  color: #09d3ac;
+.CodeMirror {
+  height: auto !important;
 }
 
 .react-codemirror2,
 .rendered-markdown {
   width: 900px;
   text-align: left;
+  height: auto !important;
+}
+
+.App-body {
+  text-align: center;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: start;
+  color: white;
+}
+
+.App-link {
+  color: #09d3ac;
 }
 
 .cell-toolbar,
