@@ -3,7 +3,13 @@
   "version": "0.0.1",
   "private": true,
   "scripts": {
-    "start": "concurrently \"nodemon --inspect ./server.js --ignore codeCellScripts/\" \"cd react-redpoint && npm start\""
+    "start": "concurrently \"nodemon --inspect ./server.js\" \"cd react-redpoint && npm start\""
+  },
+  "nodemonConfig": {
+    "ignore": [
+      "codeCellScripts/*",
+      "savedNotebooks/*"
+    ]
   },
   "dependencies": {
     "body-parser": "^1.19.0",
@@ -17,11 +23,6 @@
     "morgan": "^1.9.1",
     "node-pty": "^0.9.0",
     "nodemon": "^1.19.4",
-    "nodemonConfig": {
-      "ignore": [
-        "codeCellScripts/"
-      ]
-    },
     "strip-ansi": "^5.2.0",
     "uuid": "^3.3.3",
     "ws": "^7.2.0"

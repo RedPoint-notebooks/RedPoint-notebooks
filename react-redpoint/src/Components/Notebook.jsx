@@ -3,6 +3,7 @@ import CellsList from "./Cells/CellsList";
 import Container from "react-bootstrap/Container";
 import NavigationBar from "./Shared/NavigationBar";
 // import ConfirmAction from "./Shared/ConfirmAction";
+import uuidv4 from "uuid";
 
 class Notebook extends Component {
   state = {
@@ -20,7 +21,7 @@ class Notebook extends Component {
         results: { output: [], error: "", return: "" }
       },
       {
-        type: "Markdown",
+        type: "Ruby",
         code: "puts 'hi guys!'",
         results: { output: [], error: "", return: "" }
       }
@@ -67,8 +68,12 @@ class Notebook extends Component {
         case "stderr":
           this.updateCellResults("error", cellIndex, message);
           break;
+        case "loadNotebook":
+          console.log("Received notebook data from server!");
+          console.dir(message.data);
+          break;
         default:
-          console.log("Error, unknown message received from server");
+          console.log("Error: Unknown message received from server");
       }
     };
   }
@@ -160,6 +165,17 @@ class Notebook extends Component {
     this.ws.send(JSON.stringify(requestObject));
   };
 
+  handleSaveClick = e => {
+    e.preventDefault();
+    const messageType = "saveNotebook";
+    const state = this.state;
+    const notebookId = uuidv4();
+    const notebook = { id: notebookId, state };
+    const request = JSON.stringify({ messageType, notebook });
+    console.log(request);
+    this.ws.send(request);
+  };
+
   handleLanguageChange = (type, cellIndex) => {
     this.setState(prevState => {
       const newCells = [...prevState.cells];
@@ -197,6 +213,7 @@ class Notebook extends Component {
           state={this.state}
           deleteAllCells={this.handleDeleteAllCells}
           setDefaultLanguage={this.handleSetDefaultLanguage}
+          onSaveClick={this.handleSaveClick}
         />
         {/* {this.state.deleteWarningVisible ? (
           <ConfirmAction
@@ -223,13 +240,3 @@ class Notebook extends Component {
 }
 
 export default Notebook;
-
-// DEMO:
-// cells: [
-//   { type: "markdown", code: "##Title" },
-// { type: "javascript", code: "console.log('hello');" }
-// ]
-
-/* <ul>
-          <h4>Websocket Response: {this.state.response}</h4>
-        </ul> */
