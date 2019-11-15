@@ -83,6 +83,10 @@ class Notebook extends Component {
         case "return":
           this.updateCellResults("return", cellIndex, message);
           break;
+        case "error":
+        case "stderr":
+          this.updateCellResults("error", cellIndex, message);
+          break;
         default:
           console.log("Error, unknown message received from server");
       }
