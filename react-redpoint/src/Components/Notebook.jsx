@@ -205,7 +205,7 @@ class Notebook extends Component {
             onNoClick={this.toggleDeleteWarningVisibility}
           />
         ) : null} */}
-        <Container className="App-header">
+        <Container className="App-body">
           <CellsList
             onDeleteCellClick={this.handleDeleteCellClick}
             onAddCellClick={this.handleAddCellClick}
