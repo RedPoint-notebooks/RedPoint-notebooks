@@ -3,6 +3,7 @@ import ListGroup from "react-bootstrap/ListGroup";
 import Output from "./Output";
 import Return from "./Return";
 import Error from "./Error";
+import uuidv4 from "uuid";
 
 class CellResults extends Component {
   render() {
@@ -14,7 +15,7 @@ class CellResults extends Component {
         case "output":
           // maps every time a message is received from stdout
           const outputLines = data.map(outputline => {
-            return <Output key={"output"} output={outputline} />;
+            return <Output key={uuidv4()} output={outputline} />;
           });
           return outputLines;
         case "return":
