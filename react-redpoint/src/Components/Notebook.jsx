@@ -33,7 +33,8 @@ class Notebook extends Component {
     ],
     // pendingCellExecution: true,
     pendingCellIndexes: [],
-    writeToPendingCellIndex: 0
+    writeToPendingCellIndex: 0,
+    id: uuidv4()
   };
 
   ws = new WebSocket("ws://localhost:8000");
@@ -69,8 +70,18 @@ class Notebook extends Component {
           this.updateCellResults("error", cellIndex, message);
           break;
         case "loadNotebook":
-          console.log("Received notebook data from server!");
-          console.dir(message.data);
+          // const newState = JSON.parse(message.data);
+          const newState = message.data;
+          this.setState({
+            defaultLanguage: newState.defaultLanguage,
+            cells: newState.cells,
+            id: newState.id
+          });
+          break;
+        case "saveResult":
+          break;
+        case "error":
+          console.log(message.data);
           break;
         default:
           console.log("Error: Unknown message received from server");
@@ -108,7 +119,6 @@ class Notebook extends Component {
 
   handleDeleteAllCells = () => {
     this.setState({
-      defaultLanguage: "Javascript",
       cells: [],
       // pendingCellExecution: true,
       pendingCellIndexes: [],
@@ -167,12 +177,19 @@ class Notebook extends Component {
 
   handleSaveClick = e => {
     e.preventDefault();
-    const messageType = "saveNotebook";
-    const state = this.state;
-    const notebookId = uuidv4();
-    const notebook = { id: notebookId, state };
-    const request = JSON.stringify({ messageType, notebook });
+    const notebook = this.state;
+    notebook.cells = notebook.cells.map(cell => {
+      cell.results = { output: [], error: "", return: "" };
+      return cell;
+    });
+    // const notebook = { notebook };
+    const request = JSON.stringify({ type: "saveNotebook", notebook });
     console.log("Notebook save request sent");
+    this.ws.send(request);
+  };
+
+  handleLoadClick = () => {
+    const request = JSON.stringify({ type: "loadNotebook", id: this.state.id });
     this.ws.send(request);
   };
 
@@ -214,6 +231,7 @@ class Notebook extends Component {
           deleteAllCells={this.handleDeleteAllCells}
           setDefaultLanguage={this.handleSetDefaultLanguage}
           onSaveClick={this.handleSaveClick}
+          onLoadClick={this.handleLoadClick}
         />
         {/* {this.state.deleteWarningVisible ? (
           <ConfirmAction
