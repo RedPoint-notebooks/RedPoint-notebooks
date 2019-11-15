@@ -44,7 +44,9 @@ class NavigationBar extends React.Component {
           <Nav className="mr-auto">
             <Nav.Link href="#home">Share</Nav.Link>
             <Nav.Link href="#foo">Clone</Nav.Link>
-            <Nav.Link href="#link">Delete</Nav.Link>
+            <Nav.Link href="#link" onClick={this.props.deleteAllCells}>
+              Delete
+            </Nav.Link>
             <NavDropdown title="Default Language" id="basic-nav-dropdown">
               {navDropDownItems}
             </NavDropdown>

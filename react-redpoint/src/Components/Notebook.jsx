@@ -101,6 +101,16 @@ class Notebook extends Component {
     });
   };
 
+  handleDeleteAllCells = () => {
+    this.setState({
+      defaultLanguage: "Javascript",
+      cells: [],
+      // pendingCellExecution: true,
+      pendingCellIndexes: [],
+      writeToPendingCellIndex: 0
+    });
+  };
+
   handleAddCellClick = (index, type) => {
     this.setState(prevState => {
       const newCells = [...prevState.cells];
@@ -185,6 +195,7 @@ class Notebook extends Component {
       <div>
         <NavigationBar
           state={this.state}
+          deleteAllCells={this.handleDeleteAllCells}
           setDefaultLanguage={this.handleSetDefaultLanguage}
         />
         <Container className="App-header">
