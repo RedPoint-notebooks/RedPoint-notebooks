@@ -2,42 +2,35 @@ import React, { Component } from "react";
 import CodeCell from "./CodeCell";
 import RenderedMarkdown from "./RenderedMarkdown";
 
-class CodeCellContainer extends Component {
-  render() {
-    const isRenderedMarkdown =
-      this.props.language === "Markdown" && this.props.rendered;
+const CodeCellContainer = props => {
+  const cell = props.cell;
+  const isRenderedMarkdown = cell.type === "Markdown" && cell.rendered;
 
-    return isRenderedMarkdown ? (
-      <RenderedMarkdown
-        language={this.props.language}
-        code={this.props.code}
-        cellIndex={this.props.cellIndex}
-        onDeleteClick={this.props.onDeleteCellClick}
-        onAddClick={this.props.onAddCellClick}
-        defaultLanguage={this.props.defaultLanguage}
-        onRenderedMarkdownClick={this.props.toggleRender}
-        onLanguageChange={this.props.onLanguageChange}
-        rendered={this.props.rendered}
-      />
-    ) : (
-      <CodeCell
-        language={this.props.language}
-        key={this.props.index}
-        code={this.props.code}
-        results={this.props.results}
-        onAddClick={this.props.onAddCellClick}
-        onDeleteClick={this.props.onDeleteCellClick}
-        cellIndex={this.props.cellIndex}
-        defaultLanguage={this.props.defaultLanguage}
-        onLanguageChange={this.props.onLanguageChange}
-        toggleRender={this.props.toggleRender}
-        onUpdateCodeState={this.props.onUpdateCodeState}
-        rendered={this.props.rendered}
-        onRunClick={this.props.onRunClick}
-        s
-      />
-    );
-  }
-}
+  return isRenderedMarkdown ? (
+    <RenderedMarkdown
+      cell={cell}
+      cellIndex={props.cellIndex}
+      onDeleteClick={props.onDeleteCellClick}
+      onAddClick={props.onAddCellClick}
+      defaultLanguage={props.defaultLanguage}
+      onRenderedMarkdownClick={props.toggleRender}
+      onLanguageChange={props.onLanguageChange}
+    />
+  ) : (
+    <CodeCell
+      cell={cell}
+      language={cell.type}
+      key={props.index}
+      onAddClick={props.onAddCellClick}
+      onDeleteClick={props.onDeleteCellClick}
+      cellIndex={props.cellIndex}
+      defaultLanguage={props.defaultLanguage}
+      onLanguageChange={props.onLanguageChange}
+      toggleRender={props.toggleRender}
+      onUpdateCodeState={props.onUpdateCodeState}
+      onRunClick={props.onRunClick}
+    />
+  );
+};
 
 export default CodeCellContainer;

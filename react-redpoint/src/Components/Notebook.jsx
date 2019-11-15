@@ -20,15 +20,15 @@ class Notebook extends Component {
         results: { output: [], error: "", return: "" }
       },
       {
-        type: "Ruby",
+        type: "Markdown",
         code: "puts 'hi guys!'",
         results: { output: [], error: "", return: "" }
-      },
-      {
-        type: "Javascript",
-        code: "console.log('Hello, nice to meet you.');\nname",
-        results: { output: [], error: "", return: "" }
       }
+      // {
+      //   type: "Javascript",
+      //   code: "console.log('Hello, nice to meet you.');\nname",
+      //   results: { output: [], error: "", return: "" }
+      // }
     ],
     // pendingCellExecution: true,
     pendingCellIndexes: [],

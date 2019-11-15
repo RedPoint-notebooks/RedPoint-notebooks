@@ -11,7 +11,7 @@ import "codemirror/mode/python/python.js";
 
 class CodeCell extends Component {
   state = {
-    code: this.props.code
+    code: this.props.cell.code
   };
 
   handleChange = value => {
@@ -27,14 +27,15 @@ class CodeCell extends Component {
     }
   };
 
-  cellOptions = {
-    mode: this.props.language.toLowerCase(),
-    theme: "darcula",
-    lineNumbers: true,
-    showCursorWhenSelecting: true
-  };
-
   render() {
+    const cell = this.props.cell;
+    const cellOptions = {
+      mode: cell.type.toLowerCase(),
+      theme: "darcula",
+      lineNumbers: true,
+      showCursorWhenSelecting: true
+    };
+
     return (
       <div>
         <AddCellButton
@@ -46,25 +47,22 @@ class CodeCell extends Component {
         <CellToolbar
           cellIndex={this.props.cellIndex}
           onDeleteClick={this.props.onDeleteClick}
-          language={this.props.language}
+          language={cell.type}
           defaultLanguage={this.props.defaultLanguage}
           onLanguageChange={this.props.onLanguageChange}
-          rendered={this.props.rendered}
+          rendered={cell.rendered}
           onRunClick={this.props.onRunClick}
         />
         <CodeMirror
           value={this.state.code}
-          options={this.cellOptions}
+          options={cellOptions}
           onBeforeChange={(editor, data, value) => {
             this.handleChange(value);
           }}
           onBlur={this.handleBlur}
         />
-        {this.props.language !== "Markdown" ? (
-          <CellResults
-            language={this.props.language}
-            results={this.props.results}
-          />
+        {cell.type !== "Markdown" ? (
+          <CellResults language={cell.type} results={cell.results} />
         ) : null}
       </div>
     );
