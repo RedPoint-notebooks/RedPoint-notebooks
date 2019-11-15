@@ -12,7 +12,11 @@ class CellResults extends Component {
 
       switch (resultType) {
         case "output":
-          return <Output key={"output"} output={data} />;
+          // maps every time a message is received from stdout
+          const outputLines = data.map(outputline => {
+            return <Output key={"output"} output={outputline} />;
+          });
+          return outputLines;
         case "return":
           return <Return key={"return"} returnVal={data} />;
         case "error":
