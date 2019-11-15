@@ -12,7 +12,7 @@ const ConfirmAction = props => {
         variant="light"
         type="button"
         size="sm"
-        onClick={props.onDeleteAllClick}
+        onClick={props.onYesClick}
       >
         Yes
       </Button>
@@ -22,7 +22,7 @@ const ConfirmAction = props => {
         variant="dark"
         type="button"
         size="sm"
-        onClick={props.onDeleteWarning}
+        onClick={props.onNoClick}
       >
         No
       </Button>
