@@ -12,7 +12,7 @@ const userScript = {
     cwd: null,
     env: null
   }),
-  execute: ws => {
+  execute: (ws, delimiter) => {
     return new Promise((resolve, reject) => {
       console.log("BEFORE EXECUTING SCRIPT");
       const scriptProcess = exec(
@@ -20,13 +20,16 @@ const userScript = {
         userScript.execOptions,
         (error, stdout, stderr) => {
           if (error) {
-            debugger;
             ws.send(JSON.stringify({ type: "error", data: error }));
           }
         }
       );
 
       scriptProcess.stdout.on("data", data => {
+        debugger;
+        if (data === delimiter) {
+          ws.send(JSON.stringify({ type: "delimiter" }));
+        }
         ws.send(JSON.stringify({ type: "stdout", data: data }));
       });
 
