@@ -39,7 +39,14 @@ wss.on("connection", ws => {
     console.log(parsedMessage);
 
     if (parsedMessage.messageType === "saveNotebook") {
-      saveNotebook(parsedMessage.notebook);
+      saveNotebook(parsedMessage.notebook)
+        .then(notebookId => {
+          // save notebook to server, then respond to client with notebookId?
+          // ws.send(JSON.stringify(notebookId));
+        })
+        .catch(error => {
+          console.log(error);
+        });
       // } else if (parsedMessage.messageType === "executeCode") {
     } else {
       const { language, codeStrArray } = parsedMessage;
@@ -88,7 +95,7 @@ const saveNotebook = notebook => {
           reject(error);
         } else {
           console.log(`AFTER SAVING NOTEBOOK: ${notebook.id}`);
-          resolve();
+          resolve(notebook.id);
         }
       }
     );

@@ -172,7 +172,7 @@ class Notebook extends Component {
     const notebookId = uuidv4();
     const notebook = { id: notebookId, state };
     const request = JSON.stringify({ messageType, notebook });
-    console.log(request);
+    console.log("Notebook save request sent");
     this.ws.send(request);
   };
 
