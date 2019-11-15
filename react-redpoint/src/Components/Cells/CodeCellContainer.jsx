@@ -4,27 +4,26 @@ import RenderedMarkdown from "./RenderedMarkdown";
 
 class CodeCellContainer extends Component {
   render() {
-    const isRenderedMarkdown =
-      this.props.language === "Markdown" && this.props.rendered;
-
+    const cell = this.props.cell;
+    const isRenderedMarkdown = cell.type === "Markdown" && cell.rendered;
     return isRenderedMarkdown ? (
       <RenderedMarkdown
-        language={this.props.language}
-        code={this.props.code}
+        language={cell.type}
+        code={cell.code}
         cellIndex={this.props.cellIndex}
         onDeleteClick={this.props.onDeleteCellClick}
         onAddClick={this.props.onAddCellClick}
         defaultLanguage={this.props.defaultLanguage}
         onRenderedMarkdownClick={this.props.toggleRender}
         onLanguageChange={this.props.onLanguageChange}
-        rendered={this.props.rendered}
+        rendered={cell.rendered}
       />
     ) : (
       <CodeCell
-        language={this.props.language}
+        language={cell.type}
         key={this.props.index}
-        code={this.props.code}
-        results={this.props.results}
+        code={cell.code}
+        results={cell.results}
         onAddClick={this.props.onAddCellClick}
         onDeleteClick={this.props.onDeleteCellClick}
         cellIndex={this.props.cellIndex}
@@ -32,9 +31,8 @@ class CodeCellContainer extends Component {
         onLanguageChange={this.props.onLanguageChange}
         toggleRender={this.props.toggleRender}
         onUpdateCodeState={this.props.onUpdateCodeState}
-        rendered={this.props.rendered}
+        rendered={cell.rendered}
         onRunClick={this.props.onRunClick}
-        s
       />
     );
   }
