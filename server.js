@@ -35,7 +35,7 @@ wss.on("connection", ws => {
 
   ws.on("message", msg => {
     const { language, codeStrArray } = JSON.parse(msg);
-    const codeString = codeStrArray.join("");
+    const codeString = codeStrArray.join("") + "\n";
     const delimiterStatement = generateDelimiter(language, delimiter);
     const scriptString = codeStrArray.join(delimiterStatement);
 

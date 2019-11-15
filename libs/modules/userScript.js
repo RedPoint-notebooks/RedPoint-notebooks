@@ -26,15 +26,18 @@ const userScript = {
       );
 
       scriptProcess.stdout.on("data", data => {
-        debugger;
-        if (data === delimiter) {
-          ws.send(JSON.stringify({ type: "delimiter" }));
-        }
-        ws.send(JSON.stringify({ type: "stdout", data: data }));
+        const dataArray = data.split("\n").slice(0, -1);
+        dataArray.forEach(data => {
+          if (data === delimiter) {
+            ws.send(JSON.stringify({ type: "delimiter" }));
+          } else {
+            ws.send(JSON.stringify({ type: "stdout", data: data }));
+          }
+        });
       });
 
       scriptProcess.stdout.on("end", () => {
-        ws.send(JSON.stringify({ type: "end", data: "Script completed" }));
+        // ws.send(JSON.stringify({ type: "end", data: "Script completed" }));
         resolve();
       });
 

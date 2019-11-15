@@ -7,35 +7,27 @@ class Notebook extends Component {
   state = {
     defaultLanguage: "Javascript",
     cells: [
+      // {
+      //   type: "Markdown",
+      //   code:
+      //     "# Welcome to RedPoint Notebook\n- A virtual sandbox for sharing runnable code ",
+      //   rendered: true
+      // },
       {
-        type: "Markdown",
-        code:
-          "# Welcome to RedPoint Notebook\n- A virtual sandbox for sharing runnable code ",
-        rendered: true
+        type: "Javascript",
+        code: "console.log('hi');\nconsole.log('there');",
+        results: { output: "", error: "", return: "" }
+      },
+      {
+        type: "Ruby",
+        code: "puts 'hi guys!'",
+        results: { output: "", error: "", return: "" }
       },
       {
         type: "Javascript",
-        code: "",
+        code: "console.log('Hello, nice to meet you.');\nname",
         results: { output: "", error: "", return: "" }
       }
-      // {
-      //   type: "Javascript",
-      //   code: "console.log('hello from cell 2');",
-      //   results: { output: "hello from cell 2", return: "undefined" }
-      // },
-      // {
-      //   type: "Javascript",
-      //   code: "console.log('Hello, nice to meet you.');\nname",
-      //   results: {
-      //     output: "Hello, nice to meet you.",
-      //     error: "ReferenceError: name is not defined"
-      //   }
-      // },
-      // {
-      //   type: "Markdown",
-      //   code: "### Hi, here is some markdown text.",
-      //   rendered: false
-      // }
     ],
     // pendingCellExecution: true,
     pendingCellIndexes: [],
@@ -46,23 +38,16 @@ class Notebook extends Component {
 
   componentDidMount() {
     this.ws.onopen = event => {
-      // receiving the message from server
-      // let currentCell = 0;
-      // ws.onmessage = message => {
-      //   message = JSON.parse(message.data);
-      //   console.log(message.data);
-      //   console.log(message.type);
-      //   switch (message.type) {
-      //     case "stdout":
-      //       this.setState({ response: message.data });
-      //       break;
-      //     default:
-      //       console.log("No stdout received");
-      //   }
+      console.log("Websockets open!");
     };
 
     this.ws.onmessage = message => {
       message = JSON.parse(message.data);
+
+      const cellIndex = this.state.pendingCellIndexes[
+        this.state.writeToPendingCellIndex
+      ];
+
       console.log(message.data);
       switch (message.type) {
         case "delimiter":
@@ -73,23 +58,15 @@ class Notebook extends Component {
           });
           break;
         case "stdout":
-          const cellIndex = this.state.pendingCellIndexes[
-            this.state.writeToPendingCellIndex
-          ];
-          this.setState(prevState => {
-            const newCells = [...prevState.cells].map((cell, index) => {
-              if (index === cellIndex) {
-                cell.results.output += message.data;
-                return cell;
-              } else {
-                return cell;
-              }
-            });
-
-            return { cells: newCells };
-          });
+          this.updateCellResults("output", cellIndex, message);
           break;
-
+        case "return":
+          this.updateCellResults("return", cellIndex, message);
+          break;
+        case "error":
+        case "stderr":
+          this.updateCellResults("error", cellIndex, message);
+          break;
         default:
           console.log("Error, unknown message received from server");
       }
@@ -97,6 +74,20 @@ class Notebook extends Component {
       // this.receiveResponse(message);
     };
   }
+
+  updateCellResults = (resultType, cellIndex, message) => {
+    this.setState(prevState => {
+      const newCells = [...prevState.cells].map((cell, index) => {
+        if (index === cellIndex) {
+          cell.results[resultType] += message.data;
+          return cell;
+        } else {
+          return cell;
+        }
+      });
+      return { cells: newCells };
+    });
+  };
 
   handleSetDefaultLanguage = language => {
     this.setState({ defaultLanguage: language });
@@ -122,15 +113,14 @@ class Notebook extends Component {
     });
   };
 
-  buildRequest = indexOfCellRun => {
+  buildRequest = (indexOfCellRun, language) => {
     const codeStrArray = [];
     const allCells = this.state.cells;
-    const language = allCells[indexOfCellRun].type;
     const pendingCellIndexes = [];
     for (let i = 0; i <= indexOfCellRun; i += 1) {
       const cell = allCells[i];
       if (i <= indexOfCellRun && cell.type === language) {
-        codeStrArray.push(cell.code + "\n");
+        codeStrArray.push(cell.code);
         pendingCellIndexes.push(i);
       }
     }
@@ -138,8 +128,25 @@ class Notebook extends Component {
     return { language, codeStrArray };
   };
 
+  removeSameLanguageResults = language => {
+    const newCells = this.state.cells.map(cell => {
+      if (cell.type === language) {
+        return Object.assign({}, cell, {
+          results: { output: "", error: "", return: "" }
+        });
+      } else {
+        return cell;
+      }
+    });
+
+    this.setState({ cells: newCells });
+  };
+
   handleRunClick = indexOfCellRun => {
-    const requestObject = this.buildRequest(indexOfCellRun);
+    const allCells = this.state.cells;
+    const language = allCells[indexOfCellRun].type;
+    this.removeSameLanguageResults(language);
+    const requestObject = this.buildRequest(indexOfCellRun, language);
     this.ws.send(JSON.stringify(requestObject));
   };
 
