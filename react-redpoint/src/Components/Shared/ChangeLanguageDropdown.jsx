@@ -22,6 +22,7 @@ const ChangeLanguageDropdown = props => {
 
   return (
     <DropdownButton
+      className="change-language-dropdown"
       variant="secondary"
       id="dropdown-basic-button"
       title={`${props.language} Cell`}

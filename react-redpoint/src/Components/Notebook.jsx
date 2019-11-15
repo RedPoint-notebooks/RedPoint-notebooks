@@ -2,6 +2,7 @@ import React, { Component } from "react";
 import CellsList from "./Cells/CellsList";
 import Container from "react-bootstrap/Container";
 import NavigationBar from "./Shared/NavigationBar";
+// import ConfirmAction from "./Shared/ConfirmAction";
 
 class Notebook extends Component {
   state = {
@@ -197,6 +198,13 @@ class Notebook extends Component {
           deleteAllCells={this.handleDeleteAllCells}
           setDefaultLanguage={this.handleSetDefaultLanguage}
         />
+        {/* {this.state.deleteWarningVisible ? (
+          <ConfirmAction
+            warningMessage="Delete this cell?"
+            onYesClick={this.handleDeleteCell}
+            onNoClick={this.toggleDeleteWarningVisibility}
+          />
+        ) : null} */}
         <Container className="App-header">
           <CellsList
             onDeleteCellClick={this.handleDeleteCellClick}

@@ -3,6 +3,7 @@ import ListGroup from "react-bootstrap/ListGroup";
 import Output from "./Output";
 import Return from "./Return";
 import Error from "./Error";
+import uuidv4 from "uuid";
 
 const CellResults = props => {
   const resultsObj = props.results;

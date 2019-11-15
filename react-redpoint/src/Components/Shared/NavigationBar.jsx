@@ -1,12 +1,11 @@
 import React from "react";
-import Navbar from "react-bootstrap/Navbar";
-import NavDropdown from "react-bootstrap/NavDropdown";
 import Nav from "react-bootstrap/Nav";
 import logo from "../../placeholder_logo.svg";
 import * as constants from "../../Constants/constants";
 import uuidv4 from "uuid";
-import Alert from "react-bootstrap/Alert";
-import Button from "react-bootstrap/Button";
+import Navbar from "react-bootstrap/Navbar";
+import NavDropdown from "react-bootstrap/NavDropdown";
+import ConfirmAction from "./ConfirmAction";
 
 class NavigationBar extends React.Component {
   state = {
@@ -74,31 +73,11 @@ class NavigationBar extends React.Component {
           </Navbar.Collapse>
         </Navbar>
         {this.state.deleteWarningVisible ? (
-          <Alert variant="danger">
-            <Alert.Heading>
-              Are you sure you want to delete all cells?
-            </Alert.Heading>
-            <Button
-              className="delete-all-btn"
-              as="button"
-              variant="light"
-              type="button"
-              size="sm"
-              onClick={this.handleDeleteAllClick}
-            >
-              Yes
-            </Button>
-            <Button
-              className="delete-all-btn"
-              as="button"
-              variant="dark"
-              type="button"
-              size="sm"
-              onClick={this.toggleDeleteWarning}
-            >
-              No
-            </Button>
-          </Alert>
+          <ConfirmAction
+            warningMessage={"Are you sure you want to delete all cells?"}
+            onYesClick={this.handleDeleteAllClick}
+            onNoClick={this.toggleDeleteWarning}
+          />
         ) : null}
       </React.Fragment>
     );
