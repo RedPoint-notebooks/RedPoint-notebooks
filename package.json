@@ -3,7 +3,7 @@
   "version": "0.0.1",
   "private": true,
   "scripts": {
-    "client": "cd client/react-redpoint && npm start",
+    "client": "cd client && npm start",
     "server": "nodemon --inspect ./server.js",
     "start": "concurrently \"npm run server\" \"npm run client\""
   },
