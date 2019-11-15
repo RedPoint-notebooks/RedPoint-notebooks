@@ -34,22 +34,27 @@ wss.on("connection", ws => {
   const delimiter = uuidv4();
   // sendDelimiterToClient(ws, delimiter);
 
-  ws.on("message", msg => {
-    const parsedMessage = JSON.parse(msg);
-    console.log(parsedMessage);
+  ws.on("message", message => {
+    message = JSON.parse(message);
+    console.log(message);
 
-    if (parsedMessage.messageType === "saveNotebook") {
-      saveNotebook(parsedMessage.notebook)
-        .then(notebookId => {
-          // save notebook to server, then respond to client with notebookId?
-          // ws.send(JSON.stringify(notebookId));
+    if (message.type === "saveNotebook") {
+      saveNotebook(message.notebook)
+        .then(() => {
+          ws.send(
+            JSON.stringify({
+              type: "saveResult",
+              data: "Notebook has been saved"
+            })
+          );
         })
         .catch(error => {
+          ws.send(JSON.stringify({ type: "saveResult", data: error }));
           console.log(error);
         });
-      // } else if (parsedMessage.messageType === "executeCode") {
+      // } else if (message.type === "executeCode") {
     } else {
-      const { language, codeStrArray } = parsedMessage;
+      const { language, codeStrArray } = message;
       const codeString = codeStrArray.join("") + "\n";
       const delimiterStatement = generateDelimiter(language, delimiter);
       const scriptString = codeStrArray.join(delimiterStatement);

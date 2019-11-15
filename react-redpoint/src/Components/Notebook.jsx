@@ -33,7 +33,8 @@ class Notebook extends Component {
     ],
     // pendingCellExecution: true,
     pendingCellIndexes: [],
-    writeToPendingCellIndex: 0
+    writeToPendingCellIndex: 0,
+    id: "defaultNotebook"
   };
 
   ws = new WebSocket("ws://localhost:8000");
@@ -71,6 +72,8 @@ class Notebook extends Component {
         case "loadNotebook":
           console.log("Received notebook data from server!");
           console.dir(message.data);
+          break;
+        case "saveResult":
           break;
         default:
           console.log("Error: Unknown message received from server");
@@ -122,7 +125,8 @@ class Notebook extends Component {
       newCells.splice(index, 0, {
         type: type,
         code: "",
-        results: { output: [], error: "", return: "" }
+        results: { output: [], error: "", return: "" },
+        notebookId: uuidv4()
       });
       return { cells: newCells };
     });
@@ -167,11 +171,13 @@ class Notebook extends Component {
 
   handleSaveClick = e => {
     e.preventDefault();
-    const messageType = "saveNotebook";
-    const state = this.state;
-    const notebookId = uuidv4();
-    const notebook = { id: notebookId, state };
-    const request = JSON.stringify({ messageType, notebook });
+    const notebook = this.state;
+    notebook.cells = notebook.cells.map(cell => {
+      cell.results = { output: [], error: "", return: "" };
+      return cell;
+    });
+    // const notebook = { notebook };
+    const request = JSON.stringify({ type: "saveNotebook", notebook });
     console.log("Notebook save request sent");
     this.ws.send(request);
   };
