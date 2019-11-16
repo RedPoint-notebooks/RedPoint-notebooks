@@ -139,6 +139,16 @@ class Notebook extends Component {
     this.setState({ cells: newCells });
   };
 
+  handleClearAllResults = () => {
+    const newCells = this.state.cells.map(cell => {
+      return Object.assign({}, cell, {
+        results: { output: [], error: "", return: "" }
+      });
+    });
+
+    this.setState({ cells: newCells });
+  };
+
   handleRunClick = indexOfCellRun => {
     const allCells = this.state.cells;
     const language = allCells[indexOfCellRun].type;
@@ -203,6 +213,7 @@ class Notebook extends Component {
           deleteAllCells={this.handleDeleteAllCells}
           onSaveClick={this.handleSaveClick}
           onLoadClick={this.handleLoadClick}
+          onClearAllResults={this.handleClearAllResults}
         />
         <Container className="App-body">
           <CellsList
