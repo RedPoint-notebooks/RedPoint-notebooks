@@ -23,6 +23,11 @@ class NavigationBar extends React.Component {
     this.toggleDeleteWarning();
   };
 
+  handleClearAllResults = e => {
+    e.preventDefault();
+    this.props.onClearAllResults();
+  };
+
   handleLoadClick = e => {
     e.preventDefault();
     this.props.onLoadClick();
@@ -56,9 +61,12 @@ class NavigationBar extends React.Component {
               <Nav.Link href="#link" onClick={this.toggleDeleteWarning}>
                 Delete
               </Nav.Link>
-              {/* <NavDropdown title="Default Language" id="basic-nav-dropdown">
-                {navDropDownItems}
-              </NavDropdown> */}
+              <Nav.Link
+                href="#removeResults"
+                onClick={this.handleClearAllResults}
+              >
+                Clear Results
+              </Nav.Link>
             </Nav>
           </Navbar.Collapse>
         </Navbar>

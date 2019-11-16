@@ -117,7 +117,7 @@ class Notebook extends Component {
     for (let i = 0; i <= indexOfCellRun; i += 1) {
       const cell = allCells[i];
       if (i <= indexOfCellRun && cell.type === language) {
-        codeStrArray.push(cell.code);
+        codeStrArray.push(cell.code + "\n");
         pendingCellIndexes.push(i);
       }
     }
@@ -134,6 +134,16 @@ class Notebook extends Component {
       } else {
         return cell;
       }
+    });
+
+    this.setState({ cells: newCells });
+  };
+
+  handleClearAllResults = () => {
+    const newCells = this.state.cells.map(cell => {
+      return Object.assign({}, cell, {
+        results: { output: [], error: "", return: "" }
+      });
     });
 
     this.setState({ cells: newCells });
@@ -203,6 +213,7 @@ class Notebook extends Component {
           deleteAllCells={this.handleDeleteAllCells}
           onSaveClick={this.handleSaveClick}
           onLoadClick={this.handleLoadClick}
+          onClearAllResults={this.handleClearAllResults}
         />
         <Container className="App-body">
           <CellsList

@@ -8,6 +8,7 @@ const RunCellButton = props => {
 
   return (
     <Button
+      cellindex={props.cellIndex}
       className="run-button"
       onClick={handleRunClick}
       variant="secondary"
