@@ -10,17 +10,18 @@ const RenderedMarkdown = props => {
   const cell = props.cell;
   return (
     <React.Fragment>
-      <AddCellButton
-        onClick={props.onAddClick}
-        cellIndex={props.cellIndex}
-        defaultLanguage={props.defaultLanguage}
-      />
+      <div className="add-cell-container">
+        <AddCellButton
+          className="add-cell-btn"
+          onClick={props.onAddClick}
+          cellIndex={props.cellIndex}
+        />
+      </div>
       <CellToolbar
         language={cell.type}
         onAddClick={props.onAddClick}
         onDeleteClick={props.onDeleteClick}
         cellIndex={props.cellIndex}
-        defaultLanguage={props.defaultLanguage}
         onLanguageChange={props.onLanguageChange}
         rendered={cell.rendered}
       />

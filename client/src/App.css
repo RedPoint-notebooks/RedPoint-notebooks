@@ -4,6 +4,8 @@
 
 .CodeMirror {
   height: auto !important;
+  border-bottom-right-radius: 0.2rem;
+  border-bottom-left-radius: 0.2rem;
 }
 
 .react-codemirror2,
@@ -27,12 +29,18 @@
   color: #09d3ac;
 }
 
+.alert-danger {
+  text-align: center;
+}
+
 .cell-toolbar,
 .cell-toolbar-markdown {
   width: 900px;
   display: flex;
   justify-content: space-between;
   background: #2b2b29;
+  border-top-right-radius: 0.2rem;
+  border-top-left-radius: 0.2rem;
 }
 
 .run-button {
@@ -46,7 +54,12 @@
 }
 
 .add-cell-btn {
-  margin: 25px auto 25px;
+  margin: 15px 10px 15px -48px;
+}
+
+.add-cell-container {
+  display: flex;
+  justify-content: start;
 }
 
 .output {
@@ -64,11 +77,11 @@ div .rendered-markdown {
   margin: 10px;
 }
 
-.change-language-dropdown {
-  margin-top: -2px;
-}
-
 .nav-buttons {
   display: flex;
   justify-content: center;
+}
+
+.dropdown-toggle:after {
+  content: none !important;
 }

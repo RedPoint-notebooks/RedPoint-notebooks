@@ -16,7 +16,6 @@ class CodeCell extends Component {
 
   handleChange = value => {
     this.setState({ code: value });
-    // this.props.onUpdateCodeState(value, this.props.cellIndex);
   };
 
   handleBlur = () => {
@@ -38,17 +37,17 @@ class CodeCell extends Component {
 
     return (
       <div>
-        <AddCellButton
-          className="add-cell-btn"
-          onClick={this.props.onAddClick}
-          cellIndex={this.props.cellIndex}
-          defaultLanguage={this.props.defaultLanguage}
-        />
+        <div className="add-cell-container">
+          <AddCellButton
+            className="add-cell-btn"
+            onClick={this.props.onAddClick}
+            cellIndex={this.props.cellIndex}
+          />
+        </div>
         <CellToolbar
           cellIndex={this.props.cellIndex}
           onDeleteClick={this.props.onDeleteClick}
           language={cell.type}
-          defaultLanguage={this.props.defaultLanguage}
           onLanguageChange={this.props.onLanguageChange}
           rendered={cell.rendered}
           onRunClick={this.props.onRunClick}

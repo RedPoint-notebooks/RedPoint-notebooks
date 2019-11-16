@@ -2,35 +2,11 @@ import React, { Component } from "react";
 import CellsList from "./Cells/CellsList";
 import Container from "react-bootstrap/Container";
 import NavigationBar from "./Shared/NavigationBar";
-// import ConfirmAction from "./Shared/ConfirmAction";
 import uuidv4 from "uuid";
 
 class Notebook extends Component {
   state = {
-    defaultLanguage: "Javascript",
-    cells: [
-      // {
-      //   type: "Markdown",
-      //   code:
-      //     "# Welcome to RedPoint Notebook\n- A virtual sandbox for sharing runnable code ",
-      //   rendered: true
-      // },
-      {
-        type: "Javascript",
-        code: "console.log('hi');\nconsole.log('there');",
-        results: { output: [], error: "", return: "" }
-      },
-      {
-        type: "Ruby",
-        code: "puts 'hi guys!'",
-        results: { output: [], error: "", return: "" }
-      }
-      // {
-      //   type: "Javascript",
-      //   code: "console.log('Hello, nice to meet you.');\nname",
-      //   results: { output: [], error: "", return: "" }
-      // }
-    ],
+    cells: [],
     // pendingCellExecution: true,
     pendingCellIndexes: [],
     writeToPendingCellIndex: 0,
@@ -103,10 +79,6 @@ class Notebook extends Component {
       });
       return { cells: newCells };
     });
-  };
-
-  handleSetDefaultLanguage = language => {
-    this.setState({ defaultLanguage: language });
   };
 
   handleDeleteCellClick = index => {
@@ -229,23 +201,14 @@ class Notebook extends Component {
         <NavigationBar
           state={this.state}
           deleteAllCells={this.handleDeleteAllCells}
-          setDefaultLanguage={this.handleSetDefaultLanguage}
           onSaveClick={this.handleSaveClick}
           onLoadClick={this.handleLoadClick}
         />
-        {/* {this.state.deleteWarningVisible ? (
-          <ConfirmAction
-            warningMessage="Delete this cell?"
-            onYesClick={this.handleDeleteCell}
-            onNoClick={this.toggleDeleteWarningVisibility}
-          />
-        ) : null} */}
         <Container className="App-body">
           <CellsList
             onDeleteCellClick={this.handleDeleteCellClick}
             onAddCellClick={this.handleAddCellClick}
             cells={this.state.cells}
-            defaultLanguage={this.state.defaultLanguage}
             onLanguageChange={this.handleLanguageChange}
             toggleRender={this.handleToggleRender}
             onUpdateCodeState={this.handleUpdateCodeState}
