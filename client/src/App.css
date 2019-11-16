@@ -33,6 +33,11 @@
   text-align: center;
 }
 
+.load-notebook-container {
+  display: flex;
+  justify-content: center;
+}
+
 .cell-toolbar,
 .cell-toolbar-markdown {
   width: 900px;

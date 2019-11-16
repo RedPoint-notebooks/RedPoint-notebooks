@@ -19,7 +19,7 @@ const ConfirmAction = props => {
       <Button
         className="delete-all-btn"
         as="button"
-        variant="dark"
+        variant="secondary"
         type="button"
         size="sm"
         onClick={props.onNoClick}

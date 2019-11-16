@@ -3,10 +3,12 @@ import Nav from "react-bootstrap/Nav";
 import logo from "../../placeholder_logo.svg";
 import Navbar from "react-bootstrap/Navbar";
 import ConfirmAction from "./ConfirmAction";
+import LoadForm from "./LoadForm";
 
 class NavigationBar extends React.Component {
   state = {
-    deleteWarningVisible: false
+    deleteWarningVisible: false,
+    loadFormVisible: false
   };
 
   toggleDeleteWarning = () => {
@@ -30,7 +32,15 @@ class NavigationBar extends React.Component {
 
   handleLoadClick = e => {
     e.preventDefault();
-    this.props.onLoadClick();
+    this.handleToggleLoadForm();
+  };
+
+  handleToggleLoadForm = () => {
+    this.setState(prevState => {
+      return {
+        loadFormVisible: !prevState.loadFormVisible
+      };
+    });
   };
 
   render() {
@@ -76,6 +86,12 @@ class NavigationBar extends React.Component {
             warningMessage={"Are you sure you want to delete all cells?"}
             onYesClick={this.handleDeleteAllClick}
             onNoClick={this.toggleDeleteWarning}
+          />
+        ) : null}
+        {this.state.loadFormVisible ? (
+          <LoadForm
+            onLoadClick={this.props.onLoadClick}
+            onToggleLoadForm={this.handleToggleLoadForm}
           />
         ) : null}
       </React.Fragment>
