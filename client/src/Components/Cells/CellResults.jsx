@@ -22,7 +22,7 @@ const CellResults = props => {
       case "error":
         return <Error key={"error"} error={data} />;
       default:
-        return;
+        return "";
     }
   });
   return <ListGroup>{formattedResults}</ListGroup>;

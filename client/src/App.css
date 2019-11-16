@@ -38,6 +38,10 @@
   justify-content: center;
 }
 
+.load-button {
+  margin-right: 10px !important;
+}
+
 .cell-toolbar,
 .cell-toolbar-markdown {
   width: 900px;

@@ -29,7 +29,7 @@ class LoadForm extends Component {
         </Form.Group>
         <div className="load-notebook-container">
           <Button
-            variant="light"
+            variant="secondary"
             className="load-button"
             onClick={this.handleLoadClick}
           >
