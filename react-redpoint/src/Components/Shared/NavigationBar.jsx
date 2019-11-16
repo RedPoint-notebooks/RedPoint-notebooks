@@ -3,19 +3,11 @@ import Nav from "react-bootstrap/Nav";
 import logo from "../../placeholder_logo.svg";
 import Navbar from "react-bootstrap/Navbar";
 import ConfirmAction from "./ConfirmAction";
-// import * as constants from "../../Constants/constants";
-// import NavDropdown from "react-bootstrap/NavDropdown";
-// import uuidv4 from "uuid";
 
 class NavigationBar extends React.Component {
   state = {
     deleteWarningVisible: false
   };
-
-  // handleSetDefaultLanguage = e => {
-  //   const language = e.target.value;
-  //   this.props.setDefaultLanguage(language);
-  // };
 
   toggleDeleteWarning = () => {
     this.setState(prevState => {
@@ -32,20 +24,6 @@ class NavigationBar extends React.Component {
   };
 
   render() {
-    // const navDropDownItems = constants.LANGUAGES.map(language => {
-    //   return (
-    //     <NavDropdown.Item
-    //       as="button"
-    //       key={uuidv4()}
-    //       value={language}
-    //       onClick={this.handleSetDefaultLanguage}
-    //       active={this.props.state.defaultLanguage === language ? true : false}
-    //     >
-    //       {language}
-    //     </NavDropdown.Item>
-    //   );
-    // });
-
     return (
       <React.Fragment>
         <Navbar bg="dark" variant="dark">

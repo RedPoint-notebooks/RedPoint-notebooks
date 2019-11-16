@@ -12,7 +12,6 @@ const CodeCellContainer = props => {
       cellIndex={props.cellIndex}
       onDeleteClick={props.onDeleteCellClick}
       onAddClick={props.onAddCellClick}
-      defaultLanguage={props.defaultLanguage}
       onRenderedMarkdownClick={props.toggleRender}
       onLanguageChange={props.onLanguageChange}
     />
@@ -24,7 +23,6 @@ const CodeCellContainer = props => {
       onAddClick={props.onAddCellClick}
       onDeleteClick={props.onDeleteCellClick}
       cellIndex={props.cellIndex}
-      defaultLanguage={props.defaultLanguage}
       onLanguageChange={props.onLanguageChange}
       toggleRender={props.toggleRender}
       onUpdateCodeState={props.onUpdateCodeState}

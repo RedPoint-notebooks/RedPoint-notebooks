@@ -6,7 +6,6 @@ import Dropdown from "react-bootstrap/Dropdown";
 
 class AddCellButton extends Component {
   handleSelectCellType = language => {
-    debugger;
     this.props.onClick(this.props.cellIndex, language);
   };
 
@@ -18,7 +17,6 @@ class AddCellButton extends Component {
           value={language}
           key={language}
           eventKey={language}
-          // active={this.props.defaultLanguage === language ? true : false}
         >
           {language}
         </Dropdown.Item>

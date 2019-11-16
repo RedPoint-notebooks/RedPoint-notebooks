@@ -12,7 +12,6 @@ const CellsList = props => {
         onDeleteCellClick={props.onDeleteCellClick}
         onAddCellClick={props.onAddCellClick}
         cellIndex={index}
-        defaultLanguage={props.defaultLanguage}
         onLanguageChange={props.onLanguageChange}
         toggleRender={props.toggleRender}
         onUpdateCodeState={props.onUpdateCodeState}
@@ -24,12 +23,10 @@ const CellsList = props => {
   cellContainers.push(
     <div className="add-cell-container">
       <AddCellButton
-        // id="add-solo-cell-container"
         className="add-cell-btn"
         cellIndex={cellContainers.length}
         onClick={props.onAddCellClick}
         key={uuidv4()}
-        defaultLanguage={props.defaultLanguage}
       />
     </div>
   );

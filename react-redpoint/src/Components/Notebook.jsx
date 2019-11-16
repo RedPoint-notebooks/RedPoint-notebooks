@@ -2,13 +2,10 @@ import React, { Component } from "react";
 import CellsList from "./Cells/CellsList";
 import Container from "react-bootstrap/Container";
 import NavigationBar from "./Shared/NavigationBar";
-import AddCellButton from "./Shared/AddCellButton";
-// import ConfirmAction from "./Shared/ConfirmAction";
 import uuidv4 from "uuid";
 
 class Notebook extends Component {
   state = {
-    defaultLanguage: "Javascript",
     cells: [],
     // pendingCellExecution: true,
     pendingCellIndexes: [],
@@ -73,10 +70,6 @@ class Notebook extends Component {
     });
   };
 
-  // handleSetDefaultLanguage = language => {
-  //   this.setState({ defaultLanguage: language });
-  // };
-
   handleDeleteCellClick = index => {
     this.setState(prevState => {
       const newCells = [...prevState.cells];
@@ -87,7 +80,6 @@ class Notebook extends Component {
 
   handleDeleteAllCells = () => {
     this.setState({
-      defaultLanguage: "Javascript",
       cells: [],
       // pendingCellExecution: true,
       pendingCellIndexes: [],
@@ -191,22 +183,13 @@ class Notebook extends Component {
         <NavigationBar
           state={this.state}
           deleteAllCells={this.handleDeleteAllCells}
-          setDefaultLanguage={this.handleSetDefaultLanguage}
           onSaveClick={this.handleSaveClick}
         />
-        {/* {this.state.deleteWarningVisible ? (
-          <ConfirmAction
-            warningMessage="Delete this cell?"
-            onYesClick={this.handleDeleteCell}
-            onNoClick={this.toggleDeleteWarningVisibility}
-          />
-        ) : null} */}
         <Container className="App-body">
           <CellsList
             onDeleteCellClick={this.handleDeleteCellClick}
             onAddCellClick={this.handleAddCellClick}
             cells={this.state.cells}
-            defaultLanguage={this.state.defaultLanguage}
             onLanguageChange={this.handleLanguageChange}
             toggleRender={this.handleToggleRender}
             onUpdateCodeState={this.handleUpdateCodeState}
