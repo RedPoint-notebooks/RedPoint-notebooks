@@ -1,1 +1,67 @@
-{"cells":[{"type":"Markdown","code":"# Welcome to RedPoint Notebooks!","results":{"output":[],"error":"","return":""},"rendered":true},{"type":"Markdown","code":"#### In ruby the command `puts` will print to the console and return `nil`","results":{"output":[],"error":"","return":""},"rendered":true},{"type":"Ruby","code":"person = \"Kawhi Leonard\"\nputs person\n\narray = [1, 2, 3, 4, 5, 6, 7, 8, 9]\n","results":{"output":[],"error":"","return":""}},{"type":"Ruby","code":"squares = array.map { |n| n ** 2 }\n","results":{"output":[],"error":"","return":""}},{"type":"Markdown","code":"#### In Javascript, the command `console.log()` will print to the console and return `undefined`","results":{"output":[],"error":"","return":""},"rendered":true},{"type":"Javascript","code":"const person = \"Kawhi Leonard\"\nconsole.log(person);","results":{"output":[],"error":"","return":""}},{"type":"Markdown","code":"#### In python, the command `print()` will print to the console","results":{"output":[],"error":"","return":""},"rendered":true},{"type":"Python","code":"person = \"Kawhi Leonard\"\nprint(person)","results":{"output":[],"error":"","return":""}},{"type":"Markdown","code":"#### Iterating over an array of numbers in Ruby using a the `Array#map` method, and outputting the results using `puts`:","results":{"output":[],"error":"","return":""},"rendered":true},{"type":"Ruby","code":"squares_to_the_power_of_3 = squares.map {|n| n ** 3 }\nputs squares_to_the_power_of_3\n","results":{"output":[],"error":"","return":""}},{"type":"Ruby","code":"squares_to_the_power_of_3.select {|n| n % 2 == 0 }","results":{"output":[],"error":"","return":""}}],"pendingCellIndexes":[2,3,9,10],"writeToPendingCellIndex":3,"id":"321dc5ac-98f0-4a70-9114-f8f6957ec71a"}
+{
+  "cells": [
+    {
+      "type": "Markdown",
+      "code": "# Welcome to RedPoint Notebooks!",
+      "results": { "output": [], "error": "", "return": "" },
+      "rendered": true
+    },
+    {
+      "type": "Markdown",
+      "code": "#### In ruby the command `puts` will print to the console and return `nil`",
+      "results": { "output": [], "error": "", "return": "" },
+      "rendered": true
+    },
+    {
+      "type": "Ruby",
+      "code": "person = \"Kawhi Leonard\"\nputs person\n\narray = [1, 2, 3, 4, 5, 6, 7, 8, 9]\n",
+      "results": { "output": [], "error": "", "return": "" }
+    },
+    {
+      "type": "Ruby",
+      "code": "squares = array.map { |n| n ** 2 }\n",
+      "results": { "output": [], "error": "", "return": "" }
+    },
+    {
+      "type": "Markdown",
+      "code": "#### In Javascript, the command `console.log()` will print to the console and return `undefined`",
+      "results": { "output": [], "error": "", "return": "" },
+      "rendered": true
+    },
+    {
+      "type": "Javascript",
+      "code": "const person = \"Kawhi Leonard\"\nconsole.log(person);",
+      "results": { "output": [], "error": "", "return": "" }
+    },
+    {
+      "type": "Markdown",
+      "code": "#### In python, the command `print()` will print to the console",
+      "results": { "output": [], "error": "", "return": "" },
+      "rendered": true
+    },
+    {
+      "type": "Python",
+      "code": "person = \"Kawhi Leonard\"\nprint(person)",
+      "results": { "output": [], "error": "", "return": "" }
+    },
+    {
+      "type": "Markdown",
+      "code": "#### Iterating over an array of numbers in Ruby using a the `Array#map` method, and outputting the results using `puts`:",
+      "results": { "output": [], "error": "", "return": "" },
+      "rendered": true
+    },
+    {
+      "type": "Ruby",
+      "code": "squares_to_the_power_of_3 = squares.map {|n| n ** 3 }\nputs squares_to_the_power_of_3\n",
+      "results": { "output": [], "error": "", "return": "" }
+    },
+    {
+      "type": "Ruby",
+      "code": "squares_to_the_power_of_3.select {|n| n % 2 == 0 }",
+      "results": { "output": [], "error": "", "return": "" }
+    }
+  ],
+  "pendingCellIndexes": [2, 3, 9, 10],
+  "writeToPendingCellIndex": 3,
+  "id": "321dc5ac-98f0-4a70-9114-f8f6957ec71a"
+}

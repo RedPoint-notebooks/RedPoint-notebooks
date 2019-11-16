@@ -46,8 +46,7 @@ class Notebook extends Component {
           this.updateCellResults("error", cellIndex, message);
           break;
         case "loadNotebook":
-          // const newState = JSON.parse(message.data);
-          const newState = message.data;
+          const newState = message.data.state;
           this.setState({
             defaultLanguage: newState.defaultLanguage,
             cells: newState.cells,
@@ -56,7 +55,7 @@ class Notebook extends Component {
           break;
         case "saveResult":
           break;
-        case "error":
+        case "loadError":
           console.log(message.data);
           break;
         default:
@@ -170,8 +169,8 @@ class Notebook extends Component {
     this.ws.send(request);
   };
 
-  handleLoadClick = () => {
-    const request = JSON.stringify({ type: "loadNotebook", id: this.state.id });
+  handleLoadClick = notebookId => {
+    const request = JSON.stringify({ type: "loadNotebook", id: notebookId });
     this.ws.send(request);
   };
 

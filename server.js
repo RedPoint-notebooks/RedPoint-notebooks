@@ -59,7 +59,7 @@ wss.on("connection", ws => {
           ws.send(JSON.stringify({ type: "loadNotebook", data: notebook }));
         })
         .catch(error => {
-          ws.send(JSON.stringify({ type: "error", data: error }));
+          ws.send(JSON.stringify({ type: "loadError", data: error }));
           console.log(error);
         });
     } else {

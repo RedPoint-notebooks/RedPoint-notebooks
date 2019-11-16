@@ -21,7 +21,7 @@
   display: flex;
   flex-direction: column;
   align-items: center;
-  justify-content: start;
+  justify-content: flex-start;
   color: white;
 }
 
@@ -31,6 +31,15 @@
 
 .alert-danger {
   text-align: center;
+}
+
+.load-notebook-container {
+  display: flex;
+  justify-content: center;
+}
+
+.load-button {
+  margin-right: 10px !important;
 }
 
 .cell-toolbar,
@@ -59,7 +68,7 @@
 
 .add-cell-container {
   display: flex;
-  justify-content: start;
+  justify-content: flex-start;
 }
 
 .output {
