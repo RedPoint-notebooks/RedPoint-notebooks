@@ -5,16 +5,9 @@ import DropdownButton from "react-bootstrap/DropdownButton";
 import Dropdown from "react-bootstrap/Dropdown";
 
 class AddCellButton extends Component {
-  state = {
-    type: this.props.defaultLanguage
-  };
-
-  handleAddCellClick = () => {
-    this.props.onClick(this.props.cellIndex, this.state.type);
-  };
-
-  handleSetCellType = e => {
-    this.setState({ type: e.target.value });
+  handleSelectCellType = language => {
+    debugger;
+    this.props.onClick(this.props.cellIndex, language);
   };
 
   render() {
@@ -24,8 +17,8 @@ class AddCellButton extends Component {
           as="button"
           value={language}
           key={language}
-          onClick={this.handleSetCellType}
-          active={this.state.type === language ? true : false}
+          eventKey={language}
+          // active={this.props.defaultLanguage === language ? true : false}
         >
           {language}
         </Dropdown.Item>
@@ -33,16 +26,16 @@ class AddCellButton extends Component {
     });
 
     return (
-      <SplitButton
+      <DropdownButton
         className="add-cell-btn"
         variant="secondary"
         id="dropdown-basic-button"
         title={<span>&#43;</span>}
         size="sm"
-        onClick={this.handleAddCellClick}
+        onSelect={this.handleSelectCellType}
       >
         {dropDownItems}
-      </SplitButton>
+      </DropdownButton>
     );
   }
 }

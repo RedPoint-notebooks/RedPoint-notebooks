@@ -9,29 +9,7 @@ import uuidv4 from "uuid";
 class Notebook extends Component {
   state = {
     defaultLanguage: "Javascript",
-    cells: [
-      // {
-      //   type: "Markdown",
-      //   code:
-      //     "# Welcome to RedPoint Notebook\n- A virtual sandbox for sharing runnable code ",
-      //   rendered: true
-      // },
-      {
-        type: "Javascript",
-        code: "console.log('hi');\nconsole.log('there');",
-        results: { output: [], error: "", return: "" }
-      },
-      {
-        type: "Ruby",
-        code: "puts 'hi guys!'",
-        results: { output: [], error: "", return: "" }
-      }
-      // {
-      //   type: "Javascript",
-      //   code: "console.log('Hello, nice to meet you.');\nname",
-      //   results: { output: [], error: "", return: "" }
-      // }
-    ],
+    cells: [],
     // pendingCellExecution: true,
     pendingCellIndexes: [],
     writeToPendingCellIndex: 0
@@ -95,9 +73,9 @@ class Notebook extends Component {
     });
   };
 
-  handleSetDefaultLanguage = language => {
-    this.setState({ defaultLanguage: language });
-  };
+  // handleSetDefaultLanguage = language => {
+  //   this.setState({ defaultLanguage: language });
+  // };
 
   handleDeleteCellClick = index => {
     this.setState(prevState => {

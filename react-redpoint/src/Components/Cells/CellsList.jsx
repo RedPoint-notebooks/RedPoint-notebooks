@@ -22,14 +22,16 @@ const CellsList = props => {
   });
 
   cellContainers.push(
-    <AddCellButton
-      soloButton="true"
-      id="solo-button"
-      cellIndex={cellContainers.length}
-      onClick={props.onAddCellClick}
-      key={uuidv4()}
-      defaultLanguage={props.defaultLanguage}
-    />
+    <div className="add-cell-container">
+      <AddCellButton
+        // id="add-solo-cell-container"
+        className="add-cell-btn"
+        cellIndex={cellContainers.length}
+        onClick={props.onAddCellClick}
+        key={uuidv4()}
+        defaultLanguage={props.defaultLanguage}
+      />
+    </div>
   );
 
   return cellContainers;

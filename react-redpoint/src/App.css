@@ -54,7 +54,12 @@
 }
 
 .add-cell-btn {
-  margin: 15px 10px 15px 0;
+  margin: 15px 10px 15px -48px;
+}
+
+.add-cell-container {
+  display: flex;
+  justify-content: start;
 }
 
 .output {
@@ -75,4 +80,8 @@ div .rendered-markdown {
 .nav-buttons {
   display: flex;
   justify-content: center;
+}
+
+.dropdown-toggle:after {
+  content: none !important;
 }

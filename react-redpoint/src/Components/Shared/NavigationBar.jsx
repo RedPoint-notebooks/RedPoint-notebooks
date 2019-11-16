@@ -1,21 +1,21 @@
 import React from "react";
 import Nav from "react-bootstrap/Nav";
 import logo from "../../placeholder_logo.svg";
-import * as constants from "../../Constants/constants";
-import uuidv4 from "uuid";
 import Navbar from "react-bootstrap/Navbar";
-import NavDropdown from "react-bootstrap/NavDropdown";
 import ConfirmAction from "./ConfirmAction";
+// import * as constants from "../../Constants/constants";
+// import NavDropdown from "react-bootstrap/NavDropdown";
+// import uuidv4 from "uuid";
 
 class NavigationBar extends React.Component {
   state = {
     deleteWarningVisible: false
   };
 
-  handleSetDefaultLanguage = e => {
-    const language = e.target.value;
-    this.props.setDefaultLanguage(language);
-  };
+  // handleSetDefaultLanguage = e => {
+  //   const language = e.target.value;
+  //   this.props.setDefaultLanguage(language);
+  // };
 
   toggleDeleteWarning = () => {
     this.setState(prevState => {
@@ -32,19 +32,19 @@ class NavigationBar extends React.Component {
   };
 
   render() {
-    const navDropDownItems = constants.LANGUAGES.map(language => {
-      return (
-        <NavDropdown.Item
-          as="button"
-          key={uuidv4()}
-          value={language}
-          onClick={this.handleSetDefaultLanguage}
-          active={this.props.state.defaultLanguage === language ? true : false}
-        >
-          {language}
-        </NavDropdown.Item>
-      );
-    });
+    // const navDropDownItems = constants.LANGUAGES.map(language => {
+    //   return (
+    //     <NavDropdown.Item
+    //       as="button"
+    //       key={uuidv4()}
+    //       value={language}
+    //       onClick={this.handleSetDefaultLanguage}
+    //       active={this.props.state.defaultLanguage === language ? true : false}
+    //     >
+    //       {language}
+    //     </NavDropdown.Item>
+    //   );
+    // });
 
     return (
       <React.Fragment>
@@ -70,9 +70,9 @@ class NavigationBar extends React.Component {
               <Nav.Link href="#link" onClick={this.toggleDeleteWarning}>
                 Delete
               </Nav.Link>
-              <NavDropdown title="Default Language" id="basic-nav-dropdown">
+              {/* <NavDropdown title="Default Language" id="basic-nav-dropdown">
                 {navDropDownItems}
-              </NavDropdown>
+              </NavDropdown> */}
             </Nav>
           </Navbar.Collapse>
         </Navbar>

@@ -38,12 +38,14 @@ class CodeCell extends Component {
 
     return (
       <div>
-        <AddCellButton
-          className="add-cell-btn"
-          onClick={this.props.onAddClick}
-          cellIndex={this.props.cellIndex}
-          defaultLanguage={this.props.defaultLanguage}
-        />
+        <div className="add-cell-container">
+          <AddCellButton
+            className="add-cell-btn"
+            onClick={this.props.onAddClick}
+            cellIndex={this.props.cellIndex}
+            defaultLanguage={this.props.defaultLanguage}
+          />
+        </div>
         <CellToolbar
           cellIndex={this.props.cellIndex}
           onDeleteClick={this.props.onDeleteClick}
