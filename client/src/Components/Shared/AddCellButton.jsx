@@ -1,5 +1,4 @@
 import React, { Component } from "react";
-import SplitButton from "react-bootstrap/SplitButton";
 import * as constants from "../../Constants/constants";
 import DropdownButton from "react-bootstrap/DropdownButton";
 import Dropdown from "react-bootstrap/Dropdown";

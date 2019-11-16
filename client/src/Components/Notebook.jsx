@@ -56,7 +56,7 @@ class Notebook extends Component {
           break;
         case "saveResult":
           break;
-        case "error":
+        case "loadError":
           console.log(message.data);
           break;
         default:
