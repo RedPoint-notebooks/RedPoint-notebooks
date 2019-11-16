@@ -48,7 +48,6 @@ class Notebook extends Component {
         case "loadNotebook":
           const newState = message.data.state;
           this.setState({
-            defaultLanguage: newState.defaultLanguage,
             cells: newState.cells,
             id: newState.id
           });
