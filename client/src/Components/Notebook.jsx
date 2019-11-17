@@ -111,21 +111,6 @@ class Notebook extends Component {
     });
   };
 
-  buildRequest = (indexOfCellRun, language) => {
-    const codeStrArray = [];
-    const allCells = this.state.cells;
-    const pendingCellIndexes = [];
-    for (let i = 0; i <= indexOfCellRun; i += 1) {
-      const cell = allCells[i];
-      if (i <= indexOfCellRun && cell.type === language) {
-        codeStrArray.push(cell.code + "\n");
-        pendingCellIndexes.push(i);
-      }
-    }
-    this.setState({ pendingCellIndexes, writeToPendingCellIndex: 0 });
-    return { language, codeStrArray };
-  };
-
   removeSameLanguageResults = language => {
     const newCells = this.state.cells.map(cell => {
       if (cell.type === language) {
@@ -148,6 +133,21 @@ class Notebook extends Component {
     });
 
     this.setState({ cells: newCells });
+  };
+
+  buildRequest = (indexOfCellRun, language) => {
+    const codeStrArray = [];
+    const allCells = this.state.cells;
+    const pendingCellIndexes = [];
+    for (let i = 0; i <= indexOfCellRun; i += 1) {
+      const cell = allCells[i];
+      if (i <= indexOfCellRun && cell.type === language) {
+        codeStrArray.push(cell.code + "\n");
+        pendingCellIndexes.push(i);
+      }
+    }
+    this.setState({ pendingCellIndexes, writeToPendingCellIndex: 0 });
+    return { type: "executeCode", language, codeStrArray };
   };
 
   handleRunClick = indexOfCellRun => {

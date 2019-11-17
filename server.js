@@ -37,8 +37,7 @@ wss.on("connection", ws => {
       handleSaveNotebook(message.notebook, ws);
     } else if (message.type === "loadNotebook") {
       handleLoadNotebook(message.id, ws);
-      // } else if (message.type === "executeCode") {
-    } else {
+    } else if (message.type === "executeCode") {
       handleExecuteCode(message, ws, delimiter);
     }
   });
