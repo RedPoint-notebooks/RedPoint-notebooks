@@ -8,8 +8,13 @@ class Notebook extends Component {
   state = {
     cells: [],
     // pendingCellExecution: true,
-    pendingCellIndexes: [],
-    writeToPendingCellIndex: 0,
+    RubyPendingIndexes: [],
+    RubyWriteToPendingIndex: 0,
+    JavascriptPendingIndexes: [],
+    JavascriptWriteToPendingIndex: 0,
+    PythonPendingIndexes: [],
+    PythonWriteToPendingIndex: 0,
+
     id: uuidv4()
   };
 
@@ -22,15 +27,65 @@ class Notebook extends Component {
 
     this.ws.onmessage = message => {
       message = JSON.parse(message.data);
+      let cellIndex;
+      const state = this.state;
 
-      const cellIndex = this.state.pendingCellIndexes[
-        this.state.writeToPendingCellIndex
-      ];
+      if (message.language) {
+        switch (message.language) {
+          case "Ruby":
+            cellIndex = state.RubyPendingIndexes[state.RubyWriteToPendingIndex];
+            break;
+          case "Javascript":
+            cellIndex =
+              state.JavascriptPendingIndexes[
+                state.JavascriptWriteToPendingIndex
+              ];
+            break;
+          case "Python":
+            cellIndex =
+              state.PythonPendingIndexes[state.PythonWriteToPendingIndex];
+            break;
+          default:
+            console.log("Error slotting message");
+            return null;
+        }
+
+        // cellIndex = this.state[`${language}PendingIndexes`][
+        //   this.state[`${language}WriteToPendingIndex`]
+        // ];
+      }
 
       console.log(JSON.stringify(message.data));
 
       switch (message.type) {
         case "delimiter":
+          switch (message.language) {
+            case "Ruby":
+              this.setState(prevState => {
+                return {
+                  RubyWriteToPendingIndex: prevState.RubyWriteToPendingIndex + 1
+                };
+              });
+              break;
+            case "Javascript":
+              this.setState(prevState => {
+                return {
+                  JavascriptWriteToPendingIndex:
+                    prevState.JavascriptWriteToPendingIndex + 1
+                };
+              });
+              break;
+            case "Python":
+              this.setState(prevState => {
+                return {
+                  PythonWriteToPendingIndex:
+                    prevState.PythonWriteToPendingIndex + 1
+                };
+              });
+              break;
+            default:
+              return null;
+          }
           this.setState(prevState => {
             return {
               writeToPendingCellIndex: prevState.writeToPendingCellIndex + 1
@@ -137,15 +192,38 @@ class Notebook extends Component {
   buildRequest = (indexOfCellRun, language) => {
     const codeStrArray = [];
     const allCells = this.state.cells;
-    const pendingCellIndexes = [];
+    const pendingIndexes = [];
     for (let i = 0; i <= indexOfCellRun; i += 1) {
       const cell = allCells[i];
       if (i <= indexOfCellRun && cell.type === language) {
         codeStrArray.push(cell.code + "\n");
-        pendingCellIndexes.push(i);
+        pendingIndexes.push(i);
       }
     }
-    this.setState({ pendingCellIndexes, writeToPendingCellIndex: 0 });
+
+    switch (language) {
+      case "Ruby": {
+        this.setState({
+          RubyPendingIndexes: pendingIndexes,
+          RubyWriteToPendingIndex: 0
+        });
+        break;
+      }
+      case "Javascript": {
+        this.setState({
+          JavascriptPendingIndexes: pendingIndexes,
+          JavascriptWriteToPendingIndex: 0
+        });
+        break;
+      }
+      case "Python": {
+        this.setState({
+          PythonPendingIndexes: pendingIndexes,
+          PythonWriteToPendingIndex: 0
+        });
+        break;
+      }
+    }
     return { type: "executeCode", language, codeStrArray };
   };
 
@@ -158,7 +236,6 @@ class Notebook extends Component {
   };
 
   handleRunAllClick = () => {
-    // this.handleClearAllResults();
     const allCells = this.state.cells;
     const cellsToRun = findLastIndexOfEachLanguageInNotebook(allCells);
     cellsToRun.forEach(cellIndex => {

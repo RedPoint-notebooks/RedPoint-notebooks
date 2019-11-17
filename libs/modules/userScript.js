@@ -12,7 +12,7 @@ const userScript = {
     cwd: null,
     env: null
   }),
-  execute: (ws, delimiter) => {
+  execute: (ws, delimiter, language) => {
     return new Promise((resolve, reject) => {
       console.log("BEFORE EXECUTING SCRIPT");
       const scriptProcess = exec(
@@ -20,7 +20,7 @@ const userScript = {
         userScript.execOptions,
         (error, stdout, stderr) => {
           if (error) {
-            ws.send(JSON.stringify({ type: "error", data: error }));
+            ws.send(JSON.stringify({ language, type: "error", data: error }));
           }
         }
       );
@@ -29,9 +29,9 @@ const userScript = {
         const dataArray = data.split("\n").slice(0, -1);
         dataArray.forEach(data => {
           if (data === delimiter) {
-            ws.send(JSON.stringify({ type: "delimiter" }));
+            ws.send(JSON.stringify({ language, type: "delimiter" }));
           } else {
-            ws.send(JSON.stringify({ type: "stdout", data: data }));
+            ws.send(JSON.stringify({ language, type: "stdout", data: data }));
           }
         });
       });
@@ -42,7 +42,7 @@ const userScript = {
       });
 
       scriptProcess.stderr.on("data", data => {
-        reject(JSON.stringify({ type: "stderr", data: data }));
+        reject(JSON.stringify({ language, type: "stderr", data: data }));
       });
     });
   },

@@ -126,15 +126,17 @@ const handleExecuteCode = (message, ws, delimiter) => {
 
     userScript.writeFile(scriptString, language).then(() => {
       userScript
-        .execute(ws, delimiter)
+        .execute(ws, delimiter, language)
         .then(() => repl.execute(codeString, language))
         .then(returnData => repl.parseOutput(returnData, language))
         .then(returnValue => {
-          ws.send(JSON.stringify({ type: "return", data: returnValue }));
+          ws.send(
+            JSON.stringify({ type: "return", language, data: returnValue })
+          );
           resolve();
         })
         .catch(data => {
-          ws.send(data);
+          ws.send(language, data);
           resolve();
         });
     });
