@@ -93,7 +93,6 @@ class Notebook extends Component {
   handleDeleteAllCells = () => {
     this.setState({
       cells: [],
-      // pendingCellExecution: true,
       pendingCellIndexes: [],
       writeToPendingCellIndex: 0
     });
@@ -159,7 +158,7 @@ class Notebook extends Component {
   };
 
   handleRunAllClick = () => {
-    this.handleClearAllResults();
+    // this.handleClearAllResults();
     const allCells = this.state.cells;
     const cellsToRun = findLastIndexOfEachLanguageInNotebook(allCells);
     cellsToRun.forEach(cellIndex => {
