@@ -158,6 +158,15 @@ class Notebook extends Component {
     this.ws.send(JSON.stringify(requestObject));
   };
 
+  handleRunAllClick = () => {
+    this.handleClearAllResults();
+    const allCells = this.state.cells;
+    const cellsToRun = findLastIndexOfEachLanguageInNotebook(allCells);
+    cellsToRun.forEach(cellIndex => {
+      this.handleRunClick(cellIndex);
+    });
+  };
+
   handleSaveClick = e => {
     e.preventDefault();
     const notebook = this.state;
@@ -165,7 +174,6 @@ class Notebook extends Component {
       cell.results = { output: [], error: "", return: "" };
       return cell;
     });
-    // const notebook = { notebook };
     const request = JSON.stringify({ type: "saveNotebook", notebook });
     console.log("Notebook save request sent");
     this.ws.send(request);
@@ -215,6 +223,7 @@ class Notebook extends Component {
           onSaveClick={this.handleSaveClick}
           onLoadClick={this.handleLoadClick}
           onClearAllResults={this.handleClearAllResults}
+          onRunAllClick={this.handleRunAllClick}
         />
         <Container className="App-body">
           <CellsList
@@ -231,5 +240,20 @@ class Notebook extends Component {
     );
   }
 }
+
+const findLastIndexOfEachLanguageInNotebook = allCells => {
+  const languages = [];
+  const indexes = [];
+
+  for (let i = allCells.length - 1; i >= 0; i -= 1) {
+    let cell = allCells[i];
+    if (!languages.includes(cell.type) && cell.type !== "Markdown") {
+      languages.push(cell.type);
+      indexes.unshift(i);
+    }
+  }
+
+  return indexes;
+};
 
 export default Notebook;

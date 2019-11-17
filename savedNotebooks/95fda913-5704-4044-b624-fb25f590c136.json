@@ -1,1 +1,17 @@
-{"cells":[{"type":"Javascript","code":"console.log('hi there');","results":{"output":[],"error":"","return":""}},{"type":"Javascript","code":"let foo = 'bar'","results":{"output":[],"error":"","return":""}}],"pendingCellIndexes":[0,1],"writeToPendingCellIndex":1,"id":"95fda913-5704-4044-b624-fb25f590c136"}
+{
+  "cells": [
+    {
+      "type": "Javascript",
+      "code": "console.log('hi there');",
+      "results": { "output": [], "error": "", "return": "" }
+    },
+    {
+      "type": "Javascript",
+      "code": "let foo = 'bar'",
+      "results": { "output": [], "error": "", "return": "" }
+    }
+  ],
+  "pendingCellIndexes": [0, 1],
+  "writeToPendingCellIndex": 1,
+  "id": "95fda913-5704-4044-b624-fb25f590c136"
+}
