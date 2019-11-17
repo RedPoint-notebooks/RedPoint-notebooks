@@ -49,10 +49,6 @@ class Notebook extends Component {
             console.log("Error slotting message");
             return null;
         }
-
-        // cellIndex = this.state[`${language}PendingIndexes`][
-        //   this.state[`${language}WriteToPendingIndex`]
-        // ];
       }
 
       console.log(JSON.stringify(message.data));
@@ -104,7 +100,7 @@ class Notebook extends Component {
           this.updateCellResults("error", cellIndex, message);
           break;
         case "loadNotebook":
-          const newState = message.data.state;
+          const newState = message.data;
           this.setState({
             cells: newState.cells,
             id: newState.id
@@ -223,6 +219,8 @@ class Notebook extends Component {
         });
         break;
       }
+      default:
+        console.log("Error building language request");
     }
     return { type: "executeCode", language, codeStrArray };
   };
@@ -250,6 +248,12 @@ class Notebook extends Component {
       cell.results = { output: [], error: "", return: "" };
       return cell;
     });
+    notebook.RubyPendingIndexes = [];
+    notebook.RubyWriteToPendingIndex = 0;
+    notebook.JavascriptPendingIndexes = [];
+    notebook.JavascriptWriteToPendingIndex = 0;
+    notebook.PythonPendingIndexes = [];
+    notebook.PythonWriteToPendingIndex = 0;
     const request = JSON.stringify({ type: "saveNotebook", notebook });
     console.log("Notebook save request sent");
     this.ws.send(request);
