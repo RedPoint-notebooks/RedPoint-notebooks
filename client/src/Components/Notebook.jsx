@@ -22,11 +22,13 @@ class Notebook extends Component {
 
     this.ws.onmessage = message => {
       message = JSON.parse(message.data);
+
       const cellIndex = this.state.pendingCellIndexes[
         this.state.writeToPendingCellIndex
       ];
 
-      console.log(message.data);
+      console.log(JSON.stringify(message.data));
+
       switch (message.type) {
         case "delimiter":
           this.setState(prevState => {
@@ -42,6 +44,7 @@ class Notebook extends Component {
           this.updateCellResults("return", cellIndex, message);
           break;
         case "error":
+          break;
         case "stderr":
           this.updateCellResults("error", cellIndex, message);
           break;
