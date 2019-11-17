@@ -28,17 +28,24 @@ const generateDelimiter = (language, delimiter) => {
 
 wss.on("connection", ws => {
   const delimiter = uuidv4();
+  const queue = [];
 
   ws.on("message", message => {
     message = JSON.parse(message);
     console.log(message);
+    debugger;
 
     if (message.type === "saveNotebook") {
       handleSaveNotebook(message.notebook, ws);
     } else if (message.type === "loadNotebook") {
       handleLoadNotebook(message.id, ws);
     } else if (message.type === "executeCode") {
-      handleExecuteCode(message, ws, delimiter);
+      if (queue.length === 0) {
+        queue.push(message);
+        executeQueue(queue, ws, delimiter);
+      } else {
+        queue.push(message);
+      }
     }
   });
 });
@@ -112,21 +119,34 @@ const handleLoadNotebook = (id, ws) => {
 };
 
 const handleExecuteCode = (message, ws, delimiter) => {
-  const { language, codeStrArray } = message;
-  const codeString = codeStrArray.join("");
-  const delimiterStatement = generateDelimiter(language, delimiter);
-  const scriptString = codeStrArray.join(delimiterStatement);
+  return new Promise((resolve, reject) => {
+    const { language, codeStrArray } = message;
+    const codeString = codeStrArray.join("");
+    const delimiterStatement = generateDelimiter(language, delimiter);
+    const scriptString = codeStrArray.join(delimiterStatement);
 
-  userScript.writeFile(scriptString, language).then(() => {
-    userScript
-      .execute(ws, delimiter)
-      .then(() => repl.execute(codeString, language))
-      .then(returnData => repl.parseOutput(returnData, language))
-      .then(returnValue => {
-        ws.send(JSON.stringify({ type: "return", data: returnValue }));
-      })
-      .catch(data => {
-        ws.send(data);
-      });
+    userScript.writeFile(scriptString, language).then(() => {
+      userScript
+        .execute(ws, delimiter)
+        .then(() => repl.execute(codeString, language))
+        .then(returnData => repl.parseOutput(returnData, language))
+        .then(returnValue => {
+          ws.send(JSON.stringify({ type: "return", data: returnValue }));
+          resolve();
+        })
+        .catch(data => {
+          ws.send(data);
+          resolve();
+        });
+    });
+  });
+};
+
+const executeQueue = (queue, ws, delimiter) => {
+  handleExecuteCode(queue[0], ws, delimiter).then(() => {
+    queue.shift();
+    if (queue.length > 0) {
+      executeQueue(queue, ws, delimiter);
+    }
   });
 };
