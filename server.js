@@ -26,63 +26,20 @@ const generateDelimiter = (language, delimiter) => {
   }
 };
 
-// const sendDelimiterToClient = (ws, uuid) => {
-//   ws.send(JSON.stringify({ type: "delimiter", data: uuid }));
-// };
-
 wss.on("connection", ws => {
   const delimiter = uuidv4();
-  // sendDelimiterToClient(ws, delimiter);
 
   ws.on("message", message => {
     message = JSON.parse(message);
     console.log(message);
 
     if (message.type === "saveNotebook") {
-      saveNotebook(message.notebook)
-        .then(() => {
-          ws.send(
-            JSON.stringify({
-              type: "saveResult",
-              data: "Notebook has been saved"
-            })
-          );
-        })
-        .catch(error => {
-          ws.send(JSON.stringify({ type: "saveResult", data: error }));
-          console.log(error);
-        });
-      // } else if (message.type === "executeCode") {
+      handleSaveNotebook(message.notebook, ws);
     } else if (message.type === "loadNotebook") {
-      loadNotebook(message.id)
-        .then(notebook => {
-          ws.send(JSON.stringify({ type: "loadNotebook", data: notebook }));
-        })
-        .catch(error => {
-          ws.send(JSON.stringify({ type: "loadError", data: error }));
-          console.log(error);
-        });
+      handleLoadNotebook(message.id, ws);
+      // } else if (message.type === "executeCode") {
     } else {
-      const { language, codeStrArray } = message;
-      const codeString = codeStrArray.join("");
-      const delimiterStatement = generateDelimiter(language, delimiter);
-      const scriptString = codeStrArray.join(delimiterStatement);
-
-      // is this the best place to set language for upcoming data?
-      // ws.send(JSON.stringify({ type: "language", data: language }));
-
-      userScript.writeFile(scriptString, language).then(() => {
-        userScript
-          .execute(ws, delimiter)
-          .then(() => repl.execute(codeString, language))
-          .then(returnData => repl.parseOutput(returnData, language))
-          .then(returnValue => {
-            ws.send(JSON.stringify({ type: "return", data: returnValue }));
-          })
-          .catch(data => {
-            ws.send(data);
-          });
-      });
+      handleExecuteCode(message, ws, delimiter);
     }
   });
 });
@@ -125,5 +82,52 @@ const loadNotebook = id => {
         resolve(JSON.parse(data));
       }
     });
+  });
+};
+
+const handleSaveNotebook = (notebook, ws) => {
+  saveNotebook(notebook)
+    .then(() => {
+      ws.send(
+        JSON.stringify({
+          type: "saveResult",
+          data: "Notebook has been saved"
+        })
+      );
+    })
+    .catch(error => {
+      ws.send(JSON.stringify({ type: "saveResult", data: error }));
+      console.log(error);
+    });
+};
+
+const handleLoadNotebook = (id, ws) => {
+  loadNotebook(id)
+    .then(notebook => {
+      ws.send(JSON.stringify({ type: "loadNotebook", data: notebook }));
+    })
+    .catch(error => {
+      ws.send(JSON.stringify({ type: "loadError", data: error }));
+      console.log(error);
+    });
+};
+
+const handleExecuteCode = (message, ws, delimiter) => {
+  const { language, codeStrArray } = message;
+  const codeString = codeStrArray.join("");
+  const delimiterStatement = generateDelimiter(language, delimiter);
+  const scriptString = codeStrArray.join(delimiterStatement);
+
+  userScript.writeFile(scriptString, language).then(() => {
+    userScript
+      .execute(ws, delimiter)
+      .then(() => repl.execute(codeString, language))
+      .then(returnData => repl.parseOutput(returnData, language))
+      .then(returnValue => {
+        ws.send(JSON.stringify({ type: "return", data: returnValue }));
+      })
+      .catch(data => {
+        ws.send(data);
+      });
   });
 };
