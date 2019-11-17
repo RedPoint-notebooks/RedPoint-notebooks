@@ -22,7 +22,7 @@ const generateDelimiter = (language, delimiter) => {
     case "Javascript":
       return `console.log('${delimiter}');\n`;
     case "Python":
-      return `print(${delimiter})\n`;
+      return `print('${delimiter}')\n`;
   }
 };
 
@@ -64,7 +64,7 @@ wss.on("connection", ws => {
         });
     } else {
       const { language, codeStrArray } = message;
-      const codeString = codeStrArray.join("") + "\n";
+      const codeString = codeStrArray.join("");
       const delimiterStatement = generateDelimiter(language, delimiter);
       const scriptString = codeStrArray.join(delimiterStatement);
 
