@@ -2,8 +2,6 @@ import React from "react";
 import ListGroup from "react-bootstrap/ListGroup";
 
 const Error = props => {
-  // const brError = props.error.replace(/\n/g, "\r\n");
-
   const addLineBreaks = string =>
     string.split("\n").map((text, index) => (
       <React.Fragment key={`${text}-${index}`}>
@@ -12,9 +10,11 @@ const Error = props => {
       </React.Fragment>
     ));
 
+  const cleanedError = props.error.replace(/.*user_script(.{4})/, "");
+
   return props.error ? (
     <ListGroup.Item className="output" variant="danger">
-      {addLineBreaks(props.error)}
+      {addLineBreaks(cleanedError)}
     </ListGroup.Item>
   ) : null;
 };

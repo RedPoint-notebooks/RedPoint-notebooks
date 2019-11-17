@@ -22,7 +22,7 @@ class Notebook extends Component {
 
     this.ws.onmessage = message => {
       message = JSON.parse(message.data);
-      debugger;
+
       const cellIndex = this.state.pendingCellIndexes[
         this.state.writeToPendingCellIndex
       ];
