@@ -19,7 +19,6 @@ const userScript = {
         `${this.command} ./codeCellScripts/user_script${this.fileType}`,
         userScript.execOptions,
         (error, stdout, stderr) => {
-          debugger;
           if (error) {
             if (/[Ss]yntax/.test(stderr)) {
               const originalCellsLines = codeStrArray.reduce(
@@ -37,24 +36,18 @@ const userScript = {
                 .filter(line => {
                   const delimRegex = new RegExp(delimiter);
                   return delimRegex.test(line);
-                  // line = line.slice(5).replace(/['"]/g, "");
-                  // return line === delimiter;
                 }).length;
 
-              // determine delims before error
-              // errorCell == delims before error
               const errorCell = delimsBeforeError;
-              // syntaxErrorLine - originalCellsLines[errorCell] = cell line number
-              const errorLineinCell =
-                syntaxErrorLine - originalCellsLines[errorCell];
 
-              stderr = stderr.replace(/\d+/, errorLineinCell);
-              // debugger;
+              // const errorLineinCell = syntaxErrorLine - delimsBeforeError;
+              // stderr = stderr.replace(/\d+/, errorLineinCell);
+
               ws.send(
                 JSON.stringify({
                   type: "syntax-error",
                   data: {
-                    location: [errorCell, errorLineinCell],
+                    location: [errorCell, 42],
                     error,
                     stderr
                   },
@@ -86,13 +79,10 @@ const userScript = {
       });
 
       scriptProcess.stdout.on("end", () => {
-        // ws.send(JSON.stringify({ type: "end", data: "Script completed" }));
         resolve();
       });
 
       scriptProcess.stderr.on("data", data => {
-        // ws.send(JSON.stringify({ language, type: "stderr", data }));
-        // reject(data, "stderr");
         reject();
       });
     });

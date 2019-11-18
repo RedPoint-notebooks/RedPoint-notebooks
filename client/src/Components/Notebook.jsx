@@ -108,6 +108,7 @@ class Notebook extends Component {
             this.state.JavascriptPendingIndexes,
             this.state.PythonPendingIndexes
           );
+          debugger;
           this.updateCellResults("error", cellIndex, message);
           break;
         case "loadNotebook":
