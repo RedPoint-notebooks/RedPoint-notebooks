@@ -184,6 +184,9 @@ class Notebook extends Component {
       if (type === "Markdown") {
         changedCell.rendered = false;
       }
+      if (changedCell.results) {
+        changedCell.results = { output: [], error: "", return: "" };
+      }
       return { cells: newCells };
     });
   };
