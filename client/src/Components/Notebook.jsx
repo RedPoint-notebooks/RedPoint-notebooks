@@ -95,6 +95,7 @@ class Notebook extends Component {
           this.updateCellResults("return", cellIndex, message);
           break;
         case "error":
+          this.updateCellResults("error", cellIndex, message.data);
           break;
         case "stderr":
           this.updateCellResults("error", cellIndex, message);

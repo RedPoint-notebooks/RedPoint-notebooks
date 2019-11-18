@@ -2,12 +2,17 @@
   "cells": [
     {
       "type": "Ruby",
-      "code": "a = [1, 2, 3]",
+      "code": "puts 'hi'",
       "results": { "output": [], "error": "", "return": "" }
     },
     {
       "type": "Javascript",
-      "code": "const a = [5, 6, 7];\nsetTimeout(() => {console.log('check check check the timeout')}, 3000);\nsmergaberg",
+      "code": "console.log('things');",
+      "results": { "output": [], "error": "", "return": "" }
+    },
+    {
+      "type": "Ruby",
+      "code": "a = [1, 3, 2]",
       "results": { "output": [], "error": "", "return": "" }
     },
     {
@@ -16,13 +21,8 @@
       "results": { "output": [], "error": "", "return": "" }
     },
     {
-      "type": "Javascript",
-      "code": "console.log(a);",
-      "results": { "output": [], "error": "", "return": "" }
-    },
-    {
-      "type": "Python",
-      "code": "print('Python!');",
+      "type": "Ruby",
+      "code": "awef",
       "results": { "output": [], "error": "", "return": "" }
     }
   ],
@@ -32,6 +32,6 @@
   "JavascriptWriteToPendingIndex": 0,
   "PythonPendingIndexes": [],
   "PythonWriteToPendingIndex": 0,
-  "id": "ebabc93f-1e92-4454-9324-92d6ee3505a1",
+  "id": "a7773c1f-9001-4714-ba82-5f6bf6a9c7ce",
   "writeToPendingCellIndex": null
 }

@@ -135,8 +135,8 @@ const handleExecuteCode = (message, ws, delimiter) => {
           );
           resolve();
         })
-        .catch(data => {
-          ws.send(language, data);
+        .catch((data, type) => {
+          // ws.send(JSON.stringify({ language, type, data }));
           resolve();
         });
     });

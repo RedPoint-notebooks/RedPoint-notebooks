@@ -42,7 +42,9 @@ const userScript = {
       });
 
       scriptProcess.stderr.on("data", data => {
-        reject(JSON.stringify({ language, type: "stderr", data: data }));
+        ws.send(JSON.stringify({ language, type: "stderr", data }));
+        // reject(data, "stderr");
+        reject();
       });
     });
   },
@@ -70,7 +72,7 @@ const userScript = {
         error => {
           if (error) {
             console.log("ERROR WRITING SCRIPT");
-            reject(error);
+            reject(error, "error");
           } else {
             console.log("AFTER WRITING SCRIPT");
             resolve();
