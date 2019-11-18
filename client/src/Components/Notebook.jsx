@@ -249,13 +249,11 @@ class Notebook extends Component {
 
   handleRunAllClick = async () => {
     await this.handleClearAllResults();
-    // setTimeout(() => {
     const allCells = this.state.cells;
     const cellsToRun = findLastIndexOfEachLanguageInNotebook(allCells);
     cellsToRun.forEach(cellIndex => {
       this.handleRunClick(cellIndex);
     });
-    // }, 300);
   };
 
   handleSaveClick = e => {
