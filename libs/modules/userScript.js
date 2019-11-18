@@ -21,13 +21,13 @@ const userScript = {
         (error, stdout, stderr) => {
           if (error) {
             if (/[Ss]yntax/.test(stderr)) {
-              const originalCellsLines = codeStrArray.reduce(
-                (linesObj, currentCell, cellIdx) => {
-                  linesObj[cellIdx] = currentCell.split("\n").length - 1;
-                  return linesObj;
-                },
-                {}
-              );
+              // const originalCellsLines = codeStrArray.reduce(
+              //   (linesObj, currentCell, cellIdx) => {
+              //     linesObj[cellIdx] = currentCell.split("\n").length - 1;
+              //     return linesObj;
+              //   },
+              //   {}
+              // );
               const scriptArray = scriptString.split("\n");
               const syntaxErrorLine = +stderr.match(/\d+/)[0];
               let scriptArrIdx = syntaxErrorLine - 1;
@@ -35,12 +35,13 @@ const userScript = {
                 .slice(0, scriptArrIdx)
                 .filter(line => {
                   const delimRegex = new RegExp(delimiter);
+                  debugger;
                   return delimRegex.test(line);
                 }).length;
 
               const errorCell = delimsBeforeError;
 
-              // const errorLineinCell = syntaxErrorLine - delimsBeforeError;
+              // const errorLineinCell = syntaxErrorLine - originalCellsLines[errorCell];
               // stderr = stderr.replace(/\d+/, errorLineinCell);
 
               ws.send(
