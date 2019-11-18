@@ -6,7 +6,18 @@ import uuidv4 from "uuid";
 
 class Notebook extends Component {
   state = {
-    cells: [],
+    cells: [
+      {
+        type: "Ruby",
+        code: "while true do \nend",
+        results: { output: [], error: "", return: "" }
+      },
+      {
+        type: "Javascript",
+        code: "setTimeout(() => {console.log('after 3 seconds')}, 3000);",
+        results: { output: [], error: "", return: "" }
+      }
+    ],
     // pendingCellExecution: true,
     RubyPendingIndexes: [],
     RubyWriteToPendingIndex: 0,
@@ -126,6 +137,13 @@ class Notebook extends Component {
           if (resultType === "output") {
             cell.results[resultType].push(message.data);
           } else if (resultType === "error") {
+            if (message.data.error && message.data.error.signal === "SIGTERM") {
+              const ERROR_MESSAGE = `Timeout Error: the request to the server timed out.
+              The maximum timeout threshold for server requests is currently $ seconds.
+              Check your code for infinite loops, or timeouts greater than the threshold.`;
+              // debugger;
+              cell.results[resultType] += ERROR_MESSAGE;
+            }
             cell.results[resultType] += message.data.stderr;
           } else {
             cell.results[resultType] += message.data;
