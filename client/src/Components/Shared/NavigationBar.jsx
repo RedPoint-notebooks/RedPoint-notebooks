@@ -46,8 +46,8 @@ class NavigationBar extends React.Component {
   render() {
     return (
       <React.Fragment>
-        <Navbar bg="dark" variant="dark">
-          <Navbar.Brand href="#home">
+        <Navbar bg="dark" variant="dark" sticky="top">
+          <Navbar.Brand href="#logo">
             <img
               alt=""
               src={logo}
@@ -60,22 +60,31 @@ class NavigationBar extends React.Component {
           <Navbar.Toggle aria-controls="basic-navbar-nav" />
           <Navbar.Collapse id="basic-navbar-nav">
             <Nav className="mr-auto">
-              <Nav.Link href="#home">Share</Nav.Link>
-              <Nav.Link href="#foo">Clone</Nav.Link>
+              <Nav.Link href="#share">Share</Nav.Link>
+              <Navbar.Text>|</Navbar.Text>
+              <Nav.Link href="#clone">Clone</Nav.Link>
+              <Navbar.Text>|</Navbar.Text>
               <Nav.Link href="#save" onClick={this.props.onSaveClick}>
                 Save
               </Nav.Link>
+              <Navbar.Text>|</Navbar.Text>
               <Nav.Link href="#load" onClick={this.handleLoadClick}>
                 Load
               </Nav.Link>
-              <Nav.Link href="#link" onClick={this.toggleDeleteWarning}>
+              <Navbar.Text>|</Navbar.Text>
+              <Nav.Link href="#delete" onClick={this.toggleDeleteWarning}>
                 Delete
               </Nav.Link>
+              <Navbar.Text>|</Navbar.Text>
               <Nav.Link
                 href="#removeResults"
                 onClick={this.handleClearAllResults}
               >
                 Clear Results
+              </Nav.Link>
+              <Navbar.Text>|</Navbar.Text>
+              <Nav.Link href="#runAll" onClick={this.props.onRunAllClick}>
+                Run All Cells
               </Nav.Link>
             </Nav>
           </Navbar.Collapse>

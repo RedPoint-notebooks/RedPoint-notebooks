@@ -26,63 +26,25 @@ const generateDelimiter = (language, delimiter) => {
   }
 };
 
-// const sendDelimiterToClient = (ws, uuid) => {
-//   ws.send(JSON.stringify({ type: "delimiter", data: uuid }));
-// };
-
 wss.on("connection", ws => {
   const delimiter = uuidv4();
-  // sendDelimiterToClient(ws, delimiter);
+  const queue = [];
 
   ws.on("message", message => {
     message = JSON.parse(message);
     console.log(message);
 
     if (message.type === "saveNotebook") {
-      saveNotebook(message.notebook)
-        .then(() => {
-          ws.send(
-            JSON.stringify({
-              type: "saveResult",
-              data: "Notebook has been saved"
-            })
-          );
-        })
-        .catch(error => {
-          ws.send(JSON.stringify({ type: "saveResult", data: error }));
-          console.log(error);
-        });
-      // } else if (message.type === "executeCode") {
+      handleSaveNotebook(message.notebook, ws);
     } else if (message.type === "loadNotebook") {
-      loadNotebook(message.id)
-        .then(notebook => {
-          ws.send(JSON.stringify({ type: "loadNotebook", data: notebook }));
-        })
-        .catch(error => {
-          ws.send(JSON.stringify({ type: "loadError", data: error }));
-          console.log(error);
-        });
-    } else {
-      const { language, codeStrArray } = message;
-      const codeString = codeStrArray.join("");
-      const delimiterStatement = generateDelimiter(language, delimiter);
-      const scriptString = codeStrArray.join(delimiterStatement);
-
-      // is this the best place to set language for upcoming data?
-      // ws.send(JSON.stringify({ type: "language", data: language }));
-
-      userScript.writeFile(scriptString, language).then(() => {
-        userScript
-          .execute(ws, delimiter)
-          .then(() => repl.execute(codeString, language))
-          .then(returnData => repl.parseOutput(returnData, language))
-          .then(returnValue => {
-            ws.send(JSON.stringify({ type: "return", data: returnValue }));
-          })
-          .catch(data => {
-            ws.send(data);
-          });
-      });
+      handleLoadNotebook(message.id, ws);
+    } else if (message.type === "executeCode") {
+      if (queue.length === 0) {
+        queue.push(message);
+        executeQueue(queue, ws, delimiter);
+      } else {
+        queue.push(message);
+      }
     }
   });
 });
@@ -125,5 +87,67 @@ const loadNotebook = id => {
         resolve(JSON.parse(data));
       }
     });
+  });
+};
+
+const handleSaveNotebook = (notebook, ws) => {
+  saveNotebook(notebook)
+    .then(() => {
+      ws.send(
+        JSON.stringify({
+          type: "saveResult",
+          data: "Notebook has been saved"
+        })
+      );
+    })
+    .catch(error => {
+      ws.send(JSON.stringify({ type: "saveResult", data: error }));
+      console.log(error);
+    });
+};
+
+const handleLoadNotebook = (id, ws) => {
+  loadNotebook(id)
+    .then(notebook => {
+      ws.send(JSON.stringify({ type: "loadNotebook", data: notebook }));
+    })
+    .catch(error => {
+      ws.send(JSON.stringify({ type: "loadError", data: error }));
+      console.log(error);
+    });
+};
+
+const handleExecuteCode = (message, ws, delimiter) => {
+  return new Promise((resolve, reject) => {
+    const { language, codeStrArray } = message;
+    const codeString = codeStrArray.join("");
+    const delimiterStatement = generateDelimiter(language, delimiter);
+    const scriptString = codeStrArray.join(delimiterStatement);
+
+    userScript.writeFile(scriptString, language).then(() => {
+      userScript
+        .execute(ws, delimiter, language)
+        .then(() => repl.execute(codeString, language))
+        .then(returnData => repl.parseOutput(returnData, language))
+        .then(returnValue => {
+          ws.send(
+            JSON.stringify({ type: "return", language, data: returnValue })
+          );
+          resolve();
+        })
+        .catch((data, type) => {
+          // ws.send(JSON.stringify({ language, type, data }));
+          resolve();
+        });
+    });
+  });
+};
+
+const executeQueue = (queue, ws, delimiter) => {
+  handleExecuteCode(queue[0], ws, delimiter).then(() => {
+    queue.shift();
+    if (queue.length > 0) {
+      executeQueue(queue, ws, delimiter);
+    }
   });
 };

@@ -8,8 +8,13 @@ class Notebook extends Component {
   state = {
     cells: [],
     // pendingCellExecution: true,
-    pendingCellIndexes: [],
-    writeToPendingCellIndex: 0,
+    RubyPendingIndexes: [],
+    RubyWriteToPendingIndex: 0,
+    JavascriptPendingIndexes: [],
+    JavascriptWriteToPendingIndex: 0,
+    PythonPendingIndexes: [],
+    PythonWriteToPendingIndex: 0,
+
     id: uuidv4()
   };
 
@@ -22,15 +27,62 @@ class Notebook extends Component {
 
     this.ws.onmessage = message => {
       message = JSON.parse(message.data);
+      let cellIndex;
+      const state = this.state;
 
-      const cellIndex = this.state.pendingCellIndexes[
-        this.state.writeToPendingCellIndex
-      ];
+      if (message.language) {
+        switch (message.language) {
+          case "Ruby":
+            cellIndex = state.RubyPendingIndexes[state.RubyWriteToPendingIndex];
+            break;
+          case "Javascript":
+            cellIndex =
+              state.JavascriptPendingIndexes[
+                state.JavascriptWriteToPendingIndex
+              ];
+            break;
+          case "Python":
+            cellIndex =
+              state.PythonPendingIndexes[state.PythonWriteToPendingIndex];
+            break;
+          default:
+            console.log("Error slotting message");
+            return null;
+        }
+      }
 
       console.log(JSON.stringify(message.data));
+      debugger;
 
       switch (message.type) {
         case "delimiter":
+          switch (message.language) {
+            case "Ruby":
+              this.setState(prevState => {
+                return {
+                  RubyWriteToPendingIndex: prevState.RubyWriteToPendingIndex + 1
+                };
+              });
+              break;
+            case "Javascript":
+              this.setState(prevState => {
+                return {
+                  JavascriptWriteToPendingIndex:
+                    prevState.JavascriptWriteToPendingIndex + 1
+                };
+              });
+              break;
+            case "Python":
+              this.setState(prevState => {
+                return {
+                  PythonWriteToPendingIndex:
+                    prevState.PythonWriteToPendingIndex + 1
+                };
+              });
+              break;
+            default:
+              return null;
+          }
           this.setState(prevState => {
             return {
               writeToPendingCellIndex: prevState.writeToPendingCellIndex + 1
@@ -44,12 +96,13 @@ class Notebook extends Component {
           this.updateCellResults("return", cellIndex, message);
           break;
         case "error":
-          break;
-        case "stderr":
           this.updateCellResults("error", cellIndex, message);
           break;
+        // case "stderr":
+        //   this.updateCellResults("error", cellIndex, message);
+        //   break;
         case "loadNotebook":
-          const newState = message.data.state;
+          const newState = message.data;
           this.setState({
             cells: newState.cells,
             id: newState.id
@@ -72,6 +125,8 @@ class Notebook extends Component {
         if (index === cellIndex) {
           if (resultType === "output") {
             cell.results[resultType].push(message.data);
+          } else if (resultType === "error") {
+            cell.results[resultType] += message.data.stderr;
           } else {
             cell.results[resultType] += message.data;
           }
@@ -93,7 +148,6 @@ class Notebook extends Component {
   handleDeleteAllCells = () => {
     this.setState({
       cells: [],
-      // pendingCellExecution: true,
       pendingCellIndexes: [],
       writeToPendingCellIndex: 0
     });
@@ -109,21 +163,6 @@ class Notebook extends Component {
       });
       return { cells: newCells };
     });
-  };
-
-  buildRequest = (indexOfCellRun, language) => {
-    const codeStrArray = [];
-    const allCells = this.state.cells;
-    const pendingCellIndexes = [];
-    for (let i = 0; i <= indexOfCellRun; i += 1) {
-      const cell = allCells[i];
-      if (i <= indexOfCellRun && cell.type === language) {
-        codeStrArray.push(cell.code + "\n");
-        pendingCellIndexes.push(i);
-      }
-    }
-    this.setState({ pendingCellIndexes, writeToPendingCellIndex: 0 });
-    return { language, codeStrArray };
   };
 
   removeSameLanguageResults = language => {
@@ -150,12 +189,60 @@ class Notebook extends Component {
     this.setState({ cells: newCells });
   };
 
+  buildRequest = (indexOfCellRun, language) => {
+    const codeStrArray = [];
+    const allCells = this.state.cells;
+    const pendingIndexes = [];
+    for (let i = 0; i <= indexOfCellRun; i += 1) {
+      const cell = allCells[i];
+      if (i <= indexOfCellRun && cell.type === language) {
+        codeStrArray.push(cell.code + "\n");
+        pendingIndexes.push(i);
+      }
+    }
+
+    switch (language) {
+      case "Ruby": {
+        this.setState({
+          RubyPendingIndexes: pendingIndexes,
+          RubyWriteToPendingIndex: 0
+        });
+        break;
+      }
+      case "Javascript": {
+        this.setState({
+          JavascriptPendingIndexes: pendingIndexes,
+          JavascriptWriteToPendingIndex: 0
+        });
+        break;
+      }
+      case "Python": {
+        this.setState({
+          PythonPendingIndexes: pendingIndexes,
+          PythonWriteToPendingIndex: 0
+        });
+        break;
+      }
+      default:
+        console.log("Error building language request");
+    }
+    return { type: "executeCode", language, codeStrArray };
+  };
+
   handleRunClick = indexOfCellRun => {
     const allCells = this.state.cells;
     const language = allCells[indexOfCellRun].type;
     this.removeSameLanguageResults(language);
     const requestObject = this.buildRequest(indexOfCellRun, language);
     this.ws.send(JSON.stringify(requestObject));
+  };
+
+  handleRunAllClick = () => {
+    const allCells = this.state.cells;
+    const cellsToRun = findLastIndexOfEachLanguageInNotebook(allCells);
+    cellsToRun.forEach(cellIndex => {
+      this.handleRunClick(cellIndex);
+    });
   };
 
   handleSaveClick = e => {
@@ -165,7 +252,12 @@ class Notebook extends Component {
       cell.results = { output: [], error: "", return: "" };
       return cell;
     });
-    // const notebook = { notebook };
+    notebook.RubyPendingIndexes = [];
+    notebook.RubyWriteToPendingIndex = 0;
+    notebook.JavascriptPendingIndexes = [];
+    notebook.JavascriptWriteToPendingIndex = 0;
+    notebook.PythonPendingIndexes = [];
+    notebook.PythonWriteToPendingIndex = 0;
     const request = JSON.stringify({ type: "saveNotebook", notebook });
     console.log("Notebook save request sent");
     this.ws.send(request);
@@ -218,6 +310,7 @@ class Notebook extends Component {
           onSaveClick={this.handleSaveClick}
           onLoadClick={this.handleLoadClick}
           onClearAllResults={this.handleClearAllResults}
+          onRunAllClick={this.handleRunAllClick}
         />
         <Container className="App-body">
           <CellsList
@@ -234,5 +327,20 @@ class Notebook extends Component {
     );
   }
 }
+
+const findLastIndexOfEachLanguageInNotebook = allCells => {
+  const languages = [];
+  const indexes = [];
+
+  for (let i = allCells.length - 1; i >= 0; i -= 1) {
+    let cell = allCells[i];
+    if (!languages.includes(cell.type) && cell.type !== "Markdown") {
+      languages.push(cell.type);
+      indexes.unshift(i);
+    }
+  }
+
+  return indexes;
+};
 
 export default Notebook;
