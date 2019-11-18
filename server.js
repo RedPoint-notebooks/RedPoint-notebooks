@@ -39,13 +39,10 @@ wss.on("connection", ws => {
     } else if (message.type === "loadNotebook") {
       handleLoadNotebook(message.id, ws);
     } else if (message.type === "executeCode") {
-      debugger;
       if (queue.length === 0) {
         queue.push(message);
-        debugger;
         executeQueue(queue, ws, delimiter);
       } else {
-        debugger;
         queue.push(message);
       }
     }

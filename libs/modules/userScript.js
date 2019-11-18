@@ -34,14 +34,25 @@ const userScript = {
       );
 
       scriptProcess.stdout.on("data", data => {
+        debugger;
         const dataArray = data.split("\n").slice(0, -1);
-        dataArray.forEach(data => {
-          if (data === delimiter) {
-            ws.send(JSON.stringify({ language, type: "delimiter" }));
-          } else {
-            ws.send(JSON.stringify({ language, type: "stdout", data: data }));
-          }
-        });
+        if (dataArray.length > 30) {
+          debugger;
+          const sigtermError = {
+            language,
+            type: "error",
+            data: { error: { signal: "SIGTERM" } }
+          };
+          ws.send(JSON.stringify(sigtermError));
+        } else {
+          dataArray.forEach(data => {
+            if (data === delimiter) {
+              ws.send(JSON.stringify({ language, type: "delimiter" }));
+            } else {
+              ws.send(JSON.stringify({ language, type: "stdout", data: data }));
+            }
+          });
+        }
       });
 
       scriptProcess.stdout.on("end", () => {

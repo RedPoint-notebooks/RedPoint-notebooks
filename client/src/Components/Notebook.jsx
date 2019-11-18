@@ -9,7 +9,7 @@ class Notebook extends Component {
     cells: [
       {
         type: "Ruby",
-        code: "while true do \nend",
+        code: "while true do \nputs 'hi'\nend",
         results: { output: [], error: "", return: "" }
       },
       {
@@ -63,7 +63,7 @@ class Notebook extends Component {
       }
 
       console.log(JSON.stringify(message.data));
-      debugger;
+      // debugger;
 
       switch (message.type) {
         case "delimiter":
