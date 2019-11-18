@@ -52,6 +52,7 @@ class Notebook extends Component {
       }
 
       console.log(JSON.stringify(message.data));
+      debugger;
 
       switch (message.type) {
         case "delimiter":
@@ -95,11 +96,11 @@ class Notebook extends Component {
           this.updateCellResults("return", cellIndex, message);
           break;
         case "error":
-          this.updateCellResults("error", cellIndex, message.data);
-          break;
-        case "stderr":
           this.updateCellResults("error", cellIndex, message);
           break;
+        // case "stderr":
+        //   this.updateCellResults("error", cellIndex, message);
+        //   break;
         case "loadNotebook":
           const newState = message.data;
           this.setState({
@@ -124,6 +125,8 @@ class Notebook extends Component {
         if (index === cellIndex) {
           if (resultType === "output") {
             cell.results[resultType].push(message.data);
+          } else if (resultType === "error") {
+            cell.results[resultType] += message.data.stderr;
           } else {
             cell.results[resultType] += message.data;
           }

@@ -20,7 +20,13 @@ const userScript = {
         userScript.execOptions,
         (error, stdout, stderr) => {
           if (error) {
-            ws.send(JSON.stringify({ language, type: "error", data: error }));
+            ws.send(
+              JSON.stringify({
+                language,
+                type: "error",
+                data: { error, stderr }
+              })
+            );
           }
         }
       );
@@ -42,7 +48,7 @@ const userScript = {
       });
 
       scriptProcess.stderr.on("data", data => {
-        ws.send(JSON.stringify({ language, type: "stderr", data }));
+        // ws.send(JSON.stringify({ language, type: "stderr", data }));
         // reject(data, "stderr");
         reject();
       });
