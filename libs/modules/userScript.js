@@ -7,6 +7,8 @@ const sendTruncatedOutput = (output, ws, language) => {
   });
 };
 
+const buffer = [];
+
 const userScript = {
   script: "",
   scriptExecCmd: "",
@@ -26,7 +28,7 @@ const userScript = {
         userScript.execOptions,
         (error, stdout, stderr) => {
           if (error) {
-            debugger;
+            // debugger;
             ws.send(
               JSON.stringify({
                 language,
@@ -40,38 +42,49 @@ const userScript = {
       );
 
       scriptProcess.stdout.on("data", data => {
-        debugger;
-        const dataArray = data.split("\n").slice(0, -1);
-        if (dataArray.length > 30) {
-          debugger;
-          const truncatedOutput = dataArray.slice(0, 5);
-          const sigtermError = {
-            language,
-            type: "error",
-            data: { error: { signal: "SIGTERM" } }
-          };
-          switch (language) {
-            case "Javascript":
-              sendTruncatedOutput(truncatedOutput, ws, language);
-              break;
-            case "Ruby":
-              sendTruncatedOutput(truncatedOutput, ws, language);
-              ws.send(JSON.stringify(sigtermError));
-              break;
-            case "Python":
-              sendTruncatedOutput(truncatedOutput, ws, language);
-              break;
-          }
-          // ws.send(JSON.stringify(sigtermError));
-        } else {
-          dataArray.forEach(data => {
-            if (data === delimiter) {
-              ws.send(JSON.stringify({ language, type: "delimiter" }));
-            } else {
-              ws.send(JSON.stringify({ language, type: "stdout", data: data }));
+        // debugger;
+        buffer.push(data);
+
+        // const dataArray = data.split("\n").slice(0, -1);
+
+        setTimeout(() => {
+          const bufferArray = buffer.join("").split("\n");
+          // debugger;
+          if (bufferArray.length > 30) {
+            scriptProcess.kill();
+            // debugger;
+            const truncatedOutput = bufferArray.slice(0, 5);
+            // debugger;
+            const sigtermError = {
+              language,
+              type: "error",
+              data: { error: { signal: "SIGTERM" } }
+            };
+            switch (language) {
+              case "Javascript":
+                sendTruncatedOutput(truncatedOutput, ws, language);
+                break;
+              case "Ruby":
+                // debugger;
+                sendTruncatedOutput(truncatedOutput, ws, language);
+                ws.send(JSON.stringify(sigtermError));
+                break;
+              case "Python":
+                sendTruncatedOutput(truncatedOutput, ws, language);
+                break;
             }
-          });
-        }
+          } else {
+            buffer.forEach(data => {
+              if (data === delimiter) {
+                ws.send(JSON.stringify({ language, type: "delimiter" }));
+              } else {
+                ws.send(
+                  JSON.stringify({ language, type: "stdout", data: data })
+                );
+              }
+            });
+          }
+        }, 1);
       });
 
       scriptProcess.stdout.on("end", () => {
