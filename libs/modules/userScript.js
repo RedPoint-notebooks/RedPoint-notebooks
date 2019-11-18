@@ -30,9 +30,9 @@ const userScript = {
               // );
               const scriptArray = scriptString.split("\n");
               const syntaxErrorLine = +stderr.match(/\d+/)[0];
-              let scriptArrIdx = syntaxErrorLine - 1;
+              let scriptErrorIdx = syntaxErrorLine - 1;
               const delimsBeforeError = scriptArray
-                .slice(0, scriptArrIdx)
+                .slice(0, scriptErrorIdx)
                 .filter(line => {
                   const delimRegex = new RegExp(delimiter);
                   debugger;
