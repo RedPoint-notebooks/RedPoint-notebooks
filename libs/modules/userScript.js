@@ -19,6 +19,7 @@ const userScript = {
         `${this.command} ./codeCellScripts/user_script${this.fileType}`,
         userScript.execOptions,
         (error, stdout, stderr) => {
+          debugger;
           if (error) {
             if (/[Ss]yntax/.test(stderr)) {
               const originalCellsLines = codeStrArray.reduce(
@@ -34,8 +35,10 @@ const userScript = {
               const delimsBeforeError = scriptArray
                 .slice(0, scriptArrIdx)
                 .filter(line => {
-                  line = line.slice(5).replace(/['"]/g, "");
-                  return line === delimiter;
+                  const delimRegex = new RegExp(delimiter);
+                  return delimRegex.test(line);
+                  // line = line.slice(5).replace(/['"]/g, "");
+                  // return line === delimiter;
                 }).length;
 
               // determine delims before error
@@ -46,7 +49,7 @@ const userScript = {
                 syntaxErrorLine - originalCellsLines[errorCell];
 
               stderr = stderr.replace(/\d+/, errorLineinCell);
-              debugger;
+              // debugger;
               ws.send(
                 JSON.stringify({
                   type: "syntax-error",
@@ -54,7 +57,8 @@ const userScript = {
                     location: [errorCell, errorLineinCell],
                     error,
                     stderr
-                  }
+                  },
+                  language
                 })
               );
             } else {
