@@ -1,6 +1,12 @@
 const fs = require("fs");
 const { exec } = require("child_process"); // exec uses system default shell
 
+const sendTruncatedOutput = (output, ws, language) => {
+  output.forEach(data => {
+    ws.send(JSON.stringify({ language, type: "stdout", data: data }));
+  });
+};
+
 const userScript = {
   script: "",
   scriptExecCmd: "",
@@ -38,12 +44,25 @@ const userScript = {
         const dataArray = data.split("\n").slice(0, -1);
         if (dataArray.length > 30) {
           debugger;
+          const truncatedOutput = dataArray.slice(0, 5);
           const sigtermError = {
             language,
             type: "error",
             data: { error: { signal: "SIGTERM" } }
           };
-          ws.send(JSON.stringify(sigtermError));
+          switch (language) {
+            case "Javascript":
+              sendTruncatedOutput(truncatedOutput, ws, language);
+              break;
+            case "Ruby":
+              sendTruncatedOutput(truncatedOutput, ws, language);
+              ws.send(JSON.stringify(sigtermError));
+              break;
+            case "Python":
+              sendTruncatedOutput(truncatedOutput, ws, language);
+              break;
+          }
+          // ws.send(JSON.stringify(sigtermError));
         } else {
           dataArray.forEach(data => {
             if (data === delimiter) {
@@ -117,6 +136,14 @@ const userScript = {
 
     return outputByCell;
   }
+
+  // sendTruncatedOutput: data => {
+  //   truncatedOutput.forEach(data => {
+  //     ws.send(
+  //       JSON.stringify({ language, type: "stdout", data: data })
+  //     );
+  //   });
+  // },
 };
 
 module.exports = userScript;

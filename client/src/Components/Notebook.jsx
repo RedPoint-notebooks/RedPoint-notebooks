@@ -14,7 +14,12 @@ class Notebook extends Component {
       },
       {
         type: "Javascript",
-        code: "setTimeout(() => {console.log('after 3 seconds')}, 3000);",
+        code: "while (true) {\n  console.log('hi')\n}",
+        results: { output: [], error: "", return: "" }
+      },
+      {
+        type: "Python",
+        code: "while True:\n  print('hi')",
         results: { output: [], error: "", return: "" }
       }
     ],
@@ -63,7 +68,7 @@ class Notebook extends Component {
       }
 
       console.log(JSON.stringify(message.data));
-      // debugger;
+      debugger;
 
       switch (message.type) {
         case "delimiter":
