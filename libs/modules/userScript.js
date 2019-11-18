@@ -12,7 +12,7 @@ const userScript = {
     cwd: null,
     env: null
   }),
-  execute: (ws, delimiter, language) => {
+  execute: (ws, delimiter, language, scriptString, codeStrArray) => {
     return new Promise((resolve, reject) => {
       console.log("BEFORE EXECUTING SCRIPT");
       const scriptProcess = exec(
@@ -20,13 +20,52 @@ const userScript = {
         userScript.execOptions,
         (error, stdout, stderr) => {
           if (error) {
-            ws.send(
-              JSON.stringify({
-                language,
-                type: "error",
-                data: { error, stderr }
-              })
-            );
+            if (/[Ss]yntax/.test(stderr)) {
+              const originalCellsLines = codeStrArray.reduce(
+                (linesObj, currentCell, cellIdx) => {
+                  linesObj[cellIdx] = currentCell.split("\n").length - 1;
+                  return linesObj;
+                },
+                {}
+              );
+              const scriptArray = scriptString.split("\n");
+              const syntaxErrorLine = +stderr.match(/\d+/)[0];
+              let scriptArrIdx = syntaxErrorLine - 1;
+              const delimsBeforeError = scriptArray
+                .slice(0, scriptArrIdx)
+                .filter(line => {
+                  line = line.slice(5).replace(/['"]/g, "");
+                  return line === delimiter;
+                }).length;
+
+              // determine delims before error
+              // errorCell == delims before error
+              const errorCell = delimsBeforeError;
+              // syntaxErrorLine - originalCellsLines[errorCell] = cell line number
+              const errorLineinCell =
+                syntaxErrorLine - originalCellsLines[errorCell];
+
+              stderr = stderr.replace(/\d+/, errorLineinCell);
+              debugger;
+              ws.send(
+                JSON.stringify({
+                  type: "syntax-error",
+                  data: {
+                    location: [errorCell, errorLineinCell],
+                    error,
+                    stderr
+                  }
+                })
+              );
+            } else {
+              ws.send(
+                JSON.stringify({
+                  language,
+                  type: "error",
+                  data: { error, stderr }
+                })
+              );
+            }
           }
         }
       );

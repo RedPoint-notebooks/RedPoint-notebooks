@@ -126,7 +126,7 @@ const handleExecuteCode = (message, ws, delimiter) => {
 
     userScript.writeFile(scriptString, language).then(() => {
       userScript
-        .execute(ws, delimiter, language)
+        .execute(ws, delimiter, language, scriptString, codeStrArray)
         .then(() => repl.execute(codeString, language))
         .then(returnData => repl.parseOutput(returnData, language))
         .then(returnValue => {
