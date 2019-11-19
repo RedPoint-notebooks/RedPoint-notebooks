@@ -68,7 +68,7 @@ class Notebook extends Component {
       }
 
       console.log(JSON.stringify(message.data));
-      debugger;
+      // debugger;
 
       switch (message.type) {
         case "delimiter":

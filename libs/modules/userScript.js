@@ -7,7 +7,7 @@ const sendTruncatedOutput = (output, ws, language) => {
   });
 };
 
-const buffer = [];
+let buffer = [];
 
 const userScript = {
   script: "",
@@ -28,7 +28,6 @@ const userScript = {
         userScript.execOptions,
         (error, stdout, stderr) => {
           if (error) {
-            // debugger;
             ws.send(
               JSON.stringify({
                 language,
@@ -42,46 +41,35 @@ const userScript = {
       );
 
       scriptProcess.stdout.on("data", data => {
-        // debugger;
         buffer.push(data);
-
-        // const dataArray = data.split("\n").slice(0, -1);
 
         setTimeout(() => {
           const bufferArray = buffer.join("").split("\n");
+          console.log(`BufferArray: ${bufferArray}`);
           // debugger;
+
           if (bufferArray.length > 30) {
+            const truncatedOutput = bufferArray.slice(0, 2);
+            console.log(`truncatedOutput: ${truncatedOutput}`);
+            // debugger;
+
             scriptProcess.kill();
-            // debugger;
-            const truncatedOutput = bufferArray.slice(0, 5);
-            // debugger;
-            const sigtermError = {
-              language,
-              type: "error",
-              data: { error: { signal: "SIGTERM" } }
-            };
-            switch (language) {
-              case "Javascript":
-                sendTruncatedOutput(truncatedOutput, ws, language);
-                break;
-              case "Ruby":
-                // debugger;
-                sendTruncatedOutput(truncatedOutput, ws, language);
-                ws.send(JSON.stringify(sigtermError));
-                break;
-              case "Python":
-                sendTruncatedOutput(truncatedOutput, ws, language);
-                break;
-            }
+            sendTruncatedOutput(truncatedOutput, ws, language);
+            buffer = [];
+            reject();
           } else {
-            buffer.forEach(data => {
+            bufferArray.forEach(data => {
+              console.log(`from else: ${data}`);
+              // debugger;
               if (data === delimiter) {
                 ws.send(JSON.stringify({ language, type: "delimiter" }));
               } else {
+                // debugger;
                 ws.send(
                   JSON.stringify({ language, type: "stdout", data: data })
                 );
               }
+              buffer = [];
             });
           }
         }, 1);

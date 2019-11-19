@@ -121,6 +121,7 @@ const handleExecuteCode = (message, ws, delimiter) => {
   return new Promise((resolve, reject) => {
     const { language, codeStrArray } = message;
     const codeString = codeStrArray.join("");
+    debugger;
     const delimiterStatement = generateDelimiter(language, delimiter);
     const scriptString = codeStrArray.join(delimiterStatement);
 
