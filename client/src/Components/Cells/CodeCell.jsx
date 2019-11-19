@@ -8,6 +8,7 @@ import "codemirror/theme/darcula.css";
 import "codemirror/mode/javascript/javascript.js";
 import "codemirror/mode/ruby/ruby.js";
 import "codemirror/mode/python/python.js";
+import "codemirror/keymap/sublime.js";
 
 class CodeCell extends Component {
   state = {
@@ -40,7 +41,10 @@ class CodeCell extends Component {
       mode: cell.language.toLowerCase(),
       theme: "darcula",
       lineNumbers: true,
-      showCursorWhenSelecting: true
+      showCursorWhenSelecting: true,
+      tabSize: 2,
+      indentWithTabs: true,
+      keyMap: "sublime"
     };
 
     return (
