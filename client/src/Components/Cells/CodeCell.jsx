@@ -19,11 +19,11 @@ class CodeCell extends Component {
     this.setState({ code: value });
   };
 
-  handleBlur = e => {
+  handleBlur = (event, editor) => {
     this.props.onUpdateCodeState(this.state.code, this.props.cellIndex);
 
     // within onBlur, relatedTarget is the EventTarget receiving focus (if any)
-    const nextTarget = e.relatedTarget;
+    const nextTarget = event.relatedTarget;
     if (nextTarget) {
       if (nextTarget.className.includes("run-button")) {
         this.props.onRunClick(+nextTarget.getAttribute("cellindex"));
@@ -33,6 +33,11 @@ class CodeCell extends Component {
     if (this.props.language === "Markdown") {
       this.props.toggleRender(this.props.cellIndex);
     }
+  };
+
+  handleDidMount = editor => {
+    // this focuses on mount, but prevents blurring from component
+    editor.focus();
   };
 
   render() {
@@ -48,6 +53,9 @@ class CodeCell extends Component {
       keyMap: "sublime",
       extraKeys: {
         "Shift-Enter": () => {
+          this.props.onRunClick(this.props.cellIndex);
+        },
+        "Cmd-Enter": () => {
           this.props.onRunClick(this.props.cellIndex);
         }
       }
@@ -82,8 +90,12 @@ class CodeCell extends Component {
             this.handleChange(value);
           }}
           onBlur={(editor, event) => {
-            this.handleBlur(event);
+            this.handleBlur(event, editor);
           }}
+          // editorDidMount={editor => {
+          //   this.handleDidMount(editor);
+          //   console.log(editor);
+          // }}
         />
         {cell.language !== "Markdown" ? (
           <CellResults language={cell.language} results={cell.results} />
