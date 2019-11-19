@@ -3,7 +3,13 @@ import CellsList from "./Cells/CellsList";
 import Container from "react-bootstrap/Container";
 import NavigationBar from "./Shared/NavigationBar";
 import uuidv4 from "uuid";
-import { findSyntaxErrorIdx } from "../utils";
+import {
+  findSyntaxErrorIdx,
+  findPendingIndex,
+  findWriteToPendingIndex,
+  findCellIndex,
+  findLastIndexOfEachLanguageInNotebook
+} from "../utils";
 import { LANGUAGES } from "../Constants/constants";
 
 class Notebook extends Component {
@@ -11,11 +17,11 @@ class Notebook extends Component {
     cells: [],
 
     RubyPendingIndexes: [],
-    RubyWriteToPendingIndex: 0,
+    RubyWriteToIndex: 0,
     JavascriptPendingIndexes: [],
-    JavascriptWriteToPendingIndex: 0,
+    JavascriptWriteToIndex: 0,
     PythonPendingIndexes: [],
-    PythonWriteToPendingIndex: 0,
+    PythonWriteToIndex: 0,
 
     id: uuidv4()
   };
@@ -29,7 +35,7 @@ class Notebook extends Component {
       message = JSON.parse(message.data);
       let cellIndex = findCellIndex(message, this.state);
 
-      console.log(JSON.stringify(message.data));
+      console.log(message.data);
 
       switch (message.type) {
         case "delimiter":
@@ -196,8 +202,8 @@ class Notebook extends Component {
     });
 
     LANGUAGES.forEach(language => {
-      notebook[String(language) + "PendingIndexes"] = [];
-      notebook[String(language) + "WriteToPendingIndex"] = 0;
+      notebook[language + "PendingIndexes"] = [];
+      notebook[language + "WriteToPendingIndex"] = 0;
     });
 
     const request = JSON.stringify({ type: "saveNotebook", notebook });
@@ -271,61 +277,3 @@ class Notebook extends Component {
 }
 
 export default Notebook;
-
-const findLastIndexOfEachLanguageInNotebook = allCells => {
-  const languages = [];
-  const indexes = [];
-
-  for (let i = allCells.length - 1; i >= 0; i -= 1) {
-    let cell = allCells[i];
-    if (!languages.includes(cell.language) && cell.language !== "Markdown") {
-      languages.push(cell.language);
-      indexes.unshift(i);
-    }
-  }
-
-  return indexes;
-};
-
-const findCellIndex = (message, state) => {
-  switch (message.language) {
-    case "Ruby":
-      return state.RubyPendingIndexes[state.RubyWriteToPendingIndex];
-    case "Javascript":
-      return state.JavascriptPendingIndexes[
-        state.JavascriptWriteToPendingIndex
-      ];
-    case "Python":
-      return state.PythonPendingIndexes[state.PythonWriteToPendingIndex];
-    default:
-      console.log("Error slotting message");
-      return null;
-  }
-};
-
-const findWriteToPendingIndex = language => {
-  switch (language) {
-    case "Ruby":
-      return "RubyWriteToPendingIndex";
-    case "Javascript":
-      return "JavascriptWriteToPendingIndex";
-    case "Python":
-      return "PythonWriteToPendingIndex";
-    default:
-      console.log("Error: Invalid Language Supplied in Server Message");
-  }
-};
-
-const findPendingIndex = language => {
-  switch (language) {
-    case "Ruby":
-      return "RubyPendingIndexes";
-    case "Javascript":
-      return "JavascriptPendingIndexes";
-    case "Python":
-      return "PythonPendingIndexes";
-    default:
-      console.log("Error: Invalid Language Supplied in Server Message");
-      return null;
-  }
-};
