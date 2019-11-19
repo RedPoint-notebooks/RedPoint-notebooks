@@ -4,7 +4,7 @@ import RenderedMarkdown from "./RenderedMarkdown";
 
 const CodeCellContainer = props => {
   const cell = props.cell;
-  const isRenderedMarkdown = cell.type === "Markdown" && cell.rendered;
+  const isRenderedMarkdown = cell.language === "Markdown" && cell.rendered;
 
   return isRenderedMarkdown ? (
     <RenderedMarkdown
@@ -18,7 +18,7 @@ const CodeCellContainer = props => {
   ) : (
     <CodeCell
       cell={cell}
-      language={cell.type}
+      language={cell.language}
       key={props.index}
       onAddClick={props.onAddCellClick}
       onDeleteClick={props.onDeleteCellClick}

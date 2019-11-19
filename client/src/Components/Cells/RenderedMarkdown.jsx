@@ -18,7 +18,7 @@ const RenderedMarkdown = props => {
         />
       </div>
       <CellToolbar
-        language={cell.type}
+        language={cell.language}
         onAddClick={props.onAddClick}
         onDeleteClick={props.onDeleteClick}
         cellIndex={props.cellIndex}
