@@ -5,7 +5,7 @@ import Dropdown from "react-bootstrap/Dropdown";
 
 class AddCellButton extends Component {
   handleSelectCellType = language => {
-    this.props.onClick(this.props.cellIndex, language);
+    this.props.onSelect(this.props.cellIndex, language);
   };
 
   render() {
@@ -24,9 +24,11 @@ class AddCellButton extends Component {
 
     return (
       <DropdownButton
+        show={this.props.show}
         className="add-cell-btn"
         variant="secondary"
         id="dropdown-basic-button"
+        onToggle={this.props.onToggle}
         title={<span>&#43;</span>}
         size="sm"
         onSelect={this.handleSelectCellType}

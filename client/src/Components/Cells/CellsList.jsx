@@ -3,19 +3,31 @@ import AddCellButton from "../Shared/AddCellButton";
 import CodeCellContainer from "./CodeCellContainer";
 import uuidv4 from "uuid/v4";
 
-const CellsList = props => {
-  const cellContainers = props.cells.map((cell, index) => {
+class CellsList extends React.Component {
+  state = {
+    show: false
+  }
+  handleSelect = (cellIndex, language, callback) => {
+    this.props.onAddCellClick(cellIndex,language,callback)
+  }
+  handleToggle = () => {
+    this.setState({show: !this.state.show})
+  }
+  render() {
+    
+  const cellContainers = this.props.cells.map((cell, index) => {
     return (
       <CodeCellContainer
         cell={cell}
+        onSelect={this.handleSelect}
         key={uuidv4()}
-        onDeleteCellClick={props.onDeleteCellClick}
-        onAddCellClick={props.onAddCellClick}
+        onDeleteCellClick={this.props.onDeleteCellClick}
+        onAddCellClick={this.props.onAddCellClick}
         cellIndex={index}
-        onLanguageChange={props.onLanguageChange}
-        toggleRender={props.toggleRender}
-        onUpdateCodeState={props.onUpdateCodeState}
-        onRunClick={props.onRunClick}
+        onLanguageChange={this.props.onLanguageChange}
+        toggleRender={this.props.toggleRender}
+        onUpdateCodeState={this.props.onUpdateCodeState}
+        onRunClick={this.props.onRunClick}
       />
     );
   });
@@ -23,15 +35,19 @@ const CellsList = props => {
   cellContainers.push(
     <div className="add-cell-container" key={uuidv4()}>
       <AddCellButton
+        show={this.state.show}
+        onToggle={this.handleToggle}
+        onSelect={this.handleSelect}
         className="add-cell-btn"
         cellIndex={cellContainers.length}
-        onClick={props.onAddCellClick}
+        onClick={this.props.onAddCellClick}
         key={uuidv4()}
       />
     </div>
   );
 
   return cellContainers;
+  }
 };
 
 export default CellsList;

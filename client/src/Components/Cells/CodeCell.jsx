@@ -10,28 +10,12 @@ import "codemirror/mode/ruby/ruby.js";
 import "codemirror/mode/python/python.js";
 
 class CodeCell extends Component {
-  state = {
-    code: this.props.cell.code
-  };
-
   handleChange = value => {
-    this.setState({ code: value });
+    this.props.onChange(value);
   };
 
   handleBlur = e => {
-    this.props.onUpdateCodeState(this.state.code, this.props.cellIndex);
-
-    // within onBlur, relatedTarget is the EventTarget receiving focus (if any)
-    const nextTarget = e.relatedTarget;
-    if (nextTarget) {
-      if (nextTarget.className.includes("run-button")) {
-        this.props.onRunClick(+nextTarget.getAttribute("cellindex"));
-      }
-    }
-
-    if (this.props.language === "Markdown") {
-      this.props.toggleRender(this.props.cellIndex);
-    }
+    this.props.onBlur(e);
   };
 
   render() {
@@ -48,6 +32,7 @@ class CodeCell extends Component {
         <div className="add-cell-container">
           <AddCellButton
             className="add-cell-btn"
+            onSelect={this.props.onSelect}
             onClick={this.props.onAddClick}
             cellIndex={this.props.cellIndex}
           />
@@ -61,13 +46,14 @@ class CodeCell extends Component {
           onRunClick={this.props.onRunClick}
         />
         <CodeMirror
-          value={this.state.code}
+          value={this.props.value}
           options={cellOptions}
           onBeforeChange={(editor, data, value) => {
             this.handleChange(value);
           }}
-          onBlur={(editor, event) => {
-            this.handleBlur(event);
+          onBlur={(event, editor) => {
+            console.log(editor);
+            this.handleBlur(event, editor);
           }}
         />
         {cell.language !== "Markdown" ? (
