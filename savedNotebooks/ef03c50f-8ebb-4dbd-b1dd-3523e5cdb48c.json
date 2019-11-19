@@ -1,0 +1,21 @@
+{
+  "cells": [
+    {
+      "type": "Ruby",
+      "code": "while true do \nend",
+      "results": { "output": [], "error": "", "return": "" }
+    },
+    {
+      "type": "Javascript",
+      "code": "setTimeout(() => {console.log('after 6 seconds')}, 6000);",
+      "results": { "output": [], "error": "", "return": "" }
+    }
+  ],
+  "RubyPendingIndexes": [],
+  "RubyWriteToPendingIndex": 0,
+  "JavascriptPendingIndexes": [],
+  "JavascriptWriteToPendingIndex": 0,
+  "PythonPendingIndexes": [],
+  "PythonWriteToPendingIndex": 0,
+  "id": "ef03c50f-8ebb-4dbd-b1dd-3523e5cdb48c"
+}

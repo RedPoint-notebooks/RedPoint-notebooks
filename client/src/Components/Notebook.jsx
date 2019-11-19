@@ -11,18 +11,17 @@ import {
   findLastIndexOfEachLanguageInNotebook
 } from "../utils";
 import { LANGUAGES } from "../Constants/constants";
+import { SIGTERM_ERROR_MESSAGE } from "../Constants/constants";
 
 class Notebook extends Component {
   state = {
     cells: [],
-
     RubyPendingIndexes: [],
     RubyWriteToIndex: 0,
     JavascriptPendingIndexes: [],
     JavascriptWriteToIndex: 0,
     PythonPendingIndexes: [],
     PythonWriteToIndex: 0,
-
     id: uuidv4()
   };
 
@@ -35,7 +34,7 @@ class Notebook extends Component {
       message = JSON.parse(message.data);
       let cellIndex = findCellIndex(message, this.state);
 
-      console.log(message.data);
+      console.log(JSON.stringify(message.data));
 
       switch (message.type) {
         case "delimiter":
@@ -90,6 +89,9 @@ class Notebook extends Component {
           if (resultType === "stdout") {
             cell.results[resultType].push(message.data);
           } else if (resultType === "error") {
+            if (message.data.error && message.data.error.signal === "SIGTERM") {
+              cell.results[resultType] += SIGTERM_ERROR_MESSAGE;
+            }
             cell.results[resultType] += message.data.stderr;
           } else {
             cell.results[resultType] += message.data;
