@@ -41,10 +41,21 @@ class CodeCell extends Component {
       mode: cell.language.toLowerCase(),
       theme: "darcula",
       lineNumbers: true,
+      // firstLineNumber: 10,
       showCursorWhenSelecting: true,
       tabSize: 2,
       indentWithTabs: true,
-      keyMap: "sublime"
+      keyMap: "sublime",
+      extraKeys: {
+        "Shift-Enter": () => {
+          this.props.onRunClick(this.props.cellIndex);
+        }
+      }
+
+      // autofocus creates an infinite loop onBlur
+      // autofocus: true
+      // uncomment to disable cm focus for read-only notebooks
+      // readOnly: "nocursor",
     };
 
     return (
