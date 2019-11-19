@@ -3,7 +3,8 @@ import CellsList from "./Cells/CellsList";
 import Container from "react-bootstrap/Container";
 import NavigationBar from "./Shared/NavigationBar";
 import uuidv4 from "uuid";
-import { syntaxErrorIdx } from "../utils";
+import { findSyntaxErrorIdx } from "../utils";
+import { LANGUAGES } from "../Constants/constants";
 
 class Notebook extends Component {
   state = {
@@ -50,7 +51,7 @@ class Notebook extends Component {
         //   this.updateCellResults("error", cellIndex, message);
         //   break;
         case "syntax-error":
-          cellIndex = syntaxErrorIdx(
+          cellIndex = findSyntaxErrorIdx(
             message,
             this.state.RubyPendingIndexes,
             this.state.JavascriptPendingIndexes,
@@ -193,12 +194,12 @@ class Notebook extends Component {
       cell.results = { stdout: [], error: "", return: "" };
       return cell;
     });
-    notebook.RubyPendingIndexes = [];
-    notebook.RubyWriteToPendingIndex = 0;
-    notebook.JavascriptPendingIndexes = [];
-    notebook.JavascriptWriteToPendingIndex = 0;
-    notebook.PythonPendingIndexes = [];
-    notebook.PythonWriteToPendingIndex = 0;
+
+    LANGUAGES.forEach(language => {
+      notebook[String(language) + "PendingIndexes"] = [];
+      notebook[String(language) + "WriteToPendingIndex"] = 0;
+    });
+
     const request = JSON.stringify({ type: "saveNotebook", notebook });
     console.log("Notebook save request sent");
     this.ws.send(request);

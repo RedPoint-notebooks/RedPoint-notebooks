@@ -1,5 +1,11 @@
-export const syntaxErrorIdx = (message, rubyPending, jsPending, pyPending) => {
+export const findSyntaxErrorIdx = (
+  message,
+  rubyPending,
+  jsPending,
+  pyPending
+) => {
   const cellIdx = message.data.location[0];
+
   switch (message.language) {
     case "Ruby":
       return rubyPending[cellIdx];
