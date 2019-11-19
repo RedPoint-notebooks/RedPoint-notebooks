@@ -14,7 +14,7 @@ const userScript = {
   scriptExecCmd: "",
   execOptions: (execOptions = {
     encoding: "utf8",
-    timeout: 3000,
+    timeout: 5000,
     maxBuffer: 200 * 1024, // this is default (204 kb)
     killSignal: "SIGTERM",
     cwd: null,
@@ -45,13 +45,9 @@ const userScript = {
 
         setTimeout(() => {
           const bufferArray = buffer.join("").split("\n");
-          console.log(`BufferArray: ${bufferArray}`);
-          // debugger;
 
-          if (bufferArray.length > 30) {
-            const truncatedOutput = bufferArray.slice(0, 2);
-            console.log(`truncatedOutput: ${truncatedOutput}`);
-            // debugger;
+          if (bufferArray.length > 50) {
+            const truncatedOutput = bufferArray.slice(1, 3);
 
             scriptProcess.kill();
             sendTruncatedOutput(truncatedOutput, ws, language);
@@ -59,12 +55,9 @@ const userScript = {
             reject();
           } else {
             bufferArray.forEach(data => {
-              console.log(`from else: ${data}`);
-              // debugger;
               if (data === delimiter) {
                 ws.send(JSON.stringify({ language, type: "delimiter" }));
               } else {
-                // debugger;
                 ws.send(
                   JSON.stringify({ language, type: "stdout", data: data })
                 );
@@ -84,7 +77,6 @@ const userScript = {
       scriptProcess.stderr.on("data", data => {
         // ws.send(JSON.stringify({ language, type: "stderr", data }));
         // reject(data, "stderr");
-        debugger;
         reject();
       });
     });

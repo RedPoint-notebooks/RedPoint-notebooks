@@ -3,6 +3,7 @@ import CellsList from "./Cells/CellsList";
 import Container from "react-bootstrap/Container";
 import NavigationBar from "./Shared/NavigationBar";
 import uuidv4 from "uuid";
+import { SIGTERM_ERROR_MESSAGE } from "../Constants/constants";
 
 class Notebook extends Component {
   state = {
@@ -68,7 +69,6 @@ class Notebook extends Component {
       }
 
       console.log(JSON.stringify(message.data));
-      // debugger;
 
       switch (message.type) {
         case "delimiter":
@@ -143,11 +143,7 @@ class Notebook extends Component {
             cell.results[resultType].push(message.data);
           } else if (resultType === "error") {
             if (message.data.error && message.data.error.signal === "SIGTERM") {
-              const ERROR_MESSAGE = `Timeout Error: the request to the server timed out.
-              The maximum timeout threshold for server requests is currently $ seconds.
-              Check your code for infinite loops, or timeouts greater than the threshold.`;
-              // debugger;
-              cell.results[resultType] += ERROR_MESSAGE;
+              cell.results[resultType] += SIGTERM_ERROR_MESSAGE;
             }
             cell.results[resultType] += message.data.stderr;
           } else {
