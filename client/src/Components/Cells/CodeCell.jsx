@@ -8,6 +8,7 @@ import "codemirror/theme/darcula.css";
 import "codemirror/mode/javascript/javascript.js";
 import "codemirror/mode/ruby/ruby.js";
 import "codemirror/mode/python/python.js";
+import "codemirror/keymap/sublime.js";
 
 class CodeCell extends Component {
   state = {
@@ -18,11 +19,11 @@ class CodeCell extends Component {
     this.setState({ code: value });
   };
 
-  handleBlur = e => {
+  handleBlur = (event, editor) => {
     this.props.onUpdateCodeState(this.state.code, this.props.cellIndex);
 
     // within onBlur, relatedTarget is the EventTarget receiving focus (if any)
-    const nextTarget = e.relatedTarget;
+    const nextTarget = event.relatedTarget;
     if (nextTarget) {
       if (nextTarget.className.includes("run-button")) {
         this.props.onRunClick(+nextTarget.getAttribute("cellindex"));
@@ -34,13 +35,35 @@ class CodeCell extends Component {
     }
   };
 
+  handleDidMount = editor => {
+    // this focuses on mount, but prevents blurring from component
+    editor.focus();
+  };
+
   render() {
     const cell = this.props.cell;
     const cellOptions = {
       mode: cell.language.toLowerCase(),
       theme: "darcula",
       lineNumbers: true,
-      showCursorWhenSelecting: true
+      // firstLineNumber: 10,
+      showCursorWhenSelecting: true,
+      tabSize: 2,
+      indentWithTabs: true,
+      keyMap: "sublime",
+      extraKeys: {
+        "Shift-Enter": () => {
+          this.props.onRunClick(this.props.cellIndex);
+        },
+        "Cmd-Enter": () => {
+          this.props.onRunClick(this.props.cellIndex);
+        }
+      }
+
+      // autofocus creates an infinite loop onBlur
+      // autofocus: true
+      // uncomment to disable cm focus for read-only notebooks
+      // readOnly: "nocursor",
     };
 
     return (
@@ -67,8 +90,12 @@ class CodeCell extends Component {
             this.handleChange(value);
           }}
           onBlur={(editor, event) => {
-            this.handleBlur(event);
+            this.handleBlur(event, editor);
           }}
+          // editorDidMount={editor => {
+          //   this.handleDidMount(editor);
+          //   console.log(editor);
+          // }}
         />
         {cell.language !== "Markdown" ? (
           <CellResults language={cell.language} results={cell.results} />
