@@ -3,6 +3,7 @@ import CellsList from "./Cells/CellsList";
 import Container from "react-bootstrap/Container";
 import NavigationBar from "./Shared/NavigationBar";
 import uuidv4 from "uuid";
+import { justAnAlert, syntaxErrorIdx } from "../utils";
 
 class Notebook extends Component {
   state = {
@@ -52,7 +53,6 @@ class Notebook extends Component {
       }
 
       console.log(JSON.stringify(message.data));
-      debugger;
 
       switch (message.type) {
         case "delimiter":
@@ -101,6 +101,16 @@ class Notebook extends Component {
         // case "stderr":
         //   this.updateCellResults("error", cellIndex, message);
         //   break;
+        case "syntax-error":
+          cellIndex = syntaxErrorIdx(
+            message,
+            this.state.RubyPendingIndexes,
+            this.state.JavascriptPendingIndexes,
+            this.state.PythonPendingIndexes
+          );
+          debugger;
+          this.updateCellResults("error", cellIndex, message);
+          break;
         case "loadNotebook":
           const newState = message.data;
           this.setState({
@@ -237,7 +247,8 @@ class Notebook extends Component {
     this.ws.send(JSON.stringify(requestObject));
   };
 
-  handleRunAllClick = () => {
+  handleRunAllClick = async () => {
+    await this.handleClearAllResults();
     const allCells = this.state.cells;
     const cellsToRun = findLastIndexOfEachLanguageInNotebook(allCells);
     cellsToRun.forEach(cellIndex => {
