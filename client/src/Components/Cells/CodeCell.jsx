@@ -37,7 +37,7 @@ class CodeCell extends Component {
   render() {
     const cell = this.props.cell;
     const cellOptions = {
-      mode: cell.type.toLowerCase(),
+      mode: cell.language.toLowerCase(),
       theme: "darcula",
       lineNumbers: true,
       showCursorWhenSelecting: true
@@ -55,7 +55,7 @@ class CodeCell extends Component {
         <CellToolbar
           cellIndex={this.props.cellIndex}
           onDeleteClick={this.props.onDeleteClick}
-          language={cell.type}
+          language={cell.language}
           onLanguageChange={this.props.onLanguageChange}
           rendered={cell.rendered}
           onRunClick={this.props.onRunClick}
@@ -70,8 +70,8 @@ class CodeCell extends Component {
             this.handleBlur(event);
           }}
         />
-        {cell.type !== "Markdown" ? (
-          <CellResults language={cell.type} results={cell.results} />
+        {cell.language !== "Markdown" ? (
+          <CellResults language={cell.language} results={cell.results} />
         ) : null}
       </div>
     );

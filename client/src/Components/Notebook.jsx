@@ -3,120 +3,67 @@ import CellsList from "./Cells/CellsList";
 import Container from "react-bootstrap/Container";
 import NavigationBar from "./Shared/NavigationBar";
 import uuidv4 from "uuid";
+import {
+  findSyntaxErrorIdx,
+  findPendingIndex,
+  findWriteToPendingIndex,
+  findCellIndex,
+  findLastIndexOfEachLanguageInNotebook
+} from "../utils";
+import { LANGUAGES } from "../Constants/constants";
 import { SIGTERM_ERROR_MESSAGE } from "../Constants/constants";
 
 class Notebook extends Component {
   state = {
-    cells: [
-      {
-        type: "Ruby",
-        code: "while true do \nputs 'hi'\nend",
-        results: { output: [], error: "", return: "" }
-      },
-      {
-        type: "Javascript",
-        code: "while (true) {\n  console.log('hi')\n}",
-        results: { output: [], error: "", return: "" }
-      },
-      {
-        type: "Python",
-        code: "while True:\n  print('hi')",
-        results: { output: [], error: "", return: "" }
-      }
-    ],
-    // pendingCellExecution: true,
+    cells: [],
     RubyPendingIndexes: [],
-    RubyWriteToPendingIndex: 0,
+    RubyWriteToIndex: 0,
     JavascriptPendingIndexes: [],
-    JavascriptWriteToPendingIndex: 0,
+    JavascriptWriteToIndex: 0,
     PythonPendingIndexes: [],
-    PythonWriteToPendingIndex: 0,
-
+    PythonWriteToIndex: 0,
     id: uuidv4()
   };
 
   ws = new WebSocket("ws://localhost:8000");
 
   componentDidMount() {
-    this.ws.onopen = event => {
-      console.log("Websockets open!");
-    };
+    this.ws.onopen = e => console.log("Websockets open!");
 
     this.ws.onmessage = message => {
       message = JSON.parse(message.data);
-      let cellIndex;
-      const state = this.state;
-
-      if (message.language) {
-        switch (message.language) {
-          case "Ruby":
-            cellIndex = state.RubyPendingIndexes[state.RubyWriteToPendingIndex];
-            break;
-          case "Javascript":
-            cellIndex =
-              state.JavascriptPendingIndexes[
-                state.JavascriptWriteToPendingIndex
-              ];
-            break;
-          case "Python":
-            cellIndex =
-              state.PythonPendingIndexes[state.PythonWriteToPendingIndex];
-            break;
-          default:
-            console.log("Error slotting message");
-            return null;
-        }
-      }
+      let cellIndex = findCellIndex(message, this.state);
 
       console.log(JSON.stringify(message.data));
 
       switch (message.type) {
         case "delimiter":
-          switch (message.language) {
-            case "Ruby":
-              this.setState(prevState => {
-                return {
-                  RubyWriteToPendingIndex: prevState.RubyWriteToPendingIndex + 1
-                };
-              });
-              break;
-            case "Javascript":
-              this.setState(prevState => {
-                return {
-                  JavascriptWriteToPendingIndex:
-                    prevState.JavascriptWriteToPendingIndex + 1
-                };
-              });
-              break;
-            case "Python":
-              this.setState(prevState => {
-                return {
-                  PythonWriteToPendingIndex:
-                    prevState.PythonWriteToPendingIndex + 1
-                };
-              });
-              break;
-            default:
-              return null;
-          }
+          // update the pending cell index for the language being executed
+          const pendingIndex = findWriteToPendingIndex(message.language);
           this.setState(prevState => {
             return {
-              writeToPendingCellIndex: prevState.writeToPendingCellIndex + 1
+              [pendingIndex]: prevState[pendingIndex] + 1
             };
           });
+
           break;
         case "stdout":
-          this.updateCellResults("output", cellIndex, message);
-          break;
         case "return":
-          this.updateCellResults("return", cellIndex, message);
-          break;
         case "error":
-          this.updateCellResults("error", cellIndex, message);
+          this.updateCellResults(message.type, cellIndex, message);
           break;
         // case "stderr":
         //   this.updateCellResults("error", cellIndex, message);
         //   break;
+        case "syntax-error":
+          cellIndex = findSyntaxErrorIdx(
+            message,
+            this.state.RubyPendingIndexes,
+            this.state.JavascriptPendingIndexes,
+            this.state.PythonPendingIndexes
+          );
+          this.updateCellResults("error", cellIndex, message);
+          break;
         case "loadNotebook":
           const newState = message.data;
           this.setState({
@@ -139,7 +86,7 @@ class Notebook extends Component {
     this.setState(prevState => {
       const newCells = [...prevState.cells].map((cell, index) => {
         if (index === cellIndex) {
-          if (resultType === "output") {
+          if (resultType === "stdout") {
             cell.results[resultType].push(message.data);
           } else if (resultType === "error") {
             if (message.data.error && message.data.error.signal === "SIGTERM") {
@@ -172,13 +119,13 @@ class Notebook extends Component {
     });
   };
 
-  handleAddCellClick = (index, type) => {
+  handleAddCellClick = (index, language) => {
     this.setState(prevState => {
       const newCells = [...prevState.cells];
       newCells.splice(index, 0, {
-        type: type,
+        language: language,
         code: "",
-        results: { output: [], error: "", return: "" }
+        results: { stdout: [], error: "", return: "" }
       });
       return { cells: newCells };
     });
@@ -186,9 +133,9 @@ class Notebook extends Component {
 
   removeSameLanguageResults = language => {
     const newCells = this.state.cells.map(cell => {
-      if (cell.type === language) {
+      if (cell.language === language) {
         return Object.assign({}, cell, {
-          results: { output: [], error: "", return: "" }
+          results: { stdout: [], error: "", return: "" }
         });
       } else {
         return cell;
@@ -201,7 +148,7 @@ class Notebook extends Component {
   handleClearAllResults = () => {
     const newCells = this.state.cells.map(cell => {
       return Object.assign({}, cell, {
-        results: { output: [], error: "", return: "" }
+        results: { stdout: [], error: "", return: "" }
       });
     });
 
@@ -214,49 +161,33 @@ class Notebook extends Component {
     const pendingIndexes = [];
     for (let i = 0; i <= indexOfCellRun; i += 1) {
       const cell = allCells[i];
-      if (i <= indexOfCellRun && cell.type === language) {
+      if (i <= indexOfCellRun && cell.language === language) {
         codeStrArray.push(cell.code + "\n");
         pendingIndexes.push(i);
       }
     }
 
-    switch (language) {
-      case "Ruby": {
-        this.setState({
-          RubyPendingIndexes: pendingIndexes,
-          RubyWriteToPendingIndex: 0
-        });
-        break;
-      }
-      case "Javascript": {
-        this.setState({
-          JavascriptPendingIndexes: pendingIndexes,
-          JavascriptWriteToPendingIndex: 0
-        });
-        break;
-      }
-      case "Python": {
-        this.setState({
-          PythonPendingIndexes: pendingIndexes,
-          PythonWriteToPendingIndex: 0
-        });
-        break;
-      }
-      default:
-        console.log("Error building language request");
-    }
+    const langWriteToPending = findWriteToPendingIndex(language);
+    const langPendingIndexes = findPendingIndex(language);
+
+    this.setState({
+      [langPendingIndexes]: pendingIndexes,
+      [langWriteToPending]: 0
+    });
+
     return { type: "executeCode", language, codeStrArray };
   };
 
   handleRunClick = indexOfCellRun => {
     const allCells = this.state.cells;
-    const language = allCells[indexOfCellRun].type;
+    const language = allCells[indexOfCellRun].language;
     this.removeSameLanguageResults(language);
     const requestObject = this.buildRequest(indexOfCellRun, language);
     this.ws.send(JSON.stringify(requestObject));
   };
 
-  handleRunAllClick = () => {
+  handleRunAllClick = async () => {
+    await this.handleClearAllResults();
     const allCells = this.state.cells;
     const cellsToRun = findLastIndexOfEachLanguageInNotebook(allCells);
     cellsToRun.forEach(cellIndex => {
@@ -268,15 +199,15 @@ class Notebook extends Component {
     e.preventDefault();
     const notebook = this.state;
     notebook.cells = notebook.cells.map(cell => {
-      cell.results = { output: [], error: "", return: "" };
+      cell.results = { stdout: [], error: "", return: "" };
       return cell;
     });
-    notebook.RubyPendingIndexes = [];
-    notebook.RubyWriteToPendingIndex = 0;
-    notebook.JavascriptPendingIndexes = [];
-    notebook.JavascriptWriteToPendingIndex = 0;
-    notebook.PythonPendingIndexes = [];
-    notebook.PythonWriteToPendingIndex = 0;
+
+    LANGUAGES.forEach(language => {
+      notebook[language + "PendingIndexes"] = [];
+      notebook[language + "WriteToPendingIndex"] = 0;
+    });
+
     const request = JSON.stringify({ type: "saveNotebook", notebook });
     console.log("Notebook save request sent");
     this.ws.send(request);
@@ -287,16 +218,16 @@ class Notebook extends Component {
     this.ws.send(request);
   };
 
-  handleLanguageChange = (type, cellIndex) => {
+  handleLanguageChange = (language, cellIndex) => {
     this.setState(prevState => {
       const newCells = [...prevState.cells];
       const changedCell = newCells[cellIndex];
-      changedCell.type = type;
-      if (type === "Markdown") {
+      changedCell.language = language;
+      if (language === "Markdown") {
         changedCell.rendered = false;
       }
       if (changedCell.results) {
-        changedCell.results = { output: [], error: "", return: "" };
+        changedCell.results = { stdout: [], error: "", return: "" };
       }
       return { cells: newCells };
     });
@@ -346,20 +277,5 @@ class Notebook extends Component {
     );
   }
 }
-
-const findLastIndexOfEachLanguageInNotebook = allCells => {
-  const languages = [];
-  const indexes = [];
-
-  for (let i = allCells.length - 1; i >= 0; i -= 1) {
-    let cell = allCells[i];
-    if (!languages.includes(cell.type) && cell.type !== "Markdown") {
-      languages.push(cell.type);
-      indexes.unshift(i);
-    }
-  }
-
-  return indexes;
-};
 
 export default Notebook;

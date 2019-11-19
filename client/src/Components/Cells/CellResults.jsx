@@ -11,7 +11,7 @@ const CellResults = props => {
     const data = resultsObj[resultType];
 
     switch (resultType) {
-      case "output":
+      case "stdout":
         // maps every time a message is received from stdout
         const outputLines = data.map(outputline => {
           return <Output key={uuidv4()} output={outputline} />;

@@ -20,7 +20,7 @@ const userScript = {
     cwd: null,
     env: null
   }),
-  execute: (ws, delimiter, language) => {
+  execute: (ws, delimiter, language, scriptString, codeStrArray) => {
     return new Promise((resolve, reject) => {
       console.log("BEFORE EXECUTING SCRIPT");
       const scriptProcess = exec(
@@ -28,14 +28,53 @@ const userScript = {
         userScript.execOptions,
         (error, stdout, stderr) => {
           if (error) {
-            ws.send(
-              JSON.stringify({
-                language,
-                type: "error",
-                data: { error, stderr }
-              })
-            );
-            reject();
+            if (/[Ss]yntax/.test(stderr)) {
+              // const originalCellsLines = codeStrArray.reduce(
+              //   (linesObj, currentCell, cellIdx) => {
+              //     linesObj[cellIdx] = currentCell.split("\n").length - 1;
+              //     return linesObj;
+              //   },
+              //   {}
+              // );
+              const scriptArray = scriptString.split("\n");
+              const syntaxErrorLine = +stderr.match(/\d+/)[0];
+              let scriptErrorIdx = syntaxErrorLine - 1;
+              const delimsBeforeError = scriptArray
+                .slice(0, scriptErrorIdx)
+                .filter(line => {
+                  const delimRegex = new RegExp(delimiter);
+                  debugger;
+                  return delimRegex.test(line);
+                }).length;
+
+              const errorCell = delimsBeforeError;
+
+              // const errorLineinCell = syntaxErrorLine - originalCellsLines[errorCell];
+              // stderr = stderr.replace(/\d+/, errorLineinCell);
+
+              ws.send(
+                JSON.stringify({
+                  type: "syntax-error",
+                  data: {
+                    location: [errorCell, 42],
+                    error,
+                    stderr
+                  },
+                  language
+                })
+              );
+              reject();
+            } else {
+              ws.send(
+                JSON.stringify({
+                  language,
+                  type: "error",
+                  data: { error, stderr }
+                })
+              );
+              reject();
+            }
+
           }
         }
       );
@@ -69,14 +108,10 @@ const userScript = {
       });
 
       scriptProcess.stdout.on("end", () => {
-        console.log("AFTER EXECUTING SCRIPT");
-        // ws.send(JSON.stringify({ type: "end", data: "Script completed" }));
         resolve();
       });
 
       scriptProcess.stderr.on("data", data => {
-        // ws.send(JSON.stringify({ language, type: "stderr", data }));
-        // reject(data, "stderr");
         reject();
       });
     });
