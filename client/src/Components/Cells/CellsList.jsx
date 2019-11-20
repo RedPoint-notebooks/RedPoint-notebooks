@@ -21,12 +21,11 @@ const CellsList = props => {
   });
 
   cellContainers.push(
-    <div className="add-cell-container" key={uuidv4()}>
+    <div className="add-cell-container">
       <AddCellButton
         className="add-cell-btn"
         cellIndex={cellContainers.length}
         onClick={props.onAddCellClick}
-        key={uuidv4()}
       />
     </div>
   );
