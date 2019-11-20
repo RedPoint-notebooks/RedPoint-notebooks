@@ -125,7 +125,8 @@ class Notebook extends Component {
       newCells.splice(index, 0, {
         language: language,
         code: "",
-        results: { stdout: [], error: "", return: "" }
+        results: { stdout: [], error: "", return: "" },
+        id: uuidv4()
       });
       return { cells: newCells };
     });
@@ -244,9 +245,13 @@ class Notebook extends Component {
 
   handleUpdateCodeState = (code, index) => {
     this.setState(prevState => {
-      const newCells = [...prevState.cells];
-      const cellToUpdate = newCells[index];
-      cellToUpdate.code = code;
+      const newCells = [...prevState.cells].map((cell, idx) => {
+        if (idx === index) {
+          return Object.assign({}, cell, { code: code });
+        } else {
+          return cell;
+        }
+      });
       return { cells: newCells };
     });
   };

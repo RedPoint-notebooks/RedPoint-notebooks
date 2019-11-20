@@ -22,22 +22,9 @@ class CodeCell extends Component {
   handleBlur = (event, editor) => {
     this.props.onUpdateCodeState(this.state.code, this.props.cellIndex);
 
-    // within onBlur, relatedTarget is the EventTarget receiving focus (if any)
-    const nextTarget = event.relatedTarget;
-    if (nextTarget) {
-      if (nextTarget.className.includes("run-button")) {
-        this.props.onRunClick(+nextTarget.getAttribute("cellindex"));
-      }
-    }
-
     if (this.props.language === "Markdown") {
       this.props.toggleRender(this.props.cellIndex);
     }
-  };
-
-  handleDidMount = editor => {
-    // this focuses on mount, but prevents blurring from component
-    editor.focus();
   };
 
   render() {
@@ -59,11 +46,6 @@ class CodeCell extends Component {
           this.props.onRunClick(this.props.cellIndex);
         }
       }
-
-      // autofocus creates an infinite loop onBlur
-      // autofocus: true
-      // uncomment to disable cm focus for read-only notebooks
-      // readOnly: "nocursor",
     };
 
     return (
@@ -92,10 +74,6 @@ class CodeCell extends Component {
           onBlur={(editor, event) => {
             this.handleBlur(event, editor);
           }}
-          // editorDidMount={editor => {
-          //   this.handleDidMount(editor);
-          //   console.log(editor);
-          // }}
         />
         {cell.language !== "Markdown" ? (
           <CellResults language={cell.language} results={cell.results} />
