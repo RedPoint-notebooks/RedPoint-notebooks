@@ -125,7 +125,8 @@ class Notebook extends Component {
       newCells.splice(index, 0, {
         language: language,
         code: "",
-        results: { stdout: [], error: "", return: "" }
+        results: { stdout: [], error: "", return: "" },
+        id: uuidv4()
       });
       return { cells: newCells };
     });

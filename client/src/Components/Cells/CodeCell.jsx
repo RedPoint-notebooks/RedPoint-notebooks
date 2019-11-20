@@ -23,12 +23,12 @@ class CodeCell extends Component {
     this.props.onUpdateCodeState(this.state.code, this.props.cellIndex);
 
     // within onBlur, relatedTarget is the EventTarget receiving focus (if any)
-    const nextTarget = event.relatedTarget;
-    if (nextTarget) {
-      if (nextTarget.className.includes("run-button")) {
-        this.props.onRunClick(+nextTarget.getAttribute("cellindex"));
-      }
-    }
+    // const nextTarget = event.relatedTarget;
+    // if (nextTarget) {
+    //   if (nextTarget.className.includes("run-button")) {
+    //     this.props.onRunClick(+nextTarget.getAttribute("cellindex"));
+    //   }
+    // }
 
     if (this.props.language === "Markdown") {
       this.props.toggleRender(this.props.cellIndex);

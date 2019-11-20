@@ -8,7 +8,7 @@ const CellsList = props => {
     return (
       <CodeCellContainer
         cell={cell}
-        key={uuidv4()}
+        key={cell.id}
         onDeleteCellClick={props.onDeleteCellClick}
         onAddCellClick={props.onAddCellClick}
         cellIndex={index}
