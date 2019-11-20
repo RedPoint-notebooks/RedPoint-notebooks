@@ -1,7 +1,6 @@
 import React from "react";
 import AddCellButton from "../Shared/AddCellButton";
 import CodeCellContainer from "./CodeCellContainer";
-import uuidv4 from "uuid/v4";
 
 const CellsList = props => {
   const cellContainers = props.cells.map((cell, index) => {

@@ -43,7 +43,6 @@ const userScript = {
                 .slice(0, scriptErrorIdx)
                 .filter(line => {
                   const delimRegex = new RegExp(delimiter);
-                  debugger;
                   return delimRegex.test(line);
                 }).length;
 
@@ -74,7 +73,6 @@ const userScript = {
               );
               reject();
             }
-
           }
         }
       );
