@@ -36,7 +36,7 @@ class CodeCell extends Component {
   };
 
   handleDidMount = editor => {
-    // this focuses on mount, but prevents blurring from component
+    debugger;
     editor.focus();
   };
 
@@ -92,10 +92,10 @@ class CodeCell extends Component {
           onBlur={(editor, event) => {
             this.handleBlur(event, editor);
           }}
-          // editorDidMount={editor => {
-          //   this.handleDidMount(editor);
-          //   console.log(editor);
-          // }}
+          editorDidMount={editor => {
+            this.handleDidMount(editor);
+            console.log(editor);
+          }}
         />
         {cell.language !== "Markdown" ? (
           <CellResults language={cell.language} results={cell.results} />
