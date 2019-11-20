@@ -26,9 +26,10 @@ class Notebook extends Component {
   };
 
   ws = new WebSocket("ws://localhost:8000");
+  // ws = new WebSocket("ws://" + window.location.host);
 
   componentDidMount() {
-    this.ws.onopen = e => console.log("Websockets open!");
+    this.ws.onopen = e => console.log(window.location.host);
 
     this.ws.onmessage = message => {
       message = JSON.parse(message.data);
