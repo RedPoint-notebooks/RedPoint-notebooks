@@ -37,16 +37,19 @@ class CodeCell extends Component {
       showCursorWhenSelecting: true,
       tabSize: 2,
       indentWithTabs: true,
-      keyMap: "sublime",
-      extraKeys: {
+      keyMap: "sublime"
+    };
+
+    if (cell.language !== "Markdown") {
+      cellOptions.extraKeys = {
         "Shift-Enter": () => {
           this.props.onRunClick(this.props.cellIndex);
         },
         "Cmd-Enter": () => {
           this.props.onRunClick(this.props.cellIndex);
         }
-      }
-    };
+      };
+    }
 
     return (
       <div>
