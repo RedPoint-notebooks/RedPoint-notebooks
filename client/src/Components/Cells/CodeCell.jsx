@@ -64,6 +64,7 @@ class CodeCell extends Component {
           onLanguageChange={this.props.onLanguageChange}
           rendered={cell.rendered}
           onRunClick={this.props.onRunClick}
+          cellCodeState={this.state.code}
         />
         <CodeMirror
           value={this.state.code}
