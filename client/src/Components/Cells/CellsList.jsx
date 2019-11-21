@@ -1,14 +1,13 @@
 import React from "react";
 import AddCellButton from "../Shared/AddCellButton";
 import CodeCellContainer from "./CodeCellContainer";
-import uuidv4 from "uuid/v4";
 
 const CellsList = props => {
   const cellContainers = props.cells.map((cell, index) => {
     return (
       <CodeCellContainer
         cell={cell}
-        key={uuidv4()}
+        key={cell.id}
         onDeleteCellClick={props.onDeleteCellClick}
         onAddCellClick={props.onAddCellClick}
         cellIndex={index}
@@ -21,12 +20,12 @@ const CellsList = props => {
   });
 
   cellContainers.push(
-    <div className="add-cell-container" key={uuidv4()}>
+    <div className="add-cell-container" key="add-cell-container">
       <AddCellButton
+        key="add-cell-btn"
         className="add-cell-btn"
         cellIndex={cellContainers.length}
         onClick={props.onAddCellClick}
-        key={uuidv4()}
       />
     </div>
   );

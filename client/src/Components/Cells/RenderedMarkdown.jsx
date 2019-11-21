@@ -9,7 +9,7 @@ const RenderedMarkdown = props => {
   };
   const cell = props.cell;
   return (
-    <React.Fragment>
+    <div>
       <div className="add-cell-container">
         <AddCellButton
           className="add-cell-btn"
@@ -28,7 +28,7 @@ const RenderedMarkdown = props => {
       <div onClick={handleRenderedMarkdownClick} className="rendered-markdown">
         <ReactMarkdown source={cell.code} />
       </div>
-    </React.Fragment>
+    </div>
   );
 };
 
