@@ -36,32 +36,3 @@ class RunCellButton extends React.Component {
 }
 
 export default RunCellButton;
-
-// const RunCellButton = props => {
-//   const handleRunClick = () => {
-//     // alert(props.cellCodeState);
-//     props.onClick(props.cellIndex);
-//   };
-
-//   const componentDidMount = () => {
-//     debugger;
-//   };
-//   // const cellIsEmpty = () => {
-//   //   return !!props.cellCodeState;
-//   // };
-
-//   return (
-//     <Button
-//       disabled={!cellIsEmpty}
-//       cellindex={props.cellIndex}
-//       className="run-button"
-//       onClick={handleRunClick}
-//       variant="secondary"
-//       size="sm"
-//     >
-//       <span>&#9658;</span>
-//     </Button>
-//   );
-// };
-
-// export default RunCellButton;
