@@ -1,8 +1,8 @@
 
 FROM phusion/baseimage:0.11
-RUN useradd -ms /bin/false newuser
+# RUN useradd -ms /bin/false newuser
 
-CMD ["/sbin/my_init"]
+# CMD ["/sbin/my_init"]
 
 RUN mkdir -p /app
 WORKDIR /app
@@ -16,14 +16,14 @@ RUN install_clean \
   nodejs \
   python \
   && npm install \
-  && cd react-redpoint \
+  && cd client \
   && npm install \
-  && cd ..
+  && npm run build
 
-EXPOSE 3000
+EXPOSE 8000
 
-USER newuser
+# USER newuser
 
-CMD ["npm", "start"]
+CMD ["node", "server.js"]
 
 

@@ -27,11 +27,13 @@ const repl = {
       console.log(
         JSON.stringify(`Repl Command: ${codeString + replExitMessage}`)
       );
-      const node = pty.spawn(replType);
+      const process = pty.spawn(replType);
       let returnData = "";
-      node.onData(data => (returnData += stripAnsi(data)));
-      node.write(codeString + replExitMessage);
-      node.on("exit", () => {
+      process.onData(data => (returnData += stripAnsi(data)));
+      process.write(codeString + replExitMessage);
+      process.on("exit", () => {
+        process.removeAllListeners("data");
+        process.kill();
         // assumes REPL is finished, and data is captured, and written to returnData
         console.log("AFTER REPL EXECUTE");
         resolve(returnData);

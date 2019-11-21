@@ -3,6 +3,7 @@ const express = require("express");
 const http = require("http");
 const Websocket = require("ws");
 const fs = require("fs");
+const path = require("path");
 
 const app = express();
 const server = http.createServer(app);
@@ -12,7 +13,6 @@ const logger = require("morgan");
 const userScript = require("./libs/modules/userScript");
 const repl = require("./libs/modules/repl");
 
-app.use(express.static("."));
 app.use(logger("dev"));
 
 const generateDelimiter = (language, delimiter) => {
@@ -47,10 +47,6 @@ wss.on("connection", ws => {
       }
     }
   });
-});
-
-server.listen(8000, () => {
-  console.log("App started");
 });
 
 const saveNotebook = notebook => {
@@ -151,3 +147,15 @@ const executeQueue = (queue, ws, delimiter) => {
     }
   });
 };
+
+//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+app.use(express.static(path.join(__dirname, "client", "build")));
+
+app.get("/", function(req, res) {
+  res.sendFile(path.join(__dirname, "client", "build", "index.html"));
+});
+
+server.listen(8000, () => {
+  console.log("App started");
+});
