@@ -25,10 +25,15 @@ class Notebook extends Component {
     id: uuidv4()
   };
 
-  ws = new WebSocket("ws://localhost:8000");
-  // ws = new WebSocket("ws://" + window.location.host);
+  ws = null;
 
   componentDidMount() {
+    if (process.env.NODE_ENV === "development") {
+      this.ws = new WebSocket("ws://localhost:8000");
+    } else if (process.env.NODE_ENV === "production") {
+      this.ws = new WebSocket("ws://" + window.location.host);
+    }
+
     this.ws.onopen = e => console.log(window.location.host);
 
     this.ws.onmessage = message => {
