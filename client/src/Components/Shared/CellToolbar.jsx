@@ -21,6 +21,7 @@ const CellToolbar = props => {
         <RunCellButton
           onClick={props.onRunClick}
           cellIndex={props.cellIndex}
+          cellCodeState={props.cellCodeState}
         ></RunCellButton>
       ) : null}
       <DeleteCellButton

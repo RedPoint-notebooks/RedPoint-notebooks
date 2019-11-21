@@ -78,8 +78,8 @@
 }
 
 div .rendered-markdown {
-  border-top: 1px solid #6b757e;
-  border-bottom: 1px solid #6b757e;
+  /* border-top: 1px solid #6b757e;
+  border-bottom: 1px solid #6b757e; */
   padding-top: 10px;
 }
 
