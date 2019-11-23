@@ -14,7 +14,7 @@ const {
 } = process.env;
 // const testurl = `mongodb://${MONGO_USERNAME}:${MONGO_PASSWORD}@${MONGO_HOSTNAME}:${MONGO_PORT}/${MONGO_DB}?authSource=admin`;
 const url = `mongodb://${MONGO_HOSTNAME}:${MONGO_PORT}/${MONGO_DB}?authSource=admin`;
-console.log(testurl);
+console.log(url);
 
 const db = (requestType, notebookId, notebookJSON) => {
   return new Promise((resolve, reject) => {
