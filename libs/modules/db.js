@@ -22,9 +22,11 @@ const db = (requestType, notebookId, notebookJSON) => {
             resolve(loadedNotebook);
           });
         } else if (requestType === "SAVE") {
-          collection.insertOne(notebookJSON, (err, result) => {
-            console.log(`mongoID of insertOne: ${result}`);
-          });
+          saveNotebook(collection, notebookId, notebookJSON).then(
+            saveResponse => {
+              resolve(saveResponse);
+            }
+          );
         } else if (requestType === "UPDATE") {
           collection.updateOne(
             { id: notebookId },
@@ -58,6 +60,20 @@ const loadNotebook = (collection, notebookId) => {
       .catch(err => {
         console.error(err);
       });
+  });
+};
+
+const saveNotebook = (collection, notebookId, notebookJSON) => {
+  return new Promise((resolve, reject) => {
+    const saveStatus = collection.updateOne(
+      { id: notebookId },
+      { $set: notebookJSON },
+      { upsert: true }, // updates if exists, else inserts new entry
+      (err, result) => {
+        console.log(`mongoID of insertOne: ${result}`);
+      }
+    );
+    resolve(saveStatus);
   });
 };
 // this should be in a db.js file:
