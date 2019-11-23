@@ -27,21 +27,10 @@ const db = (requestType, notebookId, notebookJSON) => {
               resolve(saveResponse);
             }
           );
-        } else if (requestType === "UPDATE") {
-          collection.updateOne(
-            { id: notebookId },
-            { $set: { notebookJSON } },
-            (err, item) => {
-              console.log(`Updated Item: ${item}`);
-              client.close();
-              return item.insertedId;
-            }
-          );
         }
       }).then(queryResult => {
         client.close();
-        // console.log("Query Result: ", queryResult);
-        console.log("Connection to MongoDB closed");
+        console.log("Closed connection to MongoDB");
         resolve(queryResult);
       });
     });
@@ -76,32 +65,12 @@ const saveNotebook = (collection, notebookId, notebookJSON) => {
     resolve(saveStatus);
   });
 };
-// this should be in a db.js file:
-// const { MONGO_USERNAME, MONGO_PASSWORD, MONGO_HOSTNAME, MONGO_PORT, MONGO_DB } = process.env;
+
+// const {
+//   MONGO_USERNAME,
+//   MONGO_PASSWORD,
+//   MONGO_HOSTNAME,
+//   MONGO_PORT,
+//   MONGO_DB
+// } = process.env;
 // const url = `mongodb://${MONGO_USERNAME}:${MONGO_PASSWORD}@${MONGO_HOSTNAME}:${MONGO_PORT}/${MONGO_DB}?authSource=admin`;
-// const options = {
-// 	useNewUrlParser: true,
-// 	reconnectTries: Number.MAX_VALUE,
-// 	reconnectInterval: 500,
-// 	connectTimeoutMS: 10000
-// };
-
-// mongoose.connect(url, options).then( function() {
-//   console.log('MongoDB is connected');
-// })
-//   .catch( function(err) {
-//   console.log(err);
-// });
-//
-
-// const connect = mongo.connect(url, options, (err, client) => {
-//   console.log("Connected to MongoDB");
-//   if (err) {
-//     console.error(err);
-//     return;
-//   }
-//   const database = client.db("redpoint");
-//   const collection = database.collection("notebooks");
-
-//   return([collection, client])
-// });

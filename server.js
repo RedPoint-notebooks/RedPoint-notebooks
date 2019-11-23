@@ -53,17 +53,12 @@ wss.on("connection", ws => {
 
 const saveNotebook = notebook => {
   return new Promise((resolve, reject) => {
-    console.log("BEFORE SAVING NOTEBOOK");
-
-    // resolve(db.save(notebook.id, jsonNotebook));
     resolve(db("SAVE", notebook.id, notebook));
   });
 };
 
 const loadNotebook = notebookId => {
   return new Promise((resolve, reject) => {
-    console.log("BEFORE LOADING NOTEBOOK");
-
     queryResult = db("LOAD", notebookId);
     console.log(`queryResult: ${queryResult}`);
     resolve(queryResult);
