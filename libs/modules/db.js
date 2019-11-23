@@ -5,117 +5,61 @@ const options = {
   useUnifiedTopology: true
 };
 
-// const db = {
-// load: loadRequest(notebookId => handleRequest("LOAD", notebookId)),
-// update: updateRequest((notebookId, payload) => {
-//   handleRequest("UPDATE", notebookId, payload);
-// }),
-// save: saveRequest((notebookId, payload) => {
-//   handleRequest("SAVE", notebookId, payload);
-// })
 const db = (requestType, notebookId, notebookJSON) => {
-  console.log("in handle DB request");
-
-  const queryResult = mongo.connect(url, options, (err, client) => {
-    console.log("Connected to MongoDB");
-    if (err) {
-      console.error(err);
-      return;
-    }
-    const database = client.db("redpoint");
-    const collection = database.collection("notebooks");
-
-    if (requestType === "LOAD") {
-      collection
-        .findOne({ id: notebookId })
-        .then(item => {
-          console.log("=> Retrieved Notebook: ", item);
-          return item;
-        })
-        .catch(err => {
+  return new Promise((resolve, reject) => {
+    mongo.connect(url, options, (err, client) => {
+      return new Promise((resolve, reject) => {
+        console.log("Connected to MongoDB");
+        if (err) {
           console.error(err);
-        });
-    } else if (requestType === "SAVE") {
-      collection.insertOne(notebookJSON, (err, result) => {
-        console.log(`mongoID of insertOne: ${result}`);
-      });
-    } else if (requestType === "UPDATE") {
-      collection.updateOne(
-        { id: notebookId },
-        { $set: { notebookJSON } },
-        (err, item) => {
-          console.log(`Updated Item: ${item}`);
-          client.close();
-          return item.insertedId;
+          return;
         }
-      );
-    }
+        const database = client.db("redpoint");
+        const collection = database.collection("notebooks");
 
-    // collection.find().toArray((err, items) => {
-    // 	console.log(items);
-    // });
-
-    client.close();
-    console.log("Query Result: ", queryResult);
-    console.log("Connection to MongoDB closed");
-    return queryResult;
+        if (requestType === "LOAD") {
+          loadNotebook(collection, notebookId).then(loadedNotebook => {
+            resolve(loadedNotebook);
+          });
+        } else if (requestType === "SAVE") {
+          collection.insertOne(notebookJSON, (err, result) => {
+            console.log(`mongoID of insertOne: ${result}`);
+          });
+        } else if (requestType === "UPDATE") {
+          collection.updateOne(
+            { id: notebookId },
+            { $set: { notebookJSON } },
+            (err, item) => {
+              console.log(`Updated Item: ${item}`);
+              client.close();
+              return item.insertedId;
+            }
+          );
+        }
+      }).then(queryResult => {
+        client.close();
+        // console.log("Query Result: ", queryResult);
+        console.log("Connection to MongoDB closed");
+        resolve(queryResult);
+      });
+    });
   });
 };
 
 module.exports = db;
-// module.exports = db;
 
-// const handleRequest = (requestType, notebookId, notebookJSON) => {
-//   console.log("in handle DB request");
-
-//   const queryResult = mongo.connect(url, options, (err, client) => {
-//     console.log("Connected to MongoDB");
-//     if (err) {
-//       console.error(err);
-//       return;
-//     }
-//     const database = client.db("redpoint");
-//     const collection = database.collection("notebooks");
-
-//     if (requestType === "LOAD") {
-//       collection
-//         .findOne({ id: notebookId })
-//         // .findOne({ name: 'Charles!!' })
-//         .then(item => {
-//           console.log(item);
-//           client.close();
-//           return item;
-//         })
-//         .catch(err => {
-//           console.error(err);
-//         });
-//     } else if (requestType === "SAVE") {
-//       collection.insertOne(notebookJSON, (err, result) => {
-//         console.log(`mongoID of insertOne: ${result.insertedId}`);
-//         client.close();
-//       });
-//     } else if (requestType === "UPDATE") {
-//       collection.updateOne(
-//         { id: notebookId },
-//         { $set: { notebookJSON } },
-//         (err, item) => {
-//           console.log(`Updated Item: ${item}`);
-//           client.close();
-//           return item.insertedId;
-//         }
-//       );
-//     }
-
-//     // collection.find().toArray((err, items) => {
-//     // 	console.log(items);
-//     // });
-
-//     client.close();
-//     console.log("Connection to MongoDB closed");
-//     return queryResult;
-//   });
-// };
-
+const loadNotebook = (collection, notebookId) => {
+  return new Promise((resolve, reject) => {
+    collection
+      .findOne({ id: notebookId })
+      .then(loadedNotebook => {
+        resolve(loadedNotebook);
+      })
+      .catch(err => {
+        console.error(err);
+      });
+  });
+};
 // this should be in a db.js file:
 // const { MONGO_USERNAME, MONGO_PASSWORD, MONGO_HOSTNAME, MONGO_PORT, MONGO_DB } = process.env;
 // const url = `mongodb://${MONGO_USERNAME}:${MONGO_PASSWORD}@${MONGO_HOSTNAME}:${MONGO_PORT}/${MONGO_DB}?authSource=admin`;
