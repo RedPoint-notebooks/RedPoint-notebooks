@@ -23,6 +23,7 @@
     "express": "~4.16.1",
     "http-errors": "~1.6.3",
     "markdown-it": "^10.0.0",
+    "mongodb": "^3.3.4",
     "morgan": "^1.9.1",
     "node-pty": "^0.9.0",
     "nodemon": "^1.19.4",

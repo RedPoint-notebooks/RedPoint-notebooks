@@ -13,6 +13,8 @@ const logger = require("morgan");
 const userScript = require("./libs/modules/userScript");
 const repl = require("./libs/modules/repl");
 
+const handleRequest = require("./libs/modules/db");
+
 app.use(logger("dev"));
 
 const generateDelimiter = (language, delimiter) => {
@@ -52,21 +54,23 @@ wss.on("connection", ws => {
 const saveNotebook = notebook => {
   return new Promise((resolve, reject) => {
     console.log("BEFORE SAVING NOTEBOOK");
-    jsonNotebook = JSON.stringify(notebook);
 
-    fs.writeFile(
-      `./savedNotebooks/${notebook.id}.json`,
-      jsonNotebook,
-      error => {
-        if (error) {
-          console.log("ERROR SAVING NOTEBOOK");
-          reject(error);
-        } else {
-          console.log(`AFTER SAVING NOTEBOOK: ${notebook.id}`);
-          resolve(notebook.id);
-        }
-      }
-    );
+    // resolve(db.save(notebook.id, jsonNotebook));
+    resolve(handleRequest("SAVE", notebook.id, notebook));
+
+    // fs.writeFile(
+    //   `./savedNotebooks/${notebook.id}.json`,
+    //   jsonNotebook,
+    //   error => {
+    //     if (error) {
+    //       console.log("ERROR SAVING NOTEBOOK");
+    //       reject(error);
+    //     } else {
+    //       console.log(`AFTER SAVING NOTEBOOK: ${notebook.id}`);
+    //       resolve(notebook.id);
+    //     }
+    //   }
+    // );
   });
 };
 
@@ -74,15 +78,20 @@ const loadNotebook = id => {
   return new Promise((resolve, reject) => {
     console.log("BEFORE LOADING NOTEBOOK");
 
-    fs.readFile(`./savedNotebooks/${id}.json`, (error, data) => {
-      if (error) {
-        console.log("ERROR LOADING NOTEBOOK");
-        reject(error);
-      } else {
-        console.log("AFTER LOADING NOTEBOOK");
-        resolve(JSON.parse(data));
-      }
-    });
+    // queryResult = db.load(notebook.id, jsonNotebook);
+    queryResult = handleRequest("LOAD", notebook.id, jsonNotebook);
+    console.log(`queryResult: ${queryResult}`);
+    resolve(queryResult);
+
+    // fs.readFile(`./savedNotebooks/${id}.json`, (error, data) => {
+    //   if (error) {
+    //     console.log("ERROR LOADING NOTEBOOK");
+    //     reject(error);
+    //   } else {
+    //     console.log("AFTER LOADING NOTEBOOK");
+    //     resolve(JSON.parse(data));
+    //   }
+    // });
   });
 };
 
