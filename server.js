@@ -13,7 +13,7 @@ const logger = require("morgan");
 const userScript = require("./libs/modules/userScript");
 const repl = require("./libs/modules/repl");
 
-const handleRequest = require("./libs/modules/db");
+const db = require("./libs/modules/db");
 
 app.use(logger("dev"));
 
@@ -56,42 +56,17 @@ const saveNotebook = notebook => {
     console.log("BEFORE SAVING NOTEBOOK");
 
     // resolve(db.save(notebook.id, jsonNotebook));
-    resolve(handleRequest("SAVE", notebook.id, notebook));
-
-    // fs.writeFile(
-    //   `./savedNotebooks/${notebook.id}.json`,
-    //   jsonNotebook,
-    //   error => {
-    //     if (error) {
-    //       console.log("ERROR SAVING NOTEBOOK");
-    //       reject(error);
-    //     } else {
-    //       console.log(`AFTER SAVING NOTEBOOK: ${notebook.id}`);
-    //       resolve(notebook.id);
-    //     }
-    //   }
-    // );
+    resolve(db("SAVE", notebook.id, notebook));
   });
 };
 
-const loadNotebook = id => {
+const loadNotebook = notebookId => {
   return new Promise((resolve, reject) => {
     console.log("BEFORE LOADING NOTEBOOK");
 
-    // queryResult = db.load(notebook.id, jsonNotebook);
-    queryResult = handleRequest("LOAD", notebook.id, jsonNotebook);
+    queryResult = db("LOAD", notebookId);
     console.log(`queryResult: ${queryResult}`);
     resolve(queryResult);
-
-    // fs.readFile(`./savedNotebooks/${id}.json`, (error, data) => {
-    //   if (error) {
-    //     console.log("ERROR LOADING NOTEBOOK");
-    //     reject(error);
-    //   } else {
-    //     console.log("AFTER LOADING NOTEBOOK");
-    //     resolve(JSON.parse(data));
-    //   }
-    // });
   });
 };
 

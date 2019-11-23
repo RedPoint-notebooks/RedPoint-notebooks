@@ -13,7 +13,7 @@ const options = {
 // save: saveRequest((notebookId, payload) => {
 //   handleRequest("SAVE", notebookId, payload);
 // })
-const handleRequest = (requestType, notebookId, notebookJSON) => {
+const db = (requestType, notebookId, notebookJSON) => {
   console.log("in handle DB request");
 
   const queryResult = mongo.connect(url, options, (err, client) => {
@@ -28,10 +28,8 @@ const handleRequest = (requestType, notebookId, notebookJSON) => {
     if (requestType === "LOAD") {
       collection
         .findOne({ id: notebookId })
-        // .findOne({ name: 'Charles!!' })
         .then(item => {
-          console.log(item);
-          client.close();
+          console.log("=> Retrieved Notebook: ", item);
           return item;
         })
         .catch(err => {
@@ -40,7 +38,6 @@ const handleRequest = (requestType, notebookId, notebookJSON) => {
     } else if (requestType === "SAVE") {
       collection.insertOne(notebookJSON, (err, result) => {
         console.log(`mongoID of insertOne: ${result}`);
-        client.close();
       });
     } else if (requestType === "UPDATE") {
       collection.updateOne(
@@ -59,12 +56,13 @@ const handleRequest = (requestType, notebookId, notebookJSON) => {
     // });
 
     client.close();
+    console.log("Query Result: ", queryResult);
     console.log("Connection to MongoDB closed");
     return queryResult;
   });
 };
 
-module.exports = handleRequest;
+module.exports = db;
 // module.exports = db;
 
 // const handleRequest = (requestType, notebookId, notebookJSON) => {
