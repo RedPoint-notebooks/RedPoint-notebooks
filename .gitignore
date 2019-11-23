@@ -8,3 +8,5 @@ codeCellScripts/*
 #ignore log files
 *.log
 
+$ignore env files
+.env

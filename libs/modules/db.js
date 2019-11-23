@@ -1,9 +1,20 @@
 const mongo = require("mongodb").MongoClient;
-const url = "mongodb://localhost:27017";
+// const url = "mongodb://localhost:27017";
 const options = {
   useNewUrlParser: true,
   useUnifiedTopology: true
 };
+
+const {
+  MONGO_USERNAME,
+  MONGO_PASSWORD,
+  MONGO_HOSTNAME,
+  MONGO_PORT,
+  MONGO_DB
+} = process.env;
+// const testurl = `mongodb://${MONGO_USERNAME}:${MONGO_PASSWORD}@${MONGO_HOSTNAME}:${MONGO_PORT}/${MONGO_DB}?authSource=admin`;
+const url = `mongodb://${MONGO_HOSTNAME}:${MONGO_PORT}/${MONGO_DB}?authSource=admin`;
+console.log(testurl);
 
 const db = (requestType, notebookId, notebookJSON) => {
   return new Promise((resolve, reject) => {
@@ -65,12 +76,3 @@ const saveNotebook = (collection, notebookId, notebookJSON) => {
     resolve(saveStatus);
   });
 };
-
-// const {
-//   MONGO_USERNAME,
-//   MONGO_PASSWORD,
-//   MONGO_HOSTNAME,
-//   MONGO_PORT,
-//   MONGO_DB
-// } = process.env;
-// const url = `mongodb://${MONGO_USERNAME}:${MONGO_PASSWORD}@${MONGO_HOSTNAME}:${MONGO_PORT}/${MONGO_DB}?authSource=admin`;

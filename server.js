@@ -1,8 +1,8 @@
+const process = require("dotenv").config();
 const uuidv4 = require("uuid/v4");
 const express = require("express");
 const http = require("http");
 const Websocket = require("ws");
-const fs = require("fs");
 const path = require("path");
 
 const app = express();
