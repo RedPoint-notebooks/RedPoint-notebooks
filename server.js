@@ -34,7 +34,7 @@ wss.on("connection", ws => {
 
   ws.on("message", message => {
     message = JSON.parse(message);
-    console.log(message);
+    console.log("Server received message: ", message);
 
     if (message.type === "saveNotebook") {
       handleSaveNotebook(message.notebook, ws);

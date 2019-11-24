@@ -14,10 +14,13 @@ const {
   MONGO_PORT,
   MONGO_DB
 } = process.env;
+
 const url = `mongodb://${MONGO_USERNAME}:${MONGO_PASSWORD}@${MONGO_HOSTNAME}:${MONGO_PORT}/${MONGO_DB}?authSource=admin`;
 
 const db = (requestType, notebook, notebookId) => {
   return new Promise(resolve => {
+    const before = Date.now();
+
     mongo.connect(url, options, (err, client) => {
       return new Promise(resolve => {
         console.log("Connected to MongoDB");
@@ -38,6 +41,9 @@ const db = (requestType, notebook, notebookId) => {
           });
         }
       }).then(queryResult => {
+        const after = Date.now();
+        const requestDuration = after - before;
+        console.log(`DB Query took: ${requestDuration} ms`);
         client.close();
         console.log("Closed connection to MongoDB");
         resolve(queryResult);
@@ -50,7 +56,6 @@ module.exports = db;
 
 const loadNotebook = (collection, notebookId) => {
   return new Promise(resolve => {
-    console.log("notebook ID IN LOAD NOTEBOOK: ", notebookId);
     collection
       .findOne({ id: notebookId })
       .then(loadedNotebook => {
