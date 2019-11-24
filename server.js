@@ -51,22 +51,8 @@ wss.on("connection", ws => {
   });
 });
 
-const saveNotebook = notebook => {
-  return new Promise((resolve, reject) => {
-    resolve(db("SAVE", notebook.id, notebook));
-  });
-};
-
-const loadNotebook = notebookId => {
-  return new Promise((resolve, reject) => {
-    queryResult = db("LOAD", notebookId);
-    console.log(`queryResult: ${queryResult}`);
-    resolve(queryResult);
-  });
-};
-
 const handleSaveNotebook = (notebook, ws) => {
-  saveNotebook(notebook)
+  db("SAVE", notebook.id, notebook)
     .then(() => {
       ws.send(
         JSON.stringify({
@@ -82,7 +68,7 @@ const handleSaveNotebook = (notebook, ws) => {
 };
 
 const handleLoadNotebook = (id, ws) => {
-  loadNotebook(id)
+  db("LOAD", notebookId)
     .then(notebook => {
       ws.send(JSON.stringify({ type: "loadNotebook", data: notebook }));
     })

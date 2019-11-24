@@ -1,4 +1,5 @@
 const mongo = require("mongodb").MongoClient;
+// use this url instead if no authentication enabled on database
 // const url = "mongodb://localhost:27017";
 const options = {
   useNewUrlParser: true,
@@ -13,13 +14,11 @@ const {
   MONGO_DB
 } = process.env;
 const url = `mongodb://${MONGO_USERNAME}:${MONGO_PASSWORD}@${MONGO_HOSTNAME}:${MONGO_PORT}/${MONGO_DB}?authSource=admin`;
-// const url = `mongodb://${MONGO_HOSTNAME}:${MONGO_PORT}/${MONGO_DB}?authSource=admin`;
-console.log(url);
 
 const db = (requestType, notebookId, notebookJSON) => {
-  return new Promise((resolve, reject) => {
+  return new Promise(resolve => {
     mongo.connect(url, options, (err, client) => {
-      return new Promise((resolve, reject) => {
+      return new Promise(resolve => {
         console.log("Connected to MongoDB");
         if (err) {
           console.error(err);
@@ -51,7 +50,7 @@ const db = (requestType, notebookId, notebookJSON) => {
 module.exports = db;
 
 const loadNotebook = (collection, notebookId) => {
-  return new Promise((resolve, reject) => {
+  return new Promise(resolve => {
     collection
       .findOne({ id: notebookId })
       .then(loadedNotebook => {
@@ -64,13 +63,17 @@ const loadNotebook = (collection, notebookId) => {
 };
 
 const saveNotebook = (collection, notebookId, notebookJSON) => {
-  return new Promise((resolve, reject) => {
+  return new Promise(resolve => {
     const saveStatus = collection.updateOne(
       { id: notebookId },
       { $set: notebookJSON },
       { upsert: true }, // updates if exists, else inserts new entry
       (err, result) => {
-        console.log(`mongoID of insertOne: ${result}`);
+        if (err) {
+          console.log(err);
+        } else {
+          console.log(`Mongo result of insertOne: ${result}`);
+        }
       }
     );
     resolve(saveStatus);
