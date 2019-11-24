@@ -6,6 +6,7 @@ const options = {
   useUnifiedTopology: true
 };
 
+// pull mongo credentials from .env file
 const {
   MONGO_USERNAME,
   MONGO_PASSWORD,
@@ -15,7 +16,7 @@ const {
 } = process.env;
 const url = `mongodb://${MONGO_USERNAME}:${MONGO_PASSWORD}@${MONGO_HOSTNAME}:${MONGO_PORT}/${MONGO_DB}?authSource=admin`;
 
-const db = (requestType, notebookId, notebookJSON) => {
+const db = (requestType, notebook, notebookId) => {
   return new Promise(resolve => {
     mongo.connect(url, options, (err, client) => {
       return new Promise(resolve => {
@@ -32,11 +33,9 @@ const db = (requestType, notebookId, notebookJSON) => {
             resolve(loadedNotebook);
           });
         } else if (requestType === "SAVE") {
-          saveNotebook(collection, notebookId, notebookJSON).then(
-            saveResponse => {
-              resolve(saveResponse);
-            }
-          );
+          saveNotebook(collection, notebook).then(saveResponse => {
+            resolve(saveResponse);
+          });
         }
       }).then(queryResult => {
         client.close();
@@ -51,6 +50,7 @@ module.exports = db;
 
 const loadNotebook = (collection, notebookId) => {
   return new Promise(resolve => {
+    console.log("notebook ID IN LOAD NOTEBOOK: ", notebookId);
     collection
       .findOne({ id: notebookId })
       .then(loadedNotebook => {
@@ -62,11 +62,11 @@ const loadNotebook = (collection, notebookId) => {
   });
 };
 
-const saveNotebook = (collection, notebookId, notebookJSON) => {
+const saveNotebook = (collection, notebook) => {
   return new Promise(resolve => {
     const saveStatus = collection.updateOne(
-      { id: notebookId },
-      { $set: notebookJSON },
+      { id: notebook.id },
+      { $set: notebook },
       { upsert: true }, // updates if exists, else inserts new entry
       (err, result) => {
         if (err) {

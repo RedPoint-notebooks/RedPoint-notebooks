@@ -52,7 +52,7 @@ wss.on("connection", ws => {
 });
 
 const handleSaveNotebook = (notebook, ws) => {
-  db("SAVE", notebook.id, notebook)
+  db("SAVE", notebook)
     .then(() => {
       ws.send(
         JSON.stringify({
@@ -67,8 +67,8 @@ const handleSaveNotebook = (notebook, ws) => {
     });
 };
 
-const handleLoadNotebook = (id, ws) => {
-  db("LOAD", notebookId)
+const handleLoadNotebook = (notebookId, ws) => {
+  db("LOAD", null, notebookId)
     .then(notebook => {
       ws.send(JSON.stringify({ type: "loadNotebook", data: notebook }));
     })
