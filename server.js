@@ -1,8 +1,8 @@
+require("dotenv").config();
 const uuidv4 = require("uuid/v4");
 const express = require("express");
 const http = require("http");
 const Websocket = require("ws");
-const fs = require("fs");
 const path = require("path");
 
 const app = express();
@@ -12,6 +12,8 @@ const wss = new Websocket.Server({ server });
 const logger = require("morgan");
 const userScript = require("./libs/modules/userScript");
 const repl = require("./libs/modules/repl");
+
+const db = require("./libs/modules/db");
 
 app.use(logger("dev"));
 
@@ -32,7 +34,7 @@ wss.on("connection", ws => {
 
   ws.on("message", message => {
     message = JSON.parse(message);
-    console.log(message);
+    console.log("Server received message: ", message);
 
     if (message.type === "saveNotebook") {
       handleSaveNotebook(message.notebook, ws);
@@ -49,45 +51,8 @@ wss.on("connection", ws => {
   });
 });
 
-const saveNotebook = notebook => {
-  return new Promise((resolve, reject) => {
-    console.log("BEFORE SAVING NOTEBOOK");
-    jsonNotebook = JSON.stringify(notebook);
-
-    fs.writeFile(
-      `./savedNotebooks/${notebook.id}.json`,
-      jsonNotebook,
-      error => {
-        if (error) {
-          console.log("ERROR SAVING NOTEBOOK");
-          reject(error);
-        } else {
-          console.log(`AFTER SAVING NOTEBOOK: ${notebook.id}`);
-          resolve(notebook.id);
-        }
-      }
-    );
-  });
-};
-
-const loadNotebook = id => {
-  return new Promise((resolve, reject) => {
-    console.log("BEFORE LOADING NOTEBOOK");
-
-    fs.readFile(`./savedNotebooks/${id}.json`, (error, data) => {
-      if (error) {
-        console.log("ERROR LOADING NOTEBOOK");
-        reject(error);
-      } else {
-        console.log("AFTER LOADING NOTEBOOK");
-        resolve(JSON.parse(data));
-      }
-    });
-  });
-};
-
 const handleSaveNotebook = (notebook, ws) => {
-  saveNotebook(notebook)
+  db("SAVE", notebook)
     .then(() => {
       ws.send(
         JSON.stringify({
@@ -102,8 +67,8 @@ const handleSaveNotebook = (notebook, ws) => {
     });
 };
 
-const handleLoadNotebook = (id, ws) => {
-  loadNotebook(id)
+const handleLoadNotebook = (notebookId, ws) => {
+  db("LOAD", null, notebookId)
     .then(notebook => {
       ws.send(JSON.stringify({ type: "loadNotebook", data: notebook }));
     })
