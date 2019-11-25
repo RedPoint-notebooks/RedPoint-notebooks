@@ -27,13 +27,37 @@ class Notebook extends Component {
 
   ws = null;
 
+  loadState = async () => {
+    const response = await fetch("http://www.redpointnotebook.com/load", {
+      method: "GET", // *GET, POST, PUT, DELETE, etc.
+      mode: "cors", // no-cors, *cors, same-origin
+      cache: "no-cache", // *default, no-cache, reload, force-cache, only-if-cached
+      credentials: "same-origin", // include, *same-origin, omit
+      headers: {
+        // "Content-Type": "application/json"
+        // 'Content-Type': 'application/x-www-form-urlencoded',
+      },
+      redirect: "follow", // manual, *follow, error
+      referrer: "no-referrer" // no-referrer, *client
+    });
+
+    debugger;
+    console.log("AFTER DATA REQUEST");
+    // const { cells, RubyPendingIndexes, RubyWriteToIndex} = response;
+
+    // this.setState({
+    //   cells, RubyPendingIndexes, RubyWriteToIndex,
+    // })
+  };
+
   componentDidMount() {
     if (process.env.NODE_ENV === "development") {
       this.ws = new WebSocket("ws://localhost:8000");
+      const notebookData = this.loadState();
     } else if (process.env.NODE_ENV === "production") {
       this.ws = new WebSocket("ws://" + window.location.host);
     }
-    
+
     this.ws.onopen = e => console.log(window.location.host);
 
     this.ws.onmessage = message => {
