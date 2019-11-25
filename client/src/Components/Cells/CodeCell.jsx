@@ -43,9 +43,11 @@ class CodeCell extends Component {
     if (cell.language !== "Markdown") {
       cellOptions.extraKeys = {
         "Shift-Enter": () => {
+          this.props.onUpdateCodeState(this.state.code, this.props.cellIndex);
           this.props.onRunClick(this.props.cellIndex);
         },
         "Cmd-Enter": () => {
+          this.props.onUpdateCodeState(this.state.code, this.props.cellIndex);
           this.props.onRunClick(this.props.cellIndex);
         }
       };
