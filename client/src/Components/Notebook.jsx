@@ -27,7 +27,7 @@ class Notebook extends Component {
   ws = null;
 
   loadState = async () => {
-    await fetch(`/loadNotebook`, {
+    await fetch(`${window.location.host}/loadNotebook`, {
       method: "GET",
       mode: "cors",
       cache: "no-cache",
