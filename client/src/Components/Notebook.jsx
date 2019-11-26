@@ -236,21 +236,29 @@ class Notebook extends Component {
     });
 
     const serializedNotebook = JSON.stringify(notebook);
+    console.log("Notebook save request sent");
+
     fetch(`${PROXY_URL}/update`, {
       method: "post",
-      // mode: "cors",
+      mode: "cors",
       cache: "no-cache",
       body: serializedNotebook,
       headers: { "Content-Type": "text/plain" }
     })
       .then(res => {
-        debugger;
-        return res.json();
+        return res.text();
       })
       .then(data => {
+        // **TODO** convert to bootstrap alert/banner
+        alert(
+          `Your saved notebook url is ${PROXY_URL}/notebooks/${this.state.id}`
+        );
+
         console.log("Save response: ", data);
+      })
+      .catch(err => {
+        console.log("Fetch error on POST request. Failed to save.");
       });
-    console.log("Notebook save request sent");
   };
 
   handleLoadClick = notebookId => {
