@@ -29,7 +29,6 @@ class CodeCell extends Component {
 
   render() {
     const cell = this.props.cell;
-    debugger;
     const cellOptions = {
       mode: cell.language.toLowerCase(),
       theme: "darcula",

@@ -10,8 +10,7 @@ import {
   findCellIndex,
   findLastIndexOfEachLanguageInNotebook
 } from "../utils";
-import { LANGUAGES } from "../Constants/constants";
-import { SIGTERM_ERROR_MESSAGE } from "../Constants/constants";
+import { SIGTERM_ERROR_MESSAGE, PROXY_URL } from "../Constants/constants";
 
 class Notebook extends Component {
   state = {
@@ -28,7 +27,8 @@ class Notebook extends Component {
   ws = null;
 
   loadState = async () => {
-    const response = await fetch("http://www.redpointnotebook.com/dbtest", {
+    await fetch("http://www.redpointnotebook.com/dbtest", {
+      // await fetch(`${PROXY_URL}/load`, {
       method: "GET",
       mode: "cors",
       cache: "no-cache",
@@ -38,17 +38,19 @@ class Notebook extends Component {
         return res.json();
       })
       .then(data => {
-        // TODO: scrub IDs on proxy server before sending!
-        console.log("Fetch response: ", data);
-        const { cells, id } = data;
-        debugger;
-        this.setState({ cells, id });
+        // TODO: scrub IDs on proxy server before sending to client!
+        if (data) {
+          console.log("Notebook loaded from server: ", data);
+          const { cells, id } = data;
+          this.setState({ cells, id });
+        } else {
+          console.log("No notebook loaded from server");
+        }
       });
   };
 
   componentDidMount() {
-    // load state from reverse proxy server
-    this.loadState();
+    this.loadState(); // load state from server (if exists)
 
     if (process.env.NODE_ENV === "development") {
       this.ws = new WebSocket("ws://localhost:8000");
@@ -226,20 +228,29 @@ class Notebook extends Component {
 
   handleSaveClick = e => {
     e.preventDefault();
-    const notebook = this.state;
+    const notebook = { cells: this.state.cells, id: this.state.id };
+
     notebook.cells = notebook.cells.map(cell => {
       cell.results = { stdout: [], error: "", return: "" };
       return cell;
     });
 
-    LANGUAGES.forEach(language => {
-      notebook[language + "PendingIndexes"] = [];
-      notebook[language + "WriteToPendingIndex"] = 0;
-    });
-
-    const request = JSON.stringify({ type: "saveNotebook", notebook });
+    const serializedNotebook = JSON.stringify(notebook);
+    fetch(`${PROXY_URL}/update`, {
+      method: "post",
+      // mode: "cors",
+      cache: "no-cache",
+      body: serializedNotebook,
+      headers: { "Content-Type": "text/plain" }
+    })
+      .then(res => {
+        debugger;
+        return res.json();
+      })
+      .then(data => {
+        console.log("Save response: ", data);
+      });
     console.log("Notebook save request sent");
-    this.ws.send(request);
   };
 
   handleLoadClick = notebookId => {
