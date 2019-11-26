@@ -27,6 +27,28 @@ class Notebook extends Component {
 
   ws = null;
 
+  loadState = async () => {
+    await fetch(`/loadNotebook`, {
+      method: "GET",
+      mode: "cors",
+      cache: "no-cache",
+      redirect: "follow"
+    })
+      .then(res => {
+        return res.json();
+      })
+      .then(data => {
+        // TODO: scrub IDs on proxy server before sending to client!
+        if (data) {
+          console.log("Notebook loaded from server: ", data);
+          const { cells, id } = data;
+          this.setState({ cells, id });
+        } else {
+          console.log("No notebook loaded from server");
+        }
+      });
+  };
+  
   componentDidMount() {
     if (process.env.NODE_ENV === "development") {
       this.ws = new WebSocket("ws://localhost:8000");
