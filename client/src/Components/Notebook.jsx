@@ -27,8 +27,7 @@ class Notebook extends Component {
   ws = null;
 
   loadState = async () => {
-    await fetch("http://www.redpointnotebook.com/dbtest", {
-      // await fetch(`${PROXY_URL}/load`, {
+    await fetch(`${PROXY_URL}/loadNotebook`, {
       method: "GET",
       mode: "cors",
       cache: "no-cache",
