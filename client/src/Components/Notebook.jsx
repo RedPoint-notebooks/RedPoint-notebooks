@@ -12,7 +12,6 @@ import {
 } from "../utils";
 import { SIGTERM_ERROR_MESSAGE, PROXY_URL } from "../Constants/constants";
 import { LANGUAGES } from "../Constants/constants";
-import { SIGTERM_ERROR_MESSAGE } from "../Constants/constants";
 
 class Notebook extends Component {
   state = {
@@ -51,6 +50,8 @@ class Notebook extends Component {
   };
 
   componentDidMount() {
+    this.loadState();
+
     if (process.env.NODE_ENV === "development") {
       this.ws = new WebSocket("ws://localhost:8000");
     } else if (process.env.NODE_ENV === "production") {
