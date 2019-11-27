@@ -10,6 +10,7 @@ import {
   findCellIndex,
   findLastIndexOfEachLanguageInNotebook
 } from "../utils";
+import { SIGTERM_ERROR_MESSAGE, PROXY_URL } from "../Constants/constants";
 import { LANGUAGES } from "../Constants/constants";
 import { SIGTERM_ERROR_MESSAGE } from "../Constants/constants";
 
@@ -48,14 +49,14 @@ class Notebook extends Component {
         }
       });
   };
-  
+
   componentDidMount() {
     if (process.env.NODE_ENV === "development") {
       this.ws = new WebSocket("ws://localhost:8000");
     } else if (process.env.NODE_ENV === "production") {
       this.ws = new WebSocket("ws://" + window.location.host);
     }
-    
+
     this.ws.onopen = e => console.log(window.location.host);
 
     this.ws.onmessage = message => {
@@ -226,20 +227,37 @@ class Notebook extends Component {
 
   handleSaveClick = e => {
     e.preventDefault();
-    const notebook = this.state;
+    const notebook = { cells: this.state.cells, id: this.state.id };
+
     notebook.cells = notebook.cells.map(cell => {
       cell.results = { stdout: [], error: "", return: "" };
       return cell;
     });
 
-    LANGUAGES.forEach(language => {
-      notebook[language + "PendingIndexes"] = [];
-      notebook[language + "WriteToPendingIndex"] = 0;
-    });
-
-    const request = JSON.stringify({ type: "saveNotebook", notebook });
+    const serializedNotebook = JSON.stringify(notebook);
     console.log("Notebook save request sent");
-    this.ws.send(request);
+
+    fetch(`${PROXY_URL}/update`, {
+      method: "post",
+      mode: "cors",
+      cache: "no-cache",
+      body: serializedNotebook,
+      headers: { "Content-Type": "text/plain" }
+    })
+      .then(res => {
+        return res.text();
+      })
+      .then(data => {
+        // **TODO** convert to bootstrap alert/banner
+        alert(
+          `Your saved notebook url is ${PROXY_URL}/notebooks/${this.state.id}`
+        );
+
+        console.log("Save response: ", data);
+      })
+      .catch(err => {
+        console.log("Fetch error on POST request. Failed to save.");
+      });
   };
 
   handleLoadClick = notebookId => {
