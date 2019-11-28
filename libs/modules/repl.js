@@ -66,8 +66,12 @@ const parseJSOutput = returnData => {
   return new Promise(resolve => {
     const byOutput = returnData.split(">");
     const dirtyReturnValue = byOutput[byOutput.length - 2];
+    console.log("Dirty return value: ", dirtyReturnValue);
     const cleanReturnValue = extractCleanJSReturnValue(dirtyReturnValue);
-    resolve(cleanReturnValue.trim());
+    console.log("Clean return value: ", cleanReturnValue);
+    console.log("Trimmed return value: ", cleanReturnValue);
+
+    resolve(cleanReturnValue);
   });
 };
 
@@ -83,8 +87,13 @@ const parsePythonOutput = returnData => {
 
 const extractCleanJSReturnValue = string => {
   const newlines = [...string.matchAll(/\n/g)];
-
-  return string.slice(newlines[newlines.length - 2].index + 1);
+  console.log("newlines in extractCleanJS: ", newlines);
+  const cleanStarts = newlines[newlines.length - 2].index;
+  const cleanStops = newlines[newlines.length - 1].index;
+  const clean = string.slice(cleanStarts, cleanStops).trim();
+  return clean;
 };
 
 module.exports = repl;
+
+// `Welcome to Node.js v12.13.0.\nType ".help" for more information.\n> console.log('hey');\nhey\nundefined\n> console.log('you');\nyou\nundefined\n> .exit`;
