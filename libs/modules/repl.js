@@ -57,9 +57,9 @@ const parseRubyOutput = returnData => {
     const byOutput = returnData.split("=>");
     const dirtyReturnValue = byOutput[byOutput.length - 1];
     let indexCleanStops;
-    if (process.ENV === "development") {
+    if (process.env.NODE_ENV === "development") {
       indexCleanStops = dirtyReturnValue.indexOf("2.4.1");
-    } else if (process.ENV === "production") {
+    } else {
       indexCleanStops = dirtyReturnValue.indexOf("irb(main):");
     }
     const cleanReturnValue = dirtyReturnValue.slice(0, indexCleanStops);
