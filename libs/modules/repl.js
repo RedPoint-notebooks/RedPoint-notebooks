@@ -56,9 +56,14 @@ const parseRubyOutput = returnData => {
   return new Promise(resolve => {
     const byOutput = returnData.split("=>");
     const dirtyReturnValue = byOutput[byOutput.length - 1];
-    const indexCleanStops = dirtyReturnValue.indexOf("2.4.1"); // fix hard-coding?
+    let indexCleanStops;
+    if (process.ENV === "development") {
+      indexCleanStops = dirtyReturnValue.indexOf("2.4.1");
+    } else if (process.ENV === "production") {
+      indexCleanStops = dirtyReturnValue.indexOf("irb(main):");
+    }
     const cleanReturnValue = dirtyReturnValue.slice(0, indexCleanStops);
-    resolve(cleanReturnValue);
+    resolve(cleanReturnValue.trim());
   });
 };
 
@@ -67,7 +72,7 @@ const parseJSOutput = returnData => {
     const byOutput = returnData.split(">");
     const dirtyReturnValue = byOutput[byOutput.length - 2];
     const cleanReturnValue = extractCleanJSReturnValue(dirtyReturnValue);
-    resolve(cleanReturnValue);
+    resolve(cleanReturnValue.trim());
   });
 };
 
@@ -77,7 +82,7 @@ const parsePythonOutput = returnData => {
     const dirtyReturnValue = byOutput[byOutput.length - 2];
     const indexCleanStarts = dirtyReturnValue.indexOf("\n");
     const cleanReturnValue = dirtyReturnValue.slice(indexCleanStarts);
-    resolve(cleanReturnValue);
+    resolve(cleanReturnValue.trim());
   });
 };
 

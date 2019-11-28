@@ -1,2 +1,1 @@
-console.log("serv")
-[1, 2]
+console.log('hi');
