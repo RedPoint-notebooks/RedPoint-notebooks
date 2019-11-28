@@ -67,11 +67,9 @@ const parseJSOutput = returnData => {
     const byOutput = returnData.split(">");
     const dirtyReturnValue = byOutput[byOutput.length - 2];
     console.log("Dirty return value: ", dirtyReturnValue);
-    const cleanReturnValue = extractCleanJSReturnValue(dirtyReturnValue);
-    console.log("Clean return value: ", cleanReturnValue);
-    console.log("Trimmed return value: ", cleanReturnValue);
-
-    resolve(cleanReturnValue);
+    extractCleanJSReturnValue(dirtyReturnValue).then(clean => {
+      resolve(clean);
+    });
   });
 };
 
@@ -86,12 +84,15 @@ const parsePythonOutput = returnData => {
 };
 
 const extractCleanJSReturnValue = string => {
-  const newlines = [...string.matchAll(/\n/g)];
-  console.log("newlines in extractCleanJS: ", newlines);
-  const cleanStarts = newlines[newlines.length - 2].index;
-  const cleanStops = newlines[newlines.length - 1].index;
-  const clean = string.slice(cleanStarts, cleanStops).trim();
-  return clean;
+  return new Promise(resolve => {
+    const newlines = [...string.matchAll(/\n/g)];
+    console.log("newlines in extractCleanJS: ", newlines);
+    const cleanStarts = newlines[newlines.length - 2].index;
+    const cleanStops = newlines[newlines.length - 1].index;
+    const clean = string.slice(cleanStarts, cleanStops).trim();
+    console.log("Clean: ", clean);
+    resolve(clean);
+  });
 };
 
 module.exports = repl;
