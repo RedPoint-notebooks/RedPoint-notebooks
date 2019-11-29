@@ -32,15 +32,16 @@ const repl = {
       process.onData(data => (returnData += stripAnsi(data)));
       process.write(codeString + replExitMessage);
       process.on("exit", () => {
+        // To ensure that the spawned REPL is killed after finishing processing
         process.removeAllListeners("data");
         process.kill();
-        // assumes REPL is finished, and data is captured, and written to returnData
         console.log("AFTER REPL EXECUTE");
         resolve(returnData);
       });
     });
   },
   parseOutput: (returnData, lang) => {
+    console.log("BEFORE PARSE OUTPUT");
     switch (lang) {
       case "Ruby":
         return parseRubyOutput(returnData);
@@ -66,7 +67,6 @@ const parseJSOutput = returnData => {
   return new Promise(resolve => {
     const byOutput = returnData.split(">");
     const dirtyReturnValue = byOutput[byOutput.length - 2];
-    console.log("Dirty return value: ", dirtyReturnValue);
     extractCleanJSReturnValue(dirtyReturnValue).then(clean => {
       resolve(clean);
     });
@@ -85,16 +85,26 @@ const parsePythonOutput = returnData => {
 
 const extractCleanJSReturnValue = string => {
   return new Promise(resolve => {
-    const newlines = [...string.matchAll(/\n/g)];
+    const newlines = findNewlineIndexes(string);
     console.log("newlines in extractCleanJS: ", newlines);
-    const cleanStarts = newlines[newlines.length - 2].index;
-    const cleanStops = newlines[newlines.length - 1].index;
+    const cleanStarts = newlines[newlines.length - 2];
+    const cleanStops = newlines[newlines.length - 1];
     const clean = string.slice(cleanStarts, cleanStops).trim();
-    console.log("Clean: ", clean);
     resolve(clean);
   });
 };
 
-module.exports = repl;
+const findNewlineIndexes = string => {
+  const indexes = [];
 
-// `Welcome to Node.js v12.13.0.\nType ".help" for more information.\n> console.log('hey');\nhey\nundefined\n> console.log('you');\nyou\nundefined\n> .exit`;
+  for (let i = 0; i < string.length; i += 1) {
+    let char = string[i];
+    if (char === "\n") {
+      indexes.push(i);
+    }
+  }
+
+  return indexes;
+};
+
+module.exports = repl;
