@@ -1,4 +1,3 @@
-
 FROM phusion/baseimage:0.11
 # RUN useradd -ms /bin/false newuser
 
