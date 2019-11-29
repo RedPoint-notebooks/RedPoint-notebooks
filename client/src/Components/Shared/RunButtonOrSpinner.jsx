@@ -1,4 +1,4 @@
-import React, { Component } from "react";
+import React from "react";
 import RunCellButton from "./RunCellButton";
 import Spinner from "react-bootstrap/Spinner";
 

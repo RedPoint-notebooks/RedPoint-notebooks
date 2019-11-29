@@ -1,1 +1,1 @@
-print('hey')
+print("boo\n" * 10)

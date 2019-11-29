@@ -68,6 +68,7 @@ class Notebook extends Component {
       let cellIndex = findCellIndex(message, this.state);
 
       console.log(JSON.stringify(message.data));
+      let stopLanguagePending;
 
       switch (message.type) {
         case "delimiter":
@@ -85,7 +86,7 @@ class Notebook extends Component {
           break;
         case "return":
         case "error":
-          const stopLanguagePending = makeStopPendingObj(message.language);
+          stopLanguagePending = makeStopPendingObj(message.language);
           this.setState(stopLanguagePending);
           this.updateCellResults(message.type, cellIndex, message);
           break;
@@ -93,6 +94,8 @@ class Notebook extends Component {
         //   this.updateCellResults("error", cellIndex, message);
         //   break;
         case "syntax-error":
+          stopLanguagePending = makeStopPendingObj(message.language);
+          this.setState(stopLanguagePending);
           cellIndex = findSyntaxErrorIdx(
             message,
             this.state.RubyPendingIndexes,
