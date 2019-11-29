@@ -312,11 +312,20 @@ class Notebook extends Component {
     });
   };
 
+  awaitingServerResponse = () => {
+    return (
+      this.state.RubyCodePending ||
+      this.state.JavascriptCodePending ||
+      this.state.PythonCodePending
+    );
+  };
+
   render() {
     return (
       <div>
         <NavigationBar
           state={this.state}
+          awaitingServerResponse={this.awaitingServerResponse}
           deleteAllCells={this.handleDeleteAllCells}
           onSaveClick={this.handleSaveClick}
           onLoadClick={this.handleLoadClick}
@@ -325,6 +334,7 @@ class Notebook extends Component {
         />
         <Container className="App-body">
           <CellsList
+            awaitingServerResponse={this.awaitingServerResponse}
             onDeleteCellClick={this.handleDeleteCellClick}
             onAddCellClick={this.handleAddCellClick}
             cells={this.state.cells}

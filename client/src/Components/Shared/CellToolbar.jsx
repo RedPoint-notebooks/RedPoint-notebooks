@@ -1,7 +1,7 @@
 import React from "react";
 import DeleteCellButton from "./DeleteCellButton";
 import ChangeLanguageDropdown from "./ChangeLanguageDropdown";
-import RunCellButton from "./RunCellButton";
+import RunButtonOrSpinner from "./RunButtonOrSpinner";
 
 const CellToolbar = props => {
   return (
@@ -18,11 +18,12 @@ const CellToolbar = props => {
         cellIndex={props.cellIndex}
       ></ChangeLanguageDropdown>
       {props.language !== "Markdown" ? (
-        <RunCellButton
+        <RunButtonOrSpinner
           onClick={props.onRunClick}
           cellIndex={props.cellIndex}
           cellCodeState={props.cellCodeState}
-        ></RunCellButton>
+          awaitingServerResponse={props.awaitingServerResponse}
+        ></RunButtonOrSpinner>
       ) : null}
       <DeleteCellButton
         onClick={props.onDeleteClick}

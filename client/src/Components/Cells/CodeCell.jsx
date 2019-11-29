@@ -70,6 +70,7 @@ class CodeCell extends Component {
           rendered={cell.rendered}
           onRunClick={this.props.onRunClick}
           cellCodeState={this.state.code}
+          awaitingServerResponse={this.props.awaitingServerResponse}
         />
         <CodeMirror
           value={this.state.code}

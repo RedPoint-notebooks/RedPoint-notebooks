@@ -44,14 +44,6 @@ class NavigationBar extends React.Component {
     });
   };
 
-  awaitingCode = () => {
-    return (
-      this.props.state.RubyCodePending ||
-      this.props.state.JavascriptCodePending ||
-      this.props.state.PythonCodePending
-    );
-  };
-
   render() {
     return (
       <React.Fragment>
@@ -92,7 +84,7 @@ class NavigationBar extends React.Component {
                 Clear Results
               </Nav.Link>
               <Navbar.Text>|</Navbar.Text>
-              {this.awaitingCode() ? (
+              {this.props.awaitingServerResponse() ? (
                 <Spinner
                   className="navbar-spinner"
                   animation="border"
