@@ -1,4 +1,3 @@
-
 FROM phusion/baseimage:0.11
 # RUN useradd -ms /bin/false newuser
 
@@ -13,7 +12,6 @@ RUN install_clean \
   g++ \
   ruby \
   npm \
-  nodejs \
   python \
   && npm install \
   && cd client \
@@ -25,5 +23,4 @@ EXPOSE 8000
 # USER newuser
 
 CMD ["node", "server.js"]
-
 

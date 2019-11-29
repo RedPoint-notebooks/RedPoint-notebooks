@@ -1,1 +1,1 @@
-p 'hi'
+puts 'hi'
