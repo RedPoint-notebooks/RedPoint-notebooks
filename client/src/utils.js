@@ -73,3 +73,17 @@ export const findPendingIndex = language => {
       return null;
   }
 };
+
+export const makeStopPendingObj = language => {
+  switch (language) {
+    case "Ruby":
+      return { RubyCodePending: false };
+    case "Javascript":
+      return { JavascriptCodePending: false };
+    case "Python":
+      return { PythonCodePending: false };
+    default:
+      console.log("Error: Invalid Language Supplied in Server Message");
+      return null;
+  }
+};
