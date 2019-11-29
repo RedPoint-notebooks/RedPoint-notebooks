@@ -95,3 +95,7 @@ div .rendered-markdown {
 .dropdown-toggle:after {
   content: none !important;
 }
+
+.navbar-spinner {
+  margin: 12px 10px !important;
+}
