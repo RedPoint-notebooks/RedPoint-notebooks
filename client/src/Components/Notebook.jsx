@@ -320,6 +320,20 @@ class Notebook extends Component {
     );
   };
 
+  languagePending = language => {
+    switch (language) {
+      case "Ruby":
+        return this.state.RubyCodePending;
+      case "Javascript":
+        return this.state.JavascriptCodePending;
+      case "Python":
+        return this.state.PythonCodePending;
+      default:
+        console.log("Error: Invalid Language Supplied in languagePending()");
+        return null;
+    }
+  };
+
   render() {
     return (
       <div>
@@ -334,7 +348,7 @@ class Notebook extends Component {
         />
         <Container className="App-body">
           <CellsList
-            awaitingServerResponse={this.awaitingServerResponse}
+            languagePending={this.languagePending}
             onDeleteCellClick={this.handleDeleteCellClick}
             onAddCellClick={this.handleAddCellClick}
             cells={this.state.cells}

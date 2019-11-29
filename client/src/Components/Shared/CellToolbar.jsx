@@ -19,10 +19,11 @@ const CellToolbar = props => {
       ></ChangeLanguageDropdown>
       {props.language !== "Markdown" ? (
         <RunButtonOrSpinner
+          language={props.language}
           onClick={props.onRunClick}
           cellIndex={props.cellIndex}
           cellCodeState={props.cellCodeState}
-          awaitingServerResponse={props.awaitingServerResponse}
+          languagePending={props.languagePending}
         ></RunButtonOrSpinner>
       ) : null}
       <DeleteCellButton

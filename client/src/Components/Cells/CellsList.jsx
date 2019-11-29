@@ -15,7 +15,7 @@ const CellsList = props => {
         toggleRender={props.toggleRender}
         onUpdateCodeState={props.onUpdateCodeState}
         onRunClick={props.onRunClick}
-        awaitingServerResponse={props.awaitingServerResponse}
+        languagePending={props.languagePending}
       />
     );
   });

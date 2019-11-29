@@ -3,7 +3,7 @@ import RunCellButton from "./RunCellButton";
 import Spinner from "react-bootstrap/Spinner";
 
 const RunButtonOrSpinner = props => {
-  return props.awaitingServerResponse() ? (
+  return props.languagePending(props.language) ? (
     <Spinner
       as="span"
       className="cellbar-spinner"
