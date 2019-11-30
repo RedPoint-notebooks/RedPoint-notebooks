@@ -2,6 +2,7 @@ import React from "react";
 import Nav from "react-bootstrap/Nav";
 import logo from "../../placeholder_logo.svg";
 import Navbar from "react-bootstrap/Navbar";
+import NavDropdown from "react-bootstrap/NavDropdown";
 import ConfirmAction from "./ConfirmAction";
 import LoadForm from "./LoadForm";
 import Spinner from "react-bootstrap/Spinner";
@@ -61,12 +62,17 @@ class NavigationBar extends React.Component {
           <Navbar.Toggle aria-controls="basic-navbar-nav" />
           <Navbar.Collapse id="basic-navbar-nav">
             <Nav className="mr-auto">
-              <Nav.Link onClick={this.props.onCloneClick}>Clone</Nav.Link>
-              <Navbar.Text>|</Navbar.Text>
-              <Nav.Link onClick={this.props.onSaveClick}>Save</Nav.Link>
-              <Navbar.Text>|</Navbar.Text>
-              <Nav.Link onClick={this.handleLoadClick}>Load</Nav.Link>
-              <Navbar.Text>|</Navbar.Text>
+              <NavDropdown title="Notebook" id="basic-nav-dropdown">
+                <NavDropdown.Item onClick={this.props.onSaveClick}>
+                  Save
+                </NavDropdown.Item>
+                <NavDropdown.Item onClick={this.props.onCloneClick}>
+                  Clone
+                </NavDropdown.Item>
+                <NavDropdown.Item onClick={this.handleLoadClick}>
+                  Load
+                </NavDropdown.Item>
+              </NavDropdown>
               <Nav.Link onClick={this.toggleDeleteWarning}>Delete</Nav.Link>
               <Navbar.Text>|</Navbar.Text>
               <Nav.Link onClick={this.handleClearAllResults}>
