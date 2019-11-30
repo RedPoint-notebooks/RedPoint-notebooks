@@ -61,26 +61,17 @@ class NavigationBar extends React.Component {
           <Navbar.Toggle aria-controls="basic-navbar-nav" />
           <Navbar.Collapse id="basic-navbar-nav">
             <Nav className="mr-auto">
-              <Nav.Link href="#share">Share</Nav.Link>
+              <Nav.Link>Share</Nav.Link>
               <Navbar.Text>|</Navbar.Text>
-              <Nav.Link href="#clone">Clone</Nav.Link>
+              <Nav.Link>Clone</Nav.Link>
               <Navbar.Text>|</Navbar.Text>
-              <Nav.Link href="#save" onClick={this.props.onSaveClick}>
-                Save
-              </Nav.Link>
+              <Nav.Link onClick={this.props.onSaveClick}>Save</Nav.Link>
               <Navbar.Text>|</Navbar.Text>
-              <Nav.Link href="#load" onClick={this.handleLoadClick}>
-                Load
-              </Nav.Link>
+              <Nav.Link onClick={this.handleLoadClick}>Load</Nav.Link>
               <Navbar.Text>|</Navbar.Text>
-              <Nav.Link href="#delete" onClick={this.toggleDeleteWarning}>
-                Delete
-              </Nav.Link>
+              <Nav.Link onClick={this.toggleDeleteWarning}>Delete</Nav.Link>
               <Navbar.Text>|</Navbar.Text>
-              <Nav.Link
-                href="#removeResults"
-                onClick={this.handleClearAllResults}
-              >
+              <Nav.Link onClick={this.handleClearAllResults}>
                 Clear Results
               </Nav.Link>
               <Navbar.Text>|</Navbar.Text>

@@ -273,6 +273,42 @@ class Notebook extends Component {
       });
   };
 
+  handleCloneClick = e => {
+    e.preventDefault();
+    const cloneUUID = uuidv4();
+    const notebook = { cells: this.state.cells, id: cloneUUID };
+
+    notebook.cells = notebook.cells.map(cell => {
+      cell.results = { stdout: [], error: "", return: "" };
+      return cell;
+    });
+
+    const serializedNotebook = JSON.stringify(notebook);
+    console.log("Notebook clone request sent");
+
+    fetch(`/update`, {
+      method: "post",
+      mode: "cors",
+      cache: "no-cache",
+      body: serializedNotebook,
+      headers: { "Content-Type": "text/plain" }
+    })
+      .then(res => {
+        return res.text();
+      })
+      .then(data => {
+        // **TODO** convert to bootstrap alert/banner
+        alert(
+          `Your cloned notebook url is ${PROXY_URL}/notebooks/${cloneUUID}`
+        );
+
+        console.log("Clone response: ", data);
+      })
+      .catch(err => {
+        console.log("Fetch error on POST request. Failed to clone.");
+      });
+  };
+
   handleLoadClick = notebookId => {
     const request = JSON.stringify({ type: "loadNotebook", id: notebookId });
     this.ws.send(request);
@@ -345,6 +381,7 @@ class Notebook extends Component {
           awaitingServerResponse={this.awaitingServerResponse}
           deleteAllCells={this.handleDeleteAllCells}
           onSaveClick={this.handleSaveClick}
+          onCloneClick={this.handleCloneClick}
           onLoadClick={this.handleLoadClick}
           onClearAllResults={this.handleClearAllResults}
           onRunAllClick={this.handleRunAllClick}
