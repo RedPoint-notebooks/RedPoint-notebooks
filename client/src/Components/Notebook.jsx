@@ -251,10 +251,14 @@ class Notebook extends Component {
 
     const isSaveClick = operation === "save";
     const cloneId = uuidv4();
+    const notebookId = isSaveClick ? this.state.id : cloneId;
+
     const notebook = {
       cells: this.state.cells,
-      id: isSaveClick ? this.state.id : cloneId
+      id: notebookId
     };
+
+    debugger;
 
     notebook.cells = notebook.cells.map(cell => {
       cell.results = { stdout: [], error: "", return: "" };
@@ -277,7 +281,7 @@ class Notebook extends Component {
       .then(data => {
         // **TODO** convert to bootstrap alert/banner
         alert(
-          `Your ${operation}d notebook url is ${PROXY_URL}/notebooks/${cloneId}.`
+          `Your ${operation}d notebook url is ${PROXY_URL}/notebooks/${notebookId}`
         );
 
         console.log(`${operation} response: `, data);
