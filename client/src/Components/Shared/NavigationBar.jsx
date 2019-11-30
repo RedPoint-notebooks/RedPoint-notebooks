@@ -61,8 +61,6 @@ class NavigationBar extends React.Component {
           <Navbar.Toggle aria-controls="basic-navbar-nav" />
           <Navbar.Collapse id="basic-navbar-nav">
             <Nav className="mr-auto">
-              <Nav.Link>Share</Nav.Link>
-              <Navbar.Text>|</Navbar.Text>
               <Nav.Link onClick={this.props.onCloneClick}>Clone</Nav.Link>
               <Navbar.Text>|</Navbar.Text>
               <Nav.Link onClick={this.props.onSaveClick}>Save</Nav.Link>

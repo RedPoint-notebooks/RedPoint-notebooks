@@ -299,7 +299,7 @@ class Notebook extends Component {
       .then(data => {
         // **TODO** convert to bootstrap alert/banner
         alert(
-          `Your cloned notebook url is ${PROXY_URL}/notebooks/${cloneUUID}`
+          `Your cloned notebook url is ${PROXY_URL}/notebooks/${cloneUUID}.`
         );
 
         console.log("Clone response: ", data);
