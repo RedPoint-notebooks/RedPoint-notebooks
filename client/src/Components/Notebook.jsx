@@ -268,7 +268,7 @@ class Notebook extends Component {
     const serializedNotebook = JSON.stringify(notebook);
     console.log(`Notebook ${operation} request sent`);
 
-    fetch(`/update`, {
+    fetch(`/${operation}`, {
       method: "post",
       mode: "cors",
       cache: "no-cache",
