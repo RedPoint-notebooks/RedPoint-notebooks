@@ -5,11 +5,13 @@ import Navbar from "react-bootstrap/Navbar";
 import ConfirmAction from "./ConfirmAction";
 import LoadForm from "./LoadForm";
 import Spinner from "react-bootstrap/Spinner";
+import APIForm from "./APIForm";
 
 class NavigationBar extends React.Component {
   state = {
     deleteWarningVisible: false,
-    loadFormVisible: false
+    loadFormVisible: false,
+    apiFormVisible: false
   };
 
   toggleDeleteWarning = () => {
@@ -40,6 +42,14 @@ class NavigationBar extends React.Component {
     this.setState(prevState => {
       return {
         loadFormVisible: !prevState.loadFormVisible
+      };
+    });
+  };
+
+  handleToggleAPIForm = () => {
+    this.setState(prevState => {
+      return {
+        apiFormVisible: !prevState.apiFormVisible
       };
     });
   };
@@ -96,7 +106,11 @@ class NavigationBar extends React.Component {
                   Run All Cells
                 </Nav.Link>
               )}
+              <Navbar.Text>|</Navbar.Text>
             </Nav>
+            <Nav.Link href="#api" onClick={this.handleToggleAPIForm}>
+              API
+            </Nav.Link>
           </Navbar.Collapse>
         </Navbar>
         {this.state.deleteWarningVisible ? (
@@ -112,6 +126,9 @@ class NavigationBar extends React.Component {
             onLoadClick={this.props.onLoadClick}
             onToggleLoadForm={this.handleToggleLoadForm}
           />
+        ) : null}
+        {this.state.apiFormVisible ? (
+          <APIForm onAPISubmit={this.props.onAPISubmit}></APIForm>
         ) : null}
       </React.Fragment>
     );
