@@ -13,6 +13,7 @@ import {
 } from "../utils";
 import { SIGTERM_ERROR_MESSAGE, PROXY_URL } from "../Constants/constants";
 import { LANGUAGES } from "../Constants/constants";
+// import { start } from "repl";
 
 class Notebook extends Component {
   state = {
@@ -58,12 +59,36 @@ class Notebook extends Component {
     }
   };
 
+  // componentWillUnmount() {
+  // this.ws.close();
+  // fetch(`http://www.redpointnotebook.com`, {
+  // method: "delete"
+  // mode: "cors",
+  // cache: "no-cache"
+  // body: serializedNotebook,
+  // headers: { "Content-Type": "text/plain" }
+  // });
+  // .then(res => {
+  //   return res.text();
+  // })
+  // .then(data => {
+  //   return data;
+  // });
+  // }
+
   componentDidMount() {
-    // this.loadState();
+    this.loadState();
     this.establishWebsocket();
-
-    this.ws.onopen = e => console.log(window.location.host);
-
+    this.ws.onopen = e => {
+      let urlNoProtocol = e.target.url.replace(/ws:\/\//, "");
+      console.log("urlNoProtocol", urlNoProtocol);
+      this.ws.send(
+        JSON.stringify({ type: "sessionAddress", data: urlNoProtocol })
+      );
+    };
+    this.ws.onerror = e => {
+      console.log("Error encountered : ", e);
+    };
     // this.ws.onclose = () => {
     //   this.establishWebsocket();
     //   // console.log(this.ws.readyState);

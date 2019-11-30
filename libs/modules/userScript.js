@@ -79,7 +79,6 @@ const userScript = {
 
       scriptProcess.stdout.on("data", data => {
         buffer.push(data);
-
         setTimeout(() => {
           const bufferArray = buffer.join("").split("\n");
 

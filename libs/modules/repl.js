@@ -18,7 +18,7 @@ const repl = {
         replType = "node";
         break;
       case "Python":
-        replExitMessage = "exit()\r";
+        replExitMessage = "\nexit()\r";
         replType = "python";
         break;
     }
