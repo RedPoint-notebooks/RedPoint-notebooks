@@ -48,7 +48,7 @@ class NavigationBar extends React.Component {
     return (
       <React.Fragment>
         <Navbar bg="dark" variant="dark" sticky="top">
-          <Navbar.Brand href="#logo">
+          <Navbar.Brand>
             <img
               alt=""
               src={logo}
@@ -63,7 +63,7 @@ class NavigationBar extends React.Component {
             <Nav className="mr-auto">
               <Nav.Link>Share</Nav.Link>
               <Navbar.Text>|</Navbar.Text>
-              <Nav.Link>Clone</Nav.Link>
+              <Nav.Link onClick={this.props.onCloneClick}>Clone</Nav.Link>
               <Navbar.Text>|</Navbar.Text>
               <Nav.Link onClick={this.props.onSaveClick}>Save</Nav.Link>
               <Navbar.Text>|</Navbar.Text>
@@ -83,7 +83,7 @@ class NavigationBar extends React.Component {
                   size="sm"
                 />
               ) : (
-                <Nav.Link href="#runAll" onClick={this.props.onRunAllClick}>
+                <Nav.Link onClick={this.props.onRunAllClick}>
                   Run All Cells
                 </Nav.Link>
               )}
