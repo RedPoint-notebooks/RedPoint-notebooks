@@ -348,7 +348,7 @@ class Notebook extends Component {
           const newCells = [...prevState.cells];
           newCells.splice(0, 0, {
             language: "Javascript",
-            code: `\n const data = ${JSON.stringify(data, null, 2)}`,
+            code: `const apiData = ${JSON.stringify(data, null, 2)}`,
             results: { stdout: [], error: "", return: "" },
             id: uuidv4()
           });
