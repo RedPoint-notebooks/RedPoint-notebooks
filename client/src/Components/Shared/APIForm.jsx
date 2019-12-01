@@ -9,6 +9,7 @@ class APIForm extends Component {
   };
 
   handleAPISubmit = () => {
+    this.props.onToggleAPIForm();
     this.props.onAPISubmit(this.state.api_url);
   };
 
@@ -32,11 +33,19 @@ class APIForm extends Component {
             </Form.Text>
           </Form.Group>
           <Button
+            className="load-button"
             onClick={this.handleAPISubmit}
             variant="primary"
             type="submit"
           >
             Submit
+          </Button>
+          <Button
+            onClick={this.props.onToggleAPIForm}
+            variant="light"
+            className="load-button"
+          >
+            Cancel
           </Button>
         </Form>
       </Alert>

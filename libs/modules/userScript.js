@@ -14,7 +14,7 @@ const userScript = {
   scriptExecCmd: "",
   execOptions: (execOptions = {
     encoding: "utf8",
-    timeout: 5000,
+    timeout: 10000,
     maxBuffer: 200 * 1024, // this is default (204 kb)
     killSignal: "SIGTERM",
     cwd: null,

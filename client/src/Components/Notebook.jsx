@@ -344,19 +344,16 @@ class Notebook extends Component {
       })
       .then(data => {
         console.log(data);
-        setTimeout(
-          this.setState(prevState => {
-            const newCells = [...prevState.cells];
-            newCells.splice(0, 0, {
-              language: "Javascript",
-              code: `\n const data = ${JSON.stringify(data)}`,
-              results: { stdout: [], error: "", return: "" },
-              id: uuidv4()
-            });
-            return { cells: newCells };
-          }),
-          100
-        );
+        this.setState(prevState => {
+          const newCells = [...prevState.cells];
+          newCells.splice(0, 0, {
+            language: "Javascript",
+            code: `\n const data = ${JSON.stringify(data, null, 2)}`,
+            results: { stdout: [], error: "", return: "" },
+            id: uuidv4()
+          });
+          return { cells: newCells };
+        });
       });
   };
 

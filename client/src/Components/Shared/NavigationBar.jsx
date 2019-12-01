@@ -128,7 +128,10 @@ class NavigationBar extends React.Component {
           />
         ) : null}
         {this.state.apiFormVisible ? (
-          <APIForm onAPISubmit={this.props.onAPISubmit}></APIForm>
+          <APIForm
+            onAPISubmit={this.props.onAPISubmit}
+            onToggleAPIForm={this.handleToggleAPIForm}
+          ></APIForm>
         ) : null}
       </React.Fragment>
     );

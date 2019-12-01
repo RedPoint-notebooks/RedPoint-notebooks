@@ -27,7 +27,8 @@ const repl = {
       console.log(
         JSON.stringify(`Repl Command: ${codeString + replExitMessage}`)
       );
-      const process = pty.spawn(replType);
+      const options = { cols: 1000, rows: 1000 };
+      const process = pty.spawn(replType, null, options);
       let returnData = "";
       process.onData(data => (returnData += stripAnsi(data)));
       process.write(codeString + replExitMessage);
