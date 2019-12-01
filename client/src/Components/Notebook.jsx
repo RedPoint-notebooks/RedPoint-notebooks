@@ -238,16 +238,10 @@ class Notebook extends Component {
     });
   };
 
-  handleSaveClick = e => {
-    this.handleSaveOrClone(e, "save");
-  };
-
-  handleCloneClick = e => {
-    this.handleSaveOrClone(e, "clone");
-  };
-
-  handleSaveOrClone = (e, operation) => {
+  handleSaveOrCloneClick = e => {
     e.preventDefault();
+    const operation = e.target.name;
+    debugger;
 
     const isSaveClick = operation === "save";
     const cloneId = uuidv4();
@@ -257,8 +251,6 @@ class Notebook extends Component {
       cells: this.state.cells,
       id: notebookId
     };
-
-    debugger;
 
     notebook.cells = notebook.cells.map(cell => {
       cell.results = { stdout: [], error: "", return: "" };
@@ -362,8 +354,8 @@ class Notebook extends Component {
           state={this.state}
           awaitingServerResponse={this.awaitingServerResponse}
           deleteAllCells={this.handleDeleteAllCells}
-          onSaveClick={this.handleSaveClick}
-          onCloneClick={this.handleCloneClick}
+          onSaveClick={this.handleSaveOrCloneClick}
+          onCloneClick={this.handleSaveOrCloneClick}
           onLoadClick={this.handleLoadClick}
           onClearAllResults={this.handleClearAllResults}
           onRunAllClick={this.handleRunAllClick}

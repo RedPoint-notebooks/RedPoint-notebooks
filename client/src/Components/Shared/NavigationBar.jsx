@@ -63,10 +63,13 @@ class NavigationBar extends React.Component {
           <Navbar.Collapse id="basic-navbar-nav">
             <Nav className="mr-auto">
               <NavDropdown title="Notebook" id="basic-nav-dropdown">
-                <NavDropdown.Item onClick={this.props.onSaveClick}>
+                <NavDropdown.Item onClick={this.props.onSaveClick} name="save">
                   Save
                 </NavDropdown.Item>
-                <NavDropdown.Item onClick={this.props.onCloneClick}>
+                <NavDropdown.Item
+                  onClick={this.props.onCloneClick}
+                  name="clone"
+                >
                   Clone
                 </NavDropdown.Item>
                 <NavDropdown.Item onClick={this.handleLoadClick}>
