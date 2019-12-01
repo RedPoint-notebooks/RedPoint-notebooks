@@ -59,23 +59,6 @@ class Notebook extends Component {
     }
   };
 
-  // componentWillUnmount() {
-  // this.ws.close();
-  // fetch(`http://www.redpointnotebook.com`, {
-  // method: "delete"
-  // mode: "cors",
-  // cache: "no-cache"
-  // body: serializedNotebook,
-  // headers: { "Content-Type": "text/plain" }
-  // });
-  // .then(res => {
-  //   return res.text();
-  // })
-  // .then(data => {
-  //   return data;
-  // });
-  // }
-
   componentDidMount() {
     this.loadState();
     this.establishWebsocket();
@@ -90,6 +73,8 @@ class Notebook extends Component {
       console.log("Error encountered : ", e);
     };
     // this.ws.onclose = () => {
+    //   reestablish when websocket times out?
+
     //   this.establishWebsocket();
     //   // console.log(this.ws.readyState);
     // };

@@ -29,17 +29,6 @@ const generateDelimiter = (language, delimiter) => {
   }
 };
 
-// on connection, isAlive is set to true
-//
-// server calls ws.ping(someFunc);
-// by convention, client responds with a pong()
-// when server receives pong, heartbeat is called which resets
-// isAlive to true
-// every n seconds, the server pings the client
-// after pinging the client, isAlive is set to false
-// if a pong is not received after the timeout period, the server terminates
-// the websocket connection
-
 function heartbeat(ws) {
   ws.isAlive = true;
 }
