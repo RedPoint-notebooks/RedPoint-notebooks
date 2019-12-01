@@ -3,6 +3,7 @@ import CellsList from "./Cells/CellsList";
 import Container from "react-bootstrap/Container";
 import NavigationBar from "./Shared/NavigationBar";
 import uuidv4 from "uuid";
+
 import {
   findSyntaxErrorIdx,
   findPendingIndex,
@@ -52,16 +53,33 @@ class Notebook extends Component {
       });
   };
 
-  componentDidMount() {
-    this.loadState();
-
+  establishWebsocket = () => {
     if (process.env.NODE_ENV === "development") {
       this.ws = new WebSocket("ws://localhost:8000");
     } else if (process.env.NODE_ENV === "production") {
       this.ws = new WebSocket("ws://" + window.location.host);
     }
+  };
 
-    this.ws.onopen = () => console.log(window.location.host);
+  componentDidMount() {
+    this.loadState();
+    this.establishWebsocket();
+    this.ws.onopen = e => {
+      let urlNoProtocol = e.target.url.replace(/ws:\/\//, "");
+      console.log("urlNoProtocol", urlNoProtocol);
+      this.ws.send(
+        JSON.stringify({ type: "sessionAddress", data: urlNoProtocol })
+      );
+    };
+    this.ws.onerror = e => {
+      console.log("Error encountered : ", e);
+    };
+    // this.ws.onclose = () => {
+    //   reestablish when websocket times out?
+
+    //   this.establishWebsocket();
+    //   // console.log(this.ws.readyState);
+    // };
 
     this.ws.onmessage = message => {
       message = JSON.parse(message.data);
@@ -238,9 +256,19 @@ class Notebook extends Component {
     });
   };
 
-  handleSaveClick = e => {
+  handleSaveOrCloneClick = e => {
     e.preventDefault();
-    const notebook = { cells: this.state.cells, id: this.state.id };
+    const operation = e.target.name;
+    debugger;
+
+    const isSaveClick = operation === "save";
+    const cloneId = uuidv4();
+    const notebookId = isSaveClick ? this.state.id : cloneId;
+
+    const notebook = {
+      cells: this.state.cells,
+      id: notebookId
+    };
 
     notebook.cells = notebook.cells.map(cell => {
       cell.results = { stdout: [], error: "", return: "" };
@@ -248,9 +276,9 @@ class Notebook extends Component {
     });
 
     const serializedNotebook = JSON.stringify(notebook);
-    console.log("Notebook save request sent");
+    console.log(`Notebook ${operation} request sent`);
 
-    fetch(`/update`, {
+    fetch(`/${operation}`, {
       method: "post",
       mode: "cors",
       cache: "no-cache",
@@ -263,13 +291,13 @@ class Notebook extends Component {
       .then(data => {
         // **TODO** convert to bootstrap alert/banner
         alert(
-          `Your saved notebook url is ${PROXY_URL}/notebooks/${this.state.id}`
+          `Your ${operation}d notebook url is ${PROXY_URL}/notebooks/${notebookId}`
         );
 
-        console.log("Save response: ", data);
+        console.log(`${operation} response: `, data);
       })
       .catch(err => {
-        console.log("Fetch error on POST request. Failed to save.");
+        console.log("Fetch error on POST request. Failed to clone.");
       });
   };
 
@@ -364,7 +392,8 @@ class Notebook extends Component {
           state={this.state}
           awaitingServerResponse={this.awaitingServerResponse}
           deleteAllCells={this.handleDeleteAllCells}
-          onSaveClick={this.handleSaveClick}
+          onSaveClick={this.handleSaveOrCloneClick}
+          onCloneClick={this.handleSaveOrCloneClick}
           onLoadClick={this.handleLoadClick}
           onClearAllResults={this.handleClearAllResults}
           onRunAllClick={this.handleRunAllClick}

@@ -4,16 +4,17 @@ const express = require("express");
 const http = require("http");
 const Websocket = require("ws");
 const path = require("path");
-
+const fetch = require("node-fetch");
 const app = express();
 const server = http.createServer(app);
-const wss = new Websocket.Server({ server });
+const wss = new Websocket.Server({ server, clientTracking: true });
 
 const logger = require("morgan");
 const userScript = require("./libs/modules/userScript");
 const repl = require("./libs/modules/repl");
 
 const db = require("./libs/modules/db");
+let sessionAddress;
 
 app.use(logger("dev"));
 
@@ -28,15 +29,36 @@ const generateDelimiter = (language, delimiter) => {
   }
 };
 
+function heartbeat(ws) {
+  ws.isAlive = true;
+}
+function noop() {}
+
 wss.on("connection", ws => {
   const delimiter = uuidv4();
   const queue = [];
+
+  ws.on("close", () => {
+    console.log("Sending fetch delete request to : ", sessionAddress);
+    // sessionAddress = new URL("http://" + sessionAddress);
+    fetch("http://" + sessionAddress, {
+      method: "DELETE"
+    });
+  });
+  ws.on("error", () => {});
+
+  ws.isAlive = true;
+  ws.on("pong", () => {
+    heartbeat(ws);
+  });
 
   ws.on("message", message => {
     message = JSON.parse(message);
     console.log("Server received message: ", message);
 
-    if (message.type === "saveNotebook") {
+    if (message.type === "sessionAddress") {
+      sessionAddress = message.data;
+    } else if (message.type === "saveNotebook") {
       handleSaveNotebook(message.notebook, ws);
     } else if (message.type === "loadNotebook") {
       handleLoadNotebook(message.id, ws);
@@ -50,6 +72,19 @@ wss.on("connection", ws => {
     }
   });
 });
+
+const interval = setInterval(function ping() {
+  wss.clients.forEach(function each(ws) {
+    // when tab closed, there are no more clients. no iteration here.
+    if (ws.isAlive === false) {
+      ws.terminate();
+    }
+
+    ws.isAlive = false;
+    ws.ping(noop);
+    console.log("ping sent to client");
+  });
+}, 4000);
 
 const handleSaveNotebook = (notebook, ws) => {
   db("SAVE", notebook)
