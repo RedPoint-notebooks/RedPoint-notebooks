@@ -32,15 +32,16 @@ const repl = {
       process.onData(data => (returnData += stripAnsi(data)));
       process.write(codeString + replExitMessage);
       process.on("exit", () => {
+        // To ensure that the spawned REPL is killed after finishing processing
         process.removeAllListeners("data");
         process.kill();
-        // assumes REPL is finished, and data is captured, and written to returnData
         console.log("AFTER REPL EXECUTE");
         resolve(returnData);
       });
     });
   },
   parseOutput: (returnData, lang) => {
+    console.log("BEFORE PARSE OUTPUT");
     switch (lang) {
       case "Ruby":
         return parseRubyOutput(returnData);
@@ -56,9 +57,9 @@ const parseRubyOutput = returnData => {
   return new Promise(resolve => {
     const byOutput = returnData.split("=>");
     const dirtyReturnValue = byOutput[byOutput.length - 1];
-    const indexCleanStops = dirtyReturnValue.indexOf("2.4.1"); // fix hard-coding?
+    const indexCleanStops = dirtyReturnValue.indexOf("irb(main):");
     const cleanReturnValue = dirtyReturnValue.slice(0, indexCleanStops);
-    resolve(cleanReturnValue);
+    resolve(cleanReturnValue.trim());
   });
 };
 
@@ -66,8 +67,9 @@ const parseJSOutput = returnData => {
   return new Promise(resolve => {
     const byOutput = returnData.split(">");
     const dirtyReturnValue = byOutput[byOutput.length - 2];
-    const cleanReturnValue = extractCleanJSReturnValue(dirtyReturnValue);
-    resolve(cleanReturnValue);
+    extractCleanJSReturnValue(dirtyReturnValue).then(clean => {
+      resolve(clean);
+    });
   });
 };
 
@@ -77,14 +79,32 @@ const parsePythonOutput = returnData => {
     const dirtyReturnValue = byOutput[byOutput.length - 2];
     const indexCleanStarts = dirtyReturnValue.indexOf("\n");
     const cleanReturnValue = dirtyReturnValue.slice(indexCleanStarts);
-    resolve(cleanReturnValue);
+    resolve(cleanReturnValue.trim());
   });
 };
 
 const extractCleanJSReturnValue = string => {
-  const newlines = [...string.matchAll(/\n/g)];
+  return new Promise(resolve => {
+    const newlines = findNewlineIndexes(string);
+    console.log("newlines in extractCleanJS: ", newlines);
+    const cleanStarts = newlines[newlines.length - 2];
+    const cleanStops = newlines[newlines.length - 1];
+    const clean = string.slice(cleanStarts, cleanStops).trim();
+    resolve(clean);
+  });
+};
 
-  return string.slice(newlines[newlines.length - 2].index + 1);
+const findNewlineIndexes = string => {
+  const indexes = [];
+
+  for (let i = 0; i < string.length; i += 1) {
+    let char = string[i];
+    if (char === "\n") {
+      indexes.push(i);
+    }
+  }
+
+  return indexes;
 };
 
 module.exports = repl;

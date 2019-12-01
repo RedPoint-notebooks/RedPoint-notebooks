@@ -4,6 +4,7 @@ import logo from "../../placeholder_logo.svg";
 import Navbar from "react-bootstrap/Navbar";
 import ConfirmAction from "./ConfirmAction";
 import LoadForm from "./LoadForm";
+import Spinner from "react-bootstrap/Spinner";
 
 class NavigationBar extends React.Component {
   state = {
@@ -83,9 +84,18 @@ class NavigationBar extends React.Component {
                 Clear Results
               </Nav.Link>
               <Navbar.Text>|</Navbar.Text>
-              <Nav.Link href="#runAll" onClick={this.props.onRunAllClick}>
-                Run All Cells
-              </Nav.Link>
+              {this.props.awaitingServerResponse() ? (
+                <Spinner
+                  className="navbar-spinner"
+                  animation="border"
+                  variant="secondary"
+                  size="sm"
+                />
+              ) : (
+                <Nav.Link href="#runAll" onClick={this.props.onRunAllClick}>
+                  Run All Cells
+                </Nav.Link>
+              )}
             </Nav>
           </Navbar.Collapse>
         </Navbar>

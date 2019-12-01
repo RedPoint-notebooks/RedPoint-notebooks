@@ -27,6 +27,7 @@ const CodeCellContainer = props => {
       toggleRender={props.toggleRender}
       onUpdateCodeState={props.onUpdateCodeState}
       onRunClick={props.onRunClick}
+      languagePending={props.languagePending}
     />
   );
 };
