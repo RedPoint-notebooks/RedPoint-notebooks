@@ -1,5 +1,35 @@
-for (let i = 0; i <= 10; i += 1) {
-	console.log(i)
+const apiData = {
+  "login": "charlesging",
+  "id": 29799847,
+  "node_id": "MDQ6VXNlcjI5Nzk5ODQ3",
+  "avatar_url": "https://avatars2.githubusercontent.com/u/29799847?v=4",
+  "gravatar_id": "",
+  "url": "https://api.github.com/users/charlesging",
+  "html_url": "https://github.com/charlesging",
+  "followers_url": "https://api.github.com/users/charlesging/followers",
+  "following_url": "https://api.github.com/users/charlesging/following{/other_user}",
+  "gists_url": "https://api.github.com/users/charlesging/gists{/gist_id}",
+  "starred_url": "https://api.github.com/users/charlesging/starred{/owner}{/repo}",
+  "subscriptions_url": "https://api.github.com/users/charlesging/subscriptions",
+  "organizations_url": "https://api.github.com/users/charlesging/orgs",
+  "repos_url": "https://api.github.com/users/charlesging/repos",
+  "events_url": "https://api.github.com/users/charlesging/events{/privacy}",
+  "received_events_url": "https://api.github.com/users/charlesging/received_events",
+  "type": "User",
+  "site_admin": false,
+  "name": "Charles G",
+  "company": null,
+  "blog": "",
+  "location": null,
+  "email": null,
+  "hireable": null,
+  "bio": null,
+  "public_repos": 9,
+  "public_gists": 0,
+  "followers": 1,
+  "following": 2,
+  "created_at": "2017-06-30T14:27:39Z",
+  "updated_at": "2019-12-01T14:57:55Z"
 }
-console.log('ccae72e9-522e-451d-a8ee-3fcfeac4a10a');
-
+console.log('ef3e2e4f-5f69-40c5-bb35-ab86e10142fa');
+console.log(apiData);

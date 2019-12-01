@@ -365,6 +365,26 @@ class Notebook extends Component {
     }
   };
 
+  handleAPISubmit = url => {
+    fetch(url, { method: "GET" })
+      .then(res => {
+        return res.json();
+      })
+      .then(data => {
+        console.log(data);
+        this.setState(prevState => {
+          const newCells = [...prevState.cells];
+          newCells.splice(0, 0, {
+            language: "Javascript",
+            code: `const apiData = ${JSON.stringify(data, null, 2)}`,
+            results: { stdout: [], error: "", return: "" },
+            id: uuidv4()
+          });
+          return { cells: newCells };
+        });
+      });
+  };
+
   render() {
     return (
       <div>
@@ -377,6 +397,7 @@ class Notebook extends Component {
           onLoadClick={this.handleLoadClick}
           onClearAllResults={this.handleClearAllResults}
           onRunAllClick={this.handleRunAllClick}
+          onAPISubmit={this.handleAPISubmit}
         />
         <Container className="App-body">
           <CellsList
