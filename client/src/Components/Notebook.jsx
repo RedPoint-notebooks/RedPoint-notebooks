@@ -13,7 +13,6 @@ import {
 } from "../utils";
 import { SIGTERM_ERROR_MESSAGE, PROXY_URL } from "../Constants/constants";
 import { LANGUAGES } from "../Constants/constants";
-// import { start } from "repl";
 
 class Notebook extends Component {
   state = {
