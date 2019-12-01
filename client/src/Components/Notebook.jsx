@@ -3,6 +3,7 @@ import CellsList from "./Cells/CellsList";
 import Container from "react-bootstrap/Container";
 import NavigationBar from "./Shared/NavigationBar";
 import uuidv4 from "uuid";
+
 import {
   findSyntaxErrorIdx,
   findPendingIndex,
@@ -52,16 +53,33 @@ class Notebook extends Component {
       });
   };
 
-  componentDidMount() {
-    this.loadState();
-
+  establishWebsocket = () => {
     if (process.env.NODE_ENV === "development") {
       this.ws = new WebSocket("ws://localhost:8000");
     } else if (process.env.NODE_ENV === "production") {
       this.ws = new WebSocket("ws://" + window.location.host);
     }
+  };
 
-    this.ws.onopen = () => console.log(window.location.host);
+  componentDidMount() {
+    this.loadState();
+    this.establishWebsocket();
+    this.ws.onopen = e => {
+      let urlNoProtocol = e.target.url.replace(/ws:\/\//, "");
+      console.log("urlNoProtocol", urlNoProtocol);
+      this.ws.send(
+        JSON.stringify({ type: "sessionAddress", data: urlNoProtocol })
+      );
+    };
+    this.ws.onerror = e => {
+      console.log("Error encountered : ", e);
+    };
+    // this.ws.onclose = () => {
+    //   reestablish when websocket times out?
+
+    //   this.establishWebsocket();
+    //   // console.log(this.ws.readyState);
+    // };
 
     this.ws.onmessage = message => {
       message = JSON.parse(message.data);
