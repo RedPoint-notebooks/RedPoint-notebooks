@@ -2,6 +2,7 @@ import React from "react";
 import Nav from "react-bootstrap/Nav";
 import logo from "../../placeholder_logo.svg";
 import Navbar from "react-bootstrap/Navbar";
+import NavDropdown from "react-bootstrap/NavDropdown";
 import ConfirmAction from "./ConfirmAction";
 import LoadForm from "./LoadForm";
 import Spinner from "react-bootstrap/Spinner";
@@ -48,7 +49,7 @@ class NavigationBar extends React.Component {
     return (
       <React.Fragment>
         <Navbar bg="dark" variant="dark" sticky="top">
-          <Navbar.Brand href="#logo">
+          <Navbar.Brand>
             <img
               alt=""
               src={logo}
@@ -61,26 +62,23 @@ class NavigationBar extends React.Component {
           <Navbar.Toggle aria-controls="basic-navbar-nav" />
           <Navbar.Collapse id="basic-navbar-nav">
             <Nav className="mr-auto">
-              <Nav.Link href="#share">Share</Nav.Link>
+              <NavDropdown title="Notebook" id="basic-nav-dropdown">
+                <NavDropdown.Item onClick={this.props.onSaveClick} name="save">
+                  Save
+                </NavDropdown.Item>
+                <NavDropdown.Item
+                  onClick={this.props.onCloneClick}
+                  name="clone"
+                >
+                  Clone
+                </NavDropdown.Item>
+                <NavDropdown.Item onClick={this.handleLoadClick}>
+                  Load
+                </NavDropdown.Item>
+              </NavDropdown>
+              <Nav.Link onClick={this.toggleDeleteWarning}>Delete</Nav.Link>
               <Navbar.Text>|</Navbar.Text>
-              <Nav.Link href="#clone">Clone</Nav.Link>
-              <Navbar.Text>|</Navbar.Text>
-              <Nav.Link href="#save" onClick={this.props.onSaveClick}>
-                Save
-              </Nav.Link>
-              <Navbar.Text>|</Navbar.Text>
-              <Nav.Link href="#load" onClick={this.handleLoadClick}>
-                Load
-              </Nav.Link>
-              <Navbar.Text>|</Navbar.Text>
-              <Nav.Link href="#delete" onClick={this.toggleDeleteWarning}>
-                Delete
-              </Nav.Link>
-              <Navbar.Text>|</Navbar.Text>
-              <Nav.Link
-                href="#removeResults"
-                onClick={this.handleClearAllResults}
-              >
+              <Nav.Link onClick={this.handleClearAllResults}>
                 Clear Results
               </Nav.Link>
               <Navbar.Text>|</Navbar.Text>
@@ -92,7 +90,7 @@ class NavigationBar extends React.Component {
                   size="sm"
                 />
               ) : (
-                <Nav.Link href="#runAll" onClick={this.props.onRunAllClick}>
+                <Nav.Link onClick={this.props.onRunAllClick}>
                   Run All Cells
                 </Nav.Link>
               )}
