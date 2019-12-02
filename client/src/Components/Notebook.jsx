@@ -42,11 +42,33 @@ class Notebook extends Component {
         return res.json();
       })
       .then(data => {
-        // TODO: scrub IDs on proxy server before sending to client
         if (data) {
           console.log("Notebook loaded from server: ", data);
-          const { cells, id } = data;
-          this.setState({ cells, id });
+          let { cells, id } = data;
+
+          if (data.webhookData) {
+            const webhookDataCells = data.webhookData.map(
+              (webhookData, idx) => {
+                return {
+                  language: "Javascript",
+                  code: `const webhookData${idx} = ${JSON.stringify(
+                    webhookData,
+                    null,
+                    2
+                  )}`,
+                  results: { stdout: [], error: "", return: "" },
+                  id: uuidv4()
+                };
+              }
+            );
+
+            this.setState(prevState => {
+              const newCells = [...webhookDataCells, ...cells];
+              return { cells: newCells, id };
+            });
+          } else {
+            this.setState({ cells, id });
+          }
         } else {
           console.log("No notebook loaded from server");
         }
