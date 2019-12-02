@@ -4,28 +4,28 @@ import Container from "react-bootstrap/Container";
 import NavigationBar from "./Shared/NavigationBar";
 import uuidv4 from "uuid";
 
-import {
-  findSyntaxErrorIdx,
-  findPendingIndex,
-  findWriteToPendingIndex,
-  findCellIndex,
-  findLastIndexOfEachLanguageInNotebook,
-  makeStopPendingObj
-} from "../utils";
+import { findLastIndexOfEachLanguageInNotebook } from "../utils";
 import { SIGTERM_ERROR_MESSAGE, PROXY_URL } from "../Constants/constants";
 
 class Notebook extends Component {
   state = {
     cells: [],
-    RubyPendingIndexes: [],
-    RubyWriteToIndex: 0,
-    RubyCodePending: false,
-    JavascriptPendingIndexes: [],
-    JavascriptWriteToIndex: 0,
-    JavascriptCodePending: false,
-    PythonPendingIndexes: [],
-    PythonWriteToIndex: 0,
-    PythonCodePending: false,
+    Ruby: {
+      pendingIndexes: [],
+      writeToIndex: 0, // the index of the pending indexes array
+      codePending: false
+    },
+    Javascript: {
+      pendingIndexes: [],
+      writeToIndex: 0,
+      codePending: false
+    },
+    Python: {
+      pendingIndexes: [],
+      writeToIndex: 0,
+      codePending: false
+    },
+
     id: uuidv4()
   };
 
@@ -83,19 +83,23 @@ class Notebook extends Component {
 
     this.ws.onmessage = message => {
       message = JSON.parse(message.data);
-      let cellIndex = findCellIndex(message, this.state);
+
+      const language = message.language;
+      const writeToIndex = this.state[language].writeToIndex;
+      const cellIndex = this.state[language].pendingIndexes[writeToIndex];
 
       console.log(JSON.stringify(message.data));
-      let stopLanguagePending;
 
       switch (message.type) {
         case "delimiter":
-          // update the pending cell index for the language being executed
-          const pendingIndex = findWriteToPendingIndex(message.language);
+          // update the pending cell index for results of the language being executed
           this.setState(prevState => {
-            return {
-              [pendingIndex]: prevState[pendingIndex] + 1
-            };
+            const newWriteToIndex = prevState[language].writeToIndex + 1;
+            const newState = Object.assign({}, prevState[language], {
+              writeToIndex: newWriteToIndex
+            });
+
+            return { [language]: newState };
           });
 
           break;
@@ -104,23 +108,18 @@ class Notebook extends Component {
           break;
         case "return":
         case "error":
-          stopLanguagePending = makeStopPendingObj(message.language);
-          this.setState(stopLanguagePending);
+          this.stopLanguagePending(language);
           this.updateCellResults(message.type, cellIndex, message);
           break;
-        // case "stderr":
-        //   this.updateCellResults("error", cellIndex, message);
-        //   break;
         case "syntax-error":
-          stopLanguagePending = makeStopPendingObj(message.language);
-          this.setState(stopLanguagePending);
-          cellIndex = findSyntaxErrorIdx(
-            message,
-            this.state.RubyPendingIndexes,
-            this.state.JavascriptPendingIndexes,
-            this.state.PythonPendingIndexes
-          );
-          this.updateCellResults("error", cellIndex, message);
+          this.stopLanguagePending(language);
+
+          const errorLocation = message.data.location[0];
+          const errorCellIndex = this.state[language].pendingIndexes[
+            errorLocation
+          ];
+
+          this.updateCellResults("error", errorCellIndex, message);
           break;
         case "loadNotebook":
           const newState = message.data;
@@ -226,14 +225,16 @@ class Notebook extends Component {
       }
     }
 
-    const langWriteToPending = findWriteToPendingIndex(language);
-    const langPendingIndexes = findPendingIndex(language);
-    const langCodePending = `${language}CodePending`;
+    this.setState(prevState => {
+      const newState = Object.assign(
+        {},
+        prevState[language],
+        { pendingIndexes },
+        { writeToIndex: 0 },
+        { codePending: true }
+      );
 
-    this.setState({
-      [langPendingIndexes]: pendingIndexes,
-      [langWriteToPending]: 0,
-      [langCodePending]: true
+      return { [language]: newState };
     });
 
     return { type: "executeCode", language, codeStrArray };
@@ -259,7 +260,6 @@ class Notebook extends Component {
   handleSaveOrCloneClick = e => {
     e.preventDefault();
     const operation = e.target.name;
-    debugger;
 
     const isSaveClick = operation === "save";
     const cloneId = uuidv4();
@@ -345,20 +345,20 @@ class Notebook extends Component {
 
   awaitingServerResponse = () => {
     return (
-      this.state.RubyCodePending ||
-      this.state.JavascriptCodePending ||
-      this.state.PythonCodePending
+      this.state.Ruby.codePending ||
+      this.state.Javascript.codePending ||
+      this.state.Python.codePending
     );
   };
 
   languagePending = language => {
     switch (language) {
       case "Ruby":
-        return this.state.RubyCodePending;
+        return this.state.Ruby.codePending;
       case "Javascript":
-        return this.state.JavascriptCodePending;
+        return this.state.Javascript.codePending;
       case "Python":
-        return this.state.PythonCodePending;
+        return this.state.Python.codePending;
       default:
         console.log("Error: Invalid Language Supplied in languagePending()");
         return null;
@@ -383,6 +383,15 @@ class Notebook extends Component {
           return { cells: newCells };
         });
       });
+  };
+
+  stopLanguagePending = language => {
+    this.setState(prevState => {
+      const newState = Object.assign({}, prevState[language], {
+        codePending: false
+      });
+      return { [language]: newState };
+    });
   };
 
   render() {
