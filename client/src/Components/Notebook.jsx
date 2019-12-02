@@ -12,7 +12,7 @@ class Notebook extends Component {
     cells: [],
     Ruby: {
       pendingIndexes: [],
-      writeToIndex: 0,
+      writeToIndex: 0, // the index of the pending indexes array
       codePending: false
     },
     Javascript: {
@@ -92,7 +92,7 @@ class Notebook extends Component {
 
       switch (message.type) {
         case "delimiter":
-          // update the pending cell index for the language being executed
+          // update the pending cell index for results of the language being executed
           this.setState(prevState => {
             const newWriteToIndex = prevState[language].writeToIndex + 1;
             const newState = Object.assign({}, prevState[language], {
@@ -108,24 +108,14 @@ class Notebook extends Component {
           break;
         case "return":
         case "error":
-          this.setState(prevState => {
-            const newState = Object.assign({}, prevState[language], {
-              codePending: false
-            });
-            return { [language]: newState };
-          });
+          this.stopLanguagePending(language);
           this.updateCellResults(message.type, cellIndex, message);
           break;
         case "syntax-error":
-          this.setState(prevState => {
-            const newState = Object.assign({}, prevState[language], {
-              codePending: false
-            });
-            return { [language]: newState };
-          });
+          this.stopLanguagePending(language);
 
           const errorLocation = message.data.location[0];
-          const errorCellIndex = this.state[language].pendingIndex[
+          const errorCellIndex = this.state[language].pendingIndexes[
             errorLocation
           ];
 
@@ -393,6 +383,15 @@ class Notebook extends Component {
           return { cells: newCells };
         });
       });
+  };
+
+  stopLanguagePending = language => {
+    this.setState(prevState => {
+      const newState = Object.assign({}, prevState[language], {
+        codePending: false
+      });
+      return { [language]: newState };
+    });
   };
 
   render() {

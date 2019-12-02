@@ -1,3 +1,3 @@
-a = 'hey'
-puts "4e755adb-758d-42b7-9eb2-aba0515243c5"
-p a
+p 'hey'
+puts "89a80e50-1ae6-445b-ba08-c66061580b50"
+p 'yo'
