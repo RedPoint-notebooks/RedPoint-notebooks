@@ -113,7 +113,26 @@ class NavigationBar extends React.Component {
       });
   };
 
-  handleEmailSubmit = () => {};
+  handleEmailSubmit = emailAddress => {
+    fetch(`${PROXY_URL}/email`, {
+      method: "post",
+      mode: "cors",
+      cache: "no-cache",
+      body: emailAddress,
+      headers: { "Content-Type": "text/plain" }
+    })
+      .then(res => {
+        return res.text();
+      })
+      .then(data => {
+        console.log(`Response to POST request to /email: `, data);
+      })
+      .catch(err => {
+        console.log(
+          "Fetch error on POST request to /email. Failed to send email."
+        );
+      });
+  };
 
   render() {
     return (
