@@ -84,6 +84,7 @@
 .output {
   text-align: left;
   max-width: 900px;
+  overflow-wrap: break-word;
 }
 
 div .rendered-markdown {
