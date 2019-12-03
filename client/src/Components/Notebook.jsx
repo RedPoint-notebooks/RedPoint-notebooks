@@ -5,7 +5,7 @@ import NavigationBar from "./Shared/NavigationBar";
 import uuidv4 from "uuid";
 
 import { findLastIndexOfEachLanguageInNotebook } from "../utils";
-import { SIGTERM_ERROR_MESSAGE, PROXY_URL } from "../Constants/constants";
+import { SIGTERM_ERROR_MESSAGE } from "../Constants/constants";
 
 class Notebook extends Component {
   state = {
@@ -257,50 +257,6 @@ class Notebook extends Component {
     });
   };
 
-  handleSaveOrCloneClick = e => {
-    e.preventDefault();
-    const operation = e.target.name;
-
-    const isSaveClick = operation === "save";
-    const cloneId = uuidv4();
-    const notebookId = isSaveClick ? this.state.id : cloneId;
-
-    const notebook = {
-      cells: this.state.cells,
-      id: notebookId
-    };
-
-    notebook.cells = notebook.cells.map(cell => {
-      cell.results = { stdout: [], error: "", return: "" };
-      return cell;
-    });
-
-    const serializedNotebook = JSON.stringify(notebook);
-    console.log(`Notebook ${operation} request sent`);
-
-    fetch(`/${operation}`, {
-      method: "post",
-      mode: "cors",
-      cache: "no-cache",
-      body: serializedNotebook,
-      headers: { "Content-Type": "text/plain" }
-    })
-      .then(res => {
-        return res.text();
-      })
-      .then(data => {
-        // **TODO** convert to bootstrap alert/banner
-        alert(
-          `Your ${operation}d notebook url is ${PROXY_URL}/notebooks/${notebookId}`
-        );
-
-        console.log(`${operation} response: `, data);
-      })
-      .catch(err => {
-        console.log("Fetch error on POST request. Failed to clone.");
-      });
-  };
-
   handleLoadClick = notebookId => {
     const request = JSON.stringify({ type: "loadNotebook", id: notebookId });
     this.ws.send(request);
@@ -399,6 +355,7 @@ class Notebook extends Component {
       <div>
         <NavigationBar
           state={this.state}
+          notebookId={this.state.id}
           awaitingServerResponse={this.awaitingServerResponse}
           deleteAllCells={this.handleDeleteAllCells}
           onSaveClick={this.handleSaveOrCloneClick}

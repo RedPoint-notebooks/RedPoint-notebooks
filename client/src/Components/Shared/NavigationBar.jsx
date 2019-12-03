@@ -7,12 +7,14 @@ import ConfirmAction from "./ConfirmAction";
 import LoadForm from "./LoadForm";
 import Spinner from "react-bootstrap/Spinner";
 import APIForm from "./APIForm";
+import SaveOrCloneForm from "./SaveOrCloneForm";
 
 class NavigationBar extends React.Component {
   state = {
     deleteWarningVisible: false,
     loadFormVisible: false,
-    apiFormVisible: false
+    apiFormVisible: false,
+    saveOrCloneFormVisible: true
   };
 
   toggleDeleteWarning = () => {
@@ -51,6 +53,14 @@ class NavigationBar extends React.Component {
     this.setState(prevState => {
       return {
         apiFormVisible: !prevState.apiFormVisible
+      };
+    });
+  };
+
+  handleToggleSaveOrCloneForm = () => {
+    this.setState(prevState => {
+      return {
+        saveOrCloneFormVisible: !prevState.saveOrCloneFormVisible
       };
     });
   };
@@ -130,6 +140,14 @@ class NavigationBar extends React.Component {
             onAPISubmit={this.props.onAPISubmit}
             onToggleAPIForm={this.handleToggleAPIForm}
           ></APIForm>
+        ) : null}
+        {this.state.saveOrCloneFormVisible ? (
+          <SaveOrCloneForm
+            notebookURL={this.props.notebookURL}
+            operation={this.props.operation}
+            onAPISubmit={this.props.onAPISubmit}
+            onToggleSaveOrCloneForm={this.handleToggleSaveOrCloneForm}
+          ></SaveOrCloneForm>
         ) : null}
       </React.Fragment>
     );
