@@ -2,19 +2,46 @@ import React, { Component } from "react";
 import Alert from "react-bootstrap/Alert";
 import Button from "react-bootstrap/Button";
 import Form from "react-bootstrap/Form";
+import FormControl from "react-bootstrap/FormControl";
 
 class SaveOrCloneForm extends Component {
   state = {
-    emailAddress: ""
+    emailAddress: "",
+    formErrors: { email: "" },
+    emailValid: false,
+    showFormError: false
   };
 
-  handleEmailSubmit = () => {
-    this.props.onToggleSaveOrCloneForm();
-    this.props.onEmailSubmit(this.state.emailAddress);
+  handleEmailSubmit = e => {
+    if (!this.state.emailValid) {
+      e.preventDefault();
+      this.setState({ showFormError: true });
+    } else {
+      this.props.onToggleSaveOrCloneForm();
+      this.props.onEmailSubmit(this.state.emailAddress);
+    }
+  };
+
+  validateEmail = value => {
+    let fieldValidationErrors = this.state.formErrors;
+    let emailValid = this.state.emailValid;
+
+    emailValid = !!value.match(/^([\w.%+-]+)@([\w-]+\.)+([\w]{2,})$/i);
+    fieldValidationErrors.email = emailValid
+      ? ""
+      : "Please enter a valid email address";
+
+    this.setState({
+      formErrors: fieldValidationErrors,
+      emailValid: emailValid
+    });
   };
 
   handleFormInput = e => {
-    this.setState({ emailAddress: e.target.value });
+    const value = e.target.value;
+    this.setState({ emailAddress: value }, () => {
+      this.validateEmail(value);
+    });
   };
 
   render() {
@@ -33,6 +60,11 @@ class SaveOrCloneForm extends Component {
               placeholder="Enter an email address"
               onChange={this.handleFormInput}
             />
+            {this.state.showFormError ? (
+              <Form.Text type="invalid">
+                {this.state.formErrors.email}
+              </Form.Text>
+            ) : null}
           </Form.Group>
           <Button
             className="load-button"
@@ -54,5 +86,4 @@ class SaveOrCloneForm extends Component {
     );
   }
 }
-
 export default SaveOrCloneForm;

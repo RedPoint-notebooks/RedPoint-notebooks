@@ -8,13 +8,17 @@ import LoadForm from "./LoadForm";
 import Spinner from "react-bootstrap/Spinner";
 import APIForm from "./APIForm";
 import SaveOrCloneForm from "./SaveOrCloneForm";
+import { PROXY_URL } from "../../Constants/constants";
+import uuidv4 from "uuid";
 
 class NavigationBar extends React.Component {
   state = {
     deleteWarningVisible: false,
     loadFormVisible: false,
     apiFormVisible: false,
-    saveOrCloneFormVisible: true
+    saveOrCloneFormVisible: false,
+    notebookURL: null,
+    operation: null
   };
 
   toggleDeleteWarning = () => {
@@ -65,6 +69,52 @@ class NavigationBar extends React.Component {
     });
   };
 
+  handleSaveOrCloneClick = e => {
+    e.preventDefault();
+    const operation = e.target.name;
+
+    const isSaveClick = operation === "save";
+    const cloneId = uuidv4();
+    const notebookId = isSaveClick ? this.props.notebookId : cloneId;
+
+    const notebook = {
+      cells: this.props.cells,
+      id: notebookId
+    };
+
+    notebook.cells = notebook.cells.map(cell => {
+      cell.results = { stdout: [], error: "", return: "" };
+      return cell;
+    });
+
+    const serializedNotebook = JSON.stringify(notebook);
+    console.log(`Notebook ${operation} request sent`);
+
+    fetch(`/${operation}`, {
+      method: "post",
+      mode: "cors",
+      cache: "no-cache",
+      body: serializedNotebook,
+      headers: { "Content-Type": "text/plain" }
+    })
+      .then(res => {
+        return res.text();
+      })
+      .then(data => {
+        this.handleToggleSaveOrCloneForm();
+        this.setState({
+          notebookURL: `${PROXY_URL}/notebooks/${notebookId}`,
+          operation
+        });
+        console.log(`${operation} response: `, data);
+      })
+      .catch(err => {
+        console.log("Fetch error on POST request. Failed to clone.");
+      });
+  };
+
+  handleEmailSubmit = () => {};
+
   render() {
     return (
       <React.Fragment>
@@ -83,11 +133,14 @@ class NavigationBar extends React.Component {
           <Navbar.Collapse id="basic-navbar-nav">
             <Nav className="mr-auto">
               <NavDropdown title="Notebook" id="basic-nav-dropdown">
-                <NavDropdown.Item onClick={this.props.onSaveClick} name="save">
+                <NavDropdown.Item
+                  onClick={this.handleSaveOrCloneClick}
+                  name="save"
+                >
                   Save
                 </NavDropdown.Item>
                 <NavDropdown.Item
-                  onClick={this.props.onCloneClick}
+                  onClick={this.handleSaveOrCloneClick}
                   name="clone"
                 >
                   Clone
@@ -143,9 +196,9 @@ class NavigationBar extends React.Component {
         ) : null}
         {this.state.saveOrCloneFormVisible ? (
           <SaveOrCloneForm
-            notebookURL={this.props.notebookURL}
-            operation={this.props.operation}
-            onAPISubmit={this.props.onAPISubmit}
+            notebookURL={this.state.notebookURL}
+            operation={this.state.operation}
+            onEmailSubmit={this.handleEmailSubmit}
             onToggleSaveOrCloneForm={this.handleToggleSaveOrCloneForm}
           ></SaveOrCloneForm>
         ) : null}

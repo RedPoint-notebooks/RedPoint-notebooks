@@ -354,7 +354,7 @@ class Notebook extends Component {
     return (
       <div>
         <NavigationBar
-          state={this.state}
+          cells={this.state.cells}
           notebookId={this.state.id}
           awaitingServerResponse={this.awaitingServerResponse}
           deleteAllCells={this.handleDeleteAllCells}
