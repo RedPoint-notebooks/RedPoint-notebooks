@@ -1,14 +1,6 @@
 const fs = require("fs");
 const { exec } = require("child_process"); // exec uses system default shell
 
-const sendTruncatedOutput = (output, ws, language) => {
-  output.forEach(data => {
-    ws.send(JSON.stringify({ language, type: "stdout", data: data }));
-  });
-};
-
-let buffer = [];
-
 const userScript = {
   script: "",
   scriptExecCmd: "",
@@ -78,30 +70,14 @@ const userScript = {
       );
 
       scriptProcess.stdout.on("data", data => {
-        buffer.push(data);
-        setTimeout(() => {
-          const bufferArray = buffer.join("").split("\n");
-
-          if (bufferArray.length > 50) {
-            const truncatedOutput = bufferArray.slice(1, 3);
-
-            scriptProcess.kill();
-            sendTruncatedOutput(truncatedOutput, ws, language);
-            buffer = [];
-            reject();
+        const dataArray = data.split("\n").slice(0, -1);
+        dataArray.forEach(data => {
+          if (data === delimiter) {
+            ws.send(JSON.stringify({ language, type: "delimiter" }));
           } else {
-            bufferArray.forEach(data => {
-              if (data === delimiter) {
-                ws.send(JSON.stringify({ language, type: "delimiter" }));
-              } else {
-                ws.send(
-                  JSON.stringify({ language, type: "stdout", data: data })
-                );
-              }
-              buffer = [];
-            });
+            ws.send(JSON.stringify({ language, type: "stdout", data: data }));
           }
-        }, 1);
+        });
       });
 
       scriptProcess.stdout.on("end", () => {
@@ -161,14 +137,6 @@ const userScript = {
 
     return outputByCell;
   }
-
-  // sendTruncatedOutput: data => {
-  //   truncatedOutput.forEach(data => {
-  //     ws.send(
-  //       JSON.stringify({ language, type: "stdout", data: data })
-  //     );
-  //   });
-  // },
 };
 
 module.exports = userScript;
