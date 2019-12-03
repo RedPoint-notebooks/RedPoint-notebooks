@@ -65,10 +65,6 @@
 }
 
 .add-cell-btn {
-  margin: 15px 10px 15px -48px;
-}
-
-.add-cell-btn {
   margin: 15px 10px 15px -48px !important;
 }
 
@@ -124,7 +120,7 @@ div .rendered-markdown {
   }
 
   .add-cell-btn {
-    margin: 15px 0 15px 0;
+    margin: 15px 0 15px 0 !important;
   }
 
   .navbar-expand,
@@ -144,15 +140,14 @@ div .rendered-markdown {
     max-width: 340px !important;
   }
 
-  .add-cell-btn {
-    margin: 15px 0 15px 0;
-  }
-
   .navbar-expand,
   .navbar-collapse {
     flex-wrap: wrap !important;
     flex-shrink: ;
     max-width: 100% !important;
+  }
+  .add-cell-btn {
+    margin: 15px 0 15px 0 !important;
   }
 }
 
@@ -163,6 +158,10 @@ div .rendered-markdown {
   .cell-toolbar-markdown,
   .output {
     max-width: 560px !important;
+  }
+
+  .add-cell-btn {
+    margin: 15px 10px 15px -48px !important;
   }
 }
 
