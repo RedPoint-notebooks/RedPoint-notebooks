@@ -114,11 +114,13 @@ class NavigationBar extends React.Component {
   };
 
   handleEmailSubmit = emailAddress => {
+    const operation = this.state.operation;
+    const emailJSON = JSON.stringify({ emailAddress, operation });
     fetch(`${PROXY_URL}/email`, {
       method: "post",
       mode: "cors",
       cache: "no-cache",
-      body: emailAddress,
+      body: emailJSON,
       headers: { "Content-Type": "text/plain" }
     })
       .then(res => {
