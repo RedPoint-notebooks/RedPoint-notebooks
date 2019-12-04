@@ -6,15 +6,18 @@
     "axios": "0.19.0",
     "bootstrap": "^4.3.1",
     "codemirror": "^5.49.2",
+    "formik": "^2.0.6",
     "jquery": "^3.4.1",
     "react": "^16.11.0",
     "react-bootstrap": "^1.0.0-beta.14",
     "react-codemirror2": "^6.0.0",
+    "react-copy-to-clipboard": "^5.0.2",
     "react-dom": "^16.11.0",
     "react-markdown": "^4.2.2",
     "react-scripts": "3.2.0",
     "uuid": "^3.3.3",
-    "ws": "^7.2.0"
+    "ws": "^7.2.0",
+    "yup": "^0.27.0"
   },
   "scripts": {
     "start": "react-scripts start",

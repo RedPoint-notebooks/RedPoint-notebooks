@@ -7,12 +7,20 @@ import ConfirmAction from "./ConfirmAction";
 import LoadForm from "./LoadForm";
 import Spinner from "react-bootstrap/Spinner";
 import APIForm from "./APIForm";
+import SaveOrCloneForm from "./SaveOrCloneForm";
+import WebhookForm from "./WebhookForm";
+import { PROXY_URL } from "../../Constants/constants";
+import uuidv4 from "uuid";
 
 class NavigationBar extends React.Component {
   state = {
     deleteWarningVisible: false,
     loadFormVisible: false,
-    apiFormVisible: false
+    apiFormVisible: false,
+    saveOrCloneFormVisible: false,
+    webhookFormVisible: false,
+    notebookURL: null,
+    operation: null
   };
 
   toggleDeleteWarning = () => {
@@ -55,6 +63,122 @@ class NavigationBar extends React.Component {
     });
   };
 
+  handleToggleSaveOrCloneForm = () => {
+    this.setState(prevState => {
+      return {
+        saveOrCloneFormVisible: !prevState.saveOrCloneFormVisible
+      };
+    });
+  };
+
+  handleToggleWebhookForm = () => {
+    this.setState(prevState => {
+      return {
+        webhookFormVisible: !prevState.webhookFormVisible
+      };
+    });
+
+    const notebook = {
+      cells: this.props.cells,
+      id: this.props.notebookId
+    };
+
+    notebook.cells = notebook.cells.map(cell => {
+      cell.results = { stdout: [], error: "", return: "" };
+      return cell;
+    });
+
+    const serializedNotebook = JSON.stringify(notebook);
+    console.log(`Notebook save request sent`);
+
+    fetch(`/save`, {
+      method: "post",
+      mode: "cors",
+      cache: "no-cache",
+      body: serializedNotebook,
+      headers: { "Content-Type": "text/plain" }
+    })
+      .then(res => {
+        return res.text();
+      })
+      .then(data => {
+        console.log(`Save response: `, data);
+      })
+      .catch(err => {
+        console.log(`Fetch error on POST request. Failed to save.`);
+      });
+  };
+
+  handleSaveOrCloneClick = e => {
+    e.preventDefault();
+    const operation = e.target.name;
+
+    const isSaveClick = operation === "save";
+    const cloneId = uuidv4();
+    const notebookId = isSaveClick ? this.props.notebookId : cloneId;
+
+    const notebook = {
+      cells: this.props.cells,
+      id: notebookId
+    };
+
+    notebook.cells = notebook.cells.map(cell => {
+      cell.results = { stdout: [], error: "", return: "" };
+      return cell;
+    });
+
+    const serializedNotebook = JSON.stringify(notebook);
+    console.log(`Notebook ${operation} request sent`);
+
+    fetch(`/${operation}`, {
+      method: "post",
+      mode: "cors",
+      cache: "no-cache",
+      body: serializedNotebook,
+      headers: { "Content-Type": "text/plain" }
+    })
+      .then(res => {
+        return res.text();
+      })
+      .then(data => {
+        this.handleToggleSaveOrCloneForm();
+
+        this.setState({
+          notebookURL: `${PROXY_URL}/notebooks/${notebookId}`,
+          operation
+        });
+        console.log(`${operation} response: `, data);
+      })
+      .catch(err => {
+        console.log(`Fetch error on POST request. Failed to ${operation}.`);
+      });
+  };
+
+  handleEmailSubmit = emailAddress => {
+    const operation = this.state.operation;
+    const notebookURL = this.state.notebookURL;
+    const emailJSON = JSON.stringify({ emailAddress, operation, notebookURL });
+
+    fetch(`${PROXY_URL}/email`, {
+      method: "post",
+      mode: "cors",
+      cache: "no-cache",
+      body: emailJSON,
+      headers: { "Content-Type": "text/plain" }
+    })
+      .then(res => {
+        return res.text();
+      })
+      .then(data => {
+        console.log(`Response to POST request to /email: `, data);
+      })
+      .catch(err => {
+        console.log(
+          "Fetch error on POST request to /email. Failed to send email."
+        );
+      });
+  };
+
   render() {
     return (
       <React.Fragment>
@@ -73,17 +197,26 @@ class NavigationBar extends React.Component {
           <Navbar.Collapse id="basic-navbar-nav">
             <Nav className="mr-auto">
               <NavDropdown title="Notebook" id="basic-nav-dropdown">
-                <NavDropdown.Item onClick={this.props.onSaveClick} name="save">
+                <NavDropdown.Item
+                  onClick={this.handleSaveOrCloneClick}
+                  name="save"
+                >
                   Save
                 </NavDropdown.Item>
                 <NavDropdown.Item
-                  onClick={this.props.onCloneClick}
+                  onClick={this.handleSaveOrCloneClick}
                   name="clone"
                 >
                   Clone
                 </NavDropdown.Item>
                 <NavDropdown.Item onClick={this.handleLoadClick}>
                   Load
+                </NavDropdown.Item>
+                <NavDropdown.Item onClick={this.handleToggleAPIForm}>
+                  API
+                </NavDropdown.Item>
+                <NavDropdown.Item onClick={this.handleToggleWebhookForm}>
+                  Webhooks
                 </NavDropdown.Item>
               </NavDropdown>
               <Nav.Link onClick={this.toggleDeleteWarning}>Delete</Nav.Link>
@@ -99,9 +232,6 @@ class NavigationBar extends React.Component {
                 <Nav.Link onClick={this.props.onRunAllClick}>Run All</Nav.Link>
               )}
             </Nav>
-            <Nav.Link href="#api" onClick={this.handleToggleAPIForm}>
-              API
-            </Nav.Link>
           </Navbar.Collapse>
         </Navbar>
         {this.state.deleteWarningVisible ? (
@@ -123,6 +253,20 @@ class NavigationBar extends React.Component {
             onAPISubmit={this.props.onAPISubmit}
             onToggleAPIForm={this.handleToggleAPIForm}
           ></APIForm>
+        ) : null}
+        {this.state.saveOrCloneFormVisible ? (
+          <SaveOrCloneForm
+            notebookURL={this.state.notebookURL}
+            operation={this.state.operation}
+            onEmailSubmit={this.handleEmailSubmit}
+            onToggleSaveOrCloneForm={this.handleToggleSaveOrCloneForm}
+          ></SaveOrCloneForm>
+        ) : null}
+        {this.state.webhookFormVisible ? (
+          <WebhookForm
+            notebookId={this.props.notebookId}
+            onToggleWebhookForm={this.handleToggleWebhookForm}
+          ></WebhookForm>
         ) : null}
       </React.Fragment>
     );

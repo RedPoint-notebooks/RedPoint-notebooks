@@ -72,6 +72,14 @@
   margin: 15px 0 15px 0 !important;
 }
 
+.copy-webhook {
+  margin-left: 10px;
+}
+
+.copied-text {
+  font-size: 0.7rem;
+}
+
 .add-cell-container {
   display: flex;
   justify-content: flex-start;
