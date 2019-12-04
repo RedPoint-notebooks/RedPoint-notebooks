@@ -2,7 +2,6 @@ import React, { Component } from "react";
 import Alert from "react-bootstrap/Alert";
 import Button from "react-bootstrap/Button";
 import Form from "react-bootstrap/Form";
-import FormControl from "react-bootstrap/FormControl";
 
 class SaveOrCloneForm extends Component {
   state = {

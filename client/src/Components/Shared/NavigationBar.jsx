@@ -8,6 +8,7 @@ import LoadForm from "./LoadForm";
 import Spinner from "react-bootstrap/Spinner";
 import APIForm from "./APIForm";
 import SaveOrCloneForm from "./SaveOrCloneForm";
+import WebhookForm from "./WebhookForm";
 import { PROXY_URL } from "../../Constants/constants";
 import uuidv4 from "uuid";
 
@@ -17,6 +18,7 @@ class NavigationBar extends React.Component {
     loadFormVisible: false,
     apiFormVisible: false,
     saveOrCloneFormVisible: false,
+    webhookFormVisible: false,
     notebookURL: null,
     operation: null
   };
@@ -69,6 +71,14 @@ class NavigationBar extends React.Component {
     });
   };
 
+  handleToggleWebhookForm = () => {
+    this.setState(prevState => {
+      return {
+        webhookFormVisible: !prevState.webhookFormVisible
+      };
+    });
+  };
+
   handleSaveOrCloneClick = e => {
     e.preventDefault();
     const operation = e.target.name;
@@ -115,7 +125,8 @@ class NavigationBar extends React.Component {
 
   handleEmailSubmit = emailAddress => {
     const operation = this.state.operation;
-    const emailJSON = JSON.stringify({ emailAddress, operation });
+    const notebookURL = this.state.notebookURL;
+    const emailJSON = JSON.stringify({ emailAddress, operation, notebookURL });
     fetch(`${PROXY_URL}/email`, {
       method: "post",
       mode: "cors",
@@ -169,8 +180,16 @@ class NavigationBar extends React.Component {
                 <NavDropdown.Item onClick={this.handleLoadClick}>
                   Load
                 </NavDropdown.Item>
+                <NavDropdown.Item onClick={this.handleToggleAPIForm}>
+                  API
+                </NavDropdown.Item>
+                <NavDropdown.Item onClick={this.handleToggleWebhookForm}>
+                  Webhooks
+                </NavDropdown.Item>
               </NavDropdown>
-              <Nav.Link onClick={this.toggleDeleteWarning}>Delete</Nav.Link>
+              <Nav.Link onClick={this.toggleDeleteWarning}>
+                Delete All Cells
+              </Nav.Link>
               <Navbar.Text>|</Navbar.Text>
               <Nav.Link onClick={this.handleClearAllResults}>
                 Clear Results
@@ -188,11 +207,7 @@ class NavigationBar extends React.Component {
                   Run All Cells
                 </Nav.Link>
               )}
-              <Navbar.Text>|</Navbar.Text>
             </Nav>
-            <Nav.Link href="#api" onClick={this.handleToggleAPIForm}>
-              API
-            </Nav.Link>
           </Navbar.Collapse>
         </Navbar>
         {this.state.deleteWarningVisible ? (
@@ -222,6 +237,12 @@ class NavigationBar extends React.Component {
             onEmailSubmit={this.handleEmailSubmit}
             onToggleSaveOrCloneForm={this.handleToggleSaveOrCloneForm}
           ></SaveOrCloneForm>
+        ) : null}
+        {this.state.webhookFormVisible ? (
+          <WebhookForm
+            notebookId={this.props.notebookId}
+            onToggleWebhookForm={this.handleToggleWebhookForm}
+          ></WebhookForm>
         ) : null}
       </React.Fragment>
     );
