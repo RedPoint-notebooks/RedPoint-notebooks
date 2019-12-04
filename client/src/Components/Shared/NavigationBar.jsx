@@ -219,14 +219,8 @@ class NavigationBar extends React.Component {
                   Webhooks
                 </NavDropdown.Item>
               </NavDropdown>
-              <Nav.Link onClick={this.toggleDeleteWarning}>
-                Delete All Cells
-              </Nav.Link>
-              <Navbar.Text>|</Navbar.Text>
-              <Nav.Link onClick={this.handleClearAllResults}>
-                Clear Results
-              </Nav.Link>
-              <Navbar.Text>|</Navbar.Text>
+              <Nav.Link onClick={this.toggleDeleteWarning}>Delete</Nav.Link>
+              <Nav.Link onClick={this.handleClearAllResults}>Clear</Nav.Link>
               {this.props.awaitingServerResponse() ? (
                 <Spinner
                   className="navbar-spinner"
@@ -235,9 +229,7 @@ class NavigationBar extends React.Component {
                   size="sm"
                 />
               ) : (
-                <Nav.Link onClick={this.props.onRunAllClick}>
-                  Run All Cells
-                </Nav.Link>
+                <Nav.Link onClick={this.props.onRunAllClick}>Run All</Nav.Link>
               )}
             </Nav>
           </Navbar.Collapse>

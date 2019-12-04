@@ -7,3 +7,4 @@ const domain = window.location.host
   .splice(-2)
   .join(".");
 export const PROXY_URL = "http://www." + domain;
+

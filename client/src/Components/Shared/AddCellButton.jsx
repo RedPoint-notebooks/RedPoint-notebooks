@@ -24,7 +24,11 @@ class AddCellButton extends Component {
 
     return (
       <DropdownButton
-        className="add-cell-btn"
+        className={
+          this.props.lastButton === "true"
+            ? "lonely-basic-button"
+            : "add-cell-btn"
+        }
         variant="secondary"
         id="dropdown-basic-button"
         title={<span>&#43;</span>}

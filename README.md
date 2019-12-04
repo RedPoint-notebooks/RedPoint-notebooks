@@ -1,4 +1,6 @@
-![](/react-redpoint/src/placeholder_logo.svg)
+![](/client/src/placeholder_logo.svg)
+
+### Deployed at http://www.redpointnotebooks.com
 
 # Project RedPoint
 
