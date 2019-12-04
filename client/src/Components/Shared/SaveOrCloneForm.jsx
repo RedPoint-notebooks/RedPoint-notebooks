@@ -2,13 +2,15 @@ import React, { Component } from "react";
 import Alert from "react-bootstrap/Alert";
 import Button from "react-bootstrap/Button";
 import Form from "react-bootstrap/Form";
+import { CopyToClipboard } from "react-copy-to-clipboard";
 
 class SaveOrCloneForm extends Component {
   state = {
     emailAddress: "",
     formErrors: { email: "" },
     emailValid: false,
-    showFormError: false
+    showFormError: false,
+    copied: false
   };
 
   handleEmailSubmit = e => {
@@ -19,6 +21,10 @@ class SaveOrCloneForm extends Component {
       this.props.onToggleSaveOrCloneForm();
       this.props.onEmailSubmit(this.state.emailAddress);
     }
+  };
+
+  onCopy = () => {
+    this.setState({ copied: true });
   };
 
   validateEmail = value => {
@@ -51,6 +57,19 @@ class SaveOrCloneForm extends Component {
             <Form.Label>
               {`Your ${this.props.operation}d notebook URL is: ${this.props.notebookURL}`}
             </Form.Label>
+            <CopyToClipboard onCopy={this.onCopy} text={this.props.notebookURL}>
+              <Button
+                onClick={this.copyToClipboard}
+                variant="light"
+                className="copy-webhook"
+                size="sm"
+              >
+                Copy
+              </Button>
+            </CopyToClipboard>
+            {this.state.copied ? (
+              <p className="copied-text">Copied to clipboard</p>
+            ) : null}
             <Form.Text className="text-muted">
               Send an email with this URL to your email address:
             </Form.Text>

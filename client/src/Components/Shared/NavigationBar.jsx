@@ -77,6 +77,36 @@ class NavigationBar extends React.Component {
         webhookFormVisible: !prevState.webhookFormVisible
       };
     });
+
+    const notebook = {
+      cells: this.props.cells,
+      id: this.props.notebookId
+    };
+
+    notebook.cells = notebook.cells.map(cell => {
+      cell.results = { stdout: [], error: "", return: "" };
+      return cell;
+    });
+
+    const serializedNotebook = JSON.stringify(notebook);
+    console.log(`Notebook save request sent`);
+
+    fetch(`/save`, {
+      method: "post",
+      mode: "cors",
+      cache: "no-cache",
+      body: serializedNotebook,
+      headers: { "Content-Type": "text/plain" }
+    })
+      .then(res => {
+        return res.text();
+      })
+      .then(data => {
+        console.log(`Save response: `, data);
+      })
+      .catch(err => {
+        console.log(`Fetch error on POST request. Failed to save.`);
+      });
   };
 
   handleSaveOrCloneClick = e => {
@@ -112,6 +142,7 @@ class NavigationBar extends React.Component {
       })
       .then(data => {
         this.handleToggleSaveOrCloneForm();
+
         this.setState({
           notebookURL: `${PROXY_URL}/notebooks/${notebookId}`,
           operation
@@ -119,7 +150,7 @@ class NavigationBar extends React.Component {
         console.log(`${operation} response: `, data);
       })
       .catch(err => {
-        console.log("Fetch error on POST request. Failed to clone.");
+        console.log(`Fetch error on POST request. Failed to ${operation}.`);
       });
   };
 
@@ -127,6 +158,7 @@ class NavigationBar extends React.Component {
     const operation = this.state.operation;
     const notebookURL = this.state.notebookURL;
     const emailJSON = JSON.stringify({ emailAddress, operation, notebookURL });
+
     fetch(`${PROXY_URL}/email`, {
       method: "post",
       mode: "cors",
