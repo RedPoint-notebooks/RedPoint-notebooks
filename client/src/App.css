@@ -4,8 +4,8 @@
 
 .CodeMirror {
   height: auto !important;
-  border-bottom-right-radius: 0.2rem;
-  border-bottom-left-radius: 0.2rem;
+  border-bottom-right-radius: 0.4rem;
+  border-bottom-left-radius: 0.4rem;
 }
 
 .react-codemirror2,
@@ -13,6 +13,7 @@
   width: 900px;
   text-align: left;
   height: auto !important;
+  border-radius: 0.2rem;
 }
 
 .App-body {
@@ -45,12 +46,12 @@
 
 .cell-toolbar,
 .cell-toolbar-markdown {
-  width: 900px;
+  max-width: 900px;
   display: flex;
   justify-content: space-between;
   background: #2b2b29;
-  border-top-right-radius: 0.2rem;
-  border-top-left-radius: 0.2rem;
+  border-top-right-radius: 0.4rem;
+  border-top-left-radius: 0.4rem;
 }
 
 .run-button {
@@ -64,7 +65,11 @@
 }
 
 .add-cell-btn {
-  margin: 15px 10px 15px -48px;
+  margin: 15px 10px 15px -48px !important;
+}
+
+.lonely-basic-button {
+  margin: 15px 0 15px 0 !important;
 }
 
 .add-cell-container {
@@ -74,12 +79,11 @@
 
 .output {
   text-align: left;
-  width: 900px;
+  max-width: 900px;
+  overflow-wrap: break-word;
 }
 
 div .rendered-markdown {
-  /* border-top: 1px solid #6b757e;
-  border-bottom: 1px solid #6b757e; */
   padding-top: 10px;
 }
 
@@ -104,4 +108,69 @@ div .rendered-markdown {
   margin-top: 8px;
   margin-left: auto;
   margin-right: 12px;
+}
+
+@media all and (max-width: 374px) {
+  .react-codemirror2,
+  .rendered-markdown,
+  .cell-toolbar,
+  .cell-toolbar-markdown,
+  .output {
+    max-width: 300px !important;
+  }
+
+  .add-cell-btn {
+    margin: 15px 0 15px 0 !important;
+  }
+
+  .navbar-expand,
+  .navbar-collapse {
+    flex-wrap: wrap !important;
+    flex-shrink: ;
+    max-width: 100% !important;
+  }
+}
+
+@media all and (min-width: 375px) {
+  .react-codemirror2,
+  .rendered-markdown,
+  .cell-toolbar,
+  .cell-toolbar-markdown,
+  .output {
+    max-width: 340px !important;
+  }
+
+  .navbar-expand,
+  .navbar-collapse {
+    flex-wrap: wrap !important;
+    flex-shrink: ;
+    max-width: 100% !important;
+  }
+  .add-cell-btn {
+    margin: 15px 0 15px 0 !important;
+  }
+}
+
+@media all and (min-width: 660px) {
+  .react-codemirror2,
+  .rendered-markdown,
+  .cell-toolbar,
+  .cell-toolbar-markdown,
+  .output {
+    max-width: 560px !important;
+  }
+
+  .add-cell-btn {
+    margin: 15px 10px 15px -48px !important;
+  }
+}
+
+@media all and (min-width: 1000px) {
+  .react-codemirror2,
+  .rendered-markdown,
+  .cell-toolbar,
+  .cell-toolbar-markdown,
+  .output {
+    max-width: 900px !important;
+  }
 }
