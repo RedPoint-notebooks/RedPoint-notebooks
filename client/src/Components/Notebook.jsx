@@ -5,7 +5,7 @@ import NavigationBar from "./Shared/NavigationBar";
 import uuidv4 from "uuid";
 
 import { findLastIndexOfEachLanguageInNotebook } from "../utils";
-import { SIGTERM_ERROR_MESSAGE, PROXY_URL } from "../Constants/constants";
+import { SIGTERM_ERROR_MESSAGE } from "../Constants/constants";
 
 class Notebook extends Component {
   state = {
