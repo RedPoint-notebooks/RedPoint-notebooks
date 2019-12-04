@@ -40,7 +40,7 @@ class WebhookForm extends Component {
 
             <Form.Text className="text-muted">
               {`Use this URL to configure a webhook provider. 
-              When an action triggers a webhook, the JSON payload will be an object in a Javascript cell (upon page refresh).`}
+              When an action triggers a webhook, the JSON payload will appear in a new Javascript cell (upon page refresh).`}
             </Form.Text>
           </Form.Group>
 
