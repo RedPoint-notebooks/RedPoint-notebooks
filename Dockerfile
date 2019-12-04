@@ -1,11 +1,13 @@
 FROM phusion/baseimage:0.11
-# RUN useradd -ms /bin/false newuser
+RUN useradd -ms /bin/false newuser
 
 # CMD ["/sbin/my_init"]
 
 RUN mkdir -p /app
 WORKDIR /app
 COPY . /app
+
+RUN chown -R newuser:newuser /app/codeCellScripts
 
 RUN install_clean \
   make \
@@ -20,7 +22,7 @@ RUN install_clean \
 
 EXPOSE 8000
 
-# USER newuser
+USER newuser
 
 CMD ["node", "server.js"]
 
