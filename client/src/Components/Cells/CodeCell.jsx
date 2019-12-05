@@ -56,11 +56,16 @@ class CodeCell extends Component {
     return (
       <div>
         <div className="add-cell-container">
-          <AddCellButton
-            className="add-cell-btn"
-            onClick={this.props.onAddClick}
-            cellIndex={this.props.cellIndex}
-          />
+          {this.props.presentation ? (
+            <div className="add-cell-btn"></div>
+          ) : (
+            <AddCellButton
+              className="add-cell-btn"
+              onClick={this.props.onAddClick}
+              cellIndex={this.props.cellIndex}
+              presentation={this.props.presentation}
+            />
+          )}
         </div>
         <CellToolbar
           cellIndex={this.props.cellIndex}
@@ -71,6 +76,7 @@ class CodeCell extends Component {
           onRunClick={this.props.onRunClick}
           cellCodeState={this.state.code}
           languagePending={this.props.languagePending}
+          presentation={this.props.presentation}
         />
         <CodeMirror
           value={this.state.code}
