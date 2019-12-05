@@ -201,6 +201,7 @@ class NavigationBar extends React.Component {
                 <NavDropdown.Item
                   onClick={this.handleSaveOrCloneClick}
                   name="save"
+                  id="save-notebook-item"
                 >
                   Save
                 </NavDropdown.Item>
@@ -210,10 +211,10 @@ class NavigationBar extends React.Component {
                 >
                   Clone
                 </NavDropdown.Item>
-                <NavDropdown.Item onClick={this.handleLoadClick}>
+                <NavDropdown.Item onClick={this.handleLoadClick} >
                   Load
                 </NavDropdown.Item>
-                <NavDropdown.Item onClick={this.handleToggleAPIForm}>
+                <NavDropdown.Item onClick={this.handleToggleAPIForm} id="show-API">
                   API
                 </NavDropdown.Item>
                 <NavDropdown.Item onClick={this.handleToggleWebhookForm}>
