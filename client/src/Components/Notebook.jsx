@@ -79,7 +79,7 @@ class Notebook extends Component {
     if (process.env.NODE_ENV === "development") {
       this.ws = new WebSocket("ws://localhost:8000");
     } else if (process.env.NODE_ENV === "production") {
-      this.ws = new WebSocket("ws://" + window.location.host);
+      this.ws = new WebSocket("wss://" + window.location.host);
     }
   };
 
@@ -87,7 +87,7 @@ class Notebook extends Component {
     this.loadState();
     this.establishWebsocket();
     this.ws.onopen = e => {
-      let urlNoProtocol = e.target.url.replace(/ws:\/\//, "");
+      let urlNoProtocol = e.target.url.replace(/wss:\/\//, "");
       console.log("urlNoProtocol", urlNoProtocol);
       this.ws.send(
         JSON.stringify({ type: "sessionAddress", data: urlNoProtocol })
