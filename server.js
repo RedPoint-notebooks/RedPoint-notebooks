@@ -13,7 +13,6 @@ const logger = require("morgan");
 const userScript = require("./libs/modules/userScript");
 const repl = require("./libs/modules/repl");
 
-const db = require("./libs/modules/db");
 let sessionAddress;
 
 app.use(logger("dev"));
