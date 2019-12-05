@@ -279,11 +279,6 @@ class Notebook extends Component {
     });
   };
 
-  handleLoadClick = notebookId => {
-    const request = JSON.stringify({ type: "loadNotebook", id: notebookId });
-    this.ws.send(request);
-  };
-
   handleLanguageChange = (language, cellIndex) => {
     this.setState(prevState => {
       const newCells = [...prevState.cells];
@@ -382,7 +377,6 @@ class Notebook extends Component {
           deleteAllCells={this.handleDeleteAllCells}
           onSaveClick={this.handleSaveOrCloneClick}
           onCloneClick={this.handleSaveOrCloneClick}
-          onLoadClick={this.handleLoadClick}
           onClearAllResults={this.handleClearAllResults}
           onRunAllClick={this.handleRunAllClick}
           onAPISubmit={this.handleAPISubmit}

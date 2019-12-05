@@ -58,10 +58,6 @@ wss.on("connection", ws => {
 
     if (message.type === "sessionAddress") {
       sessionAddress = message.data;
-    } else if (message.type === "saveNotebook") {
-      handleSaveNotebook(message.notebook, ws);
-    } else if (message.type === "loadNotebook") {
-      handleLoadNotebook(message.id, ws);
     } else if (message.type === "executeCode") {
       if (queue.length === 0) {
         queue.push(message);
@@ -85,33 +81,6 @@ const interval = setInterval(function ping() {
     console.log("ping sent to client");
   });
 }, 4000);
-
-const handleSaveNotebook = (notebook, ws) => {
-  db("SAVE", notebook)
-    .then(() => {
-      ws.send(
-        JSON.stringify({
-          type: "saveResult",
-          data: "Notebook has been saved"
-        })
-      );
-    })
-    .catch(error => {
-      ws.send(JSON.stringify({ type: "saveResult", data: error }));
-      console.log(error);
-    });
-};
-
-const handleLoadNotebook = (notebookId, ws) => {
-  db("LOAD", null, notebookId)
-    .then(notebook => {
-      ws.send(JSON.stringify({ type: "loadNotebook", data: notebook }));
-    })
-    .catch(error => {
-      ws.send(JSON.stringify({ type: "loadError", data: error }));
-      console.log(error);
-    });
-};
 
 const handleExecuteCode = (message, ws, delimiter) => {
   return new Promise((resolve, reject) => {
