@@ -10,7 +10,22 @@ describe("test NavigationBar component", () => {
   let wrapper;
 
   beforeEach(() => {
-    wrapper = shallow(<NavigationBar awaitingServerResponse={() => {}} />);
+    wrapper = shallow(<NavigationBar 
+    awaitingServerResponse={() => {}}
+    cells={[]}
+    notebookId='123abc'
+     />);
+
+          // awaitingServerResponse={this.awaitingServerResponse}
+          // deleteAllCells={this.handleDeleteAllCells}
+          // onSaveClick={this.handleSaveOrCloneClick}
+          // onCloneClick={this.handleSaveOrCloneClick}
+          // onLoadClick={this.handleLoadClick}
+          // onClearAllResults={this.handleClearAllResults}
+          // onRunAllClick={this.handleRunAllClick}
+          // onAPISubmit={this.handleAPISubmit}
+          // onToggleView={this.handleToggleView}
+          // presentation={this.state.presentation}
   });
 
   it("initial state has no forms visible", () => {
@@ -24,21 +39,6 @@ describe("test NavigationBar component", () => {
       operation: null
     };
     expect(wrapper.state()).toEqual(initialState);
-  });
-
-  it("state is updated when handleToggleLoadForm is executed", () => {
-    const updatedState = {
-      deleteWarningVisible: false,
-      loadFormVisible: true,
-      apiFormVisible: false,
-      saveOrCloneFormVisible: false,
-      webhookFormVisible: false,
-      notebookURL: null,
-      operation: null
-    };
-
-    wrapper.instance().handleToggleLoadForm();
-    expect(wrapper.state()).toEqual(updatedState);
   });
 
   it("state is updated when handleToggleAPIForm is executed", () => {
@@ -71,10 +71,16 @@ describe("test NavigationBar component", () => {
     expect(wrapper.state()).toEqual(updatedState);
   });
 
-  it("clicking API button changes apiFformVisible to true", () => {
+  it("clicking API option changes apiFormVisible to true", () => {
     expect(wrapper.state().apiFormVisible).toBe(false);
     wrapper.find("#show-API").simulate("click");
     expect(wrapper.state().apiFormVisible).toBe(true);
+  });
+
+  it("clicking Webhooks option changes webhookFormVisible to true", () => {
+    expect(wrapper.state().webhookFormVisible).toBe(false);
+    wrapper.find("#show-webhooks").simulate("click");
+    expect(wrapper.state().webhookFormVisible).toBe(true);
   });
 });
 
