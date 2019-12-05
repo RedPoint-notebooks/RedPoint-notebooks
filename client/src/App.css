@@ -68,8 +68,8 @@
   margin: 15px 10px 15px -48px !important;
 }
 
-.lonely-basic-button {
-  margin: 15px 0 15px 0 !important;
+.last-add-cell-button {
+  margin: 15px 10px 15px -498px !important;
 }
 
 .copy-webhook {
@@ -131,10 +131,13 @@ div .rendered-markdown {
     margin: 15px 0 15px 0 !important;
   }
 
+  .last-add-cell-button {
+    margin: 15px 0 15px -150px !important;
+  }
+
   .navbar-expand,
   .navbar-collapse {
     flex-wrap: wrap !important;
-    flex-shrink: ;
     max-width: 100% !important;
   }
 }
@@ -154,8 +157,13 @@ div .rendered-markdown {
     flex-shrink: ;
     max-width: 100% !important;
   }
+
   .add-cell-btn {
     margin: 15px 0 15px 0 !important;
+  }
+
+  .last-add-cell-button {
+    margin: 15px 0 15px -170px !important;
   }
 }
 
@@ -171,6 +179,10 @@ div .rendered-markdown {
   .add-cell-btn {
     margin: 15px 10px 15px -48px !important;
   }
+
+  .last-add-cell-button {
+    margin: 15px 10px 15px -328px !important;
+  }
 }
 
 @media all and (min-width: 1000px) {
@@ -180,5 +192,9 @@ div .rendered-markdown {
   .cell-toolbar-markdown,
   .output {
     max-width: 900px !important;
+  }
+
+  .last-add-cell-button {
+    margin: 15px 10px 15px -498px !important;
   }
 }
