@@ -34,6 +34,7 @@ const repl = {
       process.write(codeString + replExitMessage);
       process.on("exit", () => {
         // To ensure that the spawned REPL is killed after finishing processing
+        console.log(returnData);
         process.removeAllListeners("data");
         process.kill();
         console.log("AFTER REPL EXECUTE");
@@ -93,12 +94,9 @@ const parsePythonOutput = returnData => {
 
 const extractCleanJSReturnValue = string => {
   return new Promise(resolve => {
-    const newlines = findNewlineIndexes(string);
-    console.log("newlines in extractCleanJS: ", newlines);
-    const cleanStarts = newlines[newlines.length - 2];
-    const cleanStops = newlines[newlines.length - 1];
-    const clean = string.slice(cleanStarts, cleanStops).trim();
-    resolve(clean);
+    const splitReturn = string.split("\r\r\n");
+    const joinedReturn = splitReturn.slice(1).join("\n");
+    resolve(joinedReturn);
   });
 };
 
