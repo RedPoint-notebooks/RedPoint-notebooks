@@ -59,9 +59,16 @@ const parseRubyOutput = returnData => {
   return new Promise(resolve => {
     const byOutput = returnData.split("=>");
     const dirtyReturnValue = byOutput[byOutput.length - 1];
-    const indexCleanStops = dirtyReturnValue.indexOf("irb(main):");
-    const cleanReturnValue = dirtyReturnValue.slice(0, indexCleanStops);
-    resolve(cleanReturnValue.trim());
+    const returnVal = dirtyReturnValue.split("\n")[0].trim();
+    // .split("\n")[0]
+    // .trim();
+    resolve(returnVal);
+    // debugger;
+    // const dirtyReturnValue = byOutput[byOutput.length - 1];
+    // const indexCleanStops = dirtyReturnValue.indexOf("irb(main):");
+    // const cleanReturnValue = dirtyReturnValue.slice(0, indexCleanStops);
+    // debugger;
+    // resolve(cleanReturnValue.trim());
   });
 };
 

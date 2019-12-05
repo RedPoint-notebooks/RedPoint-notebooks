@@ -25,7 +25,7 @@ class Notebook extends Component {
       writeToIndex: 0,
       codePending: false
     },
-
+    presentation: false,
     id: uuidv4()
   };
 
@@ -179,6 +179,12 @@ class Notebook extends Component {
         return cell;
       });
       return { cells: newCells };
+    });
+  };
+
+  handleToggleView = () => {
+    this.setState(prevState => {
+      return { presentation: !prevState.presentation };
     });
   };
 
@@ -386,6 +392,8 @@ class Notebook extends Component {
           onClearAllResults={this.handleClearAllResults}
           onRunAllClick={this.handleRunAllClick}
           onAPISubmit={this.handleAPISubmit}
+          onToggleView={this.handleToggleView}
+          presentation={this.state.presentation}
         />
         <Container className="App-body">
           <CellsList
@@ -397,6 +405,7 @@ class Notebook extends Component {
             toggleRender={this.handleToggleRender}
             onUpdateCodeState={this.handleUpdateCodeState}
             onRunClick={this.handleRunClick}
+            presentation={this.state.presentation}
           />
         </Container>
       </div>

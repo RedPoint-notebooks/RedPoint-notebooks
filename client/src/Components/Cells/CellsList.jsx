@@ -16,21 +16,24 @@ const CellsList = props => {
         onUpdateCodeState={props.onUpdateCodeState}
         onRunClick={props.onRunClick}
         languagePending={props.languagePending}
+        presentation={props.presentation}
       />
     );
   });
 
-  cellContainers.push(
-    <div className="add-cell-container" key="add-cell-container">
-      <AddCellButton
-        lastButton="true"
-        key="add-cell-btn"
-        className="add-cell-btn"
-        cellIndex={cellContainers.length}
-        onClick={props.onAddCellClick}
-      />
-    </div>
-  );
+  if (!props.presentation || props.cells.length === 0) {
+    cellContainers.push(
+      <div className="add-cell-container" key="add-cell-container">
+        <AddCellButton
+          lastButton="true"
+          key="add-cell-btn"
+          className="add-cell-btn"
+          cellIndex={cellContainers.length}
+          onClick={props.onAddCellClick}
+        />
+      </div>
+    );
+  }
 
   return cellContainers;
 };

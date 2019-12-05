@@ -12,6 +12,7 @@ const CodeCellContainer = props => {
       cellIndex={props.cellIndex}
       onAddClick={props.onAddCellClick}
       onRenderedMarkdownClick={props.toggleRender}
+      presentation={props.presentation}
     />
   ) : (
     <CodeCell
@@ -26,6 +27,7 @@ const CodeCellContainer = props => {
       onUpdateCodeState={props.onUpdateCodeState}
       onRunClick={props.onRunClick}
       languagePending={props.languagePending}
+      presentation={props.presentation}
     />
   );
 };

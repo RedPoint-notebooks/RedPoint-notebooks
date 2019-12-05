@@ -10,11 +10,15 @@ const RenderedMarkdown = props => {
   return (
     <div>
       <div className="add-cell-container">
-        <AddCellButton
-          className="add-cell-btn"
-          onClick={props.onAddClick}
-          cellIndex={props.cellIndex}
-        />
+        {props.presentation ? (
+          <div className="add-cell-btn"></div>
+        ) : (
+          <AddCellButton
+            className="add-cell-btn"
+            onClick={props.onAddClick}
+            cellIndex={props.cellIndex}
+          />
+        )}
       </div>
       <div onClick={handleRenderedMarkdownClick} className="rendered-markdown">
         <ReactMarkdown source={cell.code} />
