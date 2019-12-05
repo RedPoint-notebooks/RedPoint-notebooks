@@ -194,7 +194,6 @@ class NavigationBar extends React.Component {
                 >
                   Clone
                 </NavDropdown.Item>
-
                 <NavDropdown.Item onClick={this.handleToggleAPIForm}>
                   API
                 </NavDropdown.Item>
