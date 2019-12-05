@@ -34,6 +34,7 @@ const repl = {
       process.write(codeString + replExitMessage);
       process.on("exit", () => {
         // To ensure that the spawned REPL is killed after finishing processing
+        console.log(returnData);
         process.removeAllListeners("data");
         process.kill();
         console.log("AFTER REPL EXECUTE");
