@@ -87,12 +87,8 @@ const parsePythonOutput = returnData => {
 
 const extractCleanJSReturnValue = string => {
   return new Promise(resolve => {
-    console.log("string");
-    console.log(JSON.stringify(string));
     const splitReturn = string.split("\r\r\n");
     const joinedReturn = splitReturn.slice(1).join("\n");
-    console.log("split return");
-    console.log(splitReturn);
     resolve(joinedReturn);
   });
 };
