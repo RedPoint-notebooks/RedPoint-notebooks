@@ -135,6 +135,10 @@ div .rendered-markdown {
     margin: 15px 0 15px -150px !important;
   }
 
+  .hidden {
+    visibility: "hidden";
+  }
+
   .navbar-expand,
   .navbar-collapse {
     flex-wrap: wrap !important;

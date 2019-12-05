@@ -119,7 +119,8 @@ class NavigationBar extends React.Component {
 
     const notebook = {
       cells: this.props.cells,
-      id: notebookId
+      id: notebookId,
+      presentation: this.props.presentation
     };
 
     notebook.cells = notebook.cells.map(cell => {
@@ -221,6 +222,7 @@ class NavigationBar extends React.Component {
               </NavDropdown>
               <Nav.Link onClick={this.toggleDeleteWarning}>Delete</Nav.Link>
               <Nav.Link onClick={this.handleClearAllResults}>Clear</Nav.Link>
+
               {this.props.awaitingServerResponse() ? (
                 <Spinner
                   className="navbar-spinner"
@@ -231,6 +233,11 @@ class NavigationBar extends React.Component {
               ) : (
                 <Nav.Link onClick={this.props.onRunAllClick}>Run All</Nav.Link>
               )}
+              <Nav.Link onClick={this.props.onToggleView}>
+                {this.props.presentation
+                  ? "Switch to Edit Mode"
+                  : "Switch to Presentation Mode"}
+              </Nav.Link>
             </Nav>
           </Navbar.Collapse>
         </Navbar>
