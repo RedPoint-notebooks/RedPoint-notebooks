@@ -1,6 +1,5 @@
 import React from "react";
 import ReactMarkdown from "react-markdown";
-import CellToolbar from "../Shared/CellToolbar";
 import AddCellButton from "../Shared/AddCellButton";
 
 const RenderedMarkdown = props => {
@@ -17,14 +16,6 @@ const RenderedMarkdown = props => {
           cellIndex={props.cellIndex}
         />
       </div>
-      <CellToolbar
-        language={cell.language}
-        onAddClick={props.onAddClick}
-        onDeleteClick={props.onDeleteClick}
-        cellIndex={props.cellIndex}
-        onLanguageChange={props.onLanguageChange}
-        rendered={cell.rendered}
-      />
       <div onClick={handleRenderedMarkdownClick} className="rendered-markdown">
         <ReactMarkdown source={cell.code} />
       </div>

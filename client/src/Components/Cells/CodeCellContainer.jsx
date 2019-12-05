@@ -10,10 +10,8 @@ const CodeCellContainer = props => {
     <RenderedMarkdown
       cell={cell}
       cellIndex={props.cellIndex}
-      onDeleteClick={props.onDeleteCellClick}
       onAddClick={props.onAddCellClick}
       onRenderedMarkdownClick={props.toggleRender}
-      onLanguageChange={props.onLanguageChange}
     />
   ) : (
     <CodeCell
