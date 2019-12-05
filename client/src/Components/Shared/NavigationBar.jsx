@@ -4,7 +4,6 @@ import logo from "../../placeholder_logo.svg";
 import Navbar from "react-bootstrap/Navbar";
 import NavDropdown from "react-bootstrap/NavDropdown";
 import ConfirmAction from "./ConfirmAction";
-import LoadForm from "./LoadForm";
 import Spinner from "react-bootstrap/Spinner";
 import APIForm from "./APIForm";
 import SaveOrCloneForm from "./SaveOrCloneForm";
@@ -15,7 +14,6 @@ import uuidv4 from "uuid";
 class NavigationBar extends React.Component {
   state = {
     deleteWarningVisible: false,
-    loadFormVisible: false,
     apiFormVisible: false,
     saveOrCloneFormVisible: false,
     webhookFormVisible: false,
@@ -40,19 +38,6 @@ class NavigationBar extends React.Component {
   handleClearAllResults = e => {
     e.preventDefault();
     this.props.onClearAllResults();
-  };
-
-  handleLoadClick = e => {
-    e.preventDefault();
-    this.handleToggleLoadForm();
-  };
-
-  handleToggleLoadForm = () => {
-    this.setState(prevState => {
-      return {
-        loadFormVisible: !prevState.loadFormVisible
-      };
-    });
   };
 
   handleToggleAPIForm = () => {
@@ -240,12 +225,6 @@ class NavigationBar extends React.Component {
             warningMessage={"Are you sure you want to delete all cells?"}
             onYesClick={this.handleDeleteAllClick}
             onNoClick={this.toggleDeleteWarning}
-          />
-        ) : null}
-        {this.state.loadFormVisible ? (
-          <LoadForm
-            onLoadClick={this.props.onLoadClick}
-            onToggleLoadForm={this.handleToggleLoadForm}
           />
         ) : null}
         {this.state.apiFormVisible ? (
