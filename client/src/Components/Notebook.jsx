@@ -84,81 +84,83 @@ class Notebook extends Component {
   };
 
   componentDidMount() {
-    this.loadState();
-    this.establishWebsocket();
-    this.ws.onopen = e => {
-      let urlNoProtocol = e.target.url.replace(/ws:\/\//, "");
-      console.log("urlNoProtocol", urlNoProtocol);
-      this.ws.send(
-        JSON.stringify({ type: "sessionAddress", data: urlNoProtocol })
-      );
-    };
-    this.ws.onerror = e => {
-      console.log("Error encountered : ", e);
-    };
-    // this.ws.onclose = () => {
-    //   reestablish when websocket times out?
+    if (process.env.NODE_ENV !== "test") {
+      this.loadState();
+      this.establishWebsocket();
+      this.ws.onopen = e => {
+        let urlNoProtocol = e.target.url.replace(/ws:\/\//, "");
+        console.log("urlNoProtocol", urlNoProtocol);
+        this.ws.send(
+          JSON.stringify({ type: "sessionAddress", data: urlNoProtocol })
+        );
+      };
+      this.ws.onerror = e => {
+        console.log("Error encountered : ", e);
+      };
+      // this.ws.onclose = () => {
+      //   reestablish when websocket times out?
 
-    //   this.establishWebsocket();
-    //   // console.log(this.ws.readyState);
-    // };
+      //   this.establishWebsocket();
+      //   // console.log(this.ws.readyState);
+      // };
 
-    this.ws.onmessage = message => {
-      message = JSON.parse(message.data);
+      this.ws.onmessage = message => {
+        message = JSON.parse(message.data);
 
-      const language = message.language;
-      const writeToIndex = this.state[language].writeToIndex;
-      const cellIndex = this.state[language].pendingIndexes[writeToIndex];
+        const language = message.language;
+        const writeToIndex = this.state[language].writeToIndex;
+        const cellIndex = this.state[language].pendingIndexes[writeToIndex];
 
-      console.log(JSON.stringify(message.data));
+        console.log(JSON.stringify(message.data));
 
-      switch (message.type) {
-        case "delimiter":
-          // update the pending cell index for results of the language being executed
-          this.setState(prevState => {
-            const newWriteToIndex = prevState[language].writeToIndex + 1;
-            const newState = Object.assign({}, prevState[language], {
-              writeToIndex: newWriteToIndex
+        switch (message.type) {
+          case "delimiter":
+            // update the pending cell index for results of the language being executed
+            this.setState(prevState => {
+              const newWriteToIndex = prevState[language].writeToIndex + 1;
+              const newState = Object.assign({}, prevState[language], {
+                writeToIndex: newWriteToIndex
+              });
+
+              return { [language]: newState };
             });
 
-            return { [language]: newState };
-          });
+            break;
+          case "stdout":
+            this.updateCellResults(message.type, cellIndex, message);
+            break;
+          case "return":
+          case "error":
+            this.stopLanguagePending(language);
+            this.updateCellResults(message.type, cellIndex, message);
+            break;
+          case "syntax-error":
+            this.stopLanguagePending(language);
 
-          break;
-        case "stdout":
-          this.updateCellResults(message.type, cellIndex, message);
-          break;
-        case "return":
-        case "error":
-          this.stopLanguagePending(language);
-          this.updateCellResults(message.type, cellIndex, message);
-          break;
-        case "syntax-error":
-          this.stopLanguagePending(language);
+            const errorLocation = message.data.location[0];
+            const errorCellIndex = this.state[language].pendingIndexes[
+              errorLocation
+            ];
 
-          const errorLocation = message.data.location[0];
-          const errorCellIndex = this.state[language].pendingIndexes[
-            errorLocation
-          ];
-
-          this.updateCellResults("error", errorCellIndex, message);
-          break;
-        case "loadNotebook":
-          const newState = message.data;
-          this.setState({
-            cells: newState.cells,
-            id: newState.id
-          });
-          break;
-        case "saveResult":
-          break;
-        case "loadError":
-          console.log(message.data);
-          break;
-        default:
-          console.log("Error: Unknown message received from server");
-      }
-    };
+            this.updateCellResults("error", errorCellIndex, message);
+            break;
+          case "loadNotebook":
+            const newState = message.data;
+            this.setState({
+              cells: newState.cells,
+              id: newState.id
+            });
+            break;
+          case "saveResult":
+            break;
+          case "loadError":
+            console.log(message.data);
+            break;
+          default:
+            console.log("Error: Unknown message received from server");
+        }
+      };
+    }
   }
 
   updateCellResults = (resultType, cellIndex, message) => {

@@ -1,8 +1,8 @@
 import React from "react";
 import ReactDOM from "react-dom";
 import { shallow } from "enzyme";
-import Adapter from 'enzyme-adapter-react-16';
-import Enzyme from 'enzyme';
+import Adapter from "enzyme-adapter-react-16";
+import Enzyme from "enzyme";
 Enzyme.configure({ adapter: new Adapter() });
 import NavigationBar from "../Components/Shared/NavigationBar";
 
@@ -10,33 +10,32 @@ describe("test NavigationBar component", () => {
   let wrapper;
 
   beforeEach(() => {
-    wrapper = shallow(<NavigationBar awaitingServerResponse={() => {}}/>);
+    wrapper = shallow(<NavigationBar awaitingServerResponse={() => {}} />);
   });
 
   it("initial state has no forms visible", () => {
     const initialState = {
       deleteWarningVisible: false,
-    loadFormVisible: false,
-    apiFormVisible: false,
-    saveOrCloneFormVisible: false,
-    webhookFormVisible: false,
-    notebookURL: null,
-    operation: null
-    }
+      loadFormVisible: false,
+      apiFormVisible: false,
+      saveOrCloneFormVisible: false,
+      webhookFormVisible: false,
+      notebookURL: null,
+      operation: null
+    };
     expect(wrapper.state()).toEqual(initialState);
   });
 
-
   it("state is updated when handleToggleLoadForm is executed", () => {
     const updatedState = {
-    deleteWarningVisible: false,
-    loadFormVisible: true,
-    apiFormVisible: false,
-    saveOrCloneFormVisible: false,
-    webhookFormVisible: false,
-    notebookURL: null,
-    operation: null
-    }
+      deleteWarningVisible: false,
+      loadFormVisible: true,
+      apiFormVisible: false,
+      saveOrCloneFormVisible: false,
+      webhookFormVisible: false,
+      notebookURL: null,
+      operation: null
+    };
 
     wrapper.instance().handleToggleLoadForm();
     expect(wrapper.state()).toEqual(updatedState);
@@ -44,21 +43,21 @@ describe("test NavigationBar component", () => {
 
   it("state is updated when handleToggleAPIForm is executed", () => {
     const updatedState = {
-    deleteWarningVisible: false,
-    loadFormVisible: false,
-    apiFormVisible: true,
-    saveOrCloneFormVisible: false,
-    webhookFormVisible: false,
-    notebookURL: null,
-    operation: null
-    }
+      deleteWarningVisible: false,
+      loadFormVisible: false,
+      apiFormVisible: true,
+      saveOrCloneFormVisible: false,
+      webhookFormVisible: false,
+      notebookURL: null,
+      operation: null
+    };
 
     wrapper.instance().handleToggleAPIForm();
     expect(wrapper.state()).toEqual(updatedState);
   });
 
   it("state is updated when handleToggleSaveOrCloneForm is executed", () => {
-      const updatedState = {
+    const updatedState = {
       deleteWarningVisible: false,
       loadFormVisible: false,
       apiFormVisible: false,
@@ -66,7 +65,7 @@ describe("test NavigationBar component", () => {
       webhookFormVisible: false,
       notebookURL: null,
       operation: null
-      }
+    };
 
     wrapper.instance().handleToggleSaveOrCloneForm();
     expect(wrapper.state()).toEqual(updatedState);
