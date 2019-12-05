@@ -1,1 +1,1 @@
-system('ls')
+p 'hi'

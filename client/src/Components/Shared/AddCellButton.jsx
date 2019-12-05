@@ -26,7 +26,7 @@ class AddCellButton extends Component {
       <DropdownButton
         className={
           this.props.lastButton === "true"
-            ? "lonely-basic-button"
+            ? "last-add-cell-button"
             : "add-cell-btn"
         }
         variant="secondary"
