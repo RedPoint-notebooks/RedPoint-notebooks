@@ -222,7 +222,7 @@ class NavigationBar extends React.Component {
                   Webhooks
                 </NavDropdown.Item>
               </NavDropdown>
-              <Nav.Link onClick={this.toggleDeleteWarning}>Delete</Nav.Link>
+              <Nav.Link onClick={this.toggleDeleteWarning} id="show-delete" >Delete</Nav.Link>
               <Nav.Link onClick={this.handleClearAllResults}>Clear</Nav.Link>
 
               {this.props.awaitingServerResponse() ? (
@@ -253,18 +253,21 @@ class NavigationBar extends React.Component {
         ) : null}
         {this.state.loadFormVisible ? (
           <LoadForm
+          
             onLoadClick={this.props.onLoadClick}
             onToggleLoadForm={this.handleToggleLoadForm}
           />
         ) : null}
         {this.state.apiFormVisible ? (
           <APIForm
+            id="api"
             onAPISubmit={this.props.onAPISubmit}
             onToggleAPIForm={this.handleToggleAPIForm}
           ></APIForm>
         ) : null}
         {this.state.saveOrCloneFormVisible ? (
           <SaveOrCloneForm
+            id="save-or-clone"
             notebookURL={this.state.notebookURL}
             operation={this.state.operation}
             onEmailSubmit={this.handleEmailSubmit}
@@ -273,6 +276,7 @@ class NavigationBar extends React.Component {
         ) : null}
         {this.state.webhookFormVisible ? (
           <WebhookForm
+            id="webhooks"
             notebookId={this.props.notebookId}
             onToggleWebhookForm={this.handleToggleWebhookForm}
           ></WebhookForm>

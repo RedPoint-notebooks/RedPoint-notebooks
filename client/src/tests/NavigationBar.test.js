@@ -8,12 +8,16 @@ import NavigationBar from "../Components/Shared/NavigationBar";
 
 describe("test NavigationBar component", () => {
   let wrapper;
+  let callback;
 
   beforeEach(() => {
+    callback = jest.fn();
     wrapper = shallow(<NavigationBar 
     awaitingServerResponse={() => {}}
     cells={[]}
     notebookId='123abc'
+    deleteAllCells={callback}
+    onClearAllResults={callback}
      />);
 
           // awaitingServerResponse={this.awaitingServerResponse}
@@ -21,7 +25,6 @@ describe("test NavigationBar component", () => {
           // onSaveClick={this.handleSaveOrCloneClick}
           // onCloneClick={this.handleSaveOrCloneClick}
           // onLoadClick={this.handleLoadClick}
-          // onClearAllResults={this.handleClearAllResults}
           // onRunAllClick={this.handleRunAllClick}
           // onAPISubmit={this.handleAPISubmit}
           // onToggleView={this.handleToggleView}
@@ -81,6 +84,37 @@ describe("test NavigationBar component", () => {
     expect(wrapper.state().webhookFormVisible).toBe(false);
     wrapper.find("#show-webhooks").simulate("click");
     expect(wrapper.state().webhookFormVisible).toBe(true);
+  });
+
+  it("executing handleDeleteAllClick calls props.deleteAllCells", () => {
+    wrapper.instance().handleDeleteAllClick({ preventDefault: () => {} });
+     expect(callback.mock.calls.length).toBe(1);
+  });
+
+  it("executing handleClearAllResults calls props.onClearAllResults", () => {
+    wrapper.instance().handleClearAllResults({ preventDefault: () => {} });
+     expect(callback.mock.calls.length).toBe(1);
+  });
+
+  it("clicking Delete option changes deleteWarningVisible to true", () => {
+    expect(wrapper.state().deleteWarningVisible).toBe(false);
+    wrapper.find("#show-delete").simulate("click");
+    expect(wrapper.state().deleteWarningVisible).toBe(true);    
+  });
+
+  it("clicking Delete option renders ConfirmAction", () => {
+    wrapper.find("#show-delete").simulate("click");
+    expect(wrapper.find("#confirm-delete-all").length).toBe(1)
+  });
+
+  it("clicking API option renders APIForm", () => {
+    wrapper.find("#show-API").simulate("click");
+    expect(wrapper.find("#api").length).toBe(1)
+  });
+
+  it("clicking Webhooks option renders WebhookForm", () => {
+    wrapper.find("#show-webhooks").simulate("click");
+    expect(wrapper.find("#webhooks").length).toBe(1)
   });
 });
 
