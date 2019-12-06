@@ -21,6 +21,9 @@ class PresentationToggle extends React.Component {
         className="react-switch"
         onChange={this.handleChange}
         checked={this.state.checked}
+        onColor="#CC2905"
+        height={20}
+        width={40}
       />
     );
   }

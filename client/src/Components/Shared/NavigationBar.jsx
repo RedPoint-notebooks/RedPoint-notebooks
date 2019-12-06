@@ -234,7 +234,7 @@ class NavigationBar extends React.Component {
               ) : (
                 <Nav.Link onClick={this.props.onRunAllClick}>Run All</Nav.Link>
               )}
-              <Nav.Link>
+              <Nav.Link className="ml-auto">
                 <label>
                   Clean View
                   <PresentationToggle
