@@ -104,6 +104,12 @@ div .rendered-markdown {
   justify-content: center;
 }
 
+.react-switch {
+  vertical-align: top;
+  margin-left: 4px;
+  /* justify-self: flex-end; */
+}
+
 .dropdown-toggle:after {
   content: none !important;
 }
