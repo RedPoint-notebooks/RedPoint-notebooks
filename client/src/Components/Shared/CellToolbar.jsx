@@ -6,7 +6,7 @@ import RunButtonOrSpinner from "./RunButtonOrSpinner";
 const CellToolbar = props => {
   return (
     <div
-      visible={false}
+      visible="false"
       className={
         props.language === "Markdown" && props.rendered === true
           ? "cell-toolbar-markdown"
@@ -18,6 +18,7 @@ const CellToolbar = props => {
         onLanguageChange={props.onLanguageChange}
         cellIndex={props.cellIndex}
       ></ChangeLanguageDropdown>
+
       {props.language !== "Markdown" && !props.presentation ? (
         <RunButtonOrSpinner
           language={props.language}
