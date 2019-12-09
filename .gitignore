@@ -4,6 +4,7 @@ node_modules
 
 #ignore log files
 *.log
+*.icloud
 
 #ignore env files
 .env
