@@ -120,6 +120,18 @@ const executeQueue = (queue, ws, delimiter) => {
 
 app.use(express.static(path.join(__dirname, "client", "build")));
 
+app.get("/checkHealth", function(req, res) {
+  console.log("INSIDE /checkHealth");
+  console.log("WSS client count : ", wss.clients.length);
+  setTimeout(() => {
+    if (!wss.clients.length) {
+      res.end("0");
+    } else {
+      res.end("1");
+    }
+  }, 5000);
+});
+
 app.get("/", function(req, res) {
   res.sendFile(path.join(__dirname, "client", "build", "index.html"));
 });
