@@ -8,6 +8,7 @@ const fetch = require("node-fetch");
 const app = express();
 const server = http.createServer(app);
 const wss = new Websocket.Server({ server, clientTracking: true });
+let webSocketEstablished = false;
 
 const logger = require("morgan");
 const userScript = require("./libs/modules/userScript");
@@ -36,6 +37,7 @@ function noop() {}
 wss.on("connection", ws => {
   const delimiter = uuidv4();
   const queue = [];
+  webSocketEstablished = true;
 
   ws.on("close", () => {
     console.log("Sending fetch delete request to : ", sessionAddress);
@@ -46,10 +48,11 @@ wss.on("connection", ws => {
   });
   ws.on("error", () => {});
 
-  ws.isAlive = true;
-  ws.on("pong", () => {
-    heartbeat(ws);
-  });
+  // ws.isAlive = true;
+  // ws.on("pong", () => {
+  //   console.log("Pong received from client.");
+  //   heartbeat(ws);
+  // });
 
   ws.on("message", message => {
     message = JSON.parse(message);
@@ -68,18 +71,18 @@ wss.on("connection", ws => {
   });
 });
 
-const interval = setInterval(function ping() {
-  wss.clients.forEach(function each(ws) {
-    // when tab closed, there are no more clients. no iteration here.
-    if (ws.isAlive === false) {
-      ws.terminate();
-    }
+// const interval = setInterval(function ping() {
+//   wss.clients.forEach(function each(ws) {
+//     // when tab closed, there are no more clients. no iteration here.
+//     if (ws.isAlive === false) {
+//       ws.terminate();
+//     }
 
-    ws.isAlive = false;
-    ws.ping(noop);
-    console.log("ping sent to client");
-  });
-}, 4000);
+//     ws.isAlive = false;
+//     ws.ping(noop);
+//     console.log("ping sent to client");
+//   });
+// }, 4000);
 
 const handleExecuteCode = (message, ws, delimiter) => {
   return new Promise((resolve, reject) => {
@@ -122,14 +125,7 @@ app.use(express.static(path.join(__dirname, "client", "build")));
 
 app.get("/checkHealth", function(req, res) {
   console.log("INSIDE /checkHealth");
-  console.log("WSS client count : ", wss.clients.length);
-  setTimeout(() => {
-    if (!wss.clients.length) {
-      res.end("0");
-    } else {
-      res.end("1");
-    }
-  }, 5000);
+  res.end(JSON.stringify({ webSocketEstablished: !!webSocketEstablished }));
 });
 
 app.get("/", function(req, res) {
