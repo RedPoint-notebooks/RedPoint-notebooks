@@ -1,6 +1,6 @@
 import React from "react";
 import Nav from "react-bootstrap/Nav";
-import logo from "../../placeholder_logo.svg";
+import logo from "../../redpoint-brand-logo.svg";
 import Navbar from "react-bootstrap/Navbar";
 import NavDropdown from "react-bootstrap/NavDropdown";
 import ConfirmAction from "./ConfirmAction";
@@ -179,7 +179,7 @@ class NavigationBar extends React.Component {
               height="30"
               className="d-inline-block align-top"
             />{" "}
-            RedPoint
+            <span className="logo-text">RedPoint</span>
           </Navbar.Brand>
           <Navbar.Toggle aria-controls="basic-navbar-nav" />
           <Navbar.Collapse id="basic-navbar-nav">
