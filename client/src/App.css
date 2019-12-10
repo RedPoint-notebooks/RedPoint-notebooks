@@ -1,11 +1,13 @@
 .App {
   background-color: #484c55;
+  font-family: "Roboto", sans-serif;
 }
 
 .CodeMirror {
   height: auto !important;
   border-bottom-right-radius: 0.4rem;
   border-bottom-left-radius: 0.4rem;
+  font-family: "Roboto Mono", monospace !important;
 }
 
 .react-codemirror2,
@@ -149,6 +151,7 @@ div .rendered-markdown {
   .navbar-collapse {
     flex-wrap: wrap !important;
     max-width: 100% !important;
+    align-items: center !important;
   }
 }
 
