@@ -34,6 +34,11 @@ label {
   color: white;
 }
 
+html,
+body {
+  overscroll-behavior: none;
+}
+
 .App-link {
   color: #09d3ac;
 }
@@ -171,7 +176,7 @@ div .rendered-markdown {
 }
 
 .navbar-spinner {
-  margin: 12px 20px !important;
+  margin: 12px 5px !important;
 }
 
 #add-cell-button {
@@ -250,6 +255,10 @@ div .rendered-markdown {
     max-width: 300px !important;
   }
 
+  .App-body {
+    padding-top: 100px !important;
+  }
+
   .add-cell-btn {
     margin: 15px 0 15px 0 !important;
   }
@@ -288,10 +297,13 @@ div .rendered-markdown {
     max-width: 340px !important;
   }
 
+  .App-body {
+    padding-top: 100px !important;
+  }
+
   .navbar-expand,
   .navbar-collapse {
     flex-wrap: wrap !important;
-    flex-shrink: ;
     max-width: 100% !important;
   }
 
@@ -324,6 +336,10 @@ div .rendered-markdown {
   .cell-toolbar-markdown,
   .output {
     max-width: 560px !important;
+  }
+
+  .App-body {
+    padding-top: 60px !important;
   }
 
   .add-cell-btn {
