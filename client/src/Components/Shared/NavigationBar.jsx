@@ -238,10 +238,12 @@ class NavigationBar extends React.Component {
                 </Nav.Link>
               )}
             </Nav>
-            {/* <Nav.Link className="ml-auto"> */}
             <Nav.Link className="navbar-clean-switch">
               <span className="navbar-text">
-                <FontAwesomeIcon icon={faChalkboardTeacher} />
+                <FontAwesomeIcon
+                  icon={faChalkboardTeacher}
+                  className="clean-mode-icon"
+                />
               </span>
               <PresentationToggle
                 onClick={this.props.onToggleView}

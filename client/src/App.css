@@ -183,6 +183,10 @@ div .rendered-markdown {
   margin: 0 20px 0 5px;
 }
 
+.clean-mode-icon {
+  margin-bottom: -2px;
+}
+
 .fa-plus-square,
 .fa-plus-circle {
   font-size: 20px;

@@ -28,23 +28,25 @@ class APIForm extends Component {
               onChange={this.handleFormInput}
               className="api-url-form"
             />
-            <Button
-              className="load-button"
-              onClick={this.handleAPISubmit}
-              variant="primary"
-              type="submit"
-              size="sm"
-            >
-              Submit
-            </Button>
-            <Button
-              onClick={this.props.onToggleAPIForm}
-              variant="light"
-              className="load-button"
-              size="sm"
-            >
-              Cancel
-            </Button>
+            <div className="flex-container">
+              <Button
+                className="load-button"
+                onClick={this.handleAPISubmit}
+                variant="primary"
+                type="submit"
+                size="sm"
+              >
+                Submit
+              </Button>
+              <Button
+                onClick={this.props.onToggleAPIForm}
+                variant="light"
+                className="load-button"
+                size="sm"
+              >
+                Cancel
+              </Button>
+            </div>
           </Form.Group>
           <div className="flex-container">
             <Form.Text className="text-muted">
