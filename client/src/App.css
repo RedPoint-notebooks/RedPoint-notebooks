@@ -24,7 +24,7 @@ label {
 }
 
 .App-body {
-  margin-top: 40px;
+  padding-top: 60px;
   text-align: center;
   min-height: 100vh;
   display: flex;
