@@ -6,7 +6,7 @@ const ConfirmAction = props => {
   return (
     <Alert variant="danger" className="delete-all-banner">
       <Alert.Heading>{props.warningMessage}</Alert.Heading>
-      <span className="delete-buttons">
+      <span className="banner-buttons">
         <Button
           className="delete-all-btn"
           as="button"

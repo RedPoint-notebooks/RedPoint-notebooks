@@ -3,7 +3,11 @@ import * as constants from "../../Constants/constants";
 import DropdownButton from "react-bootstrap/DropdownButton";
 import Dropdown from "react-bootstrap/Dropdown";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faPlusCircle, faPlusSquare } from "@fortawesome/free-solid-svg-icons";
+import {
+  faPlusCircle,
+  faPlusSquare,
+  faPlus
+} from "@fortawesome/free-solid-svg-icons";
 
 class AddCellButton extends Component {
   handleSelectCellType = language => {
@@ -33,7 +37,7 @@ class AddCellButton extends Component {
         }
         variant="secondary"
         id="add-cell-button"
-        title={<FontAwesomeIcon icon={faPlusSquare} />}
+        title={<FontAwesomeIcon icon={faPlus} />}
         size="sm"
         onSelect={this.handleSelectCellType}
       >

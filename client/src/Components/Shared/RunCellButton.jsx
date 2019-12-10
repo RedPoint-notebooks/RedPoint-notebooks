@@ -32,7 +32,7 @@ class RunCellButton extends React.Component {
         size="sm"
       >
         <span>
-          <FontAwesomeIcon icon={faPlay} />
+          <FontAwesomeIcon icon={faPlay} className="run-button-icon" />
         </span>
       </Button>
     );

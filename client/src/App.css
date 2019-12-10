@@ -1,3 +1,8 @@
+label {
+  margin-bottom: 0 !important;
+  align-self: center;
+}
+
 .App {
   background-color: #484c55;
   font-family: "Roboto", sans-serif;
@@ -33,6 +38,12 @@
   color: #09d3ac;
 }
 
+.flex-container {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
 .navbar-text {
   margin: 0;
   padding: 0;
@@ -53,7 +64,20 @@
 }
 
 .load-button {
-  margin-right: 10px !important;
+  margin: 0 0 0 10px !important;
+}
+
+.banner-form {
+  display: flex;
+  justify-content: center;
+  align-content: center;
+}
+
+/* adjust for responsive design */
+.api-url-form {
+  max-width: 900px !important;
+  align-self: flex-start;
+  margin-left: 170px !important;
 }
 
 .cell-toolbar,
@@ -107,6 +131,10 @@ div .rendered-markdown {
   padding-top: 10px;
 }
 
+.form-group {
+  margin-bottom: 0 !important;
+}
+
 .nav-buttons {
   display: flex;
   justify-content: center;
@@ -140,7 +168,7 @@ div .rendered-markdown {
   font-size: 20px;
 }
 
-.fa-play {
+.run-button-icon {
   font-size: 10px;
 }
 
@@ -155,7 +183,7 @@ div .rendered-markdown {
   padding: 0 !important;
 }
 
-.delete-buttons {
+.banner-buttons {
   margin-left: 2% !important;
 }
 

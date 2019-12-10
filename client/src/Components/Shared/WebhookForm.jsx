@@ -20,9 +20,10 @@ class WebhookForm extends Component {
     return (
       <Alert variant="primary">
         <Form>
-          <Form.Group controlId="formAPI">
+          <Form.Group controlId="formAPI" className="banner-form">
             <Form.Label size="lg">
-              Here's your notebook's webhook URL: {this.webhookURL}
+              Here's your notebook's webhook URL:{" "}
+              <a href={this.webhookURL}>{this.webhookURL}</a>
             </Form.Label>
             <CopyToClipboard onCopy={this.onCopy} text={this.webhookURL}>
               <Button
@@ -37,11 +38,6 @@ class WebhookForm extends Component {
             {this.state.copied ? (
               <p className="copied-text">Copied to clipboard</p>
             ) : null}
-
-            <Form.Text className="text-muted">
-              {`Use this URL to configure a webhook provider. 
-              When an action triggers a webhook, the JSON payload will appear in a new Javascript cell (upon page refresh).`}
-            </Form.Text>
           </Form.Group>
 
           <Button
@@ -51,6 +47,12 @@ class WebhookForm extends Component {
           >
             Dismiss
           </Button>
+          <div className="flex-container">
+            <Form.Text className="text-muted">
+              {`Use this URL to configure a webhook provider. 
+              When an action triggers a webhook, the JSON payload will appear in a new Javascript cell (upon page refresh).`}
+            </Form.Text>
+          </div>
         </Form>
       </Alert>
     );

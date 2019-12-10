@@ -21,32 +21,34 @@ class APIForm extends Component {
     return (
       <Alert variant="primary">
         <Form>
-          <Form.Group controlId="formAPI">
-            <Form.Label>API URL:</Form.Label>
+          <Form.Group controlId="formAPI" className="banner-form">
             <Form.Control
               type="API"
               placeholder="Enter API URL"
               onChange={this.handleFormInput}
+              className="api-url-form"
             />
+            <Button
+              className="load-button"
+              onClick={this.handleAPISubmit}
+              variant="primary"
+              type="submit"
+            >
+              Submit
+            </Button>
+            <Button
+              onClick={this.props.onToggleAPIForm}
+              variant="light"
+              className="load-button"
+            >
+              Cancel
+            </Button>
+          </Form.Group>
+          <div className="flex-container">
             <Form.Text className="text-muted">
               Make a GET request for JSON data at an API of your choosing
             </Form.Text>
-          </Form.Group>
-          <Button
-            className="load-button"
-            onClick={this.handleAPISubmit}
-            variant="primary"
-            type="submit"
-          >
-            Submit
-          </Button>
-          <Button
-            onClick={this.props.onToggleAPIForm}
-            variant="light"
-            className="load-button"
-          >
-            Cancel
-          </Button>
+          </div>
         </Form>
       </Alert>
     );
