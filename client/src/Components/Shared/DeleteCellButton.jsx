@@ -1,5 +1,7 @@
 import React from "react";
 import Button from "react-bootstrap/Button";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faTimes } from "@fortawesome/free-solid-svg-icons";
 
 const DeleteCellButton = props => {
   const handleDeleteCellClick = () => {
@@ -8,7 +10,9 @@ const DeleteCellButton = props => {
 
   return (
     <Button onClick={handleDeleteCellClick} variant="secondary" size="sm">
-      <span className="delete-cell">&times;</span>
+      <span className="delete-cell">
+        <FontAwesomeIcon icon={faTimes} />
+      </span>
     </Button>
   );
 };
