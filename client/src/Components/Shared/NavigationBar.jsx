@@ -11,6 +11,16 @@ import WebhookForm from "./WebhookForm";
 import PresentationToggle from "./PresentationToggle";
 import { PROXY_URL } from "../../Constants/constants";
 import uuidv4 from "uuid";
+
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import {
+  faCaretDown,
+  faTrash,
+  faRedo,
+  faPlay,
+  faChalkboardTeacher
+} from "@fortawesome/free-solid-svg-icons";
+
 class NavigationBar extends React.Component {
   state = {
     deleteWarningVisible: false,
@@ -184,7 +194,11 @@ class NavigationBar extends React.Component {
           <Navbar.Toggle aria-controls="basic-navbar-nav" />
           <Navbar.Collapse id="basic-navbar-nav">
             <Nav className="mr-auto">
-              <NavDropdown title="Notebook" id="basic-nav-dropdown">
+              <Navbar.Text>File</Navbar.Text>
+              <NavDropdown
+                title={<FontAwesomeIcon icon={faCaretDown} />}
+                id="basic-nav-dropdown"
+              >
                 <NavDropdown.Item
                   onClick={this.handleSaveOrCloneClick}
                   name="save"
@@ -204,8 +218,13 @@ class NavigationBar extends React.Component {
                   Webhooks
                 </NavDropdown.Item>
               </NavDropdown>
-              <Nav.Link onClick={this.toggleDeleteWarning}>Delete</Nav.Link>
-              <Nav.Link onClick={this.handleClearAllResults}>Clear</Nav.Link>
+              <Navbar.Text className="navbar-vertical-bar">|</Navbar.Text>
+              <Nav.Link onClick={this.toggleDeleteWarning}>
+                <FontAwesomeIcon icon={faTrash} />
+              </Nav.Link>
+              <Nav.Link onClick={this.handleClearAllResults}>
+                <FontAwesomeIcon icon={faRedo} />
+              </Nav.Link>
               {this.props.awaitingServerResponse() ? (
                 <Spinner
                   className="navbar-spinner"
@@ -214,12 +233,16 @@ class NavigationBar extends React.Component {
                   size="sm"
                 />
               ) : (
-                <Nav.Link onClick={this.props.onRunAllClick}>Run All</Nav.Link>
+                <Nav.Link onClick={this.props.onRunAllClick}>
+                  <FontAwesomeIcon icon={faPlay} />
+                </Nav.Link>
               )}
             </Nav>
             {/* <Nav.Link className="ml-auto"> */}
             <Nav.Link className="navbar-clean-switch">
-              <span className="navbar-text">Clean View</span>
+              <span className="navbar-text">
+                <FontAwesomeIcon icon={faChalkboardTeacher} />
+              </span>
               <PresentationToggle
                 onClick={this.props.onToggleView}
                 presentation={this.props.presentation}
