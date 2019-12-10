@@ -130,6 +130,11 @@ div .rendered-markdown {
   margin: 12px 20px !important;
 }
 
+#add-cell-button {
+  background-color: #474b55;
+  border-color: #474b55;
+}
+
 .navbar-vertical-bar {
   margin: 0 20px 0 5px;
 }
@@ -138,11 +143,6 @@ div .rendered-markdown {
   margin-top: 8px;
   margin-left: auto;
   margin-right: 12px;
-}
-
-#dropdown-basic-button {
-  padding: 0 !important;
-  margin: 0 !important;
 }
 
 @media all and (max-width: 374px) {
