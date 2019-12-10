@@ -80,6 +80,21 @@ label {
   margin-left: 170px !important;
 }
 
+.email-form {
+  max-width: 500px !important;
+  margin: 10px;
+  /* align-self: center; */
+}
+
+.webhook-url {
+  color: #6e757c;
+}
+
+.email-address-error {
+  color: #ed7164;
+  font-size: 16px;
+}
+
 .cell-toolbar,
 .cell-toolbar-markdown {
   max-width: 900px;
@@ -113,7 +128,12 @@ label {
 }
 
 .copied-text {
-  font-size: 0.7rem;
+  font-size: 0.8rem;
+  align-self: center;
+  margin: 0 0 0 5px;
+  border: 1px solid #e38a5f;
+  padding: 5px;
+  border-radius: 4px;
 }
 
 .add-cell-container {
@@ -244,6 +264,15 @@ div .rendered-markdown {
     max-width: 100% !important;
     align-items: center !important;
   }
+
+  .api-url-form {
+    margin: 5px 0 !important;
+  }
+
+  .flex-container,
+  .banner-form {
+    flex-wrap: wrap;
+  }
 }
 
 @media all and (min-width: 375px) {
@@ -268,6 +297,19 @@ div .rendered-markdown {
 
   .last-add-cell-button {
     margin: 15px 0 15px -170px !important;
+  }
+
+  .email-form {
+    margin: 3px;
+  }
+
+  .api-url-form {
+    margin: 5px 0 !important;
+  }
+
+  .flex-container,
+  .banner-form {
+    flex-wrap: wrap;
   }
 }
 

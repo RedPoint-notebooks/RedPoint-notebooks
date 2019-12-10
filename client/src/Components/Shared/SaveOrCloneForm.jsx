@@ -53,9 +53,9 @@ class SaveOrCloneForm extends Component {
     return (
       <Alert variant="primary">
         <Form>
-          <Form.Group controlId="formEmail">
-            <Form.Label>
-              {`Your ${this.props.operation}d notebook URL is: ${this.props.notebookURL}`}
+          <Form.Group controlId="formEmail" className="banner-form">
+            <Form.Label className="flex-container">
+              <span className="save-url">{`Your ${this.props.operation}d notebook URL is: ${this.props.notebookURL}`}</span>
             </Form.Label>
             <CopyToClipboard onCopy={this.onCopy} text={this.props.notebookURL}>
               <Button
@@ -70,35 +70,42 @@ class SaveOrCloneForm extends Component {
             {this.state.copied ? (
               <p className="copied-text">Copied to clipboard</p>
             ) : null}
-            <Form.Text className="text-muted">
-              Send an email with this URL to your email address:
-            </Form.Text>
+          </Form.Group>
+          <div className="flex-container">
             <Form.Control
               type="API"
               placeholder="Enter an email address"
               onChange={this.handleFormInput}
+              className="email-form"
             />
+            <Form.Text className="text-muted">
+              Send an email with this URL to your email address:
+            </Form.Text>
+            <Button
+              className="load-button"
+              onClick={this.handleEmailSubmit}
+              variant="primary"
+              type="submit"
+              size="sm"
+            >
+              Send
+            </Button>
+            <Button
+              onClick={this.props.onToggleSaveOrCloneForm}
+              variant="light"
+              className="load-button"
+              size="sm"
+            >
+              Dismiss
+            </Button>
+          </div>
+          <div className="flex-container">
             {this.state.showFormError ? (
-              <Form.Text type="invalid">
+              <Form.Text type="invalid" className="email-address-error">
                 {this.state.formErrors.email}
               </Form.Text>
             ) : null}
-          </Form.Group>
-          <Button
-            className="load-button"
-            onClick={this.handleEmailSubmit}
-            variant="primary"
-            type="submit"
-          >
-            Send
-          </Button>
-          <Button
-            onClick={this.props.onToggleSaveOrCloneForm}
-            variant="light"
-            className="load-button"
-          >
-            Dismiss
-          </Button>
+          </div>
         </Form>
       </Alert>
     );

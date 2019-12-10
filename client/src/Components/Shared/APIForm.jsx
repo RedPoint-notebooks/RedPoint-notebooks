@@ -33,6 +33,7 @@ class APIForm extends Component {
               onClick={this.handleAPISubmit}
               variant="primary"
               type="submit"
+              size="sm"
             >
               Submit
             </Button>
@@ -40,6 +41,7 @@ class APIForm extends Component {
               onClick={this.props.onToggleAPIForm}
               variant="light"
               className="load-button"
+              size="sm"
             >
               Cancel
             </Button>
