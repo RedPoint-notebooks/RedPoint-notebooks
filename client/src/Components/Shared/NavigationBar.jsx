@@ -216,16 +216,15 @@ class NavigationBar extends React.Component {
               ) : (
                 <Nav.Link onClick={this.props.onRunAllClick}>Run All</Nav.Link>
               )}
-              <Nav.Link className="ml-auto">
-                <label>
-                  Clean View
-                  <PresentationToggle
-                    onClick={this.props.onToggleView}
-                    presentation={this.props.presentation}
-                  />
-                </label>
-              </Nav.Link>
             </Nav>
+            {/* <Nav.Link className="ml-auto"> */}
+            <Nav.Link className="navbar-clean-switch">
+              <span className="navbar-text">Clean View</span>
+              <PresentationToggle
+                onClick={this.props.onToggleView}
+                presentation={this.props.presentation}
+              />
+            </Nav.Link>
           </Navbar.Collapse>
         </Navbar>
         {this.state.deleteWarningVisible ? (

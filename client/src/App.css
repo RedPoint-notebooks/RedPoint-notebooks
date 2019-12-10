@@ -33,9 +33,15 @@
   color: #09d3ac;
 }
 
-/* .logo-text {
-  font-size: 20px;
-} */
+.navbar-text {
+  margin: 0;
+  padding: 0;
+}
+
+.navbar-clean-switch {
+  align-self: flex-end;
+  padding: 0 !important;
+}
 
 .alert-danger {
   text-align: center;
