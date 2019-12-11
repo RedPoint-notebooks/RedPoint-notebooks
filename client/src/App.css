@@ -69,7 +69,8 @@ body {
 
 .dropdown-item.active,
 .dropdown-item:active {
-  background-color: #6e757c !important;
+  /* background-color: #ed7164 !important; */
+  background-color: #8dbc9d !important;
 }
 
 .navbar-text {
@@ -285,6 +286,11 @@ a.nav-link {
   margin-right: 12px;
 }
 
+.modal-logo {
+  margin-right: 10px;
+  margin-top: 3px;
+}
+
 /* Cell Results Output Rows */
 .list-group-item-success {
   background-color: #dcf6d1 !important;
@@ -310,11 +316,15 @@ span.cm-string {
 }
 
 span.cm-property {
-  color: #fbd591 !important;
+  color: #e8e47b !important;
 }
 
 span.cm-def {
   color: #a0aab5 !important;
+}
+
+span.cm-atom {
+  color: #fd9a86 !important;
 }
 
 @media all and (max-width: 374px) {

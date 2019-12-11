@@ -5,7 +5,6 @@ import Navbar from "react-bootstrap/Navbar";
 import NavDropdown from "react-bootstrap/NavDropdown";
 import ConfirmAction from "./ConfirmAction";
 import Spinner from "react-bootstrap/Spinner";
-import APIForm from "./APIForm";
 import SaveOrCloneForm from "./SaveOrCloneForm";
 import WebhookForm from "./WebhookForm";
 import PresentationToggle from "./PresentationToggle";
@@ -19,6 +18,7 @@ import {
   faPlay,
   faChalkboardTeacher
 } from "@fortawesome/free-solid-svg-icons";
+import APIModal from "./APIModal";
 
 class NavigationBar extends React.Component {
   state = {
@@ -217,8 +217,12 @@ class NavigationBar extends React.Component {
                 >
                   Clone
                 </NavDropdown.Item>
-                <NavDropdown.Item onClick={this.handleToggleAPIForm}>
-                  API
+                <NavDropdown.Item>
+                  <APIModal
+                    onToggleAPIForm={this.handleToggleAPIForm}
+                    modalVisible={this.state.apiFormVisible}
+                    onAPISubmit={this.props.onAPISubmit}
+                  />
                 </NavDropdown.Item>
                 <NavDropdown.Item onClick={this.handleToggleWebhookForm}>
                   Webhooks
@@ -278,12 +282,6 @@ class NavigationBar extends React.Component {
             onYesClick={this.handleDeleteAllClick}
             onNoClick={this.toggleDeleteWarning}
           />
-        ) : null}
-        {this.state.apiFormVisible ? (
-          <APIForm
-            onAPISubmit={this.props.onAPISubmit}
-            onToggleAPIForm={this.handleToggleAPIForm}
-          ></APIForm>
         ) : null}
         {this.state.saveOrCloneFormVisible ? (
           <SaveOrCloneForm
