@@ -285,6 +285,21 @@ a.nav-link {
   margin-right: 12px;
 }
 
+/* Cell Results Output Rows */
+.list-group-item-success {
+  background-color: #dcf6d1 !important;
+}
+
+.list-group-item-danger {
+  background-color: #fbdbd8 !important;
+  color: #991621 !important;
+}
+
+.list-group-item-light {
+  /* color: #a0aab5 !important; */
+  /* background-color: #a0aab5 !important; */
+}
+
 /* Codemirror Syntax Highlighting Overrides: */
 span.cm-keyword {
   color: #e38a5f !important;
