@@ -67,9 +67,10 @@ body {
   justify-content: center;
 }
 
-/* .tooltip {
-  background: red;
-} */
+.dropdown-item.active,
+.dropdown-item:active {
+  background-color: #6e757c !important;
+}
 
 .navbar-text {
   margin: 0;
