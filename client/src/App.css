@@ -124,7 +124,7 @@ body {
 }
 
 .webhook-url {
-  color: #6e757c;
+  color: #ed7164;
 }
 
 .bg-dark {
@@ -175,10 +175,11 @@ body {
 .copied-text {
   font-size: 0.8rem;
   align-self: center;
-  margin: 0 0 0 5px;
+  margin: 0 0 0 15px;
   border: 1px solid #e38a5f;
   padding: 5px;
   border-radius: 4px;
+  justify-self: flex-end !important;
 }
 
 .add-cell-container {

@@ -6,7 +6,6 @@ import NavDropdown from "react-bootstrap/NavDropdown";
 import ConfirmAction from "./ConfirmAction";
 import Spinner from "react-bootstrap/Spinner";
 import SaveOrCloneForm from "./SaveOrCloneForm";
-import WebhookForm from "./WebhookForm";
 import PresentationToggle from "./PresentationToggle";
 import { PROXY_URL } from "../../Constants/constants";
 import uuidv4 from "uuid";
@@ -19,6 +18,7 @@ import {
   faChalkboardTeacher
 } from "@fortawesome/free-solid-svg-icons";
 import APIModal from "./APIModal";
+import WebhookModal from "./WebhookModal";
 
 class NavigationBar extends React.Component {
   state = {
@@ -224,8 +224,11 @@ class NavigationBar extends React.Component {
                     onAPISubmit={this.props.onAPISubmit}
                   />
                 </NavDropdown.Item>
-                <NavDropdown.Item onClick={this.handleToggleWebhookForm}>
-                  Webhooks
+                <NavDropdown.Item>
+                  <WebhookModal
+                    onToggleWebhookForm={this.handleToggleWebhookForm}
+                    modalVisible={this.state.webhookFormVisible}
+                  />
                 </NavDropdown.Item>
               </NavDropdown>
               <Nav.Link onClick={this.toggleDeleteWarning}>
@@ -290,12 +293,6 @@ class NavigationBar extends React.Component {
             onEmailSubmit={this.handleEmailSubmit}
             onToggleSaveOrCloneForm={this.handleToggleSaveOrCloneForm}
           ></SaveOrCloneForm>
-        ) : null}
-        {this.state.webhookFormVisible ? (
-          <WebhookForm
-            notebookId={this.props.notebookId}
-            onToggleWebhookForm={this.handleToggleWebhookForm}
-          ></WebhookForm>
         ) : null}
       </React.Fragment>
     );
