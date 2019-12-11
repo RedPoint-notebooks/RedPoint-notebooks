@@ -3,6 +3,10 @@ label {
   align-self: center;
 }
 
+code {
+  color: #8dbc9d !important;
+}
+
 .App {
   background-color: #484c55;
   font-family: "Roboto", sans-serif;
@@ -70,6 +74,7 @@ body {
 .navbar-text {
   margin: 0;
   padding: 0;
+  align-self: center;
 }
 
 #basic-navbar-nav {
@@ -81,7 +86,6 @@ body {
 }
 
 .navbar-clean-switch {
-  align-self: flex-end;
   padding: 0 !important;
 }
 
@@ -233,10 +237,6 @@ div .rendered-markdown {
 
 .run-button-icon {
   font-size: 10px;
-}
-
-.fa-times {
-  font-size: 11px;
 }
 
 .delete-all-banner {
