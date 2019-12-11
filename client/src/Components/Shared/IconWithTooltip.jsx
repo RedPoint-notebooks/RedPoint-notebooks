@@ -8,7 +8,7 @@ const IconWithTooltip = props => {
     <OverlayTrigger
       key="bottom"
       placement={props.placement}
-      delay={750}
+      delay={1000}
       trigger="hover"
       overlay={<Tooltip id="tooltip">{props.tooltipText}</Tooltip>}
     >

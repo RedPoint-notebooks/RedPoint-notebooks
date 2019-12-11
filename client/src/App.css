@@ -121,6 +121,10 @@ body {
   color: #6e757c;
 }
 
+.bg-dark {
+  background-color: rgba(52, 58, 64, 0.8) !important;
+}
+
 .email-address-error {
   color: #ed7164;
   font-size: 16px;
