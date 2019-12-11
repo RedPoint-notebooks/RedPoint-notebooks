@@ -1,1 +1,1 @@
-name = 'hi'\
+puts 'hi'
