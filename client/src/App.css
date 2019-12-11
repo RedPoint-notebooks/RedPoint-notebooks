@@ -280,6 +280,11 @@ a.nav-link {
   color: white !important;
   background-color: #ed7164 !important;
   border: none !important;
+  /* position: absolute !important;
+  z-index: 9999 !important;
+  width: 100% !important; */
+  position: sticky !important;
+  top: 56px;
 }
 
 .logo-text {
