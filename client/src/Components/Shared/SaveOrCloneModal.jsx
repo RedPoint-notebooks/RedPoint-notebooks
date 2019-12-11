@@ -50,6 +50,11 @@ class SaveOrCloneModal extends Component {
     });
   };
 
+  handleModalToggle = () => {
+    this.setState({ showFormError: false, copied: false });
+    this.props.onToggleModal();
+  };
+
   render() {
     const operation = this.props.operation;
 
@@ -66,7 +71,7 @@ class SaveOrCloneModal extends Component {
         </div>
         <Modal
           show={this.props.modalVisible}
-          onHide={this.props.onToggleModal}
+          onHide={this.handleModalToggle}
           size="lg"
         >
           <Modal.Header closeButton>
@@ -83,14 +88,12 @@ class SaveOrCloneModal extends Component {
           </Modal.Header>
           <Modal.Body>
             <Form>
-              <Form.Group controlId="formEmail" className="banner-form">
-                <Form.Label className="flex-container">
-                  <span>{`Your ${this.props.operation}d notebook URL is:`}</span>
-                  <a
-                    href={`${this.props.notebookURL}`}
-                    className="save-url"
-                  >{`${this.props.notebookURL}`}</a>
-                </Form.Label>
+              <div className="flex-container">
+                <span>{`Your ${this.props.operation}d notebook URL is:`}</span>
+                <a
+                  href={`${this.props.notebookURL}`}
+                  className="save-url"
+                >{`${this.props.notebookURL}`}</a>
 
                 {this.state.copied ? (
                   <p className="copied-text">Copied to clipboard</p>
@@ -109,46 +112,49 @@ class SaveOrCloneModal extends Component {
                     </Button>
                   </CopyToClipboard>
                 )}
-              </Form.Group>
+              </div>
             </Form>
           </Modal.Body>
           <Modal.Footer>
-            <div className="flex-container">
-              <Form.Control
-                type="API"
-                placeholder="Enter an email address"
-                onChange={this.handleFormInput}
-                className="email-form"
-              />
-              <Form.Text className="text-muted">
-                Send an email with this URL to your email address:
-              </Form.Text>
-              <Button
-                className="load-button"
-                onClick={this.handleEmailSubmit}
-                variant="primary"
-                type="submit"
-                size="sm"
-              >
-                Send
-              </Button>
-              <Button
-                onClick={this.props.onToggleModal}
-                variant="light"
-                className="load-button"
-                size="sm"
-              >
-                Dismiss
-              </Button>
-              {this.state.showFormError ? (
-                <div className="flex-container">
-                  <Form.Text type="invalid" className="email-address-error">
-                    {this.state.formErrors.email}
-                  </Form.Text>
-                </div>
-              ) : null}
-            </div>
+            <Form.Text className="text-muted">
+              Send an email with this URL:
+            </Form.Text>
+            <Form.Control
+              type="API"
+              placeholder="Enter an email address"
+              onChange={this.handleFormInput}
+              className="email-form"
+            />
           </Modal.Footer>
+          <div className="flex-container save-clone-modal">
+            <Button
+              className="load-button"
+              onClick={this.handleEmailSubmit}
+              variant="primary"
+              type="submit"
+              size="sm"
+            >
+              Send
+            </Button>
+            <Button
+              onClick={this.handleModalToggle}
+              variant="light"
+              className="load-button"
+              size="sm"
+            >
+              Dismiss
+            </Button>
+          </div>
+          <div className="flex-container">
+            {this.state.showFormError ? (
+              <Form.Text
+                type="invalid"
+                className="email-address-error save-clone-modal"
+              >
+                {this.state.formErrors.email}
+              </Form.Text>
+            ) : null}
+          </div>
         </Modal>
       </div>
     );
