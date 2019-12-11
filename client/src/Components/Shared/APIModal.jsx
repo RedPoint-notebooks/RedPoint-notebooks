@@ -36,7 +36,7 @@ class APIModal extends Component {
                 height="30"
                 className="d-inline-block align-top modal-logo"
               />
-              Enter An API URL:
+              Enter an API URL:
             </Modal.Title>
           </Modal.Header>
           <Modal.Body>

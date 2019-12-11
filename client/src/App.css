@@ -123,7 +123,8 @@ body {
   /* align-self: center; */
 }
 
-.webhook-url {
+.webhook-url,
+.save-url {
   color: #ed7164;
 }
 
