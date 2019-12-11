@@ -1,6 +1,6 @@
 import React from "react";
 import Nav from "react-bootstrap/Nav";
-import logo from "../../placeholder_logo.svg";
+import logo from "../../redpoint-brand-logo.svg";
 import Navbar from "react-bootstrap/Navbar";
 import NavDropdown from "react-bootstrap/NavDropdown";
 import ConfirmAction from "./ConfirmAction";
@@ -11,6 +11,15 @@ import WebhookForm from "./WebhookForm";
 import PresentationToggle from "./PresentationToggle";
 import { PROXY_URL } from "../../Constants/constants";
 import uuidv4 from "uuid";
+import IconWithTooltip from "./IconWithTooltip";
+import {
+  faCaretDown,
+  faTrash,
+  faRedo,
+  faPlay,
+  faChalkboardTeacher
+} from "@fortawesome/free-solid-svg-icons";
+
 class NavigationBar extends React.Component {
   state = {
     deleteWarningVisible: false,
@@ -179,12 +188,23 @@ class NavigationBar extends React.Component {
               height="30"
               className="d-inline-block align-top"
             />{" "}
-            RedPoint
+            <span className="logo-text">RedPoint</span>
           </Navbar.Brand>
           <Navbar.Toggle aria-controls="basic-navbar-nav" />
           <Navbar.Collapse id="basic-navbar-nav">
             <Nav className="mr-auto">
-              <NavDropdown title="Notebook" id="basic-nav-dropdown">
+              <Navbar.Text>File</Navbar.Text>
+              <NavDropdown
+                title={
+                  <IconWithTooltip
+                    tooltipText="Menu"
+                    icon={faCaretDown}
+                    placement="bottom"
+                  />
+                }
+                id="basic-nav-dropdown"
+                className="file-menu-dropdown"
+              >
                 <NavDropdown.Item
                   onClick={this.handleSaveOrCloneClick}
                   name="save"
@@ -204,8 +224,20 @@ class NavigationBar extends React.Component {
                   Webhooks
                 </NavDropdown.Item>
               </NavDropdown>
-              <Nav.Link onClick={this.toggleDeleteWarning}>Delete</Nav.Link>
-              <Nav.Link onClick={this.handleClearAllResults}>Clear</Nav.Link>
+              <Nav.Link onClick={this.toggleDeleteWarning}>
+                <IconWithTooltip
+                  tooltipText="Delete All Cells"
+                  icon={faTrash}
+                  placement="bottom"
+                />
+              </Nav.Link>
+              <Nav.Link onClick={this.handleClearAllResults}>
+                <IconWithTooltip
+                  tooltipText="Clear All Output"
+                  icon={faRedo}
+                  placement="bottom"
+                />
+              </Nav.Link>
               {this.props.awaitingServerResponse() ? (
                 <Spinner
                   className="navbar-spinner"
@@ -214,18 +246,29 @@ class NavigationBar extends React.Component {
                   size="sm"
                 />
               ) : (
-                <Nav.Link onClick={this.props.onRunAllClick}>Run All</Nav.Link>
-              )}
-              <Nav.Link className="ml-auto">
-                <label>
-                  Clean View
-                  <PresentationToggle
-                    onClick={this.props.onToggleView}
-                    presentation={this.props.presentation}
+                <Nav.Link onClick={this.props.onRunAllClick}>
+                  <IconWithTooltip
+                    tooltipText="Run All Cells"
+                    icon={faPlay}
+                    placement="bottom"
                   />
-                </label>
-              </Nav.Link>
+                </Nav.Link>
+              )}
             </Nav>
+            <Nav.Link className="navbar-clean-switch">
+              <span className="navbar-text">
+                <IconWithTooltip
+                  tooltipText="Switch To Presentation View"
+                  icon={faChalkboardTeacher}
+                  className="clean-mode-icon"
+                  placement="bottom"
+                />
+              </span>
+              <PresentationToggle
+                onClick={this.props.onToggleView}
+                presentation={this.props.presentation}
+              />
+            </Nav.Link>
           </Navbar.Collapse>
         </Navbar>
         {this.state.deleteWarningVisible ? (

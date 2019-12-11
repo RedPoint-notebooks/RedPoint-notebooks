@@ -69,9 +69,10 @@ class Notebook extends Component {
           } else {
             this.setState({ cells, id });
           }
-        } else {
-          console.log("No notebook loaded from server");
         }
+      })
+      .catch(err => {
+        console.log("No notebook loaded from server");
       });
   };
 
@@ -94,7 +95,7 @@ class Notebook extends Component {
       );
     };
     this.ws.onerror = e => {
-      console.log("Error encountered : ", e);
+      console.log("Websocket error: ", e);
     };
     // this.ws.onclose = () => {
     //   reestablish when websocket times out?
