@@ -3,6 +3,14 @@ label {
   align-self: center;
 }
 
+code {
+  color: #8dbc9d !important;
+}
+
+a {
+  word-break: break-word;
+}
+
 .App {
   background-color: #484c55;
   font-family: "Roboto", sans-serif;
@@ -63,17 +71,20 @@ body {
   justify-content: center;
 }
 
-/* .tooltip {
-  background: red;
-} */
+.dropdown-item.active,
+.dropdown-item:active {
+  /* background-color: #ed7164 !important; */
+  background-color: #8dbc9d !important;
+}
 
 .navbar-text {
   margin: 0;
   padding: 0;
+  align-self: center;
 }
 
 #basic-navbar-nav {
-  margin-left: 60px;
+  margin-left: 40px;
 }
 
 .file-menu-dropdown {
@@ -81,7 +92,6 @@ body {
 }
 
 .navbar-clean-switch {
-  align-self: flex-end;
   padding: 0 !important;
 }
 
@@ -117,8 +127,9 @@ body {
   /* align-self: center; */
 }
 
-.webhook-url {
-  color: #6e757c;
+.webhook-url,
+.save-url {
+  color: #ed7164;
 }
 
 .bg-dark {
@@ -169,10 +180,11 @@ body {
 .copied-text {
   font-size: 0.8rem;
   align-self: center;
-  margin: 0 0 0 5px;
+  margin: 0 0 0 15px;
   border: 1px solid #e38a5f;
   padding: 5px;
   border-radius: 4px;
+  justify-self: flex-end !important;
 }
 
 .add-cell-container {
@@ -197,6 +209,10 @@ div .rendered-markdown {
 .nav-buttons {
   display: flex;
   justify-content: center;
+}
+
+a.nav-link {
+  margin-right: 3px !important;
 }
 
 .react-switch {
@@ -235,10 +251,6 @@ div .rendered-markdown {
   font-size: 10px;
 }
 
-.fa-times {
-  font-size: 11px;
-}
-
 .delete-all-banner {
   display: flex;
   justify-content: center;
@@ -268,6 +280,11 @@ div .rendered-markdown {
   color: white !important;
   background-color: #ed7164 !important;
   border: none !important;
+  /* position: absolute !important;
+  z-index: 9999 !important;
+  width: 100% !important; */
+  position: sticky !important;
+  top: 56px;
 }
 
 .logo-text {
@@ -280,6 +297,51 @@ div .rendered-markdown {
   margin-right: 12px;
 }
 
+.modal-logo {
+  margin-right: 10px;
+  margin-top: 3px;
+}
+
+.save-clone-modal {
+  padding-bottom: 10px !important;
+}
+
+/* Cell Results Output Rows */
+.list-group-item-success {
+  background-color: #dcf6d1 !important;
+}
+
+.list-group-item-danger {
+  background-color: #fbdbd8 !important;
+  color: #991621 !important;
+}
+/* 
+.list-group-item-light {
+  color: #a0aab5 !important; */
+/* background-color: #a0aab5 !important;
+} */
+
+/* Codemirror Syntax Highlighting Overrides: */
+span.cm-keyword {
+  color: #e38a5f !important;
+}
+
+span.cm-string {
+  color: #8dbc9d !important;
+}
+
+span.cm-property {
+  color: #e8e47b !important;
+}
+
+span.cm-def {
+  color: #a0aab5 !important;
+}
+
+span.cm-atom {
+  color: #fd9a86 !important;
+}
+
 @media all and (max-width: 374px) {
   .react-codemirror2,
   .rendered-markdown,
@@ -288,10 +350,6 @@ div .rendered-markdown {
   .output {
     max-width: 300px !important;
   }
-
-  /* .App-body {
-    padding-top: 100px;
-  } */
 
   .add-cell-btn {
     margin: 15px 0 15px 0 !important;
@@ -320,6 +378,17 @@ div .rendered-markdown {
   .banner-form {
     flex-wrap: wrap;
   }
+
+  .alert-heading {
+    margin: 0 5px !important;
+    font-size: 16px !important;
+  }
+
+  .delete-all-btn {
+    margin: 3px 5px;
+    font-weight: 400 !important;
+    padding: 2px 5px !important;
+  }
 }
 
 @media all and (min-width: 375px) {
@@ -331,12 +400,15 @@ div .rendered-markdown {
     max-width: 340px !important;
   }
 
-  /* .App-body {
-    padding-top: 100px;
-  } */
+  .alert-heading {
+    margin: 0 5px !important;
+    font-size: 16px !important;
+  }
 
-  #basic-navbar-nav {
-    margin-left: 10px;
+  .delete-all-btn {
+    margin: 3px 5px;
+    font-weight: 400 !important;
+    padding: 2px 5px !important;
   }
 
   .navbar-expand,
