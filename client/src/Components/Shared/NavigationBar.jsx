@@ -255,6 +255,7 @@ class NavigationBar extends React.Component {
                   <WebhookModal
                     onToggleWebhookForm={this.handleToggleWebhookForm}
                     modalVisible={this.state.webhookFormVisible}
+                    notebookId={this.props.notebookId}
                   />
                 </NavDropdown.Item>
               </NavDropdown>

@@ -51,7 +51,7 @@ class APIModal extends Component {
               </Form.Group>
               <div className="flex-container">
                 <Form.Text className="text-muted">
-                  Make a GET request for JSON data at an API of your choosing
+                  Make a GET request for JSON data from an API
                 </Form.Text>
               </div>
             </Form>
