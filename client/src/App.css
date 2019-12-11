@@ -79,7 +79,7 @@ body {
 }
 
 #basic-navbar-nav {
-  margin-left: 60px;
+  margin-left: 40px;
 }
 
 .file-menu-dropdown {
@@ -204,6 +204,10 @@ div .rendered-markdown {
   justify-content: center;
 }
 
+a.nav-link {
+  margin-right: 3px !important;
+}
+
 .react-switch {
   vertical-align: middle;
   margin-left: 8px;
@@ -281,6 +285,23 @@ div .rendered-markdown {
   margin-right: 12px;
 }
 
+/* Codemirror Syntax Highlighting Overrides: */
+span.cm-keyword {
+  color: #e38a5f !important;
+}
+
+span.cm-string {
+  color: #8dbc9d !important;
+}
+
+span.cm-property {
+  color: #fbd591 !important;
+}
+
+span.cm-def {
+  color: #a0aab5 !important;
+}
+
 @media all and (max-width: 374px) {
   .react-codemirror2,
   .rendered-markdown,
@@ -289,10 +310,6 @@ div .rendered-markdown {
   .output {
     max-width: 300px !important;
   }
-
-  /* .App-body {
-    padding-top: 100px;
-  } */
 
   .add-cell-btn {
     margin: 15px 0 15px 0 !important;
@@ -335,10 +352,6 @@ div .rendered-markdown {
   /* .App-body {
     padding-top: 100px;
   } */
-
-  #basic-navbar-nav {
-    margin-left: 10px;
-  }
 
   .navbar-expand,
   .navbar-collapse {

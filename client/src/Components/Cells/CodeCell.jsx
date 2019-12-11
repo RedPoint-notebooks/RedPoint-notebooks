@@ -5,6 +5,8 @@ import CellToolbar from "../Shared/CellToolbar";
 import AddCellButton from "../Shared/AddCellButton";
 import "codemirror/lib/codemirror.css";
 import "codemirror/theme/darcula.css";
+// import "codemirror/theme/nord.css";
+
 import "codemirror/mode/javascript/javascript.js";
 import "codemirror/mode/ruby/ruby.js";
 import "codemirror/mode/python/python.js";
@@ -32,6 +34,7 @@ class CodeCell extends Component {
     const cellOptions = {
       mode: cell.language.toLowerCase(),
       theme: "darcula",
+      // theme: "nord",
       lineNumbers: true,
       // firstLineNumber: 10,
       showCursorWhenSelecting: true,
