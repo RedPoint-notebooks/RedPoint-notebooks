@@ -1,6 +1,6 @@
 import React from "react";
 import Button from "react-bootstrap/Button";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import IconWithTooltip from "./IconWithTooltip";
 import { faPlay } from "@fortawesome/free-solid-svg-icons";
 
 class RunCellButton extends React.Component {
@@ -32,7 +32,13 @@ class RunCellButton extends React.Component {
         size="sm"
       >
         <span>
-          <FontAwesomeIcon icon={faPlay} className="run-button-icon" />
+          {/* <FontAwesomeIcon icon={faPlay} className="run-button-icon" /> */}
+          <IconWithTooltip
+            tooltipText="Run Cell"
+            icon={faPlay}
+            placement="top"
+            className="run-button-icon"
+          />
         </span>
       </Button>
     );

@@ -11,8 +11,7 @@ import WebhookForm from "./WebhookForm";
 import PresentationToggle from "./PresentationToggle";
 import { PROXY_URL } from "../../Constants/constants";
 import uuidv4 from "uuid";
-
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import IconWithTooltip from "./IconWithTooltip";
 import {
   faCaretDown,
   faTrash,
@@ -196,8 +195,15 @@ class NavigationBar extends React.Component {
             <Nav className="mr-auto">
               <Navbar.Text>File</Navbar.Text>
               <NavDropdown
-                title={<FontAwesomeIcon icon={faCaretDown} />}
+                title={
+                  <IconWithTooltip
+                    tooltipText="Menu"
+                    icon={faCaretDown}
+                    placement="bottom"
+                  />
+                }
                 id="basic-nav-dropdown"
+                className="file-menu-dropdown"
               >
                 <NavDropdown.Item
                   onClick={this.handleSaveOrCloneClick}
@@ -218,12 +224,19 @@ class NavigationBar extends React.Component {
                   Webhooks
                 </NavDropdown.Item>
               </NavDropdown>
-              <Navbar.Text className="navbar-vertical-bar">|</Navbar.Text>
               <Nav.Link onClick={this.toggleDeleteWarning}>
-                <FontAwesomeIcon icon={faTrash} />
+                <IconWithTooltip
+                  tooltipText="Delete All Cells"
+                  icon={faTrash}
+                  placement="bottom"
+                />
               </Nav.Link>
               <Nav.Link onClick={this.handleClearAllResults}>
-                <FontAwesomeIcon icon={faRedo} />
+                <IconWithTooltip
+                  tooltipText="Clear All Output"
+                  icon={faRedo}
+                  placement="bottom"
+                />
               </Nav.Link>
               {this.props.awaitingServerResponse() ? (
                 <Spinner
@@ -234,15 +247,21 @@ class NavigationBar extends React.Component {
                 />
               ) : (
                 <Nav.Link onClick={this.props.onRunAllClick}>
-                  <FontAwesomeIcon icon={faPlay} />
+                  <IconWithTooltip
+                    tooltipText="Run All Cells"
+                    icon={faPlay}
+                    placement="bottom"
+                  />
                 </Nav.Link>
               )}
             </Nav>
             <Nav.Link className="navbar-clean-switch">
               <span className="navbar-text">
-                <FontAwesomeIcon
+                <IconWithTooltip
+                  tooltipText="Switch To Presentation View"
                   icon={faChalkboardTeacher}
                   className="clean-mode-icon"
+                  placement="bottom"
                 />
               </span>
               <PresentationToggle

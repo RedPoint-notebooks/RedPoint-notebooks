@@ -35,7 +35,6 @@ label {
 }
 
 .btn-secondary {
-  /* background: rgba(73, 76, 84, 0.2) !important; */
   background: rgba(73, 76, 84, 0) !important;
   border: none !important;
 }
@@ -43,6 +42,15 @@ label {
 html,
 body {
   overscroll-behavior: none;
+}
+
+.tooltip-inner {
+  background-color: #6e757c !important;
+}
+
+.tooltip .arrow::before {
+  border-bottom-color: #6e757c !important;
+  border-top-color: #6e757c !important;
 }
 
 .App-link {
@@ -55,9 +63,21 @@ body {
   justify-content: center;
 }
 
+/* .tooltip {
+  background: red;
+} */
+
 .navbar-text {
   margin: 0;
   padding: 0;
+}
+
+#basic-navbar-nav {
+  margin-left: 60px;
+}
+
+.file-menu-dropdown {
+  margin-right: 3px;
 }
 
 .navbar-clean-switch {
@@ -119,6 +139,10 @@ body {
 .run-button {
   margin-left: auto;
   margin-right: 5px;
+}
+
+.run-button:hover {
+  cursor: pointer;
 }
 
 .cell-toolbar-markdown {
@@ -225,7 +249,7 @@ div .rendered-markdown {
 .delete-all-btn {
   margin: 10px;
   color: #ed7164 !important;
-  font-weight: 600 !important;
+  font-weight: 500 !important;
   background-color: white !important;
   padding: 2px 6px !important;
 }
@@ -306,6 +330,10 @@ div .rendered-markdown {
   /* .App-body {
     padding-top: 100px;
   } */
+
+  #basic-navbar-nav {
+    margin-left: 10px;
+  }
 
   .navbar-expand,
   .navbar-collapse {
