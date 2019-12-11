@@ -24,7 +24,7 @@ label {
 }
 
 .App-body {
-  padding-top: 60px;
+  /* padding-top: 60px; */
   text-align: center;
   min-height: 100vh;
   display: flex;
@@ -32,6 +32,12 @@ label {
   align-items: center;
   justify-content: flex-start;
   color: white;
+}
+
+.btn-secondary {
+  /* background: rgba(73, 76, 84, 0.2) !important; */
+  background: rgba(73, 76, 84, 0) !important;
+  border: none !important;
 }
 
 html,
@@ -255,9 +261,9 @@ div .rendered-markdown {
     max-width: 300px !important;
   }
 
-  .App-body {
-    padding-top: 100px !important;
-  }
+  /* .App-body {
+    padding-top: 100px;
+  } */
 
   .add-cell-btn {
     margin: 15px 0 15px 0 !important;
@@ -297,9 +303,9 @@ div .rendered-markdown {
     max-width: 340px !important;
   }
 
-  .App-body {
-    padding-top: 100px !important;
-  }
+  /* .App-body {
+    padding-top: 100px;
+  } */
 
   .navbar-expand,
   .navbar-collapse {
@@ -338,9 +344,9 @@ div .rendered-markdown {
     max-width: 560px !important;
   }
 
-  .App-body {
+  /* .App-body {
     padding-top: 60px !important;
-  }
+  } */
 
   .add-cell-btn {
     margin: 15px 10px 15px -48px !important;
