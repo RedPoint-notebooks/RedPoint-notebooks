@@ -63,7 +63,7 @@ class WebhookModal extends Component {
                 )}
               </div>
 
-              <Form.Text className="text-muted">
+              <Form.Text className="text-muted centered">
                 <span>
                   Use this URL to configure a webhook provider. When an action
                   triggers a webhook, the JSON payload will appear in a new

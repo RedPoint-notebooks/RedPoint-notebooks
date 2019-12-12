@@ -3,6 +3,7 @@ import CellsList from "./Cells/CellsList";
 import Container from "react-bootstrap/Container";
 import NavigationBar from "./Shared/NavigationBar";
 import uuidv4 from "uuid";
+import ReconnectingWebSocket from "reconnecting-websocket";
 
 import { findLastIndexOfEachLanguageInNotebook } from "../utils";
 import { SIGTERM_ERROR_MESSAGE } from "../Constants/constants";
@@ -78,9 +79,9 @@ class Notebook extends Component {
 
   establishWebsocket = () => {
     if (process.env.NODE_ENV === "development") {
-      this.ws = new WebSocket("ws://localhost:8000");
+      this.ws = new ReconnectingWebSocket("ws://localhost:8000");
     } else if (process.env.NODE_ENV === "production") {
-      this.ws = new WebSocket("wss://" + window.location.host);
+      this.ws = new ReconnectingWebSocket("wss://" + window.location.host);
     }
   };
 
