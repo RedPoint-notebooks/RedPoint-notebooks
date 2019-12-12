@@ -114,6 +114,9 @@ class NavigationBar extends React.Component {
 
   handleCloneClick = e => {
     e.preventDefault();
+    if (this.state.saveOrCloneFormVisible === true) {
+      this.setState({ saveOrCloneFormVisible: false });
+    }
     const notebookId = uuidv4();
 
     this.handlePersistenceClick("clone", notebookId).then(() => {
@@ -158,7 +161,9 @@ class NavigationBar extends React.Component {
           resolve();
         })
         .catch(err => {
-          console.log(`Fetch error on POST request. Failed to ${operation}.`);
+          console.log(
+            `Fetch error on POST request. Failed to ${operation} notebook.`
+          );
           reject(err);
         });
     });
@@ -229,6 +234,7 @@ class NavigationBar extends React.Component {
                     notebookURL={this.state.notebookURL}
                     operation={this.state.operation}
                     onEmailSubmit={this.handleEmailSubmit}
+                    onCloneClick={this.handleCloneClick}
                   />
                 </NavDropdown.Item>
                 <NavDropdown.Item>

@@ -96,6 +96,14 @@ body {
   padding: 0 !important;
 }
 
+.centered {
+  text-align: center;
+}
+
+.cursor-pointer {
+  cursor: pointer;
+}
+
 .alert-danger {
   text-align: center;
 }

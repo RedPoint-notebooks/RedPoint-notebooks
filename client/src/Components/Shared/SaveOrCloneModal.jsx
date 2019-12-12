@@ -83,13 +83,12 @@ class SaveOrCloneModal extends Component {
                 height="30"
                 className="d-inline-block align-top modal-logo"
               />
-              {operation === "clone" ? "Clone" : "Save"} this notebook:
+              <span>{`Your ${this.props.operation}d notebook URL is:`}</span>
             </Modal.Title>
           </Modal.Header>
           <Modal.Body>
             <Form>
               <div className="flex-container">
-                <span>{`Your ${this.props.operation}d notebook URL is:`}</span>
                 <a
                   href={`${this.props.notebookURL}`}
                   className="save-url"
@@ -113,6 +112,23 @@ class SaveOrCloneModal extends Component {
                   </CopyToClipboard>
                 )}
               </div>
+              {operation === "save" ? (
+                <Form.Text className="text-muted centered">
+                  WARNING: Don't share this link with anyone or they will be
+                  able to mutate your work. To share a copy, use{" "}
+                  <strong
+                    onClick={this.props.onCloneClick}
+                    className="cursor-pointer"
+                  >
+                    Clone
+                  </strong>{" "}
+                  instead.
+                </Form.Text>
+              ) : (
+                <Form.Text className="text-muted centered">
+                  Clone makes a replica of your notebook, optimal for sharing.
+                </Form.Text>
+              )}
             </Form>
           </Modal.Body>
           <Modal.Footer>
