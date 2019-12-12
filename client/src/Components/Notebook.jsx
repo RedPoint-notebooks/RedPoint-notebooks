@@ -348,20 +348,24 @@ class Notebook extends Component {
   handleAPISubmit = url => {
     fetch(url, { method: "GET" })
       .then(res => {
-        return res.json();
+        return res.text();
       })
       .then(data => {
-        console.log(data);
-        this.setState(prevState => {
-          const newCells = [...prevState.cells];
-          newCells.splice(0, 0, {
-            language: "Javascript",
-            code: `const apiData = ${JSON.stringify(data, null, 2)}`,
-            results: { stdout: [], error: "", return: "" },
-            id: uuidv4()
+        if (data[0] !== "{") {
+          console.log("Invalid API URL provided");
+        } else {
+          data = JSON.parse(data);
+          this.setState(prevState => {
+            const newCells = [...prevState.cells];
+            newCells.splice(0, 0, {
+              language: "Javascript",
+              code: `const apiData = ${JSON.stringify(data, null, 2)}`,
+              results: { stdout: [], error: "", return: "" },
+              id: uuidv4()
+            });
+            return { cells: newCells };
           });
-          return { cells: newCells };
-        });
+        }
       });
   };
 

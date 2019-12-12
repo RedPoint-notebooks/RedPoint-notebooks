@@ -19,8 +19,6 @@ import {
 import APIModal from "./APIModal";
 import WebhookModal from "./WebhookModal";
 import SaveOrCloneModal from "./SaveOrCloneModal";
-import { resolve } from "dns";
-import { rejects } from "assert";
 
 class NavigationBar extends React.Component {
   state = {
