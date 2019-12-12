@@ -97,12 +97,14 @@ class Notebook extends Component {
     this.ws.onerror = e => {
       console.log("Websocket error: ", e);
     };
-    // this.ws.onclose = () => {
-    //   reestablish when websocket times out?
-
-    //   this.establishWebsocket();
-    //   // console.log(this.ws.readyState);
-    // };
+    this.ws.onclose = () => {
+      // reestablish when server times out / crashes
+      setTimeout(() => {
+        console.log("Attempting websocket reconnection");
+        this.ws = null;
+        this.establishWebsocket();
+      }, 1500);
+    };
 
     this.ws.onmessage = message => {
       message = JSON.parse(message.data);
