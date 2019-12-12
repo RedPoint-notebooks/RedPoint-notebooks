@@ -79,7 +79,7 @@ class WebhookModal extends Component {
               className="load-button"
               size="sm"
             >
-              Dismiss
+              Cancel
             </Button>
           </Modal.Footer>
         </Modal>

@@ -74,7 +74,8 @@ body {
 .dropdown-item.active,
 .dropdown-item:active {
   /* background-color: #ed7164 !important; */
-  background-color: #8dbc9d !important;
+  /* background-color: #8dbc9d !important; */
+  background-color: #353a40 !important;
 }
 
 .navbar-text {
@@ -130,6 +131,7 @@ body {
 .webhook-url,
 .save-url {
   color: #ed7164;
+  overflow: auto;
 }
 
 .bg-dark {
@@ -304,6 +306,23 @@ a.nav-link {
 
 .save-clone-modal {
   padding-bottom: 10px !important;
+}
+
+.save-clone-buttons {
+  padding-bottom: 10px;
+  padding-right: 10px;
+  flex-wrap: wrap;
+  justify-content: flex-end;
+}
+
+.btn-primary {
+  background-color: #6e757c !important;
+  border-color: #6e757c !important;
+}
+
+.btn-primary:hover {
+  background-color: #494c54 !important;
+  border-color: #494c54 !important;
 }
 
 /* Cell Results Output Rows */

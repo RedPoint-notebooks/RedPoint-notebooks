@@ -126,7 +126,7 @@ class SaveOrCloneModal extends Component {
               className="email-form"
             />
           </Modal.Footer>
-          <div className="flex-container save-clone-modal">
+          <div className="flex-container save-clone-buttons">
             <Button
               className="load-button"
               onClick={this.handleEmailSubmit}

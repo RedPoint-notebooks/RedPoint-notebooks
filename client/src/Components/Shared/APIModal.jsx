@@ -57,25 +57,23 @@ class APIModal extends Component {
             </Form>
           </Modal.Body>
           <Modal.Footer>
-            <div className="flex-container">
-              <Button
-                className="load-button"
-                onClick={this.handleAPISubmit}
-                variant="primary"
-                type="submit"
-                size="sm"
-              >
-                Submit
-              </Button>
-              <Button
-                onClick={this.props.onToggleAPIForm}
-                variant="light"
-                className="load-button"
-                size="sm"
-              >
-                Cancel
-              </Button>
-            </div>
+            <Button
+              className="load-button"
+              onClick={this.handleAPISubmit}
+              variant="primary"
+              type="submit"
+              size="sm"
+            >
+              Submit
+            </Button>
+            <Button
+              onClick={this.props.onToggleAPIForm}
+              variant="light"
+              className="load-button"
+              size="sm"
+            >
+              Cancel
+            </Button>
           </Modal.Footer>
         </Modal>
       </div>
