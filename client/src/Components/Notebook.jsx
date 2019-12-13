@@ -89,8 +89,8 @@ class Notebook extends Component {
     this.loadState();
     this.establishWebsocket();
     this.ws.onopen = e => {
+      // send subdomained address to container for use in container teardown/cleanup
       let urlNoProtocol = e.target.url.replace(/wss:\/\//, "");
-      console.log("urlNoProtocol", urlNoProtocol);
       this.ws.send(
         JSON.stringify({ type: "sessionAddress", data: urlNoProtocol })
       );

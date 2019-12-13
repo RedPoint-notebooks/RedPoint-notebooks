@@ -21,7 +21,12 @@ class APIModal extends Component {
   render() {
     return (
       <div>
-        <div onClick={this.props.onToggleAPIForm}>API</div>
+        <div
+          className="navbar-dropdown-clickable"
+          onClick={this.props.onToggleAPIForm}
+        >
+          API
+        </div>
         <Modal
           show={this.props.modalVisible}
           onHide={this.props.onToggleAPIForm}

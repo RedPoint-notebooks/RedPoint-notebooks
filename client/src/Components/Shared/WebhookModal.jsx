@@ -25,7 +25,9 @@ class WebhookModal extends Component {
   render() {
     return (
       <div>
-        <div onClick={this.onToggleModal}>Webhooks</div>
+        <div onClick={this.onToggleModal} className="navbar-dropdown-clickable">
+          Webhooks
+        </div>
         <Modal
           show={this.props.modalVisible}
           onHide={this.onToggleModal}

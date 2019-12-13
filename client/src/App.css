@@ -96,6 +96,12 @@ body {
   padding: 0 !important;
 }
 
+.navbar-dropdown-clickable {
+  margin-left: -20px;
+  margin-right: -20px;
+  padding: 0 20px;
+}
+
 .centered {
   text-align: center;
 }
