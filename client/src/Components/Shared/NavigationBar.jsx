@@ -20,6 +20,8 @@ import APIModal from "./APIModal";
 import WebhookModal from "./WebhookModal";
 import SaveOrCloneModal from "./SaveOrCloneModal";
 import TitleForm from "../Cells/TitleForm";
+import OverlayTrigger from "react-bootstrap/OverlayTrigger";
+import Tooltip from "react-bootstrap/Tooltip";
 
 class NavigationBar extends React.Component {
   state = {
@@ -174,7 +176,13 @@ class NavigationBar extends React.Component {
   handleEmailSubmit = emailAddress => {
     const operation = this.state.operation;
     const notebookURL = this.state.notebookURL;
-    const emailJSON = JSON.stringify({ emailAddress, operation, notebookURL });
+    const title = this.props.title;
+    const emailJSON = JSON.stringify({
+      emailAddress,
+      operation,
+      notebookURL,
+      title
+    });
 
     fetch(`${PROXY_URL}/email`, {
       method: "post",
@@ -219,12 +227,21 @@ class NavigationBar extends React.Component {
             />{" "}
             <span className="logo-text">RedPoint</span>
           </Navbar.Brand>
-          <Navbar.Text
-            onClick={this.handleTitleClick}
-            className="cursor-pointer"
+          <OverlayTrigger
+            key="bottom"
+            placement="bottom"
+            delay={1000}
+            trigger="hover"
+            overlay={<Tooltip id="tooltip">Click to edit title</Tooltip>}
           >
-            {this.props.title ? this.props.title : null}
-          </Navbar.Text>
+            <Navbar.Text
+              onClick={this.handleTitleClick}
+              className="cursor-pointer"
+            >
+              {this.props.title ? this.props.title : null}
+            </Navbar.Text>
+          </OverlayTrigger>
+
           <Navbar.Toggle aria-controls="basic-navbar-nav" />
           <Navbar.Collapse id="basic-navbar-nav">
             <Nav className="mr-auto">
