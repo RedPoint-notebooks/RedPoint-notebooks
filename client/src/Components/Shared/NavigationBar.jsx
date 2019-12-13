@@ -213,6 +213,7 @@ class NavigationBar extends React.Component {
           <Navbar.Toggle aria-controls="basic-navbar-nav" />
           <Navbar.Collapse id="basic-navbar-nav">
             <Nav className="mr-auto">
+
               <Navbar.Text>File</Navbar.Text>
               <NavDropdown
                 title={
@@ -318,6 +319,7 @@ class NavigationBar extends React.Component {
             onNoClick={this.toggleDeleteWarning}
           />
         ) : null}
+
       </React.Fragment>
     );
   }

@@ -98,12 +98,6 @@ class Notebook extends Component {
     this.ws.onerror = e => {
       console.log("Websocket error: ", e);
     };
-    // this.ws.onclose = () => {
-    //   reestablish when websocket times out?
-
-    //   this.establishWebsocket();
-    //   // console.log(this.ws.readyState);
-    // };
 
     this.ws.onmessage = message => {
       message = JSON.parse(message.data);
@@ -122,7 +116,6 @@ class Notebook extends Component {
             const newState = Object.assign({}, prevState[language], {
               writeToIndex: newWriteToIndex
             });
-
             return { [language]: newState };
           });
 

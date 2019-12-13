@@ -14,6 +14,7 @@ const CellToolbar = props => {
       }
     >
       <ChangeLanguageDropdown
+        className={"language-dropdown"}
         language={props.language}
         onLanguageChange={props.onLanguageChange}
         cellIndex={props.cellIndex}
@@ -21,6 +22,7 @@ const CellToolbar = props => {
 
       {props.language !== "Markdown" && !props.presentation ? (
         <RunButtonOrSpinner
+          className={"run-or-spin"}
           language={props.language}
           onClick={props.onRunClick}
           cellIndex={props.cellIndex}
@@ -30,6 +32,7 @@ const CellToolbar = props => {
       ) : null}
       {!props.presentation ? (
         <DeleteCellButton
+          className="delete-btn"
           onClick={props.onDeleteClick}
           cellIndex={props.cellIndex}
         />
