@@ -16,6 +16,10 @@ class TitleForm extends Component {
     this.props.onTitleSubmit(this.state.title);
   };
 
+  componentDidMount = () => {
+    this.setState({ title: this.props.title });
+  };
+
   render() {
     return (
       <div>
@@ -23,7 +27,11 @@ class TitleForm extends Component {
           <InputGroup.Prepend>
             <InputGroup.Text id="basic-addon1">Enter Title:</InputGroup.Text>
           </InputGroup.Prepend>
-          <FormControl placeholder="My Notebook" onChange={this.handleChange} />
+          <FormControl
+            placeholder={this.props.title ? "" : "My Notebook"}
+            value={this.state.title}
+            onChange={this.handleChange}
+          />
           <InputGroup.Append>
             <Button
               variant="outline-secondary"

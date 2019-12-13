@@ -28,7 +28,8 @@ class NavigationBar extends React.Component {
     saveOrCloneFormVisible: false,
     webhookFormVisible: false,
     notebookURL: null,
-    operation: null
+    operation: null,
+    titleFormVisible: true
   };
 
   toggleDeleteWarning = () => {
@@ -195,7 +196,14 @@ class NavigationBar extends React.Component {
       });
   };
 
-  handleChange = () => {};
+  handleTitleClick = () => {
+    this.setState({ titleFormVisible: true });
+  };
+
+  handleTitleSubmit = title => {
+    this.setState({ titleFormVisible: false });
+    this.props.onTitleSubmit(title);
+  };
 
   render() {
     return (
@@ -211,7 +219,10 @@ class NavigationBar extends React.Component {
             />{" "}
             <span className="logo-text">RedPoint</span>
           </Navbar.Brand>
-          <Navbar.Text>
+          <Navbar.Text
+            onClick={this.handleTitleClick}
+            className="cursor-pointer"
+          >
             {this.props.title ? this.props.title : null}
           </Navbar.Text>
           <Navbar.Toggle aria-controls="basic-navbar-nav" />
@@ -322,9 +333,12 @@ class NavigationBar extends React.Component {
             onNoClick={this.toggleDeleteWarning}
           />
         ) : null}
-        {this.props.title ? null : (
-          <TitleForm onTitleSubmit={this.props.onTitleSubmit} />
-        )}
+        {this.state.titleFormVisible ? (
+          <TitleForm
+            onTitleSubmit={this.handleTitleSubmit}
+            title={this.props.title}
+          />
+        ) : null}
       </React.Fragment>
     );
   }

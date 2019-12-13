@@ -113,6 +113,10 @@ body {
   color: white !important;
 }
 
+.title-text {
+  cursor: pointer;
+}
+
 .centered {
   text-align: center;
 }

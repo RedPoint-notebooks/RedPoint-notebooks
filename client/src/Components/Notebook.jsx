@@ -374,7 +374,6 @@ class Notebook extends Component {
   };
 
   handleTitleSubmit = title => {
-    console.log(title);
     this.setState({ title });
   };
 
