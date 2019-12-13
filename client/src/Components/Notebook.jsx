@@ -12,6 +12,7 @@ class Notebook extends Component {
   state = {
     id: uuidv4(),
     title: "",
+    presentation: false,
     cells: [],
     Ruby: {
       pendingIndexes: [],
@@ -27,8 +28,7 @@ class Notebook extends Component {
       pendingIndexes: [],
       writeToIndex: 0,
       codePending: false
-    },
-    presentation: false
+    }
   };
 
   ws = null;
@@ -381,7 +381,6 @@ class Notebook extends Component {
     return (
       <div>
         <NavigationBar
-          // notebookState={this.state}
           cells={this.state.cells}
           notebookId={this.state.id}
           presentation={this.state.presentation}
