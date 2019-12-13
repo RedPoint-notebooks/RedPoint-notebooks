@@ -19,6 +19,7 @@ import {
 import APIModal from "./APIModal";
 import WebhookModal from "./WebhookModal";
 import SaveOrCloneModal from "./SaveOrCloneModal";
+import TitleForm from "../Cells/TitleForm";
 
 class NavigationBar extends React.Component {
   state = {
@@ -210,10 +211,12 @@ class NavigationBar extends React.Component {
             />{" "}
             <span className="logo-text">RedPoint</span>
           </Navbar.Brand>
+          <Navbar.Text>
+            {this.props.title ? this.props.title : null}
+          </Navbar.Text>
           <Navbar.Toggle aria-controls="basic-navbar-nav" />
           <Navbar.Collapse id="basic-navbar-nav">
             <Nav className="mr-auto">
-
               <Navbar.Text>File</Navbar.Text>
               <NavDropdown
                 title={
@@ -319,7 +322,9 @@ class NavigationBar extends React.Component {
             onNoClick={this.toggleDeleteWarning}
           />
         ) : null}
-
+        {this.props.title ? null : (
+          <TitleForm onTitleSubmit={this.props.onTitleSubmit} />
+        )}
       </React.Fragment>
     );
   }

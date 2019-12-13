@@ -10,6 +10,8 @@ import { SIGTERM_ERROR_MESSAGE } from "../Constants/constants";
 
 class Notebook extends Component {
   state = {
+    id: uuidv4(),
+    title: "",
     cells: [],
     Ruby: {
       pendingIndexes: [],
@@ -26,8 +28,7 @@ class Notebook extends Component {
       writeToIndex: 0,
       codePending: false
     },
-    presentation: false,
-    id: uuidv4()
+    presentation: false
   };
 
   ws = null;
@@ -372,12 +373,20 @@ class Notebook extends Component {
     });
   };
 
+  handleTitleSubmit = title => {
+    console.log(title);
+    this.setState({ title });
+  };
+
   render() {
     return (
       <div>
         <NavigationBar
+          // notebookState={this.state}
           cells={this.state.cells}
           notebookId={this.state.id}
+          presentation={this.state.presentation}
+          title={this.state.title}
           awaitingServerResponse={this.awaitingServerResponse}
           deleteAllCells={this.handleDeleteAllCells}
           onSaveClick={this.handleSaveOrCloneClick}
@@ -386,7 +395,7 @@ class Notebook extends Component {
           onRunAllClick={this.handleRunAllClick}
           onAPISubmit={this.handleAPISubmit}
           onToggleView={this.handleToggleView}
-          presentation={this.state.presentation}
+          onTitleSubmit={this.handleTitleSubmit}
         />
         <Container className="App-body">
           <CellsList
