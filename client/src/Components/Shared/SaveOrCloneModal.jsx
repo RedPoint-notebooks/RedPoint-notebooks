@@ -61,6 +61,7 @@ class SaveOrCloneModal extends Component {
     return (
       <div>
         <div
+          className="navbar-dropdown-clickable"
           onClick={
             this.props.name === "Clone"
               ? this.props.onCloneClick

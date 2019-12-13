@@ -10,6 +10,9 @@ import { SIGTERM_ERROR_MESSAGE } from "../Constants/constants";
 
 class Notebook extends Component {
   state = {
+    id: uuidv4(),
+    title: "",
+    presentation: false,
     cells: [],
     Ruby: {
       pendingIndexes: [],
@@ -25,9 +28,7 @@ class Notebook extends Component {
       pendingIndexes: [],
       writeToIndex: 0,
       codePending: false
-    },
-    presentation: false,
-    id: uuidv4()
+    }
   };
 
   ws = null;
@@ -89,8 +90,8 @@ class Notebook extends Component {
     this.loadState();
     this.establishWebsocket();
     this.ws.onopen = e => {
+      // send subdomained address to container for use in container teardown/cleanup
       let urlNoProtocol = e.target.url.replace(/wss:\/\//, "");
-      console.log("urlNoProtocol", urlNoProtocol);
       this.ws.send(
         JSON.stringify({ type: "sessionAddress", data: urlNoProtocol })
       );
@@ -372,12 +373,18 @@ class Notebook extends Component {
     });
   };
 
+  handleTitleSubmit = title => {
+    this.setState({ title });
+  };
+
   render() {
     return (
       <div>
         <NavigationBar
           cells={this.state.cells}
           notebookId={this.state.id}
+          presentation={this.state.presentation}
+          title={this.state.title}
           awaitingServerResponse={this.awaitingServerResponse}
           deleteAllCells={this.handleDeleteAllCells}
           onSaveClick={this.handleSaveOrCloneClick}
@@ -386,7 +393,7 @@ class Notebook extends Component {
           onRunAllClick={this.handleRunAllClick}
           onAPISubmit={this.handleAPISubmit}
           onToggleView={this.handleToggleView}
-          presentation={this.state.presentation}
+          onTitleSubmit={this.handleTitleSubmit}
         />
         <Container className="App-body">
           <CellsList

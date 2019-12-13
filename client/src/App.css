@@ -85,7 +85,7 @@ body {
 }
 
 #basic-navbar-nav {
-  margin-left: 40px;
+  margin-left: 20px;
 }
 
 .file-menu-dropdown {
@@ -94,6 +94,23 @@ body {
 
 .navbar-clean-switch {
   padding: 0 !important;
+}
+
+.navbar-dropdown-clickable {
+  margin-left: -20px;
+  margin-right: -20px;
+  padding: 0 20px;
+}
+
+.title-form {
+  width: 900px !important;
+  margin: 20px auto;
+  position: sticky !important;
+}
+
+.title-submit-btn {
+  border-color: #6c757d !important;
+  color: white !important;
 }
 
 .centered {
@@ -374,7 +391,8 @@ span.cm-atom {
   .rendered-markdown,
   .cell-toolbar,
   .cell-toolbar-markdown,
-  .output {
+  .output,
+  .title-form {
     max-width: 300px !important;
   }
 
@@ -423,7 +441,8 @@ span.cm-atom {
   .rendered-markdown,
   .cell-toolbar,
   .cell-toolbar-markdown,
-  .output {
+  .output,
+  .title-form {
     max-width: 340px !important;
   }
 
@@ -471,13 +490,10 @@ span.cm-atom {
   .rendered-markdown,
   .cell-toolbar,
   .cell-toolbar-markdown,
-  .output {
+  .output,
+  .title-form {
     max-width: 560px !important;
   }
-
-  /* .App-body {
-    padding-top: 60px !important;
-  } */
 
   .add-cell-btn {
     margin: 15px 10px 15px -48px !important;
@@ -493,7 +509,8 @@ span.cm-atom {
   .rendered-markdown,
   .cell-toolbar,
   .cell-toolbar-markdown,
-  .output {
+  .output,
+  .title-form {
     max-width: 900px !important;
   }
 
