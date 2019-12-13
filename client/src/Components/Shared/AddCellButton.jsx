@@ -2,6 +2,8 @@ import React, { Component } from "react";
 import * as constants from "../../Constants/constants";
 import DropdownButton from "react-bootstrap/DropdownButton";
 import Dropdown from "react-bootstrap/Dropdown";
+import { faPlus } from "@fortawesome/free-solid-svg-icons";
+import IconWithTooltip from "./IconWithTooltip";
 
 class AddCellButton extends Component {
   handleSelectCellType = language => {
@@ -30,8 +32,14 @@ class AddCellButton extends Component {
             : "add-cell-btn"
         }
         variant="secondary"
-        id="dropdown-basic-button"
-        title={<span>&#43;</span>}
+        id="add-cell-button"
+        title={
+          <IconWithTooltip
+            tooltipText="Add New Cell"
+            icon={faPlus}
+            placement="top"
+          />
+        }
         size="sm"
         onSelect={this.handleSelectCellType}
       >

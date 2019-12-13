@@ -3,6 +3,7 @@ import CellsList from "./Cells/CellsList";
 import Container from "react-bootstrap/Container";
 import NavigationBar from "./Shared/NavigationBar";
 import uuidv4 from "uuid";
+import ReconnectingWebSocket from "reconnecting-websocket";
 
 import { findLastIndexOfEachLanguageInNotebook } from "../utils";
 import { SIGTERM_ERROR_MESSAGE } from "../Constants/constants";
@@ -69,98 +70,90 @@ class Notebook extends Component {
           } else {
             this.setState({ cells, id });
           }
-        } else {
-          console.log("No notebook loaded from server");
         }
+      })
+      .catch(err => {
+        console.log("No notebook loaded from server");
       });
   };
 
   establishWebsocket = () => {
     if (process.env.NODE_ENV === "development") {
-      this.ws = new WebSocket("ws://localhost:8000");
+      this.ws = new ReconnectingWebSocket("ws://localhost:8000");
     } else if (process.env.NODE_ENV === "production") {
-      this.ws = new WebSocket("ws://" + window.location.host);
+      this.ws = new ReconnectingWebSocket("wss://" + window.location.host);
     }
   };
 
   componentDidMount() {
-    if (process.env.NODE_ENV !== "test") {
-      this.loadState();
-      this.establishWebsocket();
-      this.ws.onopen = e => {
-        let urlNoProtocol = e.target.url.replace(/ws:\/\//, "");
-        console.log("urlNoProtocol", urlNoProtocol);
-        this.ws.send(
-          JSON.stringify({ type: "sessionAddress", data: urlNoProtocol })
-        );
-      };
-      this.ws.onerror = e => {
-        console.log("Error encountered : ", e);
-      };
-      // this.ws.onclose = () => {
-      //   reestablish when websocket times out?
+    this.loadState();
+    this.establishWebsocket();
+    this.ws.onopen = e => {
+      let urlNoProtocol = e.target.url.replace(/wss:\/\//, "");
+      console.log("urlNoProtocol", urlNoProtocol);
+      this.ws.send(
+        JSON.stringify({ type: "sessionAddress", data: urlNoProtocol })
+      );
+    };
+    this.ws.onerror = e => {
+      console.log("Websocket error: ", e);
+    };
 
-      //   this.establishWebsocket();
-      //   // console.log(this.ws.readyState);
-      // };
+    this.ws.onmessage = message => {
+      message = JSON.parse(message.data);
 
-      this.ws.onmessage = message => {
-        message = JSON.parse(message.data);
+      const language = message.language;
+      const writeToIndex = this.state[language].writeToIndex;
+      const cellIndex = this.state[language].pendingIndexes[writeToIndex];
 
-        const language = message.language;
-        const writeToIndex = this.state[language].writeToIndex;
-        const cellIndex = this.state[language].pendingIndexes[writeToIndex];
+      console.log(JSON.stringify(message.data));
 
-        console.log(JSON.stringify(message.data));
-
-        switch (message.type) {
-          case "delimiter":
-            // update the pending cell index for results of the language being executed
-            this.setState(prevState => {
-              const newWriteToIndex = prevState[language].writeToIndex + 1;
-              const newState = Object.assign({}, prevState[language], {
-                writeToIndex: newWriteToIndex
-              });
-
-              return { [language]: newState };
+      switch (message.type) {
+        case "delimiter":
+          // update the pending cell index for results of the language being executed
+          this.setState(prevState => {
+            const newWriteToIndex = prevState[language].writeToIndex + 1;
+            const newState = Object.assign({}, prevState[language], {
+              writeToIndex: newWriteToIndex
             });
+            return { [language]: newState };
+          });
 
-            break;
-          case "stdout":
-            this.updateCellResults(message.type, cellIndex, message);
-            break;
-          case "return":
-          case "error":
-            this.stopLanguagePending(language);
-            this.updateCellResults(message.type, cellIndex, message);
-            break;
-          case "syntax-error":
-            this.stopLanguagePending(language);
+          break;
+        case "stdout":
+          this.updateCellResults(message.type, cellIndex, message);
+          break;
+        case "return":
+        case "error":
+          this.stopLanguagePending(language);
+          this.updateCellResults(message.type, cellIndex, message);
+          break;
+        case "syntax-error":
+          this.stopLanguagePending(language);
 
-            const errorLocation = message.data.location[0];
-            const errorCellIndex = this.state[language].pendingIndexes[
-              errorLocation
-            ];
+          const errorLocation = message.data.location[0];
+          const errorCellIndex = this.state[language].pendingIndexes[
+            errorLocation
+          ];
 
-            this.updateCellResults("error", errorCellIndex, message);
-            break;
-          case "loadNotebook":
-            const newState = message.data;
-            this.setState({
-              cells: newState.cells,
-              id: newState.id
-            });
-            break;
-          case "saveResult":
-            break;
-          case "loadError":
-            console.log(message.data);
-            break;
-          default:
-            console.log("Error: Unknown message received from server");
-        }
-      };
-    }
+          this.updateCellResults("error", errorCellIndex, message);
+          break;
+        case "loadNotebook":
+          const newState = message.data;
+          this.setState({
+            cells: newState.cells,
+            id: newState.id
+          });
+          break;
+        case "saveResult":
+          break;
+        case "loadError":
+          console.log(message.data);
+          break;
+        default:
+          console.log("Error: Unknown message received from server");
+      }
+    };
   }
 
   updateCellResults = (resultType, cellIndex, message) => {
@@ -287,11 +280,6 @@ class Notebook extends Component {
     });
   };
 
-  handleLoadClick = notebookId => {
-    const request = JSON.stringify({ type: "loadNotebook", id: notebookId });
-    this.ws.send(request);
-  };
-
   handleLanguageChange = (language, cellIndex) => {
     this.setState(prevState => {
       const newCells = [...prevState.cells];
@@ -354,20 +342,24 @@ class Notebook extends Component {
   handleAPISubmit = url => {
     fetch(url, { method: "GET" })
       .then(res => {
-        return res.json();
+        return res.text();
       })
       .then(data => {
-        console.log(data);
-        this.setState(prevState => {
-          const newCells = [...prevState.cells];
-          newCells.splice(0, 0, {
-            language: "Javascript",
-            code: `const apiData = ${JSON.stringify(data, null, 2)}`,
-            results: { stdout: [], error: "", return: "" },
-            id: uuidv4()
+        if (data[0] !== "{") {
+          console.log("Invalid API URL provided");
+        } else {
+          data = JSON.parse(data);
+          this.setState(prevState => {
+            const newCells = [...prevState.cells];
+            newCells.splice(0, 0, {
+              language: "Javascript",
+              code: `const apiData = ${JSON.stringify(data, null, 2)}`,
+              results: { stdout: [], error: "", return: "" },
+              id: uuidv4()
+            });
+            return { cells: newCells };
           });
-          return { cells: newCells };
-        });
+        }
       });
   };
 
@@ -390,7 +382,6 @@ class Notebook extends Component {
           deleteAllCells={this.handleDeleteAllCells}
           onSaveClick={this.handleSaveOrCloneClick}
           onCloneClick={this.handleSaveOrCloneClick}
-          onLoadClick={this.handleLoadClick}
           onClearAllResults={this.handleClearAllResults}
           onRunAllClick={this.handleRunAllClick}
           onAPISubmit={this.handleAPISubmit}

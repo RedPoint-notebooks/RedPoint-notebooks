@@ -34,6 +34,7 @@ const repl = {
       process.write(codeString + replExitMessage);
       process.on("exit", () => {
         // To ensure that the spawned REPL is killed after finishing processing
+        console.log(returnData);
         process.removeAllListeners("data");
         process.kill();
         console.log("AFTER REPL EXECUTE");
@@ -75,9 +76,15 @@ const parseJSOutput = returnData => {
   return new Promise(resolve => {
     const byOutput = returnData.split(">");
     const dirtyReturnValue = byOutput[byOutput.length - 2];
-    extractCleanJSReturnValue(dirtyReturnValue).then(clean => {
-      resolve(clean);
-    });
+    if (/console\./.test(dirtyReturnValue)) {
+      extractLogReturnValue(dirtyReturnValue).then(clean => {
+        resolve(clean);
+      });
+    } else {
+      extractOtherReturnValue(dirtyReturnValue).then(clean => {
+        resolve(clean);
+      });
+    }
   });
 };
 
@@ -91,7 +98,16 @@ const parsePythonOutput = returnData => {
   });
 };
 
-const extractCleanJSReturnValue = string => {
+const extractOtherReturnValue = string => {
+  console.log("foobar");
+  return new Promise(resolve => {
+    const splitReturn = string.split("\r\r\n");
+    const joinedReturn = splitReturn.slice(1).join("\n");
+    resolve(joinedReturn);
+  });
+};
+
+const extractLogReturnValue = string => {
   return new Promise(resolve => {
     const newlines = findNewlineIndexes(string);
     console.log("newlines in extractCleanJS: ", newlines);
