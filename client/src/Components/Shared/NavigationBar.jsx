@@ -24,9 +24,9 @@ import TitleForm from "../Cells/TitleForm";
 class NavigationBar extends React.Component {
   state = {
     deleteWarningVisible: false,
-    apiFormVisible: false,
-    saveOrCloneFormVisible: false,
-    webhookFormVisible: false,
+    apiModalVisible: false,
+    saveOrCloneModalVisible: false,
+    webhookModalVisible: false,
     notebookURL: null,
     operation: null,
     titleFormVisible: true
@@ -54,7 +54,7 @@ class NavigationBar extends React.Component {
   handleToggleAPIForm = () => {
     this.setState(prevState => {
       return {
-        apiFormVisible: !prevState.apiFormVisible
+        apiModalVisible: !prevState.apiModalVisible
       };
     });
   };
@@ -62,7 +62,7 @@ class NavigationBar extends React.Component {
   handleToggleSaveOrCloneForm = () => {
     this.setState(prevState => {
       return {
-        saveOrCloneFormVisible: !prevState.saveOrCloneFormVisible
+        saveOrCloneModalVisible: !prevState.saveOrCloneModalVisible
       };
     });
   };
@@ -70,7 +70,7 @@ class NavigationBar extends React.Component {
   handleToggleWebhookForm = () => {
     this.setState(prevState => {
       return {
-        webhookFormVisible: !prevState.webhookFormVisible
+        webhookModalVisible: !prevState.webhookModalVisible
       };
     });
 
@@ -116,8 +116,8 @@ class NavigationBar extends React.Component {
 
   handleCloneClick = e => {
     e.preventDefault();
-    if (this.state.saveOrCloneFormVisible === true) {
-      this.setState({ saveOrCloneFormVisible: false });
+    if (this.state.saveOrCloneModalVisible === true) {
+      this.setState({ saveOrCloneModalVisible: false });
     }
     const notebookId = uuidv4();
 
@@ -244,7 +244,7 @@ class NavigationBar extends React.Component {
                   <SaveOrCloneModal
                     name="Save"
                     onSaveClick={this.handleSaveClick}
-                    modalVisible={this.state.saveOrCloneFormVisible}
+                    modalVisible={this.state.saveOrCloneModalVisible}
                     onToggleModal={this.handleToggleSaveOrCloneForm}
                     notebookURL={this.state.notebookURL}
                     operation={this.state.operation}
@@ -256,7 +256,7 @@ class NavigationBar extends React.Component {
                   <SaveOrCloneModal
                     name="Clone"
                     onCloneClick={this.handleCloneClick}
-                    modalVisible={this.state.saveOrCloneFormVisible}
+                    modalVisible={this.state.saveOrCloneModalVisible}
                     onToggleModal={this.handleToggleSaveOrCloneForm}
                     notebookURL={this.state.notebookURL}
                     operation={this.state.operation}
@@ -266,14 +266,14 @@ class NavigationBar extends React.Component {
                 <NavDropdown.Item>
                   <APIModal
                     onToggleAPIForm={this.handleToggleAPIForm}
-                    modalVisible={this.state.apiFormVisible}
+                    modalVisible={this.state.apiModalVisible}
                     onAPISubmit={this.props.onAPISubmit}
                   />
                 </NavDropdown.Item>
                 <NavDropdown.Item>
                   <WebhookModal
                     onToggleWebhookForm={this.handleToggleWebhookForm}
-                    modalVisible={this.state.webhookFormVisible}
+                    modalVisible={this.state.webhookModalVisible}
                     notebookId={this.props.notebookId}
                   />
                 </NavDropdown.Item>
