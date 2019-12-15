@@ -1,1 +1,2 @@
-print('hey')
+import platform
+print(platform.python_version())
