@@ -4,32 +4,11 @@ import Container from "react-bootstrap/Container";
 import NavigationBar from "./Shared/NavigationBar";
 import uuidv4 from "uuid";
 import ReconnectingWebSocket from "reconnecting-websocket";
-
 import { findLastIndexOfEachLanguageInNotebook } from "../utils";
-import { SIGTERM_ERROR_MESSAGE } from "../Constants/constants";
+import { SIGTERM_ERROR_MESSAGE, DEFAULT_STATE } from "../Constants/constants";
 
 class Notebook extends Component {
-  state = {
-    id: uuidv4(),
-    title: "",
-    presentation: false,
-    cells: [],
-    Ruby: {
-      pendingIndexes: [],
-      writeToIndex: 0, // the index of the pending indexes array
-      codePending: false
-    },
-    Javascript: {
-      pendingIndexes: [],
-      writeToIndex: 0,
-      codePending: false
-    },
-    Python: {
-      pendingIndexes: [],
-      writeToIndex: 0,
-      codePending: false
-    }
-  };
+  state = DEFAULT_STATE;
 
   ws = null;
 
