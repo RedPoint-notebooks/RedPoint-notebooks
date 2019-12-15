@@ -13,7 +13,12 @@ class TitleForm extends Component {
   };
 
   handleSubmitClick = () => {
-    this.props.onTitleSubmit(this.state.title);
+    let title = this.state.title;
+    if (!this.state.title) {
+      this.setState({ title: "My Notebook" });
+      title = "My Notebook";
+    }
+    this.props.onTitleSubmit(title);
   };
 
   componentDidMount = () => {
