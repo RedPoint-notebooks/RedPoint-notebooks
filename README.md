@@ -1,8 +1,6 @@
-![](/client/src/placeholder_logo.svg)
+![](redpoint-brand-logo_horizontal-on_light.png)
 
 ### Deployed at http://www.redpointnotebooks.com
-
-# Project RedPoint
 
 RedPoint is an open source cell-based multi-language web-application notebook for taking and sharing programming notes. Current support for renderable Markdown as well as executeable Javascript, Ruby and Python cells.
 
