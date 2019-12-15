@@ -4,7 +4,6 @@ import Container from "react-bootstrap/Container";
 import NavigationBar from "./Shared/NavigationBar";
 import uuidv4 from "uuid";
 import ReconnectingWebSocket from "reconnecting-websocket";
-
 import { findLastIndexOfEachLanguageInNotebook } from "../utils";
 import { SIGTERM_ERROR_MESSAGE, DEFAULT_STATE } from "../Constants/constants";
 
