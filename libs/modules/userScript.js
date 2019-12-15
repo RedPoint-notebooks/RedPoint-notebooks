@@ -21,13 +21,6 @@ const userScript = {
         (error, stdout, stderr) => {
           if (error) {
             if (/[Ss]yntax/.test(stderr)) {
-              // const originalCellsLines = codeStrArray.reduce(
-              //   (linesObj, currentCell, cellIdx) => {
-              //     linesObj[cellIdx] = currentCell.split("\n").length - 1;
-              //     return linesObj;
-              //   },
-              //   {}
-              // );
               const scriptArray = scriptString.split("\n");
               const syntaxErrorLine = +stderr.match(/\d+/)[0];
               let scriptErrorIdx = syntaxErrorLine - 1;
@@ -39,9 +32,6 @@ const userScript = {
                 }).length;
 
               const errorCell = delimsBeforeError;
-
-              // const errorLineinCell = syntaxErrorLine - originalCellsLines[errorCell];
-              // stderr = stderr.replace(/\d+/, errorLineinCell);
 
               ws.send(
                 JSON.stringify({
@@ -104,7 +94,7 @@ const userScript = {
           break;
         case "Python":
           this.fileType = ".py";
-          this.command = "python";
+          this.command = "python3";
       }
 
       fs.writeFile(

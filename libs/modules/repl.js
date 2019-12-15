@@ -19,7 +19,7 @@ const repl = {
         break;
       case "Python":
         replExitMessage = "\nexit()\r";
-        replType = "python";
+        replType = "python3";
         break;
     }
 
