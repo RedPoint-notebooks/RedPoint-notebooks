@@ -178,30 +178,32 @@ class Notebook extends Component {
     });
   };
 
-  handleToggleView = () => {
-    this.setState(prevState => {
-      return { presentation: !prevState.presentation };
-    }, () => {
-      if(this.state.presentation) {
-        const newCells = this.state.cells.map(cell => {
-          if (cell.language === "Markdown") {
-            return Object.assign({}, cell, {rendered: true})
-          } else {
-            return cell;
-          }
-        })
-        this.setState({cells: newCells})
+  toggleMarkdownRender = rendered => {
+    return this.state.cells.map(cell => {
+      if (cell.language === "Markdown") {
+        return Object.assign({}, cell, { rendered });
       } else {
-        const newCells = this.state.cells.map(cell => {
-          if (cell.language === "Markdown") {
-            return Object.assign({}, cell, {rendered: false})
-          } else {
-            return cell;
-          }
-        })
-        this.setState({cells: newCells})
+        return cell;
       }
     });
+  };
+
+  handleToggleView = () => {
+    this.setState(
+      prevState => {
+        return { presentation: !prevState.presentation };
+      },
+      () => {
+        let newCells;
+        if (this.state.presentation) {
+          newCells = this.toggleMarkdownRender(true);
+          this.setState({ cells: newCells });
+        } else {
+          newCells = this.toggleMarkdownRender(false);
+        }
+        this.setState({ cells: newCells });
+      }
+    );
   };
 
   handleDeleteCellClick = index => {
