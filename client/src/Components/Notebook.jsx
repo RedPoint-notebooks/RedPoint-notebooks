@@ -181,6 +181,26 @@ class Notebook extends Component {
   handleToggleView = () => {
     this.setState(prevState => {
       return { presentation: !prevState.presentation };
+    }, () => {
+      if(this.state.presentation) {
+        const newCells = this.state.cells.map(cell => {
+          if (cell.language === "Markdown") {
+            return Object.assign({}, cell, {rendered: true})
+          } else {
+            return cell;
+          }
+        })
+        this.setState({cells: newCells})
+      } else {
+        const newCells = this.state.cells.map(cell => {
+          if (cell.language === "Markdown") {
+            return Object.assign({}, cell, {rendered: false})
+          } else {
+            return cell;
+          }
+        })
+        this.setState({cells: newCells})
+      }
     });
   };
 
