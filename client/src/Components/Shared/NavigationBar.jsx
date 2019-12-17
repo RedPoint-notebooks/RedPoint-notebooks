@@ -109,10 +109,14 @@ class NavigationBar extends React.Component {
 
   handleSaveClick = e => {
     e.preventDefault();
-    const notebookId = this.props.isClone ? uuidv4() : this.props.notebookId;
+    let notebookId;
 
     if (this.props.isClone) {
+      notebookId = uuidv4();
+      this.props.setNotebookId(notebookId);
       this.props.removeCloneFlag();
+    } else {
+      notebookId = this.props.notebookId;
     }
 
     this.handlePersistenceClick("save", notebookId).then(() => {

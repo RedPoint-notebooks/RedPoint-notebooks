@@ -379,11 +379,11 @@ class Notebook extends Component {
   };
 
   removeCloneFlag = () => {
-    this.setState({ isCloned: false });
+    this.setState({ isClone: false });
   };
 
-  addCloneFlag = () => {
-    this.setState({ isCloned: true });
+  setNotebookId = id => {
+    this.setState({ id });
   };
 
   render() {
