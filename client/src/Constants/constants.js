@@ -11,7 +11,7 @@ const domain = window.location.host
 export const PROXY_URL = "https://www." + domain;
 export const DEFAULT_STATE = {
   id: uuidv4(),
-  title: "",
+  title: "My Notebook",
   presentation: false,
   isClone: false,
   cells: [

@@ -396,9 +396,9 @@ class Notebook extends Component {
           presentation={this.state.presentation}
           title={this.state.title}
           awaitingServerResponse={this.awaitingServerResponse}
-          removeCloneFlag={this.removeCloneFlag}
-          addCloneFlag={this.addCloneFlag}
+          onRemoveCloneFlag={this.removeCloneFlag}
           deleteAllCells={this.handleDeleteAllCells}
+          onSetNotebookId={this.setNotebookId}
           onSaveClick={this.handleSaveOrCloneClick}
           onCloneClick={this.handleSaveOrCloneClick}
           onClearAllResults={this.handleClearAllResults}

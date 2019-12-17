@@ -31,7 +31,7 @@ class NavigationBar extends React.Component {
     webhookModalVisible: false,
     notebookURL: null,
     operation: null,
-    titleFormVisible: true
+    titleFormVisible: false
   };
 
   toggleDeleteWarning = () => {
@@ -113,8 +113,8 @@ class NavigationBar extends React.Component {
 
     if (this.props.isClone) {
       notebookId = uuidv4();
-      this.props.setNotebookId(notebookId);
-      this.props.removeCloneFlag();
+      this.props.onSetNotebookId(notebookId);
+      this.props.onRemoveCloneFlag();
     } else {
       notebookId = this.props.notebookId;
     }
@@ -142,7 +142,8 @@ class NavigationBar extends React.Component {
         cells: this.props.cells,
         id: notebookId,
         presentation: this.props.presentation,
-        isClone: operation === "clone"
+        isClone: operation === "clone",
+        title: "Clone of " + this.props.title
       };
 
       notebook.cells = notebook.cells.map(cell => {
