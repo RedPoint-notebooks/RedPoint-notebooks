@@ -109,7 +109,11 @@ class NavigationBar extends React.Component {
 
   handleSaveClick = e => {
     e.preventDefault();
-    const notebookId = this.props.notebookId;
+    const notebookId = this.props.isClone ? uuidv4() : this.props.notebookId;
+
+    if (this.props.isClone) {
+      this.props.removeCloneFlag();
+    }
 
     this.handlePersistenceClick("save", notebookId).then(() => {
       this.handleToggleSaveOrCloneForm();
@@ -133,7 +137,8 @@ class NavigationBar extends React.Component {
       const notebook = {
         cells: this.props.cells,
         id: notebookId,
-        presentation: this.props.presentation
+        presentation: this.props.presentation,
+        isClone: operation === "clone"
       };
 
       notebook.cells = notebook.cells.map(cell => {

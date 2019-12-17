@@ -378,15 +378,26 @@ class Notebook extends Component {
     this.setState({ title });
   };
 
+  removeCloneFlag = () => {
+    this.setState({ isCloned: false });
+  };
+
+  addCloneFlag = () => {
+    this.setState({ isCloned: true });
+  };
+
   render() {
     return (
       <div>
         <NavigationBar
           cells={this.state.cells}
           notebookId={this.state.id}
+          isClone={this.state.isClone}
           presentation={this.state.presentation}
           title={this.state.title}
           awaitingServerResponse={this.awaitingServerResponse}
+          removeCloneFlag={this.removeCloneFlag}
+          addCloneFlag={this.addCloneFlag}
           deleteAllCells={this.handleDeleteAllCells}
           onSaveClick={this.handleSaveOrCloneClick}
           onCloneClick={this.handleSaveOrCloneClick}
