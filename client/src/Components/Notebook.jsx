@@ -25,7 +25,7 @@ class Notebook extends Component {
       .then(data => {
         if (data) {
           console.log("Notebook loaded from server: ", data);
-          let { cells, id } = data;
+          let { cells, ...dataWithoutCells } = data;
 
           if (data.webhookData) {
             const webhookDataCells = data.webhookData.map(
@@ -45,10 +45,10 @@ class Notebook extends Component {
 
             this.setState(prevState => {
               const newCells = [...webhookDataCells, ...cells];
-              return { cells: newCells, id };
+              return { cells: newCells, ...dataWithoutCells };
             });
           } else {
-            this.setState({ cells, id });
+            this.setState({ data });
           }
         }
       })

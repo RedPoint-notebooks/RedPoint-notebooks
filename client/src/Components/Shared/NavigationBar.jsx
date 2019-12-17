@@ -119,9 +119,11 @@ class NavigationBar extends React.Component {
       notebookId = this.props.notebookId;
     }
 
-    this.handlePersistenceClick("save", notebookId).then(() => {
-      this.handleToggleSaveOrCloneForm();
-    });
+    this.handlePersistenceClick("save", notebookId, this.props.title).then(
+      () => {
+        this.handleToggleSaveOrCloneForm();
+      }
+    );
   };
 
   handleCloneClick = e => {
@@ -130,20 +132,21 @@ class NavigationBar extends React.Component {
       this.setState({ saveOrCloneModalVisible: false });
     }
     const notebookId = uuidv4();
+    const title = "Clone of " + this.props.title;
 
-    this.handlePersistenceClick("clone", notebookId).then(() => {
+    this.handlePersistenceClick("clone", notebookId, title).then(() => {
       this.handleToggleSaveOrCloneForm();
     });
   };
 
-  handlePersistenceClick = (operation, notebookId) => {
+  handlePersistenceClick = (operation, notebookId, title) => {
     return new Promise((resolve, reject) => {
       const notebook = {
         cells: this.props.cells,
         id: notebookId,
         presentation: this.props.presentation,
         isClone: operation === "clone",
-        title: "Clone of " + this.props.title
+        title
       };
 
       notebook.cells = notebook.cells.map(cell => {

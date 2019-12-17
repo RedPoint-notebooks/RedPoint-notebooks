@@ -13,7 +13,7 @@ export const DEFAULT_STATE = {
   id: uuidv4(),
   title: "My Notebook",
   presentation: false,
-  isClone: false,
+  isClone: true,
   cells: [
     {
       language: "Markdown",
