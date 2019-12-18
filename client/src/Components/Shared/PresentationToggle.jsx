@@ -20,7 +20,7 @@ class PresentationToggle extends React.Component {
     return (
       <span onClick={this.handleChange}>
         <IconWithTooltip
-          tooltipText="Switch To Presentation View"
+          tooltipText="Toggle View"
           icon={faBookOpen}
           placement="bottom"
           class="clean-mode-icon"

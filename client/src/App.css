@@ -130,8 +130,15 @@ body {
 }
 
 .title-submit-btn {
-  border-color: #6c757d !important;
+  border-color: #c5c6c7 !important;
+  background-color: #484c54 !important;
   color: white !important;
+}
+
+.title-submit-btn:hover {
+  background-color: #bec1c2 !important;
+  border-color: #bec1c2 !important;
+  color: #494c54 !important;
 }
 
 .centered {

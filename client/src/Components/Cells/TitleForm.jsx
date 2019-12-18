@@ -43,7 +43,7 @@ class TitleForm extends Component {
               className="title-submit-btn"
               onClick={this.handleSubmitClick}
             >
-              Save
+              Update
             </Button>
           </InputGroup.Append>
         </InputGroup>
