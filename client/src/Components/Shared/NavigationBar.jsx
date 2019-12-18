@@ -13,8 +13,7 @@ import {
   faCaretDown,
   faTrash,
   faRedo,
-  faPlay,
-  faChalkboardTeacher
+  faPlay
 } from "@fortawesome/free-solid-svg-icons";
 import APIModal from "./APIModal";
 import WebhookModal from "./WebhookModal";

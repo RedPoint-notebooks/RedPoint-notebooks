@@ -73,9 +73,11 @@ body {
 
 .dropdown-item.active,
 .dropdown-item:active {
-  /* background-color: #ed7164 !important; */
-  /* background-color: #8dbc9d !important; */
   background-color: #353a40 !important;
+}
+
+.navbar {
+  padding: 0.125rem 1rem !important;
 }
 
 .navbar-text {
