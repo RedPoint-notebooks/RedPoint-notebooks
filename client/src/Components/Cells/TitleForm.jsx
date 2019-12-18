@@ -32,11 +32,13 @@ class TitleForm extends Component {
           <InputGroup.Prepend>
             <InputGroup.Text id="basic-addon1">Enter Title:</InputGroup.Text>
           </InputGroup.Prepend>
+
           <FormControl
             placeholder={this.props.title ? "" : "My Notebook"}
             value={this.state.title}
             onChange={this.handleChange}
           />
+
           <InputGroup.Append>
             <Button
               variant="outline-secondary"
