@@ -125,8 +125,11 @@ body {
 
 .title-form {
   width: 900px !important;
-  margin: 20px auto;
+  margin: 0 auto;
+  position: -webkit-sticky !important;
   position: sticky !important;
+  top: 44px;
+  z-index: 50;
 }
 
 .title-submit-btn {
@@ -147,10 +150,6 @@ body {
 
 .cursor-pointer {
   cursor: pointer;
-}
-
-.alert-danger {
-  text-align: center;
 }
 
 .load-notebook-container {
@@ -310,19 +309,24 @@ a.nav-link {
   display: flex;
   justify-content: center;
   align-content: center;
-  padding: 0 !important;
+  padding: 5px !important;
 }
 
 .banner-buttons {
-  margin-left: 2% !important;
+  margin-left: 1% !important;
 }
 
 .delete-all-btn {
-  margin: 10px;
   color: #ed7164 !important;
   font-weight: 500 !important;
   background-color: white !important;
-  padding: 2px 6px !important;
+  border: 1px solid white !important;
+}
+
+.delete-all-btn:hover {
+  background-color: #ed7164 !important;
+  border: 1px solid white !important;
+  color: white !important;
 }
 
 .alert-heading {
@@ -336,7 +340,10 @@ a.nav-link {
   background-color: #ed7164 !important;
   border: none !important;
   position: sticky !important;
-  top: 56px;
+  top: 44px;
+  text-align: center;
+  border-radius: 0 !important;
+  z-index: 100;
 }
 
 .logo-text {

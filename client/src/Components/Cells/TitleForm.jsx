@@ -27,8 +27,8 @@ class TitleForm extends Component {
 
   render() {
     return (
-      <div>
-        <InputGroup className="title-form">
+      <div className="title-form">
+        <InputGroup>
           <InputGroup.Prepend>
             <InputGroup.Text id="basic-addon1">Enter Title:</InputGroup.Text>
           </InputGroup.Prepend>
