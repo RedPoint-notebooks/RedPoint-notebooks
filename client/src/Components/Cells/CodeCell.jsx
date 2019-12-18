@@ -34,9 +34,7 @@ class CodeCell extends Component {
     const cellOptions = {
       mode: cell.language.toLowerCase(),
       theme: "darcula",
-      // theme: "nord",
       lineNumbers: true,
-      // firstLineNumber: 10,
       showCursorWhenSelecting: true,
       tabSize: 2,
       indentWithTabs: true,
