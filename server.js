@@ -61,28 +61,25 @@ wss.on("connection", ws => {
 });
 
 const handleExecuteCode = (message, ws, delimiter) => {
-  return new Promise((resolve, reject) => {
-    const { language, codeStrArray } = message;
-    const codeString = codeStrArray.join("");
-    const delimiterStatement = generateDelimiter(language, delimiter);
-    const scriptString = codeStrArray.join(delimiterStatement);
+  const { language, codeStrArray } = message;
+  const codeString = codeStrArray.join("");
+  const delimiterStatement = generateDelimiter(language, delimiter);
+  const scriptString = codeStrArray.join(delimiterStatement);
 
-    userScript.writeFile(scriptString, language).then(() => {
-      userScript
-        .execute(ws, delimiter, language, scriptString, codeStrArray)
-        .then(() => repl.execute(codeString, language))
-        .then(returnData => repl.parseOutput(returnData, language))
-        .then(returnValue => {
-          ws.send(
-            JSON.stringify({ type: "return", language, data: returnValue })
-          );
-          resolve();
-        })
-        .catch((data, type) => {
-          // ws.send(JSON.stringify({ language, type, data }));
-          resolve();
-        });
-    });
+  return userScript.writeFile(scriptString, language).then(() => {
+    userScript
+      .execute(ws, delimiter, language, scriptString, codeStrArray)
+      .then(() => repl.execute(codeString, language))
+      .then(returnData => repl.parseOutput(returnData, language))
+      .then(returnValue => {
+        ws.send(
+          JSON.stringify({ type: "return", language, data: returnValue })
+        );
+      })
+      .catch((data, type) => {
+        console.log("Handle Execute Code Catch");
+        console.log(data);
+      });
   });
 };
 
