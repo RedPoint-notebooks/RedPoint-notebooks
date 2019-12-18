@@ -329,14 +329,6 @@ class NavigationBar extends React.Component {
               )}
             </Nav>
             <Nav.Link className="navbar-clean-switch">
-              <span className="navbar-text">
-                <IconWithTooltip
-                  tooltipText="Switch To Presentation View"
-                  icon={faChalkboardTeacher}
-                  className="clean-mode-icon"
-                  placement="bottom"
-                />
-              </span>
               <PresentationToggle
                 onClick={this.props.onToggleView}
                 presentation={this.props.presentation}

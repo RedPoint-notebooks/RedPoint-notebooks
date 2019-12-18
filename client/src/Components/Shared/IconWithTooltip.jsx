@@ -12,7 +12,10 @@ const IconWithTooltip = props => {
       trigger="hover"
       overlay={<Tooltip id="tooltip">{props.tooltipText}</Tooltip>}
     >
-      <FontAwesomeIcon icon={props.icon} />
+      <FontAwesomeIcon
+        icon={props.icon}
+        className={props.cleanModeIcon ? "clean-mode-icon" : ""}
+      />
     </OverlayTrigger>
   );
 };

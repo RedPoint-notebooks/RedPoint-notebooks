@@ -270,6 +270,7 @@ a.nav-link {
 }
 
 .clean-mode-icon {
+  color: rgba(255, 255, 255, 0.5);
   margin-bottom: -2px;
 }
 
