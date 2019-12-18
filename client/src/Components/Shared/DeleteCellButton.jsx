@@ -15,7 +15,8 @@ const DeleteCellButton = props => {
           tooltipText="Delete Cell"
           icon={faTimes}
           placement="top"
-          className="run-button-icon"
+          className="delete-button-icon"
+          class="delete-button-icon"
         />
       </span>
     </Button>

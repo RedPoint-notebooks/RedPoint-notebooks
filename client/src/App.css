@@ -109,8 +109,18 @@ body {
 }
 
 .change-language-dropdown:hover {
-  background-color: #353a40 !important;
+  background-color: rgba(53, 58, 64, 0.5) !important;
   border-radius: 5px;
+}
+
+.run-button:hover,
+.fa-book-open:hover {
+  color: rgba(203, 206, 207, 0.9) !important;
+}
+
+.delete-button-icon:hover,
+.add-cell-icon:hover {
+  color: #ed7164 !important;
 }
 
 .title-form {
@@ -318,9 +328,6 @@ a.nav-link {
   color: white !important;
   background-color: #ed7164 !important;
   border: none !important;
-  /* position: absolute !important;
-  z-index: 9999 !important;
-  width: 100% !important; */
   position: sticky !important;
   top: 56px;
 }

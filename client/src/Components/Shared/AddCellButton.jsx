@@ -38,6 +38,7 @@ class AddCellButton extends Component {
             tooltipText="Add New Cell"
             icon={faPlus}
             placement="top"
+            class="add-cell-icon"
           />
         }
         size="sm"

@@ -23,7 +23,7 @@ class PresentationToggle extends React.Component {
           tooltipText="Switch To Presentation View"
           icon={faBookOpen}
           placement="bottom"
-          cleanModeIcon={"clean-mode-icon"}
+          class="clean-mode-icon"
         />
         <Switch
           id="switch"
