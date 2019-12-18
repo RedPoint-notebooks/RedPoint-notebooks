@@ -196,8 +196,21 @@ class Notebook extends Component {
   handleDeleteAllCells = () => {
     this.setState({
       cells: [],
-      pendingCellIndexes: [],
-      writeToPendingCellIndex: 0
+      Ruby: {
+        pendingIndexes: [],
+        writeToIndex: 0,
+        codePending: false
+      },
+      Javascript: {
+        pendingIndexes: [],
+        writeToIndex: 0,
+        codePending: false
+      },
+      Python: {
+        pendingIndexes: [],
+        writeToIndex: 0,
+        codePending: false
+      }
     });
   };
 
