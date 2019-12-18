@@ -245,14 +245,16 @@ class NavigationBar extends React.Component {
           <Navbar.Toggle aria-controls="basic-navbar-nav" />
           <Navbar.Collapse id="basic-navbar-nav">
             <Nav className="mr-auto">
-              <Navbar.Text>File</Navbar.Text>
               <NavDropdown
                 title={
-                  <IconWithTooltip
-                    tooltipText="Menu"
-                    icon={faCaretDown}
-                    placement="bottom"
-                  />
+                  <span>
+                    <span className="dropdown-text-button">File</span>
+                    <IconWithTooltip
+                      tooltipText="Menu"
+                      icon={faCaretDown}
+                      placement="bottom"
+                    />
+                  </span>
                 }
                 id="basic-nav-dropdown"
                 className="file-menu-dropdown"

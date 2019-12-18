@@ -1,3 +1,3 @@
-noun = 'notebook'
-puts "49745485-e2fa-4e4d-9314-81fc86853ea8"
-puts("I love my #{noun}...")
+puts 'hi'
+puts "a28942dc-6001-46f8-af2a-b9e153a4023b"
+puts 'hey'

@@ -102,6 +102,10 @@ body {
   padding: 0 20px;
 }
 
+.dropdown-text-button {
+  margin-right: 7px;
+}
+
 .title-form {
   width: 900px !important;
   margin: 20px auto;
