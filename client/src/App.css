@@ -108,6 +108,11 @@ body {
   margin-right: 7px;
 }
 
+.change-language-dropdown:hover {
+  background-color: #353a40 !important;
+  border-radius: 5px;
+}
+
 .title-form {
   width: 900px !important;
   margin: 20px auto;
@@ -156,7 +161,6 @@ body {
 .email-form {
   max-width: 500px !important;
   margin: 10px;
-  /* align-self: center; */
 }
 
 .webhook-url,
