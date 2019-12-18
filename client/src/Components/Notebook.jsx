@@ -48,7 +48,7 @@ class Notebook extends Component {
               return { cells: newCells, ...dataWithoutCells };
             });
           } else {
-            this.setState({ data });
+            this.setState({ ...data });
           }
         }
       })
