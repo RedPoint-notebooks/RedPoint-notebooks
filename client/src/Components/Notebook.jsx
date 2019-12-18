@@ -25,7 +25,7 @@ class Notebook extends Component {
       .then(data => {
         if (data) {
           console.log("Notebook loaded from server: ", data);
-          let { cells, id } = data;
+          let { cells, ...dataWithoutCells } = data;
 
           if (data.webhookData) {
             const webhookDataCells = data.webhookData.map(
@@ -45,10 +45,10 @@ class Notebook extends Component {
 
             this.setState(prevState => {
               const newCells = [...webhookDataCells, ...cells];
-              return { cells: newCells, id };
+              return { cells: newCells, ...dataWithoutCells };
             });
           } else {
-            this.setState({ cells, id });
+            this.setState({ ...data });
           }
         }
       })
@@ -196,8 +196,21 @@ class Notebook extends Component {
   handleDeleteAllCells = () => {
     this.setState({
       cells: [],
-      pendingCellIndexes: [],
-      writeToPendingCellIndex: 0
+      Ruby: {
+        pendingIndexes: [],
+        writeToIndex: 0,
+        codePending: false
+      },
+      Javascript: {
+        pendingIndexes: [],
+        writeToIndex: 0,
+        codePending: false
+      },
+      Python: {
+        pendingIndexes: [],
+        writeToIndex: 0,
+        codePending: false
+      }
     });
   };
 
@@ -378,16 +391,27 @@ class Notebook extends Component {
     this.setState({ title });
   };
 
+  removeCloneFlag = () => {
+    this.setState({ isClone: false });
+  };
+
+  setNotebookId = id => {
+    this.setState({ id });
+  };
+
   render() {
     return (
       <div>
         <NavigationBar
           cells={this.state.cells}
           notebookId={this.state.id}
+          isClone={this.state.isClone}
           presentation={this.state.presentation}
           title={this.state.title}
           awaitingServerResponse={this.awaitingServerResponse}
+          onRemoveCloneFlag={this.removeCloneFlag}
           deleteAllCells={this.handleDeleteAllCells}
+          onSetNotebookId={this.setNotebookId}
           onSaveClick={this.handleSaveOrCloneClick}
           onCloneClick={this.handleSaveOrCloneClick}
           onClearAllResults={this.handleClearAllResults}
