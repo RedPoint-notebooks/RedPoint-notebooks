@@ -17,7 +17,7 @@ export const DEFAULT_STATE = {
     {
       language: "Markdown",
       code:
-        "### Welcome to RedPoint! \n##### Try editing this demo notebook to learn how Redpoint works! A few quick pointers: \n- The cells for each language run top-to-bottom, just like in a code editor \n- Run each cell individually, or click Run All Cells in the Nav bar\n- Shift-Enter will run the current cell\n- Click inside a Markdown cell to edit, then click outside to render\n- Check out the File dropdown, where you can:\n    - save and clone your notebook\n    - interact with APIs and webhooks\n- We support all language features of our current versions: \n    - Node 8.1\n    - Ruby 2.5.1\n    - Python 3.7.4 \n\nOnce you know your way around, click Delete All Cells in the Nav bar to clear this tutorial and start your own notebook!",
+        "### Welcome to RedPoint! \n##### Try editing this demo notebook to learn how Redpoint works! A few quick pointers: \n- The cells for each language run top-to-bottom, just like in a code editor \n- Run each cell individually, or click Run All Cells in the Nav bar\n- Shift-Enter will run the current cell\n- Click inside a Markdown cell to edit, then click outside to render\n- Check out the File dropdown, where you can:\n    - save and clone your notebook\n    - interact with APIs and webhooks\n\nOnce you know your way around, click Delete All Cells in the Nav bar to clear this tutorial and start your own notebook!",
       results: {
         stdout: [],
         error: "",
