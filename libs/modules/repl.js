@@ -60,15 +60,7 @@ const parseRubyOutput = returnData => {
     const byOutput = returnData.split("=>");
     const dirtyReturnValue = byOutput[byOutput.length - 1];
     const returnVal = dirtyReturnValue.split("\n")[0].trim();
-    // .split("\n")[0]
-    // .trim();
     resolve(returnVal);
-    // debugger;
-    // const dirtyReturnValue = byOutput[byOutput.length - 1];
-    // const indexCleanStops = dirtyReturnValue.indexOf("irb(main):");
-    // const cleanReturnValue = dirtyReturnValue.slice(0, indexCleanStops);
-    // debugger;
-    // resolve(cleanReturnValue.trim());
   });
 };
 
@@ -99,7 +91,6 @@ const parsePythonOutput = returnData => {
 };
 
 const extractOtherReturnValue = string => {
-  console.log("foobar");
   return new Promise(resolve => {
     const splitReturn = string.split("\r\r\n");
     const joinedReturn = splitReturn.slice(1).join("\n");

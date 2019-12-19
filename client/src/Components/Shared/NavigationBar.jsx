@@ -30,7 +30,7 @@ class NavigationBar extends React.Component {
     webhookModalVisible: false,
     notebookURL: null,
     operation: null,
-    titleFormVisible: true
+    titleFormVisible: false
   };
 
   toggleDeleteWarning = () => {
@@ -108,11 +108,21 @@ class NavigationBar extends React.Component {
 
   handleSaveClick = e => {
     e.preventDefault();
-    const notebookId = this.props.notebookId;
+    let notebookId;
 
-    this.handlePersistenceClick("save", notebookId).then(() => {
-      this.handleToggleSaveOrCloneForm();
-    });
+    if (this.props.isClone) {
+      notebookId = uuidv4();
+      this.props.onSetNotebookId(notebookId);
+      this.props.onRemoveCloneFlag();
+    } else {
+      notebookId = this.props.notebookId;
+    }
+
+    this.handlePersistenceClick("save", notebookId, this.props.title).then(
+      () => {
+        this.handleToggleSaveOrCloneForm();
+      }
+    );
   };
 
   handleCloneClick = e => {
@@ -121,18 +131,21 @@ class NavigationBar extends React.Component {
       this.setState({ saveOrCloneModalVisible: false });
     }
     const notebookId = uuidv4();
+    const title = "Clone of " + this.props.title;
 
-    this.handlePersistenceClick("clone", notebookId).then(() => {
+    this.handlePersistenceClick("clone", notebookId, title).then(() => {
       this.handleToggleSaveOrCloneForm();
     });
   };
 
-  handlePersistenceClick = (operation, notebookId) => {
+  handlePersistenceClick = (operation, notebookId, title) => {
     return new Promise((resolve, reject) => {
       const notebook = {
         cells: this.props.cells,
         id: notebookId,
-        presentation: this.props.presentation
+        presentation: this.props.presentation,
+        isClone: operation === "clone",
+        title
       };
 
       notebook.cells = notebook.cells.map(cell => {
