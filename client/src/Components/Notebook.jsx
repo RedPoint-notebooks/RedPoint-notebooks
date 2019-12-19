@@ -258,7 +258,7 @@ class Notebook extends Component {
     for (let i = 0; i <= indexOfCellRun; i += 1) {
       const cell = allCells[i];
       if (i <= indexOfCellRun && cell.language === language) {
-        codeStrArray.push(cell.code + "\n");
+        codeStrArray.push(cell.code.trim() + "\n");
         pendingIndexes.push(i);
       }
     }

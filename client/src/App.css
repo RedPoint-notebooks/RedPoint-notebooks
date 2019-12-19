@@ -73,9 +73,11 @@ body {
 
 .dropdown-item.active,
 .dropdown-item:active {
-  /* background-color: #ed7164 !important; */
-  /* background-color: #8dbc9d !important; */
   background-color: #353a40 !important;
+}
+
+.navbar {
+  padding: 0.25em 1rem !important;
 }
 
 .navbar-text {
@@ -102,15 +104,45 @@ body {
   padding: 0 20px;
 }
 
+.dropdown-text-button {
+  margin-right: 7px;
+}
+
+.change-language-dropdown:hover {
+  background-color: rgba(53, 58, 64, 0.5) !important;
+  border-radius: 5px;
+}
+
+.run-button:hover,
+.fa-book-open:hover {
+  color: rgba(203, 206, 207, 0.9) !important;
+}
+
+.delete-button-icon:hover,
+.add-cell-icon:hover {
+  color: #ed7164 !important;
+}
+
 .title-form {
   width: 900px !important;
-  margin: 20px auto;
+  margin: 0 auto;
+  position: -webkit-sticky !important;
   position: sticky !important;
+  top: 48px;
+  z-index: 50;
 }
 
 .title-submit-btn {
-  border-color: #6c757d !important;
+  border-color: #c5c6c7 !important;
+  background-color: #484c54 !important;
   color: white !important;
+  border-radius: 0 0 5px 0 !important;
+}
+
+.title-submit-btn:hover {
+  background-color: #bec1c2 !important;
+  border-color: #bec1c2 !important;
+  color: #494c54 !important;
 }
 
 .centered {
@@ -119,10 +151,6 @@ body {
 
 .cursor-pointer {
   cursor: pointer;
-}
-
-.alert-danger {
-  text-align: center;
 }
 
 .load-notebook-container {
@@ -150,7 +178,6 @@ body {
 .email-form {
   max-width: 500px !important;
   margin: 10px;
-  /* align-self: center; */
 }
 
 .webhook-url,
@@ -166,6 +193,10 @@ body {
 .email-address-error {
   color: #ed7164;
   font-size: 16px;
+}
+
+#basic-addon1 {
+  border-radius: 0 0 0 5px !important;
 }
 
 .cell-toolbar,
@@ -266,6 +297,7 @@ a.nav-link {
 }
 
 .clean-mode-icon {
+  color: rgba(255, 255, 255, 0.5);
   margin-bottom: -2px;
 }
 
@@ -282,19 +314,24 @@ a.nav-link {
   display: flex;
   justify-content: center;
   align-content: center;
-  padding: 0 !important;
+  padding: 5px !important;
 }
 
 .banner-buttons {
-  margin-left: 2% !important;
+  margin-left: 1% !important;
 }
 
 .delete-all-btn {
-  margin: 10px;
   color: #ed7164 !important;
   font-weight: 500 !important;
   background-color: white !important;
-  padding: 2px 6px !important;
+  border: 1px solid white !important;
+}
+
+.delete-all-btn:hover {
+  background-color: #ed7164 !important;
+  border: 1px solid white !important;
+  color: white !important;
 }
 
 .alert-heading {
@@ -307,11 +344,11 @@ a.nav-link {
   color: white !important;
   background-color: #ed7164 !important;
   border: none !important;
-  /* position: absolute !important;
-  z-index: 9999 !important;
-  width: 100% !important; */
   position: sticky !important;
-  top: 56px;
+  top: 48px;
+  text-align: center;
+  border-radius: 0 !important;
+  z-index: 100;
 }
 
 .logo-text {

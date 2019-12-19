@@ -27,23 +27,25 @@ class TitleForm extends Component {
 
   render() {
     return (
-      <div>
-        <InputGroup className="title-form">
+      <div className="title-form">
+        <InputGroup>
           <InputGroup.Prepend>
             <InputGroup.Text id="basic-addon1">Enter Title:</InputGroup.Text>
           </InputGroup.Prepend>
+
           <FormControl
             placeholder={this.props.title ? "" : "My Notebook"}
             value={this.state.title}
             onChange={this.handleChange}
           />
+
           <InputGroup.Append>
             <Button
               variant="outline-secondary"
               className="title-submit-btn"
               onClick={this.handleSubmitClick}
             >
-              Save
+              Update
             </Button>
           </InputGroup.Append>
         </InputGroup>

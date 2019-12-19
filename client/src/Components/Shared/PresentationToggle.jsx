@@ -1,5 +1,7 @@
 import React from "react";
 import Switch from "react-switch";
+import IconWithTooltip from "./IconWithTooltip";
+import { faBookOpen } from "@fortawesome/free-solid-svg-icons";
 
 class PresentationToggle extends React.Component {
   constructor() {
@@ -16,15 +18,23 @@ class PresentationToggle extends React.Component {
   }
   render() {
     return (
-      <Switch
-        id="switch"
-        className="react-switch"
-        onChange={this.handleChange}
-        checked={this.state.checked}
-        onColor="#8dbc9d"
-        height={17.5}
-        width={35}
-      />
+      <span onClick={this.handleChange}>
+        <IconWithTooltip
+          tooltipText="Toggle View"
+          icon={faBookOpen}
+          placement="bottom"
+          class="clean-mode-icon"
+        />
+        <Switch
+          id="switch"
+          className="react-switch"
+          checked={this.state.checked}
+          onColor="#8dbc9d"
+          onChange={() => {}}
+          height={17.5}
+          width={35}
+        />
+      </span>
     );
   }
 }
