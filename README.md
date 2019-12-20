@@ -1,11 +1,36 @@
 ![](redpoint-brand-logo_horizontal-on_light.png)
 
-### Deployed at http://www.redpointnotebooks.com
+## Overview
+[RedPoint](http://www.redpointnotebooks.com) is a web-native notebook optimized for learning programming languages.  Edit Javascript, Ruby and Python code with a full-featured editor, then run your code right in the notebook and see output, return values, and errors. Explain your code with notes, diagrams and images using styled Markdown.  Use RedPoint to take programming notes, to learn about API and webhooks interactions, or as a playground to run code in 3 languages simultaneously.
 
-RedPoint is an open source cell-based multi-language web-application notebook for taking and sharing programming notes. Current support for renderable Markdown as well as executeable Javascript, Ruby and Python cells.
+#### Full-featured editor
+- RedPoint's editor supports features such as syntax highlighting, bracket autocompletion, multicursor, and auto indent/outdent
+#### Familiar coding environment
+- Notebooks run top-to-bottom, just like you’d expect in your familiar code editing software.  Reasoning about state and scope is easy, so you can focus your attention on your notes
+#### Webhook/API support
+- When you’re ready to learn more about server interactions, you can use your notebook to make API requests and register with webhook providers.  You receive the JSON data right in your notebook as a Javascript object, where you can interact with it programatically
+#### Easy collaboration
+- You can fork your notebook and share a copy with a team member, who can make their own changes without overwriting your work.  Save your work with a unique URL that returns you to your notebook to pick up where you left off 
+#### Presentation Mode
+- When you’re ready to share your work, switch to presentation mode to showcase a clean, readable version of your notebook
 
-## Use Case: Note-Taking, Code Presentation and Code Sharing
 
-Focused on users who are learning a new programming language, code cells can be executed which will display the output, return value and any errors associated with executing the cell. All cells of the same language are connected in state, allowing for illustrative and formatted markdown cells (which support images) to be interleaved with demonstrative code cells.
 
-Multiple langauges are executable within the same notebook, to allow the illustration of language differences.
+## Case Study
+[Learn more about our project here](#TODO), including the challenges we solved by implementing language queues, containerizing sessions, websockets, and building a [reverse proxy server](https://github.com/redPoint-notebook/reverse-proxy)
+
+## The Team
+
+
+**[Charles Ging](#TODO) - Denver, CO**
+
+
+
+**[Ben Harvey](#TODO) - Portland, ME**
+
+
+
+**[Will Mills](#TODO) - Toronto, Canada**
+
+## Deployment
+Learn how to deploy a hosted version of RedPoint [here](#TODO).
