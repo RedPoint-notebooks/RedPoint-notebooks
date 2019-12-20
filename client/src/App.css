@@ -113,13 +113,20 @@ body {
   border-radius: 5px;
 }
 
-.run-button:hover,
 .fa-book-open:hover {
   color: rgba(203, 206, 207, 0.9) !important;
 }
 
-.delete-button-icon:hover,
-.add-cell-icon:hover {
+.run-button:hover {
+  color: #8dbc9d !important;
+  cursor: pointer;
+}
+.add-cell-icon:hover,
+.clear-all-results:hover {
+  color: #6897bb !important;
+}
+
+.delete-button-icon:hover {
   color: #ed7164 !important;
 }
 
@@ -134,19 +141,27 @@ body {
 
 .title-submit-btn {
   border-color: #c5c6c7 !important;
-  background-color: #484c54 !important;
-  color: white !important;
+  background-color: #c1c9e0 !important;
+  color: #364161 !important;
   border-radius: 0 0 5px 0 !important;
 }
 
 .title-submit-btn:hover {
-  background-color: #bec1c2 !important;
-  border-color: #bec1c2 !important;
-  color: #494c54 !important;
+  background-color: #343a40 !important;
+  border-color: #343a40 !important;
+  color: white !important;
 }
 
 .centered {
   text-align: center;
+}
+
+.notebook-title {
+  cursor: pointer;
+}
+
+.notebook-title:hover {
+  color: #bec1c2 !important;
 }
 
 .cursor-pointer {
@@ -214,10 +229,6 @@ body {
   margin-right: 5px;
 }
 
-.run-button:hover {
-  cursor: pointer;
-}
-
 .cell-toolbar-markdown {
   background: #474b56;
   margin-bottom: 20px;
@@ -248,6 +259,10 @@ body {
 .add-cell-container {
   display: flex;
   justify-content: flex-start;
+}
+
+.list-bottom {
+  margin-bottom: 20px;
 }
 
 .output {
