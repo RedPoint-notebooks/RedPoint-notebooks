@@ -131,7 +131,7 @@ body {
 }
 
 .title-form {
-  width: 900px !important;
+  width: 450px !important;
   margin: 0 auto;
   position: -webkit-sticky !important;
   position: sticky !important;
@@ -141,8 +141,8 @@ body {
 
 .title-submit-btn {
   border-color: #c5c6c7 !important;
-  background-color: #c1c9e0 !important;
-  color: #364161 !important;
+  background-color: #c5c6c7 !important;
+  color: #474747 !important;
   border-radius: 0 0 5px 0 !important;
 }
 
