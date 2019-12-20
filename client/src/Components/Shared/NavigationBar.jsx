@@ -250,7 +250,7 @@ class NavigationBar extends React.Component {
           >
             <Navbar.Text
               onClick={this.handleTitleClick}
-              className="cursor-pointer"
+              className="notebook-title"
             >
               {this.props.title ? this.props.title : null}
             </Navbar.Text>
@@ -314,16 +314,23 @@ class NavigationBar extends React.Component {
                   Help
                 </NavDropdown.Item>
               </NavDropdown>
-              <Nav.Link onClick={this.toggleDeleteWarning}>
+
+              <Nav.Link
+                onClick={this.toggleDeleteWarning}
+                className="delete-button-icon"
+              >
                 <IconWithTooltip
                   tooltipText="Delete All Cells"
                   icon={faTrash}
                   placement="bottom"
                 />
               </Nav.Link>
-              <Nav.Link onClick={this.handleClearAllResults}>
+              <Nav.Link
+                onClick={this.handleClearAllResults}
+                className="clear-all-results"
+              >
                 <IconWithTooltip
-                  tooltipText="Clear All Output"
+                  tooltipText="Clear All Results"
                   icon={faRedo}
                   placement="bottom"
                 />
@@ -336,7 +343,10 @@ class NavigationBar extends React.Component {
                   size="sm"
                 />
               ) : (
-                <Nav.Link onClick={this.props.onRunAllClick}>
+                <Nav.Link
+                  onClick={this.props.onRunAllClick}
+                  className="run-button"
+                >
                   <IconWithTooltip
                     tooltipText="Run All Cells"
                     icon={faPlay}

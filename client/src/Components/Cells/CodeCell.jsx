@@ -59,7 +59,7 @@ class CodeCell extends Component {
     }
 
     return (
-      <div>
+      <div className="code-cell">
         <div className="add-cell-container">
           {this.props.presentation ? (
             <div className="add-cell-btn"></div>

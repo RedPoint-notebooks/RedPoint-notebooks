@@ -23,7 +23,7 @@ const CellsList = props => {
 
   if (!props.presentation || props.cells.length === 0) {
     cellContainers.push(
-      <div className="add-cell-container" key="add-cell-container">
+      <div className="add-cell-container list-bottom" key="add-cell-container">
         <AddCellButton
           lastButton="true"
           key="add-cell-btn"
