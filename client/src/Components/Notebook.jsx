@@ -5,7 +5,11 @@ import NavigationBar from "./Shared/NavigationBar";
 import uuidv4 from "uuid";
 import ReconnectingWebSocket from "reconnecting-websocket";
 import { findLastIndexOfEachLanguageInNotebook } from "../utils";
-import { SIGTERM_ERROR_MESSAGE, DEFAULT_STATE } from "../Constants/constants";
+import {
+  SIGTERM_ERROR_MESSAGE,
+  DEFAULT_STATE,
+  HELP_CELL
+} from "../Constants/constants";
 
 class Notebook extends Component {
   state = DEFAULT_STATE;
@@ -319,6 +323,13 @@ class Notebook extends Component {
     });
   };
 
+  handleHelpClick = () => {
+    this.setState(prevState => {
+      const newCells = [HELP_CELL, ...prevState.cells];
+      return { cells: newCells };
+    });
+  };
+
   handleUpdateCodeState = (code, index) => {
     this.setState(prevState => {
       const newCells = [...prevState.cells].map((cell, idx) => {
@@ -419,6 +430,7 @@ class Notebook extends Component {
           onAPISubmit={this.handleAPISubmit}
           onToggleView={this.handleToggleView}
           onTitleSubmit={this.handleTitleSubmit}
+          onHelpClick={this.handleHelpClick}
         />
         <Container className="App-body">
           <CellsList

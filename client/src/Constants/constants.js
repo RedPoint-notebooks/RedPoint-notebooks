@@ -9,85 +9,13 @@ const domain = window.location.host
   .splice(-2)
   .join(".");
 export const PROXY_URL = "https://www." + domain;
+
 export const DEFAULT_STATE = {
   id: uuidv4(),
   title: "My Notebook",
   presentation: false,
   isClone: false,
-  cells: [
-    {
-      language: "Markdown",
-      code:
-        "### Welcome to RedPoint! \n##### Try editing this demo notebook to learn how Redpoint works! A few quick pointers: \n- The cells for each language run top-to-bottom, just like in a code editor \n- Run each cell individually, or click Run All Cells in the Nav bar\n- Shift-Enter will run the current cell\n- Click inside a Markdown cell to edit, then click outside to render\n- Check out the File dropdown, where you can:\n    - save and clone your notebook\n    - interact with APIs and webhooks\n\nOnce you know your way around, click Delete All Cells in the Nav bar to clear this tutorial and start your own notebook!",
-      results: {
-        stdout: [],
-        error: "",
-        return: ""
-      },
-      id: "c25d28c8-a1ab-40bb-9eed-5a5cc7a0a218",
-      rendered: true
-    },
-    {
-      language: "Javascript",
-      code: "const adjective = 'awesome'",
-      results: {
-        stdout: [],
-        error: "",
-        return: ""
-      },
-      id: "cbbe6c5a-5c6c-457b-bbca-4a1fd8985ff9"
-    },
-    {
-      language: "Ruby",
-      code: "noun = 'notebook'",
-      results: {
-        stdout: [],
-        error: "",
-        return: ""
-      },
-      id: "4db26d82-5c86-4e75-8438-ea5dbe88d3fb"
-    },
-    {
-      language: "Python",
-      code: "verb = 'started'",
-      results: {
-        stdout: [],
-        error: "",
-        return: ""
-      },
-      id: "8e8ebef1-9098-4e0d-8077-46a71444e3e5"
-    },
-    {
-      language: "Javascript",
-      code: "console.log(`This is ${adjective}!`)",
-      results: {
-        stdout: [],
-        error: "",
-        return: ""
-      },
-      id: "ed916fb3-bcc0-4781-860a-d2fb659964b9"
-    },
-    {
-      language: "Ruby",
-      code: 'puts("I love my #{noun}...")',
-      results: {
-        stdout: [],
-        error: "",
-        return: ""
-      },
-      id: "e969816c-5c54-4f3a-94af-767634a35adf"
-    },
-    {
-      language: "Python",
-      code: 'print("Let\'s get %s!"%(verb))',
-      results: {
-        stdout: [],
-        error: "",
-        return: ""
-      },
-      id: "0bfa02cf-0284-4edd-8c1d-412071fc5109"
-    }
-  ],
+  cells: [],
   Ruby: {
     pendingIndexes: [],
     writeToIndex: 0, // the index of the pending indexes array
@@ -103,4 +31,30 @@ export const DEFAULT_STATE = {
     writeToIndex: 0,
     codePending: false
   }
+};
+
+export const HELP_CELL = {
+  language: "Markdown",
+  code: `### Welcome to RedPoint! 
+  ##### A few quick pointers: 
+  - The cells for each language run top-to-bottom, just like in a code editor 
+  - Run each cell individually, or click Run All Cells in the Nav bar
+  - Shift-Enter will run the current cell
+  - Click inside a Markdown cell to edit, then click outside to render
+  - Check out the File dropdown, where you can:
+      - save and clone your notebook
+      - interact with APIs and webhooks
+  - To delete:
+      - a single cell, click the 'x' in the upper right corner of the cell
+      - all cells, click the trash icon in the Nav bar
+  - Give a title to your notebook:
+      - Click the 'My Notebook' placeholder in the Nav bar
+  - Clean up the Notebook for presentation by toggling the slider in the upper-right hand corner of the notebook`,
+  results: {
+    stdout: [],
+    error: "",
+    return: ""
+  },
+  id: "c25d28c8-a1ab-40bb-9eed-5a5cc7a0a218",
+  rendered: true
 };
