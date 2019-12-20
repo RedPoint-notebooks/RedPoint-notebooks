@@ -33,4 +33,4 @@
 **[Will Mills](#TODO) - Toronto, Canada**
 
 ## Deployment
-Learn how to deploy a hosted version of RedPoint [here](#TODO).
+Learn how to deploy a hosted version of RedPoint [here](https://github.com/redPoint-notebook/redPoint-notebook/blob/master/Self_Deploy_RedPoint/Self-Deploy-README.md).
