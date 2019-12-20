@@ -3,7 +3,10 @@
 ### 1. Provision a server (We recommend using Ubuntu 18.04 as the OS)
 
 - Use a cloud service like [DigitalOcean](https://www.digitalocean.com/) or [Google Compute Platform](https://cloud.google.com/)
-- Ensure the server firewall only exposes ports 443 (HTTPS) and 80 (HTTP) to external traffic]
+- SSH into the server and ensure the firewall only exposes ports 443 (HTTPS) and 80 (HTTP) to external traffic
+- You will likely want to install a text editor like NANO
+  - `$ sudo apt-get update`
+  - `$ sudo apt-get install nano`
 
 ### 2. Install Docker
 
@@ -48,7 +51,7 @@
 @Ben need your instructions here
 ```
 
-### 9. Configure the default `.env` file and move it to the same directory as `proxyServer.js`
+### 9. Configure the default `env` file, move it to the same directory as `proxyServer.js` and rename it to `.env`
 
 - [Link to .env file](./.env)
 - Do not share this file
