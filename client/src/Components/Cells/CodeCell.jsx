@@ -11,6 +11,8 @@ import "codemirror/mode/javascript/javascript.js";
 import "codemirror/mode/ruby/ruby.js";
 import "codemirror/mode/python/python.js";
 import "codemirror/keymap/sublime.js";
+import "codemirror/addon/edit/closebrackets";
+import "codemirror/addon/search/match-highlighter";
 
 class CodeCell extends Component {
   state = {
@@ -38,7 +40,9 @@ class CodeCell extends Component {
       showCursorWhenSelecting: true,
       tabSize: 2,
       indentWithTabs: true,
-      keyMap: "sublime"
+      keyMap: "sublime",
+      autoCloseBrackets: true,
+      highlightSelectionMatches: true
     };
 
     if (cell.language !== "Markdown") {
