@@ -225,6 +225,8 @@ class NavigationBar extends React.Component {
     this.props.onTitleSubmit(title);
   };
 
+  handleHelpClick = () => {};
+
   render() {
     return (
       <React.Fragment>
@@ -307,6 +309,9 @@ class NavigationBar extends React.Component {
                     modalVisible={this.state.webhookModalVisible}
                     notebookId={this.props.notebookId}
                   />
+                </NavDropdown.Item>
+                <NavDropdown.Item onClick={this.props.onHelpClick}>
+                  Help
                 </NavDropdown.Item>
               </NavDropdown>
               <Nav.Link onClick={this.toggleDeleteWarning}>
