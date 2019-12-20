@@ -25,11 +25,7 @@
   <!-- - Daemonize Redis process (so it runs in the background) -->
 - Enable Redis password authentication
 - Create a Redis hashmap "sessions", to store user sessions
-  - Enter this variable name in the [.env](./.env)
-
-```
-@Ben @Charles need instructions to create redis namespace for rsmq and redis queue
-```
+  - Enter this variable name in the [env](./env)
 
 ### 5. Obtain a domain name and point it at your server's IP address
 
@@ -45,16 +41,15 @@
 
 - [PM2 Installation Instructions (Only follow steps #1 and #3)](https://www.digitalocean.com/community/tutorials/how-to-set-up-a-node-js-application-for-production-on-ubuntu-18-04)
 
-### 8. Set up Transactional E-mail Service
+### 8. Set up SendGrid (Transactional E-mail Provider)
 
-```
-@Ben need your instructions here
-```
+- [Generate a SendGrid API key](https://sendgrid.com/docs/ui/account-and-settings/api-keys/#managing-api-keys) and enter it in the [env](./env)
+- Optionally, [set up domain authentication](https://sendgrid.com/docs/ui/account-and-settings/how-to-set-up-domain-authentication/) for your domain
 
 ### 9. Configure the default `env` file, move it to the same directory as `proxyServer.js` and rename it to `.env`
 
-- [Link to .env file](./.env)
-- Do not share this file
+- [Link to env file](./.env)
+- Be sure to .gitignore this file in production
 
 ### 10. Use Docker to pull the latest image from our official RedPoint Notebooks repository on DockerHub:
 
@@ -65,7 +60,7 @@
 - `$ git clone https://github.com/redPoint-notebook/reverse-proxy.git`
 - `$ npm install`
 
-### 12. Start these process using PM2 (first navigate to the directory they are in):
+### 12. Start these processes using PM2 (first navigate to the directory they are in):
 
 - `$ pm2 start proxyServer.js`
 - `$ pm2 start redisWorker.js`
