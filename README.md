@@ -28,7 +28,7 @@
 
 ## Case Study
 
-[Learn more about our project here](https://www.redpoint-notebooks.github.io/), including the challenges we solved by implementing webhook queues, containerizing sessions, and building a [reverse proxy server](https://github.com/RedPoint-notebooks/Dispatch-server)
+[Learn more about our project here](https://redpoint-notebooks.github.io/), including the challenges we solved by implementing webhook queues, containerizing sessions, and building a [reverse proxy server](https://github.com/RedPoint-notebooks/Dispatch-server)
 
 ## The Team
 
