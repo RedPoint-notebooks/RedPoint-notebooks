@@ -227,6 +227,8 @@ class NavigationBar extends React.Component {
 
   handleHelpClick = () => {};
 
+  handleNewClick = () => {};
+
   render() {
     return (
       <React.Fragment>
@@ -354,6 +356,12 @@ class NavigationBar extends React.Component {
                   />
                 </Nav.Link>
               )}
+              <Nav.Link
+                href="https://redpoint-notebooks.github.io/"
+                target="_blank"
+              >
+                Case Study
+              </Nav.Link>
             </Nav>
             <Nav.Link className="navbar-clean-switch">
               <PresentationToggle
