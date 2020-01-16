@@ -28,15 +28,15 @@
 
 ## Case Study
 
-[Learn more about our project here](https://redpoint-notebooks.github.io/), including the challenges we solved by implementing webhook queues, containerizing sessions, and building a [reverse proxy server](https://github.com/RedPoint-notebooks/Dispatch-server)
+[Learn more about the project here](https://redpoint-notebooks.github.io/), including the challenges we solved by implementing webhook queues, containerizing sessions, and building a [reverse proxy server](https://github.com/RedPoint-notebooks/Dispatch-server)
 
 ## The Team
 
-**[Charles Ging](#TODO) - Denver, CO**
+**[Charles Ging](https://charlesging.github.io/) - Denver, CO**
 
-**[Ben Harvey](#TODO) - Portland, ME**
+**[Ben Harvey](https://ben-harvey.github.io/) - Portland, ME**
 
-**[Will Mills](#TODO) - Toronto, Canada**
+**[Will Mills](https://w-mills.github.io/) - Toronto, Canada**
 
 ## Deployment
 
