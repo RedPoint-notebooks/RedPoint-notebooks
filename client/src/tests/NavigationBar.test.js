@@ -1,5 +1,4 @@
 import React from "react";
-import ReactDOM from "react-dom";
 import { shallow } from "enzyme";
 import Adapter from "enzyme-adapter-react-16";
 import Enzyme from "enzyme";
@@ -22,16 +21,15 @@ describe("test NavigationBar component", () => {
         isClone={false}
         title="test notebook"
         presentation={false}
-        onRemoveCloneFlag={() => {}}
-        deleteAllCells={() => {}}
-        onSetNotebookId={() => {}}
-        onSaveClick={() => {}}
-        onCloneClick={() => {}}
-        onRunAllClick={() => {}}
-        onAPISubmit={() => {}}
-        onToggleView={() => {}}
-        onTitleSubmit={() => {}}
-        onHelpClick={() => {}}
+        // onRemoveCloneFlag={() => {}}
+        // onSetNotebookId={() => {}}
+        // onSaveClick={() => {}}
+        // onCloneClick={() => {}}
+        // onRunAllClick={() => {}}
+        // onAPISubmit={() => {}}
+        // onToggleView={() => {}}
+        // onTitleSubmit={() => {}}
+        // onHelpClick={() => {}}
       />
     );
 
@@ -44,16 +42,6 @@ describe("test NavigationBar component", () => {
       operation: null,
       titleFormVisible: false
     });
-
-    // awaitingServerResponse={this.awaitingServerResponse}
-    // deleteAllCells={this.handleDeleteAllCells}
-    // onSaveClick={this.handleSaveOrCloneClick}
-    // onCloneClick={this.handleSaveOrCloneClick}
-    // onLoadClick={this.handleLoadClick}
-    // onRunAllClick={this.handleRunAllClick}
-    // onAPISubmit={this.handleAPISubmit}
-    // onToggleView={this.handleToggleView}
-    // presentation={this.state.presentation}
   });
 
   it("initial state has no forms visible", () => {
@@ -70,45 +58,18 @@ describe("test NavigationBar component", () => {
   });
 
   it("state is updated when handleToggleAPIForm is executed", () => {
-    const updatedState = {
-      deleteWarningVisible: false,
-      apiModalVisible: true,
-      saveOrCloneModalVisible: false,
-      webhookModalVisible: false,
-      notebookURL: null,
-      operation: null,
-      titleFormVisible: false
-    };
-
     wrapper.instance().handleToggleAPIForm();
-    expect(wrapper.state()).toEqual(updatedState);
+    expect(wrapper.state().apiModalVisible).toEqual(true);
   });
 
   it("state is updated when handleToggleSaveOrCloneForm is executed", () => {
-    const updatedState = {
-      deleteWarningVisible: false,
-      apiModalVisible: false,
-      saveOrCloneModalVisible: true,
-      webhookModalVisible: false,
-      notebookURL: null,
-      operation: null,
-      titleFormVisible: false
-    };
-
     wrapper.instance().handleToggleSaveOrCloneForm();
-    expect(wrapper.state()).toEqual(updatedState);
+    expect(wrapper.state().saveOrCloneModalVisible).toEqual(true);
   });
 
-  it("clicking API option changes apiModalVisible to true", () => {
-    expect(wrapper.state().apiModalVisible).toBe(false);
-    wrapper.find("#show-API").simulate("click");
-    expect(wrapper.state().apiModalVisible).toBe(true);
-  });
-
-  it("clicking Webhooks option changes webhookModalVisible to true", () => {
-    expect(wrapper.state().webhookModalVisible).toBe(false);
-    wrapper.find("#show-webhooks").simulate("click");
-    expect(wrapper.state().webhookModalVisible).toBe(true);
+  it("clicking title changes title visibility in state", () => {
+    wrapper.instance().handleTitleClick();
+    expect(wrapper.state().titleFormVisible).toEqual(true);
   });
 
   it("executing handleDeleteAllClick calls props.deleteAllCells", () => {
@@ -130,16 +91,6 @@ describe("test NavigationBar component", () => {
   // it("clicking Delete option renders ConfirmAction", () => {
   //   wrapper.find(".delete-button-icon").simulate("click");
   //   expect(wrapper.find(".delete-all-banner").length).toBe(1);
-  // });
-
-  it("clicking API option renders APImodal", () => {
-    wrapper.find("#show-API").simulate("click");
-    expect(wrapper.find("#api").length).toBe(1);
-  });
-
-  // it("clicking Webhooks option renders WebhookForm", () => {
-  //   wrapper.find("#webhook-modal-btn").simulate("click");
-  //   expect(wrapper.find(".modal-content").length).toBe(1);
   // });
 });
 

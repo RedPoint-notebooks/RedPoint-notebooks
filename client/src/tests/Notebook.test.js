@@ -18,9 +18,6 @@ describe("test Notebook component", () => {
   });
 
   it("initial state has no cell data", () => {
-    const initialState = {
-      cells: []
-    };
     expect(wrapper.state().cells.length).toBe(0);
   });
 });

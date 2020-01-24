@@ -299,7 +299,7 @@ class NavigationBar extends React.Component {
                     onEmailSubmit={this.handleEmailSubmit}
                   />
                 </NavDropdown.Item>
-                <NavDropdown.Item>
+                <NavDropdown.Item className="api-modal-btn">
                   <APIModal
                     onToggleAPIForm={this.handleToggleAPIForm}
                     modalVisible={this.state.apiModalVisible}

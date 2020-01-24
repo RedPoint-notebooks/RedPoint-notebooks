@@ -62,10 +62,10 @@ class Notebook extends Component {
   };
 
   establishWebsocket = () => {
-    if (process.env.NODE_ENV === "development") {
-      this.ws = new ReconnectingWebSocket("ws://localhost:8000");
-    } else if (process.env.NODE_ENV === "production") {
+    if (process.env.NODE_ENV === "production") {
       this.ws = new ReconnectingWebSocket("wss://" + window.location.host);
+    } else {
+      this.ws = new ReconnectingWebSocket("ws://localhost:8000");
     }
   };
 
