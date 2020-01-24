@@ -285,6 +285,7 @@ class NavigationBar extends React.Component {
                     operation={this.state.operation}
                     onEmailSubmit={this.handleEmailSubmit}
                     onCloneClick={this.handleCloneClick}
+                    id="save-clone-modal-btn"
                   />
                 </NavDropdown.Item>
                 <NavDropdown.Item>
@@ -298,7 +299,7 @@ class NavigationBar extends React.Component {
                     onEmailSubmit={this.handleEmailSubmit}
                   />
                 </NavDropdown.Item>
-                <NavDropdown.Item>
+                <NavDropdown.Item className="api-modal-btn">
                   <APIModal
                     onToggleAPIForm={this.handleToggleAPIForm}
                     modalVisible={this.state.apiModalVisible}
@@ -310,6 +311,7 @@ class NavigationBar extends React.Component {
                     onToggleWebhookForm={this.handleToggleWebhookForm}
                     modalVisible={this.state.webhookModalVisible}
                     notebookId={this.props.notebookId}
+                    id="webhook-modal-btn"
                   />
                 </NavDropdown.Item>
                 <NavDropdown.Item onClick={this.props.onHelpClick}>
