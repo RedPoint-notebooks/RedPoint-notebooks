@@ -35,7 +35,7 @@
 
 - [Follow Steps 1-3 in These Instructions to Install Certbot](https://certbot.eff.org/lets-encrypt/ubuntubionic-other)
 - Generate the certificate (replace "yourdomain.tld" with your own domain from step #5)
-  - `$ certbot-auto certonly --server https://acme-v02.api.letsencrypt.org/directory --manual --preferred-challenges dns -d 'yourdomain.tld,*.yourdomain.tld'`
+  - `$ certbot certonly --server https://acme-v02.api.letsencrypt.org/directory --manual --preferred-challenges dns -d 'yourdomain.tld,*.yourdomain.tld'`
 
 ### 7. Install PM2 To Run The RedPoint Server Processes
 
