@@ -24,8 +24,7 @@
 - [Redis Install Guide](https://www.digitalocean.com/community/tutorials/how-to-install-and-secure-redis-on-ubuntu-18-04)
   <!-- - Daemonize Redis process (so it runs in the background) -->
 - Enable Redis password authentication
-- Create a Redis hashmap "sessions", to store user sessions
-  - Enter this variable name in the [env](./env)
+- Create name for user sessions hashmap in the [env](./env)
 
 ### 5. Obtain a domain name and point it at your server's IP address
 
