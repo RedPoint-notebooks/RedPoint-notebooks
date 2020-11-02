@@ -59,7 +59,10 @@
 - `$ git clone https://github.com/redPoint-notebook/reverse-proxy.git`
 - `$ npm install`
 
-### 12. Start these processes using PM2 (first navigate to the directory they are in):
+### 12. Install gVisor docker runtime
+- [Installation instructions](https://gvisor.dev/docs/user_guide/install/)
+
+### 13. Start these processes using PM2 (first navigate to the directory they are in):
 
 - `$ pm2 start proxyServer.js`
 - `$ pm2 start redisWorker.js`
