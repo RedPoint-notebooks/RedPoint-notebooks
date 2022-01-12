@@ -23,7 +23,7 @@
     "dotenv": "^8.2.0",
     "express": "~4.16.1",
     "http-errors": "~1.6.3",
-    "markdown-it": "^10.0.0",
+    "markdown-it": "^12.3.2",
     "mongodb": "^3.3.4",
     "morgan": "^1.9.1",
     "node-fetch": "^2.6.0",
